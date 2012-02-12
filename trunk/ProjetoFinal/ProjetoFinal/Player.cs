@@ -6,25 +6,25 @@ namespace ProjetoFinal
 {
     class Player
     {
-        public Texture2D PlayerSkin;
-
-        public Vector2 Position;
+        public Texture2D skin;
+        public Vector2 position;
+        public float speed;
 
         public int Width
         {
-            get { return PlayerSkin.Width; }
+            get { return skin.Width; }
         }
 
         public int Height
         {
-            get { return PlayerSkin.Height; }
+            get { return skin.Height; }
         }
 
-
-        public void Initialize(Texture2D skin, Vector2 position)
+        public void Initialize(Texture2D playerSkin, Vector2 playerPosition, float playerSpeed)
         {
-            PlayerSkin = skin;            
-            Position = position;
+            skin = playerSkin;
+            position = playerPosition;
+            speed = playerSpeed;
         }
 
         public void Update()
@@ -33,7 +33,7 @@ namespace ProjetoFinal
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(PlayerSkin, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(skin, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         } 
     }
 }
