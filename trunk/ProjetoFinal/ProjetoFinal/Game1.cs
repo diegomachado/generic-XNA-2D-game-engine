@@ -33,7 +33,7 @@ namespace ProjetoFinal
         protected override void Initialize()
         {
             player = new Player();
-
+            
             base.Initialize();
         }
 
@@ -71,6 +71,8 @@ namespace ProjetoFinal
 
         private void UpdatePlayer(GameTime gameTime)
         {
+            Vector2 playerPositionTemp = player.position;
+
             player.position.X += currentGamePadState.ThumbSticks.Left.X * player.speed;
             player.position.Y -= currentGamePadState.ThumbSticks.Left.Y * player.speed;
 
