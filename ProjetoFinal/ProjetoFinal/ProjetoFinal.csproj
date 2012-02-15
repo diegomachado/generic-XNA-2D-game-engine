@@ -119,6 +119,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="lib\Lidgren.Network.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProjetoFinalContent\ProjetoFinalContent.contentproj">
