@@ -33,7 +33,7 @@ namespace ProjetoFinal
         protected override void Initialize()
         {
             player = new Player();
-            
+
             base.Initialize();
         }
 
