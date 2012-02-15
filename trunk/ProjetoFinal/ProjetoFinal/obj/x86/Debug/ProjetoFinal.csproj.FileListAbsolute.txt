@@ -1,6 +1,0 @@
-C:\Users\diego\Desktop\c#playground\ProjetoFinal\ProjetoFinal\ProjetoFinal\bin\x86\Debug\ProjetoFinal.exe
-C:\Users\diego\Desktop\c#playground\ProjetoFinal\ProjetoFinal\ProjetoFinal\bin\x86\Debug\ProjetoFinal.pdb
-C:\Users\diego\Desktop\c#playground\ProjetoFinal\ProjetoFinal\ProjetoFinal\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Users\diego\Desktop\c#playground\ProjetoFinal\ProjetoFinal\ProjetoFinal\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-C:\Users\diego\Desktop\c#playground\ProjetoFinal\ProjetoFinal\ProjetoFinal\obj\x86\Debug\ProjetoFinal.exe
-C:\Users\diego\Desktop\c#playground\ProjetoFinal\ProjetoFinal\ProjetoFinal\obj\x86\Debug\ProjetoFinal.pdb
