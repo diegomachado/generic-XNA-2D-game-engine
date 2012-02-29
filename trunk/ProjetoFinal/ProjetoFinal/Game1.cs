@@ -13,21 +13,28 @@ using Microsoft.Xna.Framework.Media;
 using Lidgren.Network;
 
 using ProjetoFinal.Network;
+using ProjetoFinal.Entities;
 
 namespace ProjetoFinal
 {
 
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        // Network
         INetworkManager networkManager;
 
+        // Graphics
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        // Input
         KeyboardState currentKeyboardState;
         KeyboardState previousKeyboardState;
         GamePadState currentGamePadState;
         GamePadState previousGamePadState;
+
+        // Game Object
+        PlayerChar playerChar;
 
         public Game1()
         {
@@ -37,9 +44,15 @@ namespace ProjetoFinal
 
         protected override void Initialize()
         {
+            // Network
             // TODO: Definir IP e Porta dinamicamente
             networkManager = SelectMenu("localhost", 666);
             networkManager.Connect();
+
+            Texture2D texture = this.Content.Load<Texture2D>(@"sprites/bear");
+
+            // Game Objects
+            playerChar = new PlayerChar(texture, Vector2.Zero, 8);
 
             base.Initialize();
         }
@@ -50,7 +63,8 @@ namespace ProjetoFinal
         }
 
         protected override void UnloadContent()
-        {         
+        {
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,6 +78,10 @@ namespace ProjetoFinal
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
+            // Atualiza player
+            playerChar.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
+
+            // Processa mensagens
             ProcessNetworkMessages();
 
             base.Update(gameTime);
@@ -74,6 +92,8 @@ namespace ProjetoFinal
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+
+            playerChar.Draw(spriteBatch);
 
             spriteBatch.End();
 

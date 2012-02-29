@@ -117,7 +117,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Char.cs" />
     <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\PlayerChar.cs" />
     <Compile Include="Network\ClientNetworkManager.cs" />
     <Compile Include="Network\INetworkManager.cs" />
     <Compile Include="Network\Messages\GameMessageTypes.cs" />
