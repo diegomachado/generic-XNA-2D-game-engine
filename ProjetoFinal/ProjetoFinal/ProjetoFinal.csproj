@@ -120,7 +120,7 @@
     <Compile Include="Entities\Char.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PlayerOneChar.cs" />
-    <Compile Include="Managers\CharsManager.cs" />
+    <Compile Include="Managers\CharManager.cs" />
     <Compile Include="Network\ClientNetworkManager.cs" />
     <Compile Include="Network\INetworkManager.cs" />
     <Compile Include="Network\Messages\IGameMessage.cs" />
