@@ -35,8 +35,8 @@ namespace ProjetoFinal
         GamePadState previousGamePadState;
 
         // Game Object
-        PlayerOneChar playerChar;
-        CharsManager playersManager;
+        PlayerOneChar playerOneChar;
+        CharManager charManager;
 
         public Game1()
         {
@@ -54,7 +54,7 @@ namespace ProjetoFinal
             Texture2D texture = this.Content.Load<Texture2D>(@"sprites/bear");
 
             // Game Objects
-            playerChar = new PlayerOneChar(texture, Vector2.Zero, 8);
+            playerOneChar = new PlayerOneChar(texture, Vector2.Zero, 8);
             base.Initialize();
         }
 
@@ -80,7 +80,7 @@ namespace ProjetoFinal
             currentKeyboardState = Keyboard.GetState();
 
             // Atualiza player
-            playerChar.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
+            playerOneChar.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
 
             // Processa mensagens
             ProcessNetworkMessages();
@@ -94,7 +94,7 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
-            playerChar.Draw(spriteBatch);
+            playerOneChar.Draw(spriteBatch);
 
             spriteBatch.End();
 
