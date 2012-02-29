@@ -13,11 +13,12 @@ using Microsoft.Xna.Framework.Media;
 using Lidgren.Network;
 
 using ProjetoFinal.Network;
+using ProjetoFinal.Network.Messages;
 using ProjetoFinal.Entities;
+using ProjetoFinal.Managers;
 
 namespace ProjetoFinal
 {
-
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         // Network
@@ -34,7 +35,8 @@ namespace ProjetoFinal
         GamePadState previousGamePadState;
 
         // Game Object
-        PlayerChar playerChar;
+        PlayerOneChar playerChar;
+        CharsManager playersManager;
 
         public Game1()
         {
@@ -52,8 +54,7 @@ namespace ProjetoFinal
             Texture2D texture = this.Content.Load<Texture2D>(@"sprites/bear");
 
             // Game Objects
-            playerChar = new PlayerChar(texture, Vector2.Zero, 8);
-
+            playerChar = new PlayerOneChar(texture, Vector2.Zero, 8);
             base.Initialize();
         }
 
@@ -148,6 +149,27 @@ namespace ProjetoFinal
             return networkManager;
         }
 
+        private void HandleUpdatePlayerStateMessage(NetIncomingMessage im)
+        {
+            /*var message = new UpdatePlayerStateMessage(im);
+
+            var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
+
+            Player player = this.playerManager.GetPlayer(message.Id) ??
+                                this.playerManager.AddPlayer(message.Id, message.Position, message.Velocity, message.Rotation, false);
+
+            player.EnableSmoothing = true;
+
+            if (player.LastUpdateTime < message.MessageTime)
+            {
+                player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
+                player.SimulationState.Velocity = message.Velocity;
+                player.SimulationState.Rotation = message.Rotation;
+
+                player.LastUpdateTime = message.MessageTime;
+            }*/
+        }
+
         private void ProcessNetworkMessages()
         {
             NetIncomingMessage im;
@@ -188,16 +210,13 @@ namespace ProjetoFinal
                         }
                         break;
                     case NetIncomingMessageType.Data:
-                        /*var gameMessageType = (GameMessageTypes)im.ReadByte();
+                        var gameMessageType = (GameMessageTypes)im.ReadByte();
                         switch (gameMessageType)
                         {
-                            case GameMessageTypes.UpdateAsteroidState:
-                                this.HandleUpdateAsteroidStateMessage(im);
-                                break;
                             case GameMessageTypes.UpdatePlayerState:
                                 this.HandleUpdatePlayerStateMessage(im);
                                 break;
-                        }*/
+                        }
                         break;
                 }
 

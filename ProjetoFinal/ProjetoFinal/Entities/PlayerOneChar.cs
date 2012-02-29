@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ProjetoFinal.Entities
 {
-    class PlayerChar : Char
+    class PlayerOneChar : Char
     {
-        public PlayerChar(Texture2D playerSkin, Vector2 playerPosition, float playerSpeed)
+        public PlayerOneChar(Texture2D playerSkin, Vector2 playerPosition, float playerSpeed)
             : base(playerSkin, playerPosition, playerSpeed)
         {
             this.skin = playerSkin;
