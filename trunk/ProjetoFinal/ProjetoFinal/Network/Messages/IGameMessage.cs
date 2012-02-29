@@ -2,6 +2,11 @@
 
 namespace ProjetoFinal.Network.Messages
 {
+    public enum GameMessageTypes
+    {
+        UpdatePlayerState
+    }
+
     public interface IGameMessage
     {
         GameMessageTypes MessageType { get; }
