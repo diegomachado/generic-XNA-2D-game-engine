@@ -35,8 +35,9 @@ namespace ProjetoFinal
         GamePadState previousGamePadState;
 
         // Game Object
-        PlayerOneChar playerOneChar;
-        CharManager charManager;
+        LocalPlayer localPlayer;
+        PlayerManager playerManager;
+        TextureManager textureManager;
 
         public Game1()
         {
@@ -51,10 +52,16 @@ namespace ProjetoFinal
             networkManager = SelectMenu("localhost", 666);
             networkManager.Connect();
 
-            Texture2D texture = this.Content.Load<Texture2D>(@"sprites/bear");
+            // Resources
+            textureManager = new TextureManager(this.Content);
 
             // Game Objects
-            playerOneChar = new PlayerOneChar(texture, Vector2.Zero, 8);
+            playerManager = new PlayerManager();
+            localPlayer = new LocalPlayer(0, textureManager.getTexture(TextureList.Bear), Vector2.Zero);
+            
+            // Events
+            this.localPlayer.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.player));
+
             base.Initialize();
         }
 
@@ -80,7 +87,7 @@ namespace ProjetoFinal
             currentKeyboardState = Keyboard.GetState();
 
             // Atualiza player
-            playerOneChar.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
+            localPlayer.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
 
             // Processa mensagens
             ProcessNetworkMessages();
@@ -94,7 +101,8 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
-            playerOneChar.Draw(spriteBatch);
+            localPlayer.Draw(spriteBatch);
+            playerManager.Draw(spriteBatch);
 
             spriteBatch.End();
 
@@ -151,23 +159,25 @@ namespace ProjetoFinal
 
         private void HandleUpdatePlayerStateMessage(NetIncomingMessage im)
         {
-            /*var message = new UpdatePlayerStateMessage(im);
+            UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im);
 
-            var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
+            //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
 
-            Player player = this.playerManager.GetPlayer(message.Id) ??
-                                this.playerManager.AddPlayer(message.Id, message.Position, message.Velocity, message.Rotation, false);
+            Player player = this.playerManager.GetPlayer(message.id) ??
+                            this.playerManager.AddPlayer(message.id, textureManager.getTexture(TextureList.Ranger), message.position);
 
-            player.EnableSmoothing = true;
+            //player.EnableSmoothing = true;
 
-            if (player.LastUpdateTime < message.MessageTime)
+            if (player.LastUpdateTime < message.messageTime)
             {
-                player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
-                player.SimulationState.Velocity = message.Velocity;
-                player.SimulationState.Rotation = message.Rotation;
+                //player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
+                //player.SimulationState.Velocity = message.Velocity;
+                //player.SimulationState.Rotation = message.Rotation;
 
-                player.LastUpdateTime = message.MessageTime;
-            }*/
+                player.position = message.position;
+
+                player.LastUpdateTime = message.messageTime;
+            }
         }
 
         private void ProcessNetworkMessages()
@@ -187,11 +197,17 @@ namespace ProjetoFinal
                     case NetIncomingMessageType.StatusChanged:
                         switch ((NetConnectionStatus)im.ReadByte())
                         {
+                            case NetConnectionStatus.RespondedAwaitingApproval:
+                                NetOutgoingMessage hailMessage = this.networkManager.CreateMessage();
+                                new UpdatePlayerStateMessage(playerManager.AddPlayer(textureManager.getTexture(TextureList.Bear))).Encode(hailMessage);
+                                im.SenderConnection.Approve(hailMessage);
+
+                                break;
                             case NetConnectionStatus.Connected:
                                 if (!this.IsHost)
                                 {
-                                    //var message = new UpdatePlayerStateMessage(im.SenderConnection.RemoteHailMessage);
-                                    //this.playerManager.AddPlayer(message.Id, message.Position, message.Velocity, message.Rotation, true);
+                                    UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im.SenderConnection.RemoteHailMessage);
+                                    this.playerManager.AddPlayer(message.id, textureManager.getTexture(TextureList.Bear), message.position);
                                     Console.WriteLine("Connected to {0}", im.SenderEndpoint);
                                 }
                                 else
@@ -202,11 +218,7 @@ namespace ProjetoFinal
                             case NetConnectionStatus.Disconnected:
                                 Console.WriteLine(this.IsHost ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
                                 break;
-                            case NetConnectionStatus.RespondedAwaitingApproval:
-                                NetOutgoingMessage hailMessage = this.networkManager.CreateMessage();
-                                //new UpdatePlayerStateMessage(playerManager.AddPlayer(false)).Encode(hailMessage);
-                                im.SenderConnection.Approve(hailMessage);
-                                break;
+                            
                         }
                         break;
                     case NetIncomingMessageType.Data:

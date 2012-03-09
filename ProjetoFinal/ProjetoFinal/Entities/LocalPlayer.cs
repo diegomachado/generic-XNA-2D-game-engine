@@ -6,16 +6,18 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using ProjetoFinal.EventArgs;
+
 namespace ProjetoFinal.Entities
 {
-    class PlayerOneChar : Char
+    class LocalPlayer : Player
     {
-        public PlayerOneChar(Texture2D playerSkin, Vector2 playerPosition, float playerSpeed)
-            : base(playerSkin, playerPosition, playerSpeed)
+        public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
+
+        public LocalPlayer(short playerId, Texture2D playerSkin, Vector2 playerPosition)
+            : base(playerId, playerSkin, playerPosition)
         {
-            this.skin = playerSkin;
-            this.position = playerPosition;
-            this.speed = playerSpeed;
+      
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState,  Rectangle clientBounds)
@@ -32,10 +34,18 @@ namespace ProjetoFinal.Entities
                 inputDirection.Y += 1;
 
             position += inputDirection * speed;
-            position.X = MathHelper.Clamp(position.X, 0, clientBounds.Width - Width);
-            position.Y = MathHelper.Clamp(position.Y, 0, clientBounds.Height - Height);
+            position = new Vector2(MathHelper.Clamp(this.position.X, 0, clientBounds.Width - Width), 
+                                   MathHelper.Clamp(this.position.Y, 0, clientBounds.Height - Height));
+
+            OnPlayerStateChanged();
 
             base.Update();
+        }
+
+        protected void OnPlayerStateChanged()
+        {
+            if (PlayerStateChanged != null)
+                PlayerStateChanged(this, new PlayerStateChangedArgs(this));
         }
     }
 }

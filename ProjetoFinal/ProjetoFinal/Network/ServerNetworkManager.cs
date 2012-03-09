@@ -59,11 +59,14 @@ namespace ProjetoFinal.Network
 
         public void SendMessage(IGameMessage gameMessage)
         {
-            NetOutgoingMessage om = netServer.CreateMessage();
-            om.Write((byte)gameMessage.MessageType);
-            gameMessage.Encode(om);
+            if (this.netServer.ConnectionsCount > 0)
+            {
+                NetOutgoingMessage om = netServer.CreateMessage();
+                om.Write((byte)gameMessage.MessageType);
+                gameMessage.Encode(om);
 
-            netServer.SendToAll(om, NetDeliveryMethod.ReliableUnordered);
+                netServer.SendToAll(om, NetDeliveryMethod.ReliableUnordered);
+            }
         }
 
         public NetOutgoingMessage CreateMessage()
@@ -81,10 +84,8 @@ namespace ProjetoFinal.Network
             if (!this.isDisposed)
             {
                 if (disposing)
-                {
                     this.Disconnect();
-                }
-
+                
                 this.isDisposed = true;
             }
         }

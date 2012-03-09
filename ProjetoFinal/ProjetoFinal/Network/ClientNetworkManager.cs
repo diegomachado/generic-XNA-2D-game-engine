@@ -79,11 +79,14 @@ namespace ProjetoFinal.Network
 
         public void SendMessage(IGameMessage gameMessage)
         {
-            var om = this.netClient.CreateMessage();
-            om.Write((byte)gameMessage.MessageType);
-            gameMessage.Encode(om);
+            if (this.netClient.ConnectionStatus == NetConnectionStatus.Connected)
+            {
+                NetOutgoingMessage om = this.netClient.CreateMessage();
+                om.Write((byte)gameMessage.MessageType);
+                gameMessage.Encode(om);
 
-            this.netClient.SendMessage(om, NetDeliveryMethod.ReliableUnordered);
+                this.netClient.SendMessage(om, NetDeliveryMethod.ReliableUnordered);
+            }
         }
 
         public NetOutgoingMessage CreateMessage()
