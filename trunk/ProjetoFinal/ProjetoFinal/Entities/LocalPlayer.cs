@@ -37,6 +37,7 @@ namespace ProjetoFinal.Entities
             position = new Vector2(MathHelper.Clamp(this.position.X, 0, clientBounds.Width - Width), 
                                    MathHelper.Clamp(this.position.Y, 0, clientBounds.Height - Height));
 
+            // TODO: Dar um jeito de mandar menos mensagens
             OnPlayerStateChanged();
 
             base.Update();
