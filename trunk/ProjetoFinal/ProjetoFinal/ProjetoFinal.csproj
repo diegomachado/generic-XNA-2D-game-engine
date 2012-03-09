@@ -117,12 +117,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Char.cs" />
     <Compile Include="Entities\Player.cs" />
-    <Compile Include="Entities\PlayerOneChar.cs" />
-    <Compile Include="Managers\CharManager.cs" />
+    <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\LocalPlayer.cs" />
+    <Compile Include="EventArgs\PlayerStateChangedArgs.cs" />
+    <Compile Include="Managers\PlayerManager.cs" />
+    <Compile Include="Managers\TextureManager.cs" />
     <Compile Include="Network\ClientNetworkManager.cs" />
     <Compile Include="Network\INetworkManager.cs" />
+    <Compile Include="Network\Messages\ClientInfoMessage.cs" />
     <Compile Include="Network\Messages\IGameMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
     <Compile Include="Network\ServerNetworkManager.cs" />
