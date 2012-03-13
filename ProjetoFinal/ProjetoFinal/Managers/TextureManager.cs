@@ -16,11 +16,24 @@ namespace ProjetoFinal.Managers
 
     class TextureManager
     {
+        private static TextureManager instance;
+
         ContentManager Content;
 
-        public TextureManager(ContentManager Content)
+        public void setContent(ContentManager Content)
         {
             this.Content = Content;
+        }
+
+        public static TextureManager Instance
+        {
+            get 
+            {
+                if (instance == null)
+                    instance = new TextureManager();
+
+                return instance;
+            }
         }
 
         public Texture2D getTexture(TextureList texture)

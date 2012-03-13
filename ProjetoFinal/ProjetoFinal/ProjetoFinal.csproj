@@ -119,8 +119,8 @@
   <ItemGroup>
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
-    <Compile Include="Entities\LocalPlayer.cs" />
     <Compile Include="EventArgs\PlayerStateChangedArgs.cs" />
+    <Compile Include="Managers\LocalPlayerManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\TextureManager.cs" />
     <Compile Include="Network\ClientNetworkManager.cs" />
@@ -131,7 +131,7 @@
     <Compile Include="Network\ServerNetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Game.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

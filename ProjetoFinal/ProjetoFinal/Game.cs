@@ -19,7 +19,7 @@ using ProjetoFinal.Managers;
 
 namespace ProjetoFinal
 {
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
         // Network
         INetworkManager networkManager;
@@ -34,12 +34,12 @@ namespace ProjetoFinal
         GamePadState currentGamePadState;
         GamePadState previousGamePadState;
 
-        // Game Object
-        LocalPlayer localPlayer;
+        // Managers
+        LocalPlayerManager localPlayerManager;
         PlayerManager playerManager;
         TextureManager textureManager;
 
-        public Game1()
+        public Game()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -53,14 +53,20 @@ namespace ProjetoFinal
             networkManager.Connect();
 
             // Resources
-            textureManager = new TextureManager(this.Content);
+            textureManager = TextureManager.Instance;
+            textureManager.setContent(Content);
 
             // Game Objects
             playerManager = new PlayerManager();
-            localPlayer = new LocalPlayer(0, textureManager.getTexture(TextureList.Bear), Vector2.Zero);
+            localPlayerManager = new LocalPlayerManager();
             
-            // Events
-            this.localPlayer.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.player));
+            // Registering Events
+            this.localPlayerManager.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.player));
+
+            // Window Management
+            graphics.PreferredBackBufferWidth = 200;
+            graphics.PreferredBackBufferHeight = 200;
+            graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -86,12 +92,10 @@ namespace ProjetoFinal
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
-            // Atualiza player
-            localPlayer.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
+            localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
 
-            // Processa mensagens
             ProcessNetworkMessages();
-
+            
             base.Update(gameTime);
         }
 
@@ -101,7 +105,7 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
-            localPlayer.Draw(spriteBatch);
+            localPlayerManager.Draw(spriteBatch);
             playerManager.Draw(spriteBatch);
 
             spriteBatch.End();
@@ -194,6 +198,7 @@ namespace ProjetoFinal
                     case NetIncomingMessageType.ErrorMessage:
                         Console.WriteLine(im.ReadString());
                         break;
+
                     case NetIncomingMessageType.StatusChanged:
                         switch ((NetConnectionStatus)im.ReadByte())
                         {
@@ -203,6 +208,7 @@ namespace ProjetoFinal
                                 im.SenderConnection.Approve(hailMessage);
 
                                 break;
+
                             case NetConnectionStatus.Connected:
                                 if (!this.IsHost)
                                 {
@@ -215,12 +221,14 @@ namespace ProjetoFinal
                                     Console.WriteLine("{0} Connected", im.SenderEndpoint);
                                 }
                                 break;
+
                             case NetConnectionStatus.Disconnected:
                                 Console.WriteLine(this.IsHost ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
                                 break;
                             
                         }
                         break;
+
                     case NetIncomingMessageType.Data:
                         var gameMessageType = (GameMessageTypes)im.ReadByte();
                         switch (gameMessageType)
@@ -230,6 +238,7 @@ namespace ProjetoFinal
                                 break;
                         }
                         break;
+
                 }
 
                 this.networkManager.Recycle(im);
