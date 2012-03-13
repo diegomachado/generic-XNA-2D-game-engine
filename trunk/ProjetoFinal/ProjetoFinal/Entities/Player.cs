@@ -12,7 +12,7 @@ namespace ProjetoFinal.Entities
         public short id { get; set; }
         public Texture2D skin { get; set; }
         public Vector2 position { get; set; }
-        protected float speed;
+        public float speed { get; set; }
 
         // TODO: Tirar isso daqui ou não
         public double LastUpdateTime { get; set; }

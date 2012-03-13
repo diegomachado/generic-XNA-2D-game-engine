@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.EventArgs;
+using ProjetoFinal.Entities;
 
-namespace ProjetoFinal.Entities
+namespace ProjetoFinal.Managers
 {
-    class LocalPlayer : Player
+    class LocalPlayerManager
     {
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
+        private Player localPlayer;
 
-        public LocalPlayer(short playerId, Texture2D playerSkin, Vector2 playerPosition)
-            : base(playerId, playerSkin, playerPosition)
+        public LocalPlayerManager()
         {
-      
+            localPlayer = new Player(0, TextureManager.Instance.getTexture(TextureList.Bear), Vector2.Zero);
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState,  Rectangle clientBounds)
+        public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Rectangle clientBounds)
         {
             Vector2 inputDirection = Vector2.Zero;
 
@@ -33,20 +35,23 @@ namespace ProjetoFinal.Entities
             if (keyboardState.IsKeyDown(Keys.Down))
                 inputDirection.Y += 1;
 
-            position += inputDirection * speed;
-            position = new Vector2(MathHelper.Clamp(this.position.X, 0, clientBounds.Width - Width), 
-                                   MathHelper.Clamp(this.position.Y, 0, clientBounds.Height - Height));
+            localPlayer.position += inputDirection * localPlayer.speed;
+            localPlayer.position = new Vector2(MathHelper.Clamp(localPlayer.position.X, 0, clientBounds.Width - localPlayer.Width),
+                                               MathHelper.Clamp(localPlayer.position.Y, 0, clientBounds.Height - localPlayer.Height));
 
             // TODO: Dar um jeito de mandar menos mensagens
             OnPlayerStateChanged();
+        }
 
-            base.Update();
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            localPlayer.Draw(spriteBatch);
         }
 
         protected void OnPlayerStateChanged()
         {
             if (PlayerStateChanged != null)
-                PlayerStateChanged(this, new PlayerStateChangedArgs(this));
+                PlayerStateChanged(localPlayer, new PlayerStateChangedArgs(localPlayer));
         }
     }
 }
