@@ -13,7 +13,6 @@ namespace ProjetoFinal.Managers
     class PlayerManager
     {
         Dictionary<short, Player> players;
-        short playerIdCounter = 0;
 
         public PlayerManager()
         {
@@ -24,31 +23,18 @@ namespace ProjetoFinal.Managers
         {
             if (this.players.ContainsKey(id))
                 return this.players[id];
-            else
-                return null;
-        }
 
-        public Player AddPlayer(short id, Texture2D texture, Vector2 position)
-        {
-            if (this.players.ContainsKey(id))
-                return this.players[id];
-            
-            Player player = new Player(id, texture, position);
+            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), Vector2.Zero);
 
-            this.players.Add(player.id, player);
+            this.players.Add(id, player);
 
             return player;
         }
 
-        public Player AddPlayer(Texture2D texture)
+        public void AddPlayer(short id)
         {
-            return new Player(playerIdCounter++, texture, Vector2.Zero);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach(KeyValuePair<short, Player> player in players)
-                player.Value.Draw(spriteBatch);
+            if (!this.players.ContainsKey(id))
+                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), Vector2.Zero));
         }
 
         // TODO: Criar função que atualiza posições de cada um dos jogadores
@@ -56,6 +42,12 @@ namespace ProjetoFinal.Managers
         {
             foreach (KeyValuePair<short, Player> player in players)
                 player.Value.Update();
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (KeyValuePair<short, Player> player in players)
+                player.Value.Draw(spriteBatch);
         }
     }
 }

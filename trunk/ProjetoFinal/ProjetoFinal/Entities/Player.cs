@@ -9,7 +9,6 @@ namespace ProjetoFinal.Entities
 {
     class Player
     {
-        public short id { get; set; }
         public Texture2D skin { get; set; }
         public Vector2 position { get; set; }
         public float speed { get; set; }
@@ -17,9 +16,8 @@ namespace ProjetoFinal.Entities
         // TODO: Tirar isso daqui ou não
         public double LastUpdateTime { get; set; }
 
-        public Player(short id, Texture2D playerSkin, Vector2 playerPosition)
+        public Player(Texture2D playerSkin, Vector2 playerPosition)
         {
-            this.id = id;
             this.skin = playerSkin;
             this.position = playerPosition;
             this.speed = 8;
@@ -46,6 +44,7 @@ namespace ProjetoFinal.Entities
 
         public void Draw(SpriteBatch spriteBatch)
         {
+
             spriteBatch.Draw(skin, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }

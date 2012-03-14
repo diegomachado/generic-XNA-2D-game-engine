@@ -6,10 +6,12 @@ namespace ProjetoFinal.EventArgs
 
     class PlayerStateChangedArgs : EventArgs
     {
+        public short id { get; set; }
         public Player player { get; set; }
 
-        public PlayerStateChangedArgs(Player player)
+        public PlayerStateChangedArgs(short id, Player player)
         {
+            this.id = id;
             this.player = player;
         }
     }

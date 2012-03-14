@@ -12,7 +12,7 @@ namespace ProjetoFinal.Network.Messages
     /// </summary>
     class UpdatePlayerStateMessage : IGameMessage
     {
-        public short id { get; set; }
+        public short playerId { get; set; }
         public double messageTime { get; set; }
         public Vector2 position { get; set; }
 
@@ -21,9 +21,9 @@ namespace ProjetoFinal.Network.Messages
             Decode(im);
         }
 
-        public UpdatePlayerStateMessage(Player player)
+        public UpdatePlayerStateMessage(short id, Player player)
         {
-            id = player.id;
+            playerId = id;
             position = player.position;
             messageTime = NetTime.Now;
         }
@@ -35,14 +35,14 @@ namespace ProjetoFinal.Network.Messages
 
         public void Decode(NetIncomingMessage im)
         {
-            id = im.ReadInt16();
+            playerId = im.ReadInt16();
             messageTime = im.ReadDouble();
             position = im.ReadVector2();
         }
 
         public void Encode(NetOutgoingMessage om)
         {
-            om.Write(id);
+            om.Write(playerId);
             om.Write(messageTime);
             om.Write(position);
         }

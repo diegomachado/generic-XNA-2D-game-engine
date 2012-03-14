@@ -125,7 +125,7 @@
     <Compile Include="Managers\TextureManager.cs" />
     <Compile Include="Network\ClientNetworkManager.cs" />
     <Compile Include="Network\INetworkManager.cs" />
-    <Compile Include="Network\Messages\ClientInfoMessage.cs" />
+    <Compile Include="Network\Messages\HailMessage.cs" />
     <Compile Include="Network\Messages\IGameMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
     <Compile Include="Network\ServerNetworkManager.cs" />

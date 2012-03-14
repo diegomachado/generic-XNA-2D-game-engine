@@ -21,12 +21,18 @@ namespace ProjetoFinal
 {
     public class Game : Microsoft.Xna.Framework.Game
     {
+        // Menu Input
+        Dictionary<string, string> options;
+
         // Network
         INetworkManager networkManager;
+        short clientCounter;
+        Dictionary<short, Client> clients;
 
         // Graphics
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont SegoeFont;
 
         // Input
         KeyboardState currentKeyboardState;
@@ -35,8 +41,8 @@ namespace ProjetoFinal
         GamePadState previousGamePadState;
 
         // Managers
-        LocalPlayerManager localPlayerManager;
         PlayerManager playerManager;
+        LocalPlayerManager localPlayerManager;
         TextureManager textureManager;
 
         public Game()
@@ -47,33 +53,65 @@ namespace ProjetoFinal
 
         protected override void Initialize()
         {
+            options = SelectMenu();
+            clients = new Dictionary<short, Client>();
+
             // Network
             // TODO: Definir IP e Porta dinamicamente
-            networkManager = SelectMenu("localhost", 666);
+            switch (int.Parse(options["type"]))
+            {
+                case 1:
+                    ServerNetworkManager serverNetworkManager = new ServerNetworkManager();
+                    serverNetworkManager.port = 666;
+
+                    networkManager = serverNetworkManager;
+
+                    clients.Add(0, new Client("[SERVER]" + options["nickname"]));
+
+                    break;
+                case 2:
+                    //Console.WriteLine("IP?");
+                    //ip = Console.ReadLine();
+
+                    ClientNetworkManager clientNetworkManager = new ClientNetworkManager();
+                    clientNetworkManager.port = 666;
+                    clientNetworkManager.ip = "localhost";
+
+                    networkManager = clientNetworkManager;
+
+                    break;
+            }
+
             networkManager.Connect();
+            clientCounter = 1;
 
             // Resources
             textureManager = TextureManager.Instance;
             textureManager.setContent(Content);
 
-            // Game Objects
+            // Managers
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
-            
+
+            if (IsHost)
+                localPlayerManager.createLocalPlayer(0);
+
             // Registering Events
-            this.localPlayerManager.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.player));
+            this.localPlayerManager.PlayerStateChanged += 
+                    (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player));
 
             // Window Management
             graphics.PreferredBackBufferWidth = 200;
             graphics.PreferredBackBufferHeight = 200;
             graphics.ApplyChanges();
-
+            
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            SegoeFont = Content.Load<SpriteFont>(@"fonts/SegoeUI");
         }
 
         protected override void UnloadContent()
@@ -105,7 +143,7 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
-            localPlayerManager.Draw(spriteBatch);
+            localPlayerManager.Draw(spriteBatch, SegoeFont);
             playerManager.Draw(spriteBatch);
 
             spriteBatch.End();
@@ -122,66 +160,25 @@ namespace ProjetoFinal
         }
 
         // TODO: Achar um nome mais expressivo pra essa função
-        private INetworkManager SelectMenu(String ip, int port)
+        private Dictionary<string, string> SelectMenu()
         {
-            int type;           
+            Dictionary<string, string> returnValues = new Dictionary<string, string>();
+            int type;
+            String nickname;
 
             Console.WriteLine("==========================");
             Console.WriteLine("       What are you?      ");
             Console.WriteLine("==========================");
             Console.WriteLine("1. I'm a Server");
             Console.WriteLine("2. I'm a Client");
-            type = int.Parse(Console.ReadLine());
+            returnValues.Add("type", Console.ReadLine());
+            Console.WriteLine("Type your nickname:");
+            returnValues.Add("nickname", Console.ReadLine());
 
             //Console.WriteLine("Port?");
             //port = int.Parse(Console.ReadLine());
 
-            switch (type)
-            {
-                case 1:
-                    ServerNetworkManager serverNetworkManager = new ServerNetworkManager();
-                    serverNetworkManager.port = port;
-
-                    networkManager = serverNetworkManager;
-
-                    break;
-                case 2:
-                    //Console.WriteLine("IP?");
-                    //ip = Console.ReadLine();
-
-                    ClientNetworkManager clientNetworkManager = new ClientNetworkManager();
-                    clientNetworkManager.port = port;
-                    clientNetworkManager.ip = ip;
-
-                    networkManager = clientNetworkManager;
-
-                    break;
-            }
-
-            return networkManager;
-        }
-
-        private void HandleUpdatePlayerStateMessage(NetIncomingMessage im)
-        {
-            UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im);
-
-            //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
-
-            Player player = this.playerManager.GetPlayer(message.id) ??
-                            this.playerManager.AddPlayer(message.id, textureManager.getTexture(TextureList.Ranger), message.position);
-
-            //player.EnableSmoothing = true;
-
-            if (player.LastUpdateTime < message.messageTime)
-            {
-                //player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
-                //player.SimulationState.Velocity = message.Velocity;
-                //player.SimulationState.Rotation = message.Rotation;
-
-                player.position = message.position;
-
-                player.LastUpdateTime = message.messageTime;
-            }
+            return returnValues;
         }
 
         private void ProcessNetworkMessages()
@@ -204,7 +201,7 @@ namespace ProjetoFinal
                         {
                             case NetConnectionStatus.RespondedAwaitingApproval:
                                 NetOutgoingMessage hailMessage = this.networkManager.CreateMessage();
-                                new UpdatePlayerStateMessage(playerManager.AddPlayer(textureManager.getTexture(TextureList.Bear))).Encode(hailMessage);
+                                new HailMessage(clientCounter++, clients).Encode(hailMessage);
                                 im.SenderConnection.Approve(hailMessage);
 
                                 break;
@@ -212,14 +209,14 @@ namespace ProjetoFinal
                             case NetConnectionStatus.Connected:
                                 if (!this.IsHost)
                                 {
-                                    UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im.SenderConnection.RemoteHailMessage);
-                                    this.playerManager.AddPlayer(message.id, textureManager.getTexture(TextureList.Bear), message.position);
+                                    this.HandleHailMessage(new HailMessage(im.SenderConnection.RemoteHailMessage));
                                     Console.WriteLine("Connected to {0}", im.SenderEndpoint);
                                 }
                                 else
                                 {
                                     Console.WriteLine("{0} Connected", im.SenderEndpoint);
                                 }
+
                                 break;
 
                             case NetConnectionStatus.Disconnected:
@@ -234,7 +231,7 @@ namespace ProjetoFinal
                         switch (gameMessageType)
                         {
                             case GameMessageTypes.UpdatePlayerState:
-                                this.HandleUpdatePlayerStateMessage(im);
+                                this.HandleUpdatePlayerStateMessage(new UpdatePlayerStateMessage(im));
                                 break;
                         }
                         break;
@@ -243,6 +240,34 @@ namespace ProjetoFinal
 
                 this.networkManager.Recycle(im);
             }
+        }
+
+        private void HandleUpdatePlayerStateMessage(UpdatePlayerStateMessage message)
+        {
+            //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
+
+            Player player = this.playerManager.GetPlayer(message.playerId);
+
+            //player.EnableSmoothing = true;
+
+            if (player.LastUpdateTime < message.messageTime)
+            {
+                //player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
+                //player.SimulationState.Velocity = message.Velocity;
+                //player.SimulationState.Rotation = message.Rotation;
+
+                player.position = message.position;
+
+                player.LastUpdateTime = message.messageTime;
+            }
+        }
+
+        private void HandleHailMessage(HailMessage message)
+        {
+            localPlayerManager.createLocalPlayer(message.clientId);
+
+            foreach (short id in message.clientsInfo.Keys)
+                this.playerManager.AddPlayer(id);
         }
     }
 }
