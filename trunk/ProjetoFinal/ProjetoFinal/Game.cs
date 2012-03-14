@@ -231,7 +231,7 @@ namespace ProjetoFinal
                             case GameMessageTypes.UpdatePlayerState:
                                 this.HandleUpdatePlayerStateMessage(new UpdatePlayerStateMessage(im));
 
-                                if (IsHost)
+                                //if (IsHost)
                                     //networkManager.SendMessage(new UpdatePlayerStateMessage(im));
 
                                 break;
