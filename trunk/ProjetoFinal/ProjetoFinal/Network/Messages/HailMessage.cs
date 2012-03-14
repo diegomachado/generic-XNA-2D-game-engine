@@ -32,7 +32,7 @@ namespace ProjetoFinal.Network.Messages
 
         public void Decode(NetIncomingMessage im)
         {
-            short clientId = im.ReadInt16();
+            clientId = im.ReadInt16();
             short numClients = im.ReadInt16();
 
             if (clientsInfo == null)

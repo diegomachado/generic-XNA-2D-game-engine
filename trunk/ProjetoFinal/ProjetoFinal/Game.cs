@@ -163,8 +163,6 @@ namespace ProjetoFinal
         private Dictionary<string, string> SelectMenu()
         {
             Dictionary<string, string> returnValues = new Dictionary<string, string>();
-            int type;
-            String nickname;
 
             Console.WriteLine("==========================");
             Console.WriteLine("       What are you?      ");
