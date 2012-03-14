@@ -44,10 +44,13 @@ namespace ProjetoFinal.Managers
                 player.Value.Update();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             foreach (KeyValuePair<short, Player> player in players)
+            {
                 player.Value.Draw(spriteBatch);
+                spriteBatch.DrawString(spriteFont, player.Key.ToString(), player.Value.position, Color.White);
+            }
         }
     }
 }
