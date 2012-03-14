@@ -231,9 +231,6 @@ namespace ProjetoFinal
                             case GameMessageTypes.UpdatePlayerState:
                                 this.HandleUpdatePlayerStateMessage(new UpdatePlayerStateMessage(im));
 
-                                //if (IsHost)
-                                    //networkManager.SendMessage(new UpdatePlayerStateMessage(im));
-
                                 break;
                         }
                         break;
@@ -246,21 +243,27 @@ namespace ProjetoFinal
 
         private void HandleUpdatePlayerStateMessage(UpdatePlayerStateMessage message)
         {
-            //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
-
-            Player player = this.playerManager.GetPlayer(message.playerId);
-
-            //player.EnableSmoothing = true;
-
-            if (player.LastUpdateTime < message.messageTime)
+            if (message.playerId != localPlayerManager.playerId)
             {
-                //player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
-                //player.SimulationState.Velocity = message.Velocity;
-                //player.SimulationState.Rotation = message.Rotation;
+                Player player = this.playerManager.GetPlayer(message.playerId);
 
-                player.position = message.position;
+                if (IsHost)
+                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player));
 
-                player.LastUpdateTime = message.messageTime;
+                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
+
+                //player.EnableSmoothing = true;
+
+                if (player.LastUpdateTime < message.messageTime)
+                {
+                    //player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
+                    //player.SimulationState.Velocity = message.Velocity;
+                    //player.SimulationState.Rotation = message.Rotation;
+
+                    player.position = message.position;
+
+                    player.LastUpdateTime = message.messageTime;
+                }
             }
         }
 

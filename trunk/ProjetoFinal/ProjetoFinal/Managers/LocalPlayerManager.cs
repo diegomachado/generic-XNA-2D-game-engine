@@ -14,7 +14,7 @@ namespace ProjetoFinal.Managers
 {
     class LocalPlayerManager
     {
-        private short playerId;
+        public short playerId { get; set; }
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
         private Player localPlayer;
 
