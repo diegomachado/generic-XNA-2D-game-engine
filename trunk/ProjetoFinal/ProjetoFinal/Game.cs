@@ -144,7 +144,7 @@ namespace ProjetoFinal
             spriteBatch.Begin();
 
             localPlayerManager.Draw(spriteBatch, SegoeFont);
-            playerManager.Draw(spriteBatch);
+            playerManager.Draw(spriteBatch, SegoeFont);
 
             spriteBatch.End();
 
