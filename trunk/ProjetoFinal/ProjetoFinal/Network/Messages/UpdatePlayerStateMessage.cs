@@ -24,8 +24,8 @@ namespace ProjetoFinal.Network.Messages
         public UpdatePlayerStateMessage(short id, Player player)
         {
             playerId = id;
-            position = player.position;
             messageTime = NetTime.Now;
+            position = player.position;
         }
 
         public GameMessageTypes MessageType

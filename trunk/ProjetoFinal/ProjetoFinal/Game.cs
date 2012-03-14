@@ -230,6 +230,10 @@ namespace ProjetoFinal
                         {
                             case GameMessageTypes.UpdatePlayerState:
                                 this.HandleUpdatePlayerStateMessage(new UpdatePlayerStateMessage(im));
+
+                                if (IsHost)
+                                    //networkManager.SendMessage(new UpdatePlayerStateMessage(im));
+
                                 break;
                         }
                         break;
