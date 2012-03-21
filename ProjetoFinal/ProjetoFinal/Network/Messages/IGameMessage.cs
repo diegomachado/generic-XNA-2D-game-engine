@@ -2,7 +2,7 @@
 
 namespace ProjetoFinal.Network.Messages
 {
-    public enum GameMessageTypes
+    public enum GameMessageType
     {
         ClientInfo,
         UpdatePlayerState
@@ -10,7 +10,7 @@ namespace ProjetoFinal.Network.Messages
 
     public interface IGameMessage
     {
-        GameMessageTypes MessageType { get; }
+        GameMessageType MessageType { get; }
 
         void Encode(NetOutgoingMessage om);
 

@@ -12,11 +12,24 @@ using ProjetoFinal.Entities;
 
 namespace ProjetoFinal.Managers
 {
+    public enum PlayerState
+    {
+        Idle,
+        WalkingLeft,
+        WalkingRight,
+        WalkingDead,
+        Jumping
+    }
+    
     class LocalPlayerManager
     {
         public short playerId { get; set; }
-        public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
+        
         private Player localPlayer;
+        PlayerState state = PlayerState.Idle;
+        Vector2 direction = Vector2.Zero;
+
+        public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
         public LocalPlayerManager()
         {
@@ -25,7 +38,7 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), Vector2.Zero);        
+            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0,240) );        
         }
         
         protected void OnPlayerStateChanged()
@@ -38,18 +51,76 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer != null)
             {
-                Vector2 inputDirection = Vector2.Zero;
+                switch(state)
+                {
+                    case PlayerState.Idle:
 
-                if (keyboardState.IsKeyDown(Keys.Left))
-                    inputDirection.X -= 1;
-                if (keyboardState.IsKeyDown(Keys.Right))
-                    inputDirection.X += 1;
-                if (keyboardState.IsKeyDown(Keys.Up))
-                    inputDirection.Y -= 1;
-                if (keyboardState.IsKeyDown(Keys.Down))
-                    inputDirection.Y += 1;
+                        if (!(keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right)))
+                        {
+                            if (keyboardState.IsKeyDown(Keys.Left))
+                            {
+                                state = PlayerState.WalkingLeft;
+                                direction += new Vector2(-1, 0);
+                            }
 
-                localPlayer.position += inputDirection * localPlayer.speed;
+                            if (keyboardState.IsKeyDown(Keys.Right))
+                            {
+                                state = PlayerState.WalkingRight;
+                                direction += new Vector2(1, 0);
+                            }
+                        }
+
+                        break;
+
+                    case PlayerState.WalkingLeft:
+
+                        if (keyboardState.IsKeyDown(Keys.Right))
+                        {
+                            state = PlayerState.WalkingRight;
+                            direction += new Vector2(2, 0);
+                        }
+                        else if (!keyboardState.IsKeyDown(Keys.Left))
+                        {
+                            direction += new Vector2(1, 0);
+                        }
+
+                        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+                        {
+                            direction += new Vector2(-1, 0);
+                            state = PlayerState.Idle;
+                        }
+
+                        break;
+
+                    case PlayerState.WalkingRight:
+
+                        if (keyboardState.IsKeyDown(Keys.Left))
+                        {
+                            state = PlayerState.WalkingLeft;
+                            direction += new Vector2(-2, 0);
+                        }
+                        else if (!keyboardState.IsKeyDown(Keys.Right))
+                        {
+                            direction += new Vector2(-1, 0);
+                        }
+
+                        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+                        {
+                            direction += new Vector2(1, 0);
+                            state = PlayerState.Idle;
+                        }
+
+                        break;
+
+                    case PlayerState.Jumping:
+                        break;
+                }
+                
+                if (direction == Vector2.Zero)
+                    state = PlayerState.Idle;
+
+                localPlayer.position += direction * localPlayer.speed;
+
                 localPlayer.position = new Vector2(MathHelper.Clamp(localPlayer.position.X, 0, clientBounds.Width - localPlayer.Width),
                                                    MathHelper.Clamp(localPlayer.position.Y, 0, clientBounds.Height - localPlayer.Height));
 
@@ -63,7 +134,8 @@ namespace ProjetoFinal.Managers
             if (localPlayer != null)
             {
                 localPlayer.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, playerId.ToString(), localPlayer.position, Color.White);
+                //spriteBatch.DrawString(spriteFont, playerId.ToString(), localPlayer.position, Color.White);
+                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 25), Color.White);
             }
         }
     }
