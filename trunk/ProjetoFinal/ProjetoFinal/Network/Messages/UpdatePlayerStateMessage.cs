@@ -28,9 +28,9 @@ namespace ProjetoFinal.Network.Messages
             position = player.position;
         }
 
-        public GameMessageTypes MessageType
+        public GameMessageType MessageType
         {
-            get { return GameMessageTypes.UpdatePlayerState; }
+            get { return GameMessageType.UpdatePlayerState; }
         }
 
         public void Decode(NetIncomingMessage im)

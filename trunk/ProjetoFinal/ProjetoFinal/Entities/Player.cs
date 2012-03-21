@@ -44,7 +44,6 @@ namespace ProjetoFinal.Entities
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
             spriteBatch.Draw(skin, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }

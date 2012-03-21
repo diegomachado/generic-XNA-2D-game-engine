@@ -24,7 +24,7 @@ namespace ProjetoFinal.Managers
             if (this.players.ContainsKey(id))
                 return this.players[id];
 
-            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), Vector2.Zero);
+            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240));
 
             this.players.Add(id, player);
 
@@ -34,7 +34,7 @@ namespace ProjetoFinal.Managers
         public void AddPlayer(short id)
         {
             if (!this.players.ContainsKey(id))
-                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), Vector2.Zero));
+                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240)));
         }
 
         // TODO: Criar função que atualiza posições de cada um dos jogadores
@@ -49,7 +49,7 @@ namespace ProjetoFinal.Managers
             foreach (KeyValuePair<short, Player> player in players)
             {
                 player.Value.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, player.Key.ToString(), player.Value.position, Color.White);
+                spriteBatch.DrawString(spriteFont, player.Key.ToString(), new Vector2(player.Value.position.X + 8, player.Value.position.Y - 25), Color.White);
             }
         }
     }

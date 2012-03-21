@@ -101,8 +101,8 @@ namespace ProjetoFinal
                     (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player));
 
             // Window Management
-            graphics.PreferredBackBufferWidth = 200;
-            graphics.PreferredBackBufferHeight = 200;
+            graphics.PreferredBackBufferWidth = 640;
+            graphics.PreferredBackBufferHeight = 480;
             graphics.ApplyChanges();
             
             base.Initialize();
@@ -170,9 +170,10 @@ namespace ProjetoFinal
             Console.WriteLine("1. I'm a Server");
             Console.WriteLine("2. I'm a Client");
             returnValues.Add("type", Console.ReadLine());
-            Console.WriteLine("Type your nickname:");
-            returnValues.Add("nickname", Console.ReadLine());
-
+            //Console.WriteLine("Type your nickname:");
+            //returnValues.Add("nickname", Console.ReadLine());
+            returnValues.Add("nickname", "BomberMacFaggot");
+            
             //Console.WriteLine("Port?");
             //port = int.Parse(Console.ReadLine());
 
@@ -225,10 +226,10 @@ namespace ProjetoFinal
                         break;
 
                     case NetIncomingMessageType.Data:
-                        var gameMessageType = (GameMessageTypes)im.ReadByte();
+                        var gameMessageType = (GameMessageType)im.ReadByte();
                         switch (gameMessageType)
                         {
-                            case GameMessageTypes.UpdatePlayerState:
+                            case GameMessageType.UpdatePlayerState:
                                 this.HandleUpdatePlayerStateMessage(new UpdatePlayerStateMessage(im));
 
                                 break;

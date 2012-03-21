@@ -14,9 +14,9 @@ namespace ProjetoFinal.Network.Messages
         public short clientId { get; set; }
         public Dictionary<short, Client> clientsInfo { get; set; }
 
-        public GameMessageTypes MessageType
+        public GameMessageType MessageType
         {
-            get { return GameMessageTypes.ClientInfo; }
+            get { return GameMessageType.ClientInfo; }
         }
 
         public HailMessage(NetIncomingMessage im)
