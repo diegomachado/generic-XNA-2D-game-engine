@@ -7,8 +7,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ProjetoFinal.Entities
 {
+    public enum PlayerState : short
+    {
+        Idle,
+        WalkingLeft,
+        WalkingRight,
+        Jumping
+    }
+
     class Player
     {
+        public PlayerState state { get; set; }
         public Texture2D skin   { get; set; }
         public Vector2 position { get; set; }
 
@@ -28,8 +37,9 @@ namespace ProjetoFinal.Entities
 
             speed = Vector2.Zero;
             friction  = 0.85f;
-            gravity   = 0.15f;
-            jumpForce = -5.0f;
+            gravity   = 0.3f;
+            jumpForce = -8.0f;
+            state = PlayerState.Idle;
         }
 
         public int Width

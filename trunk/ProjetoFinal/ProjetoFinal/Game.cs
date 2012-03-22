@@ -131,6 +131,7 @@ namespace ProjetoFinal
             currentKeyboardState = Keyboard.GetState();
 
             localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
+            playerManager.Update(this.Window.ClientBounds);
 
             ProcessNetworkMessages();
             
@@ -262,6 +263,8 @@ namespace ProjetoFinal
                     //player.SimulationState.Rotation = message.Rotation;
 
                     player.position = message.position;
+                    player.state = message.playerState;
+                    player.speed = message.speed;
 
                     player.LastUpdateTime = message.messageTime;
                 }
