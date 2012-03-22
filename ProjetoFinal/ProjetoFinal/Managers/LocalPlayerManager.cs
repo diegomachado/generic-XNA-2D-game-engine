@@ -189,7 +189,14 @@ namespace ProjetoFinal.Managers
                 {
                     if (localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
                     {
-                        OnPlayerStateChanged(PlayerState.Jumping);
+                        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+                            OnPlayerStateChanged(PlayerState.Jumping);
+                        if (keyboardState.IsKeyDown(Keys.Left))
+                            OnPlayerStateChanged(PlayerState.JumpingLeft);
+                        else if (keyboardState.IsKeyDown(Keys.Right))
+                            OnPlayerStateChanged(PlayerState.JumpingRight);
+                        else
+                            OnPlayerStateChanged(PlayerState.Jumping);
 
                         acceleration += new Vector2(0.0f, localPlayer.jumpForce);
                     }
