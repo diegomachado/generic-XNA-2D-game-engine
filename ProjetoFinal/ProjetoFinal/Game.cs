@@ -102,7 +102,7 @@ namespace ProjetoFinal
 
             // Window Management
             graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferHeight = 280;
             graphics.ApplyChanges();
             
             base.Initialize();
@@ -231,7 +231,7 @@ namespace ProjetoFinal
                         switch (gameMessageType)
                         {
                             case GameMessageType.UpdatePlayerState:
-                                this.HandleUpdatePlayerStateMessage(new UpdatePlayerStateMessage(im));
+                                this.HandleUpdatePlayerStateMessage(im);
 
                                 break;
                         }
@@ -243,22 +243,21 @@ namespace ProjetoFinal
             }
         }
 
-        private void HandleUpdatePlayerStateMessage(UpdatePlayerStateMessage message)
+        private void HandleUpdatePlayerStateMessage(NetIncomingMessage im)
         {
+            UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im);
+
             if (message.playerId != localPlayerManager.playerId)
             {
                 Player player = this.playerManager.GetPlayer(message.playerId);
 
-                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
+                // TODO: Tentar implementar algo de Lag Prediction
 
-                //player.EnableSmoothing = true;
+                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
 
                 if (player.LastUpdateTime < message.messageTime)
                 {
-                    //player.SimulationState.Position = message.Position += (message.Velocity * timeDelay);
-                    //player.SimulationState.Velocity = message.Velocity;
-                    //player.SimulationState.Rotation = message.Rotation;
-
+                    //player.position = message.position += (message.speed * timeDelay);
                     player.position = message.position;
                     player.state = message.playerState;
                     player.speed = message.speed;
