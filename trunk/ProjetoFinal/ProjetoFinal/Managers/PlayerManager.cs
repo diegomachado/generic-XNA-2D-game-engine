@@ -6,6 +6,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using Lidgren.Network;
+
 using ProjetoFinal.Entities;
 using ProjetoFinal.EventArgs;
 

@@ -29,7 +29,6 @@ namespace ProjetoFinal.Entities
 
         public Vector2 speed = Vector2.Zero;
 
-        // TODO: Tirar isso daqui ou não
         public double LastUpdateTime { get; set; }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition)
