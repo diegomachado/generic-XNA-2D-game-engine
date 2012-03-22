@@ -249,9 +249,6 @@ namespace ProjetoFinal
             {
                 Player player = this.playerManager.GetPlayer(message.playerId);
 
-                if (IsHost)
-                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player));
-
                 //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.MessageTime));
 
                 //player.EnableSmoothing = true;
@@ -268,6 +265,9 @@ namespace ProjetoFinal
 
                     player.LastUpdateTime = message.messageTime;
                 }
+
+                if (IsHost)
+                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player));
             }
         }
 
