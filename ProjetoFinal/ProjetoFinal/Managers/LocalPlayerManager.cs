@@ -12,6 +12,7 @@ using ProjetoFinal.Entities;
 
 namespace ProjetoFinal.Managers
 {
+    #region StatesAndShitCommented
     public enum MovementState
     {
         Idle,
@@ -35,15 +36,17 @@ namespace ProjetoFinal.Managers
         Striking,
         Shooting        
     }
-    
+    #endregion
+
     class LocalPlayerManager
     {
         public short playerId { get; set; }
         
-        private Player localPlayer;
+        Player localPlayer;
         Vector2 acceleration = Vector2.Zero;
+        KeyboardState lastKeyboardState;
 
-        MovementState movementState = MovementState.Idle;
+        //MovementState movementState = MovementState.Idle;
 
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
@@ -57,17 +60,21 @@ namespace ProjetoFinal.Managers
             localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0,240) );        
         }
         
-        protected void OnPlayerStateChanged()
+        protected void OnPlayerStateChanged(PlayerState playerState)
         {
+            localPlayer.state = playerState;
+
             if (PlayerStateChanged != null)
                 PlayerStateChanged(this, new PlayerStateChangedArgs(playerId, localPlayer));
         }
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Rectangle clientBounds)
         {
+            // TODO: Resolver o problema do pulo enquando anda pro lado
 
             if (localPlayer != null)
             {
+                #region StatesAndShitCommented
                 //switch(movementState)
                 //{
                 //    case MovementState.Idle:
@@ -158,18 +165,44 @@ namespace ProjetoFinal.Managers
                 //    movementState = MovementState.Idle;
 
                 //localPlayer.position += direction * localPlayer.speed;
+                #endregion
 
                 acceleration = Vector2.Zero;
 
                 if (keyboardState.IsKeyDown(Keys.Left))
-                    acceleration += new Vector2(-0.8f, 0.0f);
+                {
+                    if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Left))
+                        OnPlayerStateChanged(PlayerState.WalkingLeft);
+
+                    acceleration += new Vector2(-0.5f, 0.0f);
+                }
 
                 if (keyboardState.IsKeyDown(Keys.Right))
-                    acceleration += new Vector2(0.8f, 0.0f);
+                {
+                    if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Right))
+                        OnPlayerStateChanged(PlayerState.WalkingRight);
+
+                    acceleration += new Vector2(0.5f, 0.0f);
+                }
 
                 if (keyboardState.IsKeyDown(Keys.Space))
-                    if(localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
+                {
+                    if (localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
+                    {
+                        OnPlayerStateChanged(PlayerState.Jumping);
+
                         acceleration += new Vector2(0.0f, localPlayer.jumpForce);
+                    }
+                }
+
+                if (!keyboardState.IsKeyDown(Keys.Space) &&
+                    !keyboardState.IsKeyDown(Keys.Right) &&
+                    !keyboardState.IsKeyDown(Keys.Left))
+                {
+                    OnPlayerStateChanged(PlayerState.Idle);
+                }
+
+                // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
 
                 acceleration += new Vector2(0.0f, localPlayer.gravity);
 
@@ -183,8 +216,7 @@ namespace ProjetoFinal.Managers
                 if (localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
                     localPlayer.speed.Y = 0.0f;
 
-                // TODO: Dar um jeito de mandar menos mensagens
-                OnPlayerStateChanged();
+                lastKeyboardState = keyboardState;
             }
         }
 
