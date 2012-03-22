@@ -12,7 +12,9 @@ namespace ProjetoFinal.Entities
         Idle,
         WalkingLeft,
         WalkingRight,
-        Jumping
+        Jumping,
+        JumpingRight,
+        JumpingLeft
     }
 
     class Player
