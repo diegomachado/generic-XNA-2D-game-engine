@@ -9,18 +9,27 @@ namespace ProjetoFinal.Entities
 {
     class Player
     {
-        public Texture2D skin { get; set; }
+        public Texture2D skin   { get; set; }
         public Vector2 position { get; set; }
-        public float speed { get; set; }
+
+        public float friction   { get; set; }
+        public float gravity    { get; set; }
+        public float jumpForce  { get; set; }
+
+        public Vector2 speed = Vector2.Zero;
 
         // TODO: Tirar isso daqui ou não
         public double LastUpdateTime { get; set; }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition)
         {
-            this.skin = playerSkin;
-            this.position = playerPosition;
-            this.speed = 8;
+            skin      = playerSkin;
+            position  = playerPosition;
+
+            speed = Vector2.Zero;
+            friction  = 0.85f;
+            gravity   = 0.15f;
+            jumpForce = -5.0f;
         }
 
         public int Width

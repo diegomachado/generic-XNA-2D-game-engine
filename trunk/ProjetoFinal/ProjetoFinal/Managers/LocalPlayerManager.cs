@@ -41,14 +41,9 @@ namespace ProjetoFinal.Managers
         public short playerId { get; set; }
         
         private Player localPlayer;
-        MovementState movementState = MovementState.Idle;
-
-        Vector2 velocity = Vector2.Zero;
         Vector2 acceleration = Vector2.Zero;
 
-        float friction = 0.85f,
-              gravity = 0.15f,
-              jumpForce = -5.0f;
+        MovementState movementState = MovementState.Idle;
 
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
@@ -70,6 +65,7 @@ namespace ProjetoFinal.Managers
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Rectangle clientBounds)
         {
+
             if (localPlayer != null)
             {
                 //switch(movementState)
@@ -163,7 +159,6 @@ namespace ProjetoFinal.Managers
 
                 //localPlayer.position += direction * localPlayer.speed;
 
-
                 acceleration = Vector2.Zero;
 
                 if (keyboardState.IsKeyDown(Keys.Left))
@@ -174,24 +169,19 @@ namespace ProjetoFinal.Managers
 
                 if (keyboardState.IsKeyDown(Keys.Space))
                     if(localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
-                        acceleration += new Vector2(0.0f, jumpForce);
+                        acceleration += new Vector2(0.0f, localPlayer.jumpForce);
 
-                acceleration += new Vector2(0.0f, gravity);
-                
-                velocity += acceleration;
+                acceleration += new Vector2(0.0f, localPlayer.gravity);
 
-                velocity.X *= friction;
+                localPlayer.speed += acceleration;
+                localPlayer.speed.X *= localPlayer.friction;
 
-                if (velocity.X >= 1000)
-                    velocity.X = 1000;               
-
-                localPlayer.position += velocity;
-
+                localPlayer.position += localPlayer.speed;
                 localPlayer.position = new Vector2(MathHelper.Clamp(localPlayer.position.X, 0, clientBounds.Width - localPlayer.Width),
                                                    MathHelper.Clamp(localPlayer.position.Y, 0, clientBounds.Height - localPlayer.Height));
 
                 if (localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
-                    velocity.Y = 0.0f;
+                    localPlayer.speed.Y = 0.0f;
 
                 // TODO: Dar um jeito de mandar menos mensagens
                 OnPlayerStateChanged();
