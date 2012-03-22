@@ -12,13 +12,28 @@ using ProjetoFinal.Entities;
 
 namespace ProjetoFinal.Managers
 {
-    public enum PlayerState
+    public enum MovementState
     {
         Idle,
+
         WalkingLeft,
         WalkingRight,
         WalkingDead,
-        Jumping
+
+        Jumping,
+        JumpingLeft,
+        JumpingRight,
+
+        Falling,
+        FallingLeft,
+        FallingRight
+    }
+
+    public enum ActionState
+    {
+        Idle,
+        Striking,
+        Shooting        
     }
     
     class LocalPlayerManager
@@ -26,8 +41,14 @@ namespace ProjetoFinal.Managers
         public short playerId { get; set; }
         
         private Player localPlayer;
-        PlayerState state = PlayerState.Idle;
-        Vector2 direction = Vector2.Zero;
+        MovementState movementState = MovementState.Idle;
+
+        Vector2 velocity = Vector2.Zero;
+        Vector2 acceleration = Vector2.Zero;
+
+        float friction = 0.85f,
+              gravity = 0.15f,
+              jumpForce = -5.0f;
 
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
@@ -51,78 +72,126 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer != null)
             {
-                switch(state)
-                {
-                    case PlayerState.Idle:
+                //switch(movementState)
+                //{
+                //    case MovementState.Idle:
 
-                        if (!(keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right)))
-                        {
-                            if (keyboardState.IsKeyDown(Keys.Left))
-                            {
-                                state = PlayerState.WalkingLeft;
-                                direction += new Vector2(-1, 0);
-                            }
+                //        if (!(keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right)))
+                //        {
+                //            if (keyboardState.IsKeyDown(Keys.Left))
+                //            {
+                //                movementState = MovementState.WalkingLeft;
+                //                direction += new Vector2(-1, 0);
+                //            }
 
-                            if (keyboardState.IsKeyDown(Keys.Right))
-                            {
-                                state = PlayerState.WalkingRight;
-                                direction += new Vector2(1, 0);
-                            }
-                        }
+                //            if (keyboardState.IsKeyDown(Keys.Right))
+                //            {
+                //                movementState = MovementState.WalkingRight;
+                //                direction += new Vector2(1, 0);
+                //            }
+                            
+                //            if (keyboardState.IsKeyDown(Keys.Up))
+                //            {
+                //                movementState = MovementState.Jumping;
+                //                direction += new Vector2(0, -1);
+                //            }
+                //        }
 
-                        break;
+                //        break;
 
-                    case PlayerState.WalkingLeft:
+                //    case MovementState.WalkingLeft:
 
-                        if (keyboardState.IsKeyDown(Keys.Right))
-                        {
-                            state = PlayerState.WalkingRight;
-                            direction += new Vector2(2, 0);
-                        }
-                        else if (!keyboardState.IsKeyDown(Keys.Left))
-                        {
-                            direction += new Vector2(1, 0);
-                        }
+                //        if (keyboardState.IsKeyDown(Keys.Right))
+                //        {
+                //            movementState = MovementState.WalkingRight;
+                //            direction += new Vector2(2, 0);
+                //        }
+                //        else if (!keyboardState.IsKeyDown(Keys.Left))
+                //        {
+                //            direction += new Vector2(1, 0);
+                //        }
 
-                        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-                        {
-                            direction += new Vector2(-1, 0);
-                            state = PlayerState.Idle;
-                        }
+                //        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+                //        {
+                //            movementState = MovementState.Idle;
+                //            direction += new Vector2(-1, 0);
+                //        }
 
-                        break;
+                //        if (keyboardState.IsKeyDown(Keys.Up))
+                //        {
+                //            movementState = MovementState.Jumping;
+                //            direction += new Vector2(0, -1);
+                //        }
 
-                    case PlayerState.WalkingRight:
+                //        break;
 
-                        if (keyboardState.IsKeyDown(Keys.Left))
-                        {
-                            state = PlayerState.WalkingLeft;
-                            direction += new Vector2(-2, 0);
-                        }
-                        else if (!keyboardState.IsKeyDown(Keys.Right))
-                        {
-                            direction += new Vector2(-1, 0);
-                        }
+                //    case MovementState.WalkingRight:
 
-                        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-                        {
-                            direction += new Vector2(1, 0);
-                            state = PlayerState.Idle;
-                        }
+                //        if (keyboardState.IsKeyDown(Keys.Left))
+                //        {
+                //            movementState = MovementState.WalkingLeft;
+                //            direction += new Vector2(-2, 0);
+                //        }
+                //        else if (!keyboardState.IsKeyDown(Keys.Right))
+                //        {
+                //            direction += new Vector2(-1, 0);
+                //        }
 
-                        break;
+                //        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+                //        {
+                //            movementState = MovementState.Idle;
+                //            direction += new Vector2(1, 0);
+                //        }
 
-                    case PlayerState.Jumping:
-                        break;
-                }
+                //        if (keyboardState.IsKeyDown(Keys.Up))
+                //        {
+                //            movementState = MovementState.Jumping;
+                //            direction += new Vector2(0, -1);
+                //        }
+
+                //        break;
+
+                //    case MovementState.Jumping:
+                //        break;
+
+                //    case MovementState.Falling:
+                //        break;
+                //}
                 
-                if (direction == Vector2.Zero)
-                    state = PlayerState.Idle;
+                //if (direction == Vector2.Zero)
+                //    movementState = MovementState.Idle;
 
-                localPlayer.position += direction * localPlayer.speed;
+                //localPlayer.position += direction * localPlayer.speed;
+
+
+                acceleration = Vector2.Zero;
+
+                if (keyboardState.IsKeyDown(Keys.Left))
+                    acceleration += new Vector2(-0.8f, 0.0f);
+
+                if (keyboardState.IsKeyDown(Keys.Right))
+                    acceleration += new Vector2(0.8f, 0.0f);
+
+                if (keyboardState.IsKeyDown(Keys.Space))
+                    if(localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
+                        acceleration += new Vector2(0.0f, jumpForce);
+
+                acceleration += new Vector2(0.0f, gravity);
+                
+                velocity += acceleration;
+
+                velocity.X *= friction;
+
+                if (velocity.X >= 1000)
+                    velocity.X = 1000;               
+
+                localPlayer.position += velocity;
 
                 localPlayer.position = new Vector2(MathHelper.Clamp(localPlayer.position.X, 0, clientBounds.Width - localPlayer.Width),
                                                    MathHelper.Clamp(localPlayer.position.Y, 0, clientBounds.Height - localPlayer.Height));
+
+                if (localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
+                    velocity.Y = 0.0f;
 
                 // TODO: Dar um jeito de mandar menos mensagens
                 OnPlayerStateChanged();
