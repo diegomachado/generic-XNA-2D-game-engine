@@ -70,8 +70,6 @@ namespace ProjetoFinal.Managers
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Rectangle clientBounds)
         {
-            // TODO: Resolver o problema do pulo enquando anda pro lado
-
             if (localPlayer != null)
             {
                 #region StatesAndShitCommented

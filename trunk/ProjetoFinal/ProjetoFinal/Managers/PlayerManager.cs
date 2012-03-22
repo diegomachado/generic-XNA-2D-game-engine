@@ -48,44 +48,53 @@ namespace ProjetoFinal.Managers
 
                 acceleration = Vector2.Zero;
 
-                // TODO: Refatorar saporra pra switch
+                switch (player.state)
+                {
+                    case PlayerState.WalkingLeft:
 
-                if (player.state == PlayerState.WalkingLeft)
-                {
-                    acceleration += new Vector2(-0.5f, 0.0f);
-                }
-                else if (player.state == PlayerState.WalkingRight)
-                {
-                    acceleration += new Vector2(0.5f, 0.0f);
-                }
-                else if (player.state == PlayerState.JumpingRight)
-                {
-                    if (player.position.Y == (clientBounds.Height - player.Height))
-                    {
-                        acceleration += new Vector2(0.0f, player.jumpForce);
-                        acceleration += new Vector2(0.5f, 0.0f);
-
-                        player.state = PlayerState.WalkingRight;
-                    }
-                }
-                else if (player.state == PlayerState.JumpingLeft)
-                {
-                    if (player.position.Y == (clientBounds.Height - player.Height))
-                    {
-                        acceleration += new Vector2(0.0f, player.jumpForce);
                         acceleration += new Vector2(-0.5f, 0.0f);
 
-                        player.state = PlayerState.WalkingLeft;
-                    }
-                }
-                else if (player.state == PlayerState.Jumping)
-                {
-                    if (player.position.Y == (clientBounds.Height - player.Height))
-                        acceleration += new Vector2(0.0f, player.jumpForce);
+                        break;
+
+                    case PlayerState.WalkingRight:
+
+                        acceleration += new Vector2(0.5f, 0.0f);
+
+                        break;
+
+                    case PlayerState.JumpingRight:
+
+                        if (player.position.Y == (clientBounds.Height - player.Height))
+                        {
+                            acceleration += new Vector2(0.0f, player.jumpForce);
+                            acceleration += new Vector2(0.5f, 0.0f);
+
+                            player.state = PlayerState.WalkingRight;
+                        }
+
+                        break;
+
+                    case PlayerState.JumpingLeft:
+
+                        if (player.position.Y == (clientBounds.Height - player.Height))
+                        {
+                            acceleration += new Vector2(0.0f, player.jumpForce);
+                            acceleration += new Vector2(-0.5f, 0.0f);
+
+                            player.state = PlayerState.WalkingLeft;
+                        }
+
+                        break;
+
+                    case PlayerState.Jumping:
+
+                        if (player.position.Y == (clientBounds.Height - player.Height))
+                            acceleration += new Vector2(0.0f, player.jumpForce);
+
+                        break;
                 }
 
                 // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
-                // TODO: Ajeitar troca de mensagens Cliente X Cliente
 
                 acceleration += new Vector2(0.0f, player.gravity);
 
