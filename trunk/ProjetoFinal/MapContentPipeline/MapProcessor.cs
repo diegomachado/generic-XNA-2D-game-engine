@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -93,7 +94,7 @@ namespace MapContentPipeline
                             if (tileIndex - tileSet.FirstId < tileSet.Tiles.Count)
                             {
                                 // store the texture content and source rectangle
-                                textureContent = tileSet.Texture;
+                                textureContent = tileSet.Texture;                                
                                 sourceRect = tileSet.Tiles[(int)(tileIndex - tileSet.FirstId)].Source;
 
                                 // and break out of the foreach loop
