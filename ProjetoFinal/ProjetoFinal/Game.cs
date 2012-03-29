@@ -45,6 +45,9 @@ namespace ProjetoFinal
         LocalPlayerManager localPlayerManager;
         TextureManager textureManager;
 
+        // GameObjects
+        Map map;
+
         public Game()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -112,6 +115,8 @@ namespace ProjetoFinal
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             SegoeFont = Content.Load<SpriteFont>(@"fonts/SegoeUI");
+
+            map = Content.Load<Map>("teste");
         }
 
         protected override void UnloadContent()
@@ -144,8 +149,9 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
+            map.Draw(spriteBatch);
             localPlayerManager.Draw(spriteBatch, SegoeFont);
-            playerManager.Draw(spriteBatch, SegoeFont);
+            playerManager.Draw(spriteBatch, SegoeFont);            
 
             spriteBatch.End();
 
