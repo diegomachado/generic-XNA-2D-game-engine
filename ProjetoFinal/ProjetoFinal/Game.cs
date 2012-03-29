@@ -105,7 +105,7 @@ namespace ProjetoFinal
 
             // Window Management
             graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 280;
+            graphics.PreferredBackBufferHeight = 320;
             graphics.ApplyChanges();
             
             base.Initialize();
@@ -116,7 +116,7 @@ namespace ProjetoFinal
             spriteBatch = new SpriteBatch(GraphicsDevice);
             SegoeFont = Content.Load<SpriteFont>(@"fonts/SegoeUI");
 
-            map = Content.Load<Map>("teste");
+            map = Content.Load<Map>("unbearablet");
         }
 
         protected override void UnloadContent()

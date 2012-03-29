@@ -60,28 +60,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="sprites\grass-2.png">
-      <Name>grass-2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="sprites\grass-1.png">
-      <Name>grass-1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="sprites\dirt-2.png">
-      <Name>dirt-2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="sprites\dirt-1.png">
-      <Name>dirt-1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="fonts\SegoeUI.spritefont">
       <Name>SegoeUI</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -89,16 +67,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="maps\teste.tmx">
-      <Name>teste</Name>
+    <Compile Include="unbearablet.tmx">
+      <Name>unbearablet</Name>
+      <Importer>TmxImporter</Importer>
+      <Processor>MapProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="teste.tmx">
-      <Name>teste</Name>
-      <Importer>TmxImporter</Importer>
-      <Processor>MapProcessor</Processor>
-    </Compile>
+    <Folder Include="maps\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
