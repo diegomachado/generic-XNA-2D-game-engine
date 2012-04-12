@@ -35,10 +35,7 @@ namespace ProjetoFinal
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont SegoeFont;
-
-        // Maps
-        Map map;
-
+        
         // Input
         KeyboardState currentKeyboardState;
         KeyboardState previousKeyboardState;
@@ -49,6 +46,8 @@ namespace ProjetoFinal
         PlayerManager playerManager;
         LocalPlayerManager localPlayerManager;
         TextureManager textureManager;
+        MapManager mapManager;
+
 
         public Game()
         {
@@ -97,6 +96,7 @@ namespace ProjetoFinal
             // Managers
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
+            mapManager = new MapManager(Content);
 
             if (IsHost)
                 localPlayerManager.createLocalPlayer(0);
@@ -109,10 +109,7 @@ namespace ProjetoFinal
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 608;
             graphics.ApplyChanges();
-
-            // Map Loading
-            map = Content.Load<Map>(@"maps/big");
-            
+                        
             base.Initialize();
         }
 
@@ -152,7 +149,7 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
-            map.Draw(spriteBatch);
+            mapManager.Draw(spriteBatch);
             localPlayerManager.Draw(spriteBatch, SegoeFont);
             playerManager.Draw(spriteBatch, SegoeFont);            
 

@@ -121,6 +121,7 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="EventArgs\PlayerStateChangedArgs.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
+    <Compile Include="Managers\MapManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\TextureManager.cs" />
     <Compile Include="Network\ClientNetworkManager.cs" />
