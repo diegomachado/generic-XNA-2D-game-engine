@@ -20,11 +20,10 @@ namespace OgmoLibrary
             // Layer Values
             string layerName, spriteSheetPath, exportMode;
             Texture2D spriteSheet;
-            int tilesCount;
+            int rows, columns;
             
             // Collections
             Dictionary<string, Layer> layers = new Dictionary<string,Layer>();
-            
 
             mapSize  = new Point(input.ReadInt32(), input.ReadInt32());
             tileSize = new Point(input.ReadInt32(), input.ReadInt32());
@@ -33,14 +32,21 @@ namespace OgmoLibrary
 
             for (int i = 0; i < layerCount; i++)
             {
-                List<Tile> tiles = new List<Tile>();
+                Dictionary<int, Dictionary<int, Tile>> tiles = new Dictionary<int, Dictionary<int, Tile>>();
 
                 layerName  = input.ReadString();
-                exportMode = input.ReadString();             
+                exportMode = input.ReadString();
 
-                tilesCount = input.ReadInt32();            
-                for (int j = 0; j < tilesCount; j++)
-                    tiles.Add( new Tile( new Point(input.ReadInt32(), input.ReadInt32()), input.ReadInt32()) );
+                columns = input.ReadInt32();
+                rows = input.ReadInt32();
+
+                for (int column = 0; column < columns; column++)
+                {
+                    tiles.Add(column, new Dictionary<int, Tile>());
+
+                    for (int row = 0; row < rows; row++)
+                        tiles[column].Add(row, new Tile(new Point(input.ReadInt32(), input.ReadInt32()), input.ReadInt32()));
+                }
 
                 if (exportMode == "XML")
                 {

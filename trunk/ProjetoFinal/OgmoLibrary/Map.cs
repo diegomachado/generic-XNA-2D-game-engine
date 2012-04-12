@@ -27,8 +27,9 @@ namespace OgmoLibrary
 
         public string MapToString()
         {
+            
             string s = "";
-
+            /*
             foreach(KeyValuePair<string, Layer> layer in Layers)
             {
                 s += "Layer:" + layer.Key + Environment.NewLine;
@@ -39,8 +40,9 @@ namespace OgmoLibrary
 
                 s += "----------------------------------" + Environment.NewLine;                
             }
-
+            * */
             return s;
+             
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -56,19 +58,22 @@ namespace OgmoLibrary
                 {
                     spriteSheet = layer.Value.SpriteSheet;
 
-                    foreach (Tile tile in layer.Value.Tiles)
+                    foreach (KeyValuePair<int, Dictionary<int, Tile>> row in layer.Value.Tiles)
                     {
-                        x = tile.Position.X;
-                        y = tile.Position.Y;
-                        id = tile.Id;
+                        foreach (KeyValuePair<int, Tile> tile in row.Value)
+                        {
+                            x = tile.Value.Position.X;
+                            y = tile.Value.Position.Y;
+                            id = tile.Value.Id;
 
-                        spriteBatch.Draw(spriteSheet,
-                                         new Rectangle(x * tileSize.X, y * tileSize.Y, tileSize.X, tileSize.Y),
-                                         new Rectangle((id * tileSize.X) % spriteSheet.Width,
-                                                       ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y,
-                                                       tileSize.X,
-                                                       tileSize.Y),
-                                         Color.White);
+                            spriteBatch.Draw(spriteSheet,
+                                             new Rectangle(x * tileSize.X, y * tileSize.Y, tileSize.X, tileSize.Y),
+                                             new Rectangle((id * tileSize.X) % spriteSheet.Width,
+                                                           ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y,
+                                                           tileSize.X,
+                                                           tileSize.Y),
+                                             Color.White);
+                        }
                     }
                 }
             }

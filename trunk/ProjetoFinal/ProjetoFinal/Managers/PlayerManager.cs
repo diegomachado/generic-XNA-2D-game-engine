@@ -50,7 +50,7 @@ namespace ProjetoFinal.Managers
 
                 acceleration = Vector2.Zero;
 
-                switch (player.state)
+                switch (player.State)
                 {
                     case PlayerState.WalkingLeft:
 
@@ -66,51 +66,51 @@ namespace ProjetoFinal.Managers
 
                     case PlayerState.JumpingRight:
 
-                        if (player.position.Y == (clientBounds.Height - player.Height))
+                        if (player.Position.Y == (clientBounds.Height - player.Height))
                         {
-                            acceleration += new Vector2(0.0f, player.jumpForce);
+                            acceleration += new Vector2(0.0f, player.JumpForce);
                             acceleration += new Vector2(0.5f, 0.0f);
 
-                            player.state = PlayerState.WalkingRight;
+                            player.State = PlayerState.WalkingRight;
                         }
 
                         break;
 
                     case PlayerState.JumpingLeft:
 
-                        if (player.position.Y == (clientBounds.Height - player.Height))
+                        if (player.Position.Y == (clientBounds.Height - player.Height))
                         {
-                            acceleration += new Vector2(0.0f, player.jumpForce);
+                            acceleration += new Vector2(0.0f, player.JumpForce);
                             acceleration += new Vector2(-0.5f, 0.0f);
 
-                            player.state = PlayerState.WalkingLeft;
+                            player.State = PlayerState.WalkingLeft;
                         }
 
                         break;
 
                     case PlayerState.Jumping:
 
-                        if (player.position.Y == (clientBounds.Height - player.Height))
-                            acceleration += new Vector2(0.0f, player.jumpForce);
+                        if (player.Position.Y == (clientBounds.Height - player.Height))
+                            acceleration += new Vector2(0.0f, player.JumpForce);
 
                         break;
                 }
 
                 // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
 
-                acceleration += new Vector2(0.0f, player.gravity);
+                acceleration += new Vector2(0.0f, player.Gravity);
 
                 player.speed += acceleration;
-                player.speed.X *= player.friction;
+                player.speed.X *= player.Friction;
 
-                player.position += player.speed;
-                player.position = new Vector2(MathHelper.Clamp(player.position.X, 0, clientBounds.Width - player.Width),
-                                              MathHelper.Clamp(player.position.Y, 0, clientBounds.Height - player.Height));
+                player.Position += player.speed;
+                player.Position = new Vector2(MathHelper.Clamp(player.Position.X, 0, clientBounds.Width - player.Width),
+                                              MathHelper.Clamp(player.Position.Y, 0, clientBounds.Height - player.Height));
 
-                if (player.position.Y == (clientBounds.Height - player.Height))
+                if (player.Position.Y == (clientBounds.Height - player.Height))
                 {
-                    if (player.state == PlayerState.Jumping)
-                        player.state = PlayerState.Idle;
+                    if (player.State == PlayerState.Jumping)
+                        player.State = PlayerState.Idle;
 
                     player.speed.Y = 0.0f;
                 }
@@ -122,7 +122,7 @@ namespace ProjetoFinal.Managers
             foreach (KeyValuePair<short, Player> player in players)
             {
                 player.Value.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, player.Key.ToString(), new Vector2(player.Value.position.X + 8, player.Value.position.Y - 25), Color.White);
+                spriteBatch.DrawString(spriteFont, player.Key.ToString(), new Vector2(player.Value.Position.X + 8, player.Value.Position.Y - 25), Color.White);
             }
         }
     }

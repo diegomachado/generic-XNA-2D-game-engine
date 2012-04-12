@@ -19,13 +19,13 @@ namespace ProjetoFinal.Entities
 
     class Player
     {
-        public PlayerState state { get; set; }
-        public Texture2D skin   { get; set; }
-        public Vector2 position { get; set; }
+        public PlayerState State { get; set; }
+        public Texture2D Skin   { get; set; }
+        public Vector2 Position { get; set; }
 
-        public float friction   { get; set; }
-        public float gravity    { get; set; }
-        public float jumpForce  { get; set; }
+        public float Friction   { get; set; }
+        public float Gravity    { get; set; }
+        public float JumpForce  { get; set; }
 
         public Vector2 speed = Vector2.Zero;
 
@@ -33,24 +33,24 @@ namespace ProjetoFinal.Entities
 
         public Player(Texture2D playerSkin, Vector2 playerPosition)
         {
-            skin      = playerSkin;
-            position  = playerPosition;
+            Skin      = playerSkin;
+            Position  = playerPosition;
 
             speed = Vector2.Zero;
-            friction  = 0.85f;
-            gravity   = 0.3f;
-            jumpForce = -8.0f;
-            state = PlayerState.Idle;
+            Friction  = 0.85f;
+            Gravity   = 0.3f;
+            JumpForce = -8.0f;
+            State = PlayerState.Idle;
         }
 
         public int Width
         {
-            get { return skin.Width; }
+            get { return Skin.Width; }
         }
 
         public int Height
         {
-            get { return skin.Height; }
+            get { return Skin.Height; }
         }
 
         public void Initialize()
@@ -59,12 +59,11 @@ namespace ProjetoFinal.Entities
 
         public virtual void Update()
         {
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(skin, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Skin, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }
 }

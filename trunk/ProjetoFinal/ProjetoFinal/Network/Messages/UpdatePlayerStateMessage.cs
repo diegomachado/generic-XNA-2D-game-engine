@@ -27,8 +27,8 @@ namespace ProjetoFinal.Network.Messages
         {
             playerId = id;
             messageTime = NetTime.Now;
-            position = player.position;
-            playerState = player.state;
+            position = player.Position;
+            playerState = player.State;
             speed = player.speed;
         }
 

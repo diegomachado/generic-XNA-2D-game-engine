@@ -21,7 +21,7 @@ namespace OgmoContentPipelineExtension
         protected override void Write(ContentWriter output, TWrite value)
         {
             Layer currentLayer;
-            List<Tile> tiles;
+            Dictionary<int, Dictionary<int, Tile>> tiles;
 
             output.Write(value.MapSize.X);
             output.Write(value.MapSize.Y);
@@ -36,15 +36,19 @@ namespace OgmoContentPipelineExtension
                 currentLayer = layer.Value;
 
                 output.Write(currentLayer.Name);
-                output.Write(currentLayer.ExportMode);                
-                
-                output.Write(tiles.Count);
+                output.Write(currentLayer.ExportMode);
 
-                foreach (Tile tile in tiles)
+                output.Write(tiles.Count);      // columnCount
+                output.Write(tiles[0].Count);   // rowCount
+
+                foreach (KeyValuePair<int, Dictionary<int, Tile>> column in tiles)
                 {
-                    output.Write(tile.Position.X);
-                    output.Write(tile.Position.Y);
-                    output.Write(tile.Id);
+                    foreach (KeyValuePair<int, Tile> tile in column.Value)
+                    {
+                        output.Write(tile.Value.Position.X);
+                        output.Write(tile.Value.Position.Y);
+                        output.Write(tile.Value.Id);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(currentLayer.SpriteSheetPath))
