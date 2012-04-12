@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 
 namespace OgmoLibrary
 {
@@ -13,7 +15,7 @@ namespace OgmoLibrary
         public string SpriteSheetPath { get; set; } 
         public Texture2D SpriteSheet { get; set; }
         
-        public List<Tile> Tiles { get; set; }
+        public Dictionary<int, Dictionary<int, Tile>> Tiles { get; set; }
         public int ZIndex { get; set; }
         public string ExportMode { get; set; }
 
@@ -21,7 +23,7 @@ namespace OgmoLibrary
         {
         }
 
-        public Layer(string name, List<Tile> tiles, string exportMode, int zIndex)
+        public Layer(string name, Dictionary<int, Dictionary<int, Tile>> tiles, string exportMode, int zIndex)
         {
             Name = name;
             Tiles = tiles;
@@ -29,7 +31,7 @@ namespace OgmoLibrary
             ZIndex = zIndex;
         }
 
-        public Layer(string name, List<Tile> tiles, string spriteSheetPath, string exportMode, int zIndex)
+        public Layer(string name, Dictionary<int, Dictionary<int, Tile>> tiles, string spriteSheetPath, string exportMode, int zIndex)
         {
             Name = name;
             Tiles = tiles;
@@ -38,7 +40,7 @@ namespace OgmoLibrary
             ZIndex = zIndex;
         }
 
-        public Layer(string name, List<Tile> tiles, Texture2D spriteSheet, string exportMode, int zIndex)
+        public Layer(string name, Dictionary<int, Dictionary<int, Tile>> tiles, Texture2D spriteSheet, string exportMode, int zIndex)
         {
             Name = name;
             Tiles = tiles;
@@ -46,6 +48,10 @@ namespace OgmoLibrary
             ExportMode = exportMode;
             ZIndex = zIndex;
         }
-
+        
+        public Tile GetTileId(Point xy)
+        {
+            return Tiles[xy.X][xy.Y];
+        }
     }
 }

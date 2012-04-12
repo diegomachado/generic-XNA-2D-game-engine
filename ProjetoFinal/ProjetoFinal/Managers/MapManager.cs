@@ -25,6 +25,11 @@ namespace ProjetoFinal.Managers
             currentMap = Content.Load<Map>(@"maps/big");
         }
 
+        public Layer GetCollisionLayer()
+        {
+            return currentMap.Layers["Collision"];
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             currentMap.Draw(spriteBatch);

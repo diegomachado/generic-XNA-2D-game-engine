@@ -72,7 +72,8 @@ namespace OgmoContentPipelineExtension
                     {
                         case "XML":
                         {
-                            List<Tile> tiles = new List<Tile>();
+                            Dictionary<int, Dictionary<int, Tile>> tiles = new Dictionary<int, Dictionary<int, Tile>>();
+                            
                             layerName = node.Name;
                             spriteSheetPath = node.Attributes["tileset"].Value;
                             
@@ -83,7 +84,10 @@ namespace OgmoContentPipelineExtension
                                 tileY = int.Parse(tileNode.Attributes["y"].Value);
                                 tileId = int.Parse(tileNode.Attributes["id"].Value);
 
-                                tiles.Add(new Tile(new Point(tileX, tileY), tileId));
+                                if (!tiles.ContainsKey(tileX))
+                                    tiles.Add(tileX, new Dictionary<int, Tile>());
+
+                                tiles[tileX].Add(tileY, new Tile(new Point(tileX, tileY), tileId));
                             }
 
                             layers.Add(layerName, new Layer(layerName, tiles, spriteSheetPath ,exportMode, 0));
@@ -101,7 +105,7 @@ namespace OgmoContentPipelineExtension
                     
                         case "Bitstring":
                         {
-                            List<Tile> tiles = new List<Tile>();
+                            Dictionary<int, Dictionary<int, Tile>> tiles = new Dictionary<int, Dictionary<int, Tile>>();
                             layerName = node.Name;
 
                             bitString = node.InnerText.Replace(" ", "");
@@ -114,9 +118,13 @@ namespace OgmoContentPipelineExtension
                             rows = bitStringLines.Count();
                             columns = bitStringLines[0].Length;
 
-                            for (int row = 0; row < rows; row++)
-                                for (int column = 0; column < columns; column++)
-                                    tiles.Add(new Tile(new Point(row, column),(int)Char.GetNumericValue(bitStringLines[row][column])) );
+                            for (int column = 0; column < columns; column++)
+                            {
+                                tiles.Add(column, new Dictionary<int, Tile>());
+
+                                for (int row = 0; row < rows; row++)
+                                    tiles[column].Add(row, new Tile(new Point(column, row), (int)Char.GetNumericValue(bitStringLines[row][column])));
+                            }
 
                             layers.Add(layerName, new Layer(layerName, tiles, exportMode, 0));
 

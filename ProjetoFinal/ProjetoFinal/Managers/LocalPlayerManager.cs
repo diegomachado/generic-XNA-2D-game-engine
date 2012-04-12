@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 using ProjetoFinal.EventArgs;
 using ProjetoFinal.Entities;
 
+using OgmoLibrary;
+
 namespace ProjetoFinal.Managers
 {
     #region StatesAndShitCommented
@@ -62,13 +64,14 @@ namespace ProjetoFinal.Managers
         
         protected void OnPlayerStateChanged(PlayerState playerState)
         {
-            localPlayer.state = playerState;
+            localPlayer.State = playerState;
 
             if (PlayerStateChanged != null)
                 PlayerStateChanged(this, new PlayerStateChangedArgs(playerId, localPlayer));
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Rectangle clientBounds)
+        // TODO: Refactor Update Method on LocalPlayerManager
+        public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Rectangle clientBounds, Layer collisionLayer)
         {
             if (localPlayer != null)
             {
@@ -185,7 +188,7 @@ namespace ProjetoFinal.Managers
 
                 if (keyboardState.IsKeyDown(Keys.Space))
                 {
-                    if (localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
+                    if (localPlayer.Position.Y == (clientBounds.Height - localPlayer.Height))
                     {
                         if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
                             OnPlayerStateChanged(PlayerState.Jumping);
@@ -196,7 +199,7 @@ namespace ProjetoFinal.Managers
                         else
                             OnPlayerStateChanged(PlayerState.Jumping);
 
-                        acceleration += new Vector2(0.0f, localPlayer.jumpForce);
+                        acceleration += new Vector2(0.0f, localPlayer.JumpForce);
                     }
                 }
 
@@ -208,18 +211,46 @@ namespace ProjetoFinal.Managers
                 }
 
                 // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
-
-                acceleration += new Vector2(0.0f, localPlayer.gravity);
+                acceleration += new Vector2(0.0f, localPlayer.Gravity);
 
                 localPlayer.speed += acceleration;
-                localPlayer.speed.X *= localPlayer.friction;
+                localPlayer.speed.X *= localPlayer.Friction;
 
-                localPlayer.position += localPlayer.speed;
-                localPlayer.position = new Vector2(MathHelper.Clamp(localPlayer.position.X, 0, clientBounds.Width - localPlayer.Width),
-                                                   MathHelper.Clamp(localPlayer.position.Y, 0, clientBounds.Height - localPlayer.Height));
 
-                if (localPlayer.position.Y == (clientBounds.Height - localPlayer.Height))
+
+
+
+                Vector2 nextPosition = localPlayer.Position;
+                nextPosition += localPlayer.speed;
+
+                Point xy = new Point( (int)(nextPosition.X % clientBounds.Width) / 32, (int)(nextPosition.Y % clientBounds.Height) / 32);
+                
+                Tile actualTile = collisionLayer.GetTileId(xy);
+                
+                //if(actualTile != null)
+                    Console.WriteLine(xy.X);
+                
+                localPlayer.Position += localPlayer.speed;
+                localPlayer.Position = new Vector2(MathHelper.Clamp(localPlayer.Position.X, 0, clientBounds.Width - localPlayer.Width),
+                                                   MathHelper.Clamp(localPlayer.Position.Y, 0, clientBounds.Height - localPlayer.Height));
+
+                if (localPlayer.Position.Y == (clientBounds.Height - localPlayer.Height))
                     localPlayer.speed.Y = 0.0f;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 lastKeyboardState = keyboardState;
             }
@@ -231,7 +262,7 @@ namespace ProjetoFinal.Managers
             {
                 localPlayer.Draw(spriteBatch);
                 //spriteBatch.DrawString(spriteFont, playerId.ToString(), localPlayer.position, Color.White);
-                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 25), Color.White);
+                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 25), Color.White);
             }
         }
     }

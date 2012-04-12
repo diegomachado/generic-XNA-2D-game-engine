@@ -135,7 +135,9 @@ namespace ProjetoFinal
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
-            localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, this.Window.ClientBounds);
+            localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, 
+                                      this.Window.ClientBounds, mapManager.GetCollisionLayer());
+
             playerManager.Update(this.Window.ClientBounds);
 
             ProcessNetworkMessages();
@@ -264,8 +266,8 @@ namespace ProjetoFinal
                 if (player.LastUpdateTime < message.messageTime)
                 {
                     //player.position = message.position += (message.speed * timeDelay);
-                    player.position = message.position;
-                    player.state = message.playerState;
+                    player.Position = message.position;
+                    player.State = message.playerState;
                     player.speed = message.speed;
 
                     player.LastUpdateTime = message.messageTime;
