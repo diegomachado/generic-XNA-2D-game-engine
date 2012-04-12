@@ -17,6 +17,8 @@ using ProjetoFinal.Network.Messages;
 using ProjetoFinal.Entities;
 using ProjetoFinal.Managers;
 
+using OgmoLibrary;
+
 namespace ProjetoFinal
 {
     public class Game : Microsoft.Xna.Framework.Game
@@ -33,6 +35,9 @@ namespace ProjetoFinal
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont SegoeFont;
+
+        // Maps
+        Map map;
 
         // Input
         KeyboardState currentKeyboardState;
@@ -55,7 +60,7 @@ namespace ProjetoFinal
         {
             options = SelectMenu();
             clients = new Dictionary<short, Client>();
-
+            
             // Network
             // TODO: Definir IP e Porta dinamicamente
             switch (int.Parse(options["type"]))
@@ -101,9 +106,12 @@ namespace ProjetoFinal
                     (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player));
 
             // Window Management
-            graphics.PreferredBackBufferWidth = 640;
-            graphics.PreferredBackBufferHeight = 320;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 608;
             graphics.ApplyChanges();
+
+            // Map Loading
+            map = Content.Load<Map>(@"maps/big");
             
             base.Initialize();
         }
@@ -144,6 +152,7 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
+            map.Draw(spriteBatch);
             localPlayerManager.Draw(spriteBatch, SegoeFont);
             playerManager.Draw(spriteBatch, SegoeFont);            
 

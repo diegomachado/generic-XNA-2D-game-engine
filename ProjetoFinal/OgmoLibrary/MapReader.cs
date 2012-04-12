@@ -45,7 +45,7 @@ namespace OgmoLibrary
                 if (exportMode == "XML")
                 {
                     spriteSheetPath = input.ReadString();
-                    spriteSheet = input.ContentManager.Load<Texture2D>(spriteSheetPath);
+                    spriteSheet = input.ContentManager.Load<Texture2D>(@"maps/" + spriteSheetPath);
                     layers.Add(layerName, new Layer(layerName, tiles, spriteSheet, exportMode, 0));
 
                     continue;
