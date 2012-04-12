@@ -14,6 +14,10 @@ namespace OgmoLibrary
         public Point TileSize { get; set; } 
         public Dictionary<string, Layer> Layers;
 
+        public Map()
+        {
+        }
+        
         public Map(Point mapSize, Point tileSize, Dictionary<string, Layer> layers)
         {
             MapSize = mapSize;
