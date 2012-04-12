@@ -22,9 +22,6 @@
     <RootNamespace>ProjetoFinalContent</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MapContentPipeline">
-      <HintPath>..\MapContentPipeline\bin\x86\Debug\MapContentPipeline.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -42,9 +39,6 @@
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
-    </Reference>
-    <Reference Include="TiledLib">
-      <HintPath>..\Lib\TiledLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -66,16 +60,26 @@
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Compile Include="unbearablet.tmx">
-      <Name>unbearablet</Name>
-      <Importer>TmxImporter</Importer>
-      <Processor>MapProcessor</Processor>
-      <SubType>Designer</SubType>
+    <Compile Include="maps\unbearable-light.png">
+      <Name>unbearable-light</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="maps\" />
+    <Compile Include="maps\big.oel">
+      <Name>big</Name>
+      <Processor>MapProcessor</Processor>
+      <Importer>MapImporter</Importer>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OgmoContentPipelineExtension\OgmoContentPipelineExtension.csproj">
+      <Project>{08D12AC1-3785-4290-B712-762B64545C49}</Project>
+      <Name>OgmoContentPipelineExtension</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
