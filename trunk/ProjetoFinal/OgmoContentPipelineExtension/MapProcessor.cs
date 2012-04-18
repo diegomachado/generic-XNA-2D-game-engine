@@ -34,7 +34,7 @@ namespace OgmoContentPipelineExtension
             string spriteSheetPath;
 
             // Tile Values
-            int tileX, tileY, tileId;
+            int x, y, id;
             string bitString;            
             List<string> bitStringLines = new List<string>();
 
@@ -42,18 +42,15 @@ namespace OgmoContentPipelineExtension
             Dictionary<string, Layer> layers = new Dictionary<string,Layer>();        
 
             // Misc
-            int rows, columns;
+            int zOrder = 0, rows, cols;
 
-            /*
-             * Utilizing input as XmlDocument
-             * TODO: Thinking about using XmlReader, to check if is faster (think about big XML files)
-             */
             levelNode = input.SelectSingleNode("/level");
 
             /* 
              * TODO: Do a Try/Catch in these statements
-             * TODO: Create a way to set these values by Class Method 
+             * TODO: Create a way to set these values by a Class Method 
              */
+
             mapSize = new Point(int.Parse(levelNode.Attributes["width"].Value),
                                  int.Parse(levelNode.Attributes["height"].Value));
 
@@ -64,6 +61,7 @@ namespace OgmoContentPipelineExtension
 
             foreach (XmlNode node in layerNodes)
             {
+                zOrder++;
                 exportMode = node.Attributes["exportMode"].Value;
                 
                 if(!string.IsNullOrEmpty(exportMode))
@@ -72,7 +70,7 @@ namespace OgmoContentPipelineExtension
                     {
                         case "XML":
                         {
-                            Dictionary<int, Dictionary<int, Tile>> tiles = new Dictionary<int, Dictionary<int, Tile>>();
+                            Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile>();
                             
                             layerName = node.Name;
                             spriteSheetPath = node.Attributes["tileset"].Value;
@@ -80,18 +78,15 @@ namespace OgmoContentPipelineExtension
                             tileNodes = node.ChildNodes;
                             foreach (XmlNode tileNode in tileNodes)
                             {
-                                tileX = int.Parse(tileNode.Attributes["x"].Value);
-                                tileY = int.Parse(tileNode.Attributes["y"].Value);
-                                tileId = int.Parse(tileNode.Attributes["id"].Value);
+                                x = int.Parse(tileNode.Attributes["x"].Value);
+                                y = int.Parse(tileNode.Attributes["y"].Value);
+                                id = int.Parse(tileNode.Attributes["id"].Value);
 
-                                if (!tiles.ContainsKey(tileX))
-                                    tiles.Add(tileX, new Dictionary<int, Tile>());
-
-                                tiles[tileX].Add(tileY, new Tile(new Point(tileX, tileY), tileId));
+                                tiles.Add(new Point(x,y), new Tile(new Point(x, y), id));
                             }
 
-                            layers.Add(layerName, new Layer(layerName, tiles, spriteSheetPath ,exportMode, 0));
-
+                            layers.Add(layerName, new Layer(layerName, tiles, spriteSheetPath ,exportMode, zOrder));
+                            
                             break;
                         }
 
@@ -105,7 +100,8 @@ namespace OgmoContentPipelineExtension
                     
                         case "Bitstring":
                         {
-                            Dictionary<int, Dictionary<int, Tile>> tiles = new Dictionary<int, Dictionary<int, Tile>>();
+                            Dictionary<Point, Tile> tiles = new Dictionary<Point,Tile>();
+
                             layerName = node.Name;
 
                             bitString = node.InnerText.Replace(" ", "");
@@ -115,18 +111,14 @@ namespace OgmoContentPipelineExtension
                                 if (string.IsNullOrEmpty(bitStringLines[i]) || string.IsNullOrWhiteSpace(bitStringLines[i]))
                                     bitStringLines.RemoveAt(i);
                         
-                            rows = bitStringLines.Count();
-                            columns = bitStringLines[0].Length;
+                            cols = bitStringLines[0].Length;
+                            rows = bitStringLines.Count();                            
 
-                            for (int column = 0; column < columns; column++)
-                            {
-                                tiles.Add(column, new Dictionary<int, Tile>());
-
+                            for (int col = 0; col < cols; col++)
                                 for (int row = 0; row < rows; row++)
-                                    tiles[column].Add(row, new Tile(new Point(column, row), (int)Char.GetNumericValue(bitStringLines[row][column])));
-                            }
+                                    tiles.Add(new Point(col, row), new Tile(new Point(col, row), (int)Char.GetNumericValue(bitStringLines[row][col])));
 
-                            layers.Add(layerName, new Layer(layerName, tiles, exportMode, 0));
+                            layers.Add(layerName, new Layer(layerName, tiles, exportMode, zOrder));
 
                             break;
                         }
@@ -136,11 +128,6 @@ namespace OgmoContentPipelineExtension
                             break;
                     }
                 }
-            }
-
-            foreach (KeyValuePair<string, Layer> layer in layers)
-            {
-                Console.WriteLine(layer.Value.Tiles.Count);
             }
 
             return new OgmoLibrary.Map(mapSize, tileSize, layers);

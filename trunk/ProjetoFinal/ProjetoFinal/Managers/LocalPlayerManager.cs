@@ -216,10 +216,6 @@ namespace ProjetoFinal.Managers
                 localPlayer.speed += acceleration;
                 localPlayer.speed.X *= localPlayer.Friction;
 
-
-
-
-
                 Vector2 nextPosition = localPlayer.Position;
                 nextPosition += localPlayer.speed;
 
@@ -227,8 +223,7 @@ namespace ProjetoFinal.Managers
                 
                 Tile actualTile = collisionLayer.GetTileId(xy);
                 
-                //if(actualTile != null)
-                    Console.WriteLine(xy.X);
+                //Console.WriteLine(xy);
                 
                 localPlayer.Position += localPlayer.speed;
                 localPlayer.Position = new Vector2(MathHelper.Clamp(localPlayer.Position.X, 0, clientBounds.Width - localPlayer.Width),
@@ -236,21 +231,6 @@ namespace ProjetoFinal.Managers
 
                 if (localPlayer.Position.Y == (clientBounds.Height - localPlayer.Height))
                     localPlayer.speed.Y = 0.0f;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 lastKeyboardState = keyboardState;
             }
@@ -261,7 +241,6 @@ namespace ProjetoFinal.Managers
             if (localPlayer != null)
             {
                 localPlayer.Draw(spriteBatch);
-                //spriteBatch.DrawString(spriteFont, playerId.ToString(), localPlayer.position, Color.White);
                 spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 25), Color.White);
             }
         }
