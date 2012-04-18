@@ -7,9 +7,6 @@ using ProjetoFinal.Entities;
 
 namespace ProjetoFinal.Network.Messages
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     class UpdatePlayerStateMessage : IGameMessage
     {
         public short playerId { get; set; }
