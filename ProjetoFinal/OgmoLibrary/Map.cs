@@ -25,55 +25,44 @@ namespace OgmoLibrary
             Layers = layers;
         }
 
-        public string MapToString()
-        {
-            
-            string s = "";
-            /*
-            foreach(KeyValuePair<string, Layer> layer in Layers)
-            {
-                s += "Layer:" + layer.Key + Environment.NewLine;
-                s += "Tile Count: " + layer.Value.Tiles.Count + Environment.NewLine + Environment.NewLine;
-                
-                foreach (Tile tile in layer.Value.Tiles)
-                    s += "[" + tile.Position.X + "," + tile.Position.Y + "] - " + tile.Id + Environment.NewLine;
-
-                s += "----------------------------------" + Environment.NewLine;                
-            }
-            * */
-            return s;
-             
+        // TODO: Develop dat xit Map::MapToString()
+        public void MapToString()
+        {          
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             int x, y, id;
             Texture2D spriteSheet;
+            Layer currentLayer;
 
             Point tileSize = this.TileSize;
 
-            foreach (KeyValuePair<string, Layer> layer in Layers)
+            var orderedLayers = from layer in Layers.Keys
+                                orderby Layers[layer].ZIndex descending
+                                select layer;
+
+            foreach (string layerName in orderedLayers)
             {
-                if (layer.Value.ExportMode == "XML")
+                currentLayer = Layers[layerName];
+
+                if (currentLayer.ExportMode == "XML")
                 {
-                    spriteSheet = layer.Value.SpriteSheet;
+                    spriteSheet = currentLayer.SpriteSheet;
 
-                    foreach (KeyValuePair<int, Dictionary<int, Tile>> row in layer.Value.Tiles)
+                    foreach (KeyValuePair<Point, Tile> tile in currentLayer.Tiles)
                     {
-                        foreach (KeyValuePair<int, Tile> tile in row.Value)
-                        {
-                            x = tile.Value.Position.X;
-                            y = tile.Value.Position.Y;
-                            id = tile.Value.Id;
+                        x = tile.Key.X;
+                        y = tile.Key.Y;
+                        id = tile.Value.Id;
 
-                            spriteBatch.Draw(spriteSheet,
-                                             new Rectangle(x * tileSize.X, y * tileSize.Y, tileSize.X, tileSize.Y),
-                                             new Rectangle((id * tileSize.X) % spriteSheet.Width,
-                                                           ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y,
-                                                           tileSize.X,
-                                                           tileSize.Y),
-                                             Color.White);
-                        }
+                        spriteBatch.Draw(spriteSheet,
+                                            new Rectangle(x * tileSize.X, y * tileSize.Y, tileSize.X, tileSize.Y),
+                                            new Rectangle((id * tileSize.X) % spriteSheet.Width,
+                                                        ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y,
+                                                        tileSize.X,
+                                                        tileSize.Y),
+                                            Color.White);
                     }
                 }
             }

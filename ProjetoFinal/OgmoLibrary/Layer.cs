@@ -14,8 +14,7 @@ namespace OgmoLibrary
         public string Name { get; set; }
         public string SpriteSheetPath { get; set; } 
         public Texture2D SpriteSheet { get; set; }
-        
-        public Dictionary<int, Dictionary<int, Tile>> Tiles { get; set; }
+        public Dictionary<Point, Tile> Tiles { get; set; }
         public int ZIndex { get; set; }
         public string ExportMode { get; set; }
 
@@ -23,7 +22,7 @@ namespace OgmoLibrary
         {
         }
 
-        public Layer(string name, Dictionary<int, Dictionary<int, Tile>> tiles, string exportMode, int zIndex)
+        public Layer(string name, Dictionary<Point, Tile> tiles, string exportMode, int zIndex)
         {
             Name = name;
             Tiles = tiles;
@@ -31,7 +30,7 @@ namespace OgmoLibrary
             ZIndex = zIndex;
         }
 
-        public Layer(string name, Dictionary<int, Dictionary<int, Tile>> tiles, string spriteSheetPath, string exportMode, int zIndex)
+        public Layer(string name, Dictionary<Point, Tile> tiles, string spriteSheetPath, string exportMode, int zIndex)
         {
             Name = name;
             Tiles = tiles;
@@ -40,7 +39,7 @@ namespace OgmoLibrary
             ZIndex = zIndex;
         }
 
-        public Layer(string name, Dictionary<int, Dictionary<int, Tile>> tiles, Texture2D spriteSheet, string exportMode, int zIndex)
+        public Layer(string name, Dictionary<Point, Tile> tiles, Texture2D spriteSheet, string exportMode, int zIndex)
         {
             Name = name;
             Tiles = tiles;
@@ -51,7 +50,7 @@ namespace OgmoLibrary
         
         public Tile GetTileId(Point xy)
         {
-            return Tiles[xy.X][xy.Y];
+            return Tiles[xy];
         }
     }
 }

@@ -15,49 +15,49 @@ namespace OgmoLibrary
         {
             // Map Values
             Point mapSize, tileSize;
-            int layerCount;
+            int x, y, id, layerCount;
 
             // Layer Values
             string layerName, spriteSheetPath, exportMode;
             Texture2D spriteSheet;
-            int rows, columns;
+            int zOrder, tileCount;
             
             // Collections
             Dictionary<string, Layer> layers = new Dictionary<string,Layer>();
 
             mapSize  = new Point(input.ReadInt32(), input.ReadInt32());
             tileSize = new Point(input.ReadInt32(), input.ReadInt32());
-
             layerCount = input.ReadInt32();
 
             for (int i = 0; i < layerCount; i++)
             {
-                Dictionary<int, Dictionary<int, Tile>> tiles = new Dictionary<int, Dictionary<int, Tile>>();
+                Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile>();
 
                 layerName  = input.ReadString();
                 exportMode = input.ReadString();
+                zOrder = input.ReadInt32();
 
-                columns = input.ReadInt32();
-                rows = input.ReadInt32();
+                tileCount = input.ReadInt32();
 
-                for (int column = 0; column < columns; column++)
+                for (int tileIterator = 0; tileIterator < tileCount; tileIterator++)
                 {
-                    tiles.Add(column, new Dictionary<int, Tile>());
+                    x = input.ReadInt32();
+                    y = input.ReadInt32();
+                    id = input.ReadInt32();
 
-                    for (int row = 0; row < rows; row++)
-                        tiles[column].Add(row, new Tile(new Point(input.ReadInt32(), input.ReadInt32()), input.ReadInt32()));
+                    tiles.Add(new Point(x, y), new Tile(new Point(x,y), id));
                 }
 
                 if (exportMode == "XML")
                 {
                     spriteSheetPath = input.ReadString();
                     spriteSheet = input.ContentManager.Load<Texture2D>(@"maps/" + spriteSheetPath);
-                    layers.Add(layerName, new Layer(layerName, tiles, spriteSheet, exportMode, 0));
+                    layers.Add(layerName, new Layer(layerName, tiles, spriteSheet, exportMode, zOrder));
 
                     continue;
                 }
 
-                layers.Add(layerName, new Layer(layerName, tiles, exportMode, 0));
+                layers.Add(layerName, new Layer(layerName, tiles, exportMode, zOrder));
             }
 
             return new Map(mapSize, tileSize, layers);
