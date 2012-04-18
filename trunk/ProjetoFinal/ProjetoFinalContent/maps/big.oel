@@ -492,11 +492,10 @@
     <tile x="24" y="18" id="14" />
   </Solids>
   
-  <!--
   <Objects>
     <Bear id="0" x="64" y="448" />
   </Objects>
-  -->
+  
   
   <Collision exportMode="Bitstring">1111111111111111111111111
 1000000000000000000000001

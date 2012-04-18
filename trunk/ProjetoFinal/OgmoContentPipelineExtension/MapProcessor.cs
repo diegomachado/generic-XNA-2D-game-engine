@@ -61,34 +61,35 @@ namespace OgmoContentPipelineExtension
 
             foreach (XmlNode node in layerNodes)
             {
-                zOrder++;
-                exportMode = node.Attributes["exportMode"].Value;
-                
-                if(!string.IsNullOrEmpty(exportMode))
+                zOrder++;               
+
+                if (node.Attributes["exportMode"] != null)
                 {
+                    exportMode = node.Attributes["exportMode"].Value;
+
                     switch (exportMode)
                     {
                         case "XML":
-                        {
-                            Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile>();
-                            
-                            layerName = node.Name;
-                            spriteSheetPath = node.Attributes["tileset"].Value;
-                            
-                            tileNodes = node.ChildNodes;
-                            foreach (XmlNode tileNode in tileNodes)
                             {
-                                x = int.Parse(tileNode.Attributes["x"].Value);
-                                y = int.Parse(tileNode.Attributes["y"].Value);
-                                id = int.Parse(tileNode.Attributes["id"].Value);
+                                Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile>();
 
-                                tiles.Add(new Point(x,y), new Tile(new Point(x, y), id));
+                                layerName = node.Name;
+                                spriteSheetPath = node.Attributes["tileset"].Value;
+
+                                tileNodes = node.ChildNodes;
+                                foreach (XmlNode tileNode in tileNodes)
+                                {
+                                    x = int.Parse(tileNode.Attributes["x"].Value);
+                                    y = int.Parse(tileNode.Attributes["y"].Value);
+                                    id = int.Parse(tileNode.Attributes["id"].Value);
+
+                                    tiles.Add(new Point(x, y), new Tile(new Point(x, y), id));
+                                }
+
+                                layers.Add(layerName, new Layer(layerName, tiles, spriteSheetPath, exportMode, zOrder));
+
+                                break;
                             }
-
-                            layers.Add(layerName, new Layer(layerName, tiles, spriteSheetPath ,exportMode, zOrder));
-                            
-                            break;
-                        }
 
                         case "XMLCoords":
                             // TODO: Develop the XMLCoords type Node
@@ -97,36 +98,40 @@ namespace OgmoContentPipelineExtension
                         case "CSV":
                             // TODO: Develop the CSV type Node
                             break;
-                    
+
                         case "Bitstring":
-                        {
-                            Dictionary<Point, Tile> tiles = new Dictionary<Point,Tile>();
+                            {
+                                Dictionary<Point, Tile> tiles = new Dictionary<Point, Tile>();
 
-                            layerName = node.Name;
+                                layerName = node.Name;
 
-                            bitString = node.InnerText.Replace(" ", "");
-                            bitStringLines = bitString.Split(new char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToList();
-                            
-                            for (int i = 0; i < bitStringLines.Count; i++)
-                                if (string.IsNullOrEmpty(bitStringLines[i]) || string.IsNullOrWhiteSpace(bitStringLines[i]))
-                                    bitStringLines.RemoveAt(i);
-                        
-                            cols = bitStringLines[0].Length;
-                            rows = bitStringLines.Count();                            
+                                bitString = node.InnerText.Replace(" ", "");
+                                bitStringLines = bitString.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToList();
 
-                            for (int col = 0; col < cols; col++)
-                                for (int row = 0; row < rows; row++)
-                                    tiles.Add(new Point(col, row), new Tile(new Point(col, row), (int)Char.GetNumericValue(bitStringLines[row][col])));
+                                for (int i = 0; i < bitStringLines.Count; i++)
+                                    if (string.IsNullOrEmpty(bitStringLines[i]) || string.IsNullOrWhiteSpace(bitStringLines[i]))
+                                        bitStringLines.RemoveAt(i);
 
-                            layers.Add(layerName, new Layer(layerName, tiles, exportMode, zOrder));
+                                cols = bitStringLines[0].Length;
+                                rows = bitStringLines.Count();
 
-                            break;
-                        }
+                                for (int col = 0; col < cols; col++)
+                                    for (int row = 0; row < rows; row++)
+                                        tiles.Add(new Point(col, row), new Tile(new Point(col, row), (int)Char.GetNumericValue(bitStringLines[row][col])));
+
+                                layers.Add(layerName, new Layer(layerName, tiles, exportMode, zOrder));
+
+                                break;
+                            }
 
                         default:
                             //TODO: Throw an Exception here
                             break;
                     }
+                }
+                else
+                {
+                    //TODO: Develop Entities Logic here
                 }
             }
 
@@ -134,13 +139,3 @@ namespace OgmoContentPipelineExtension
         }
     }
 }
-
-/* Fuck dat xit
-            List<Tile> tileShitness = new List<Tile>();
-
-            tileShitness.Add(new Tile(new Point(0, 0), 1));
-
-            Console.WriteLine("tileShitness.Cunt: " + tileShitness.Count);
-
-            tileShitness = new List<Tile>();
-            tileShitness.Add(new Tile(new Point(1, 1), 0));*/
