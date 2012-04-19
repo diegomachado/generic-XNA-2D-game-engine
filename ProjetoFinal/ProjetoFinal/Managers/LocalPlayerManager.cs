@@ -70,104 +70,11 @@ namespace ProjetoFinal.Managers
                 PlayerStateChanged(this, new PlayerStateChangedArgs(playerId, localPlayer));
         }
 
-        // TODO: Refactor Update Method on LocalPlayerManager
+        // TODO: Refactor
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Rectangle clientBounds, Layer collisionLayer)
         {
             if (localPlayer != null)
             {
-                #region StatesAndShitCommented
-                //switch(movementState)
-                //{
-                //    case MovementState.Idle:
-
-                //        if (!(keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right)))
-                //        {
-                //            if (keyboardState.IsKeyDown(Keys.Left))
-                //            {
-                //                movementState = MovementState.WalkingLeft;
-                //                direction += new Vector2(-1, 0);
-                //            }
-
-                //            if (keyboardState.IsKeyDown(Keys.Right))
-                //            {
-                //                movementState = MovementState.WalkingRight;
-                //                direction += new Vector2(1, 0);
-                //            }
-                            
-                //            if (keyboardState.IsKeyDown(Keys.Up))
-                //            {
-                //                movementState = MovementState.Jumping;
-                //                direction += new Vector2(0, -1);
-                //            }
-                //        }
-
-                //        break;
-
-                //    case MovementState.WalkingLeft:
-
-                //        if (keyboardState.IsKeyDown(Keys.Right))
-                //        {
-                //            movementState = MovementState.WalkingRight;
-                //            direction += new Vector2(2, 0);
-                //        }
-                //        else if (!keyboardState.IsKeyDown(Keys.Left))
-                //        {
-                //            direction += new Vector2(1, 0);
-                //        }
-
-                //        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-                //        {
-                //            movementState = MovementState.Idle;
-                //            direction += new Vector2(-1, 0);
-                //        }
-
-                //        if (keyboardState.IsKeyDown(Keys.Up))
-                //        {
-                //            movementState = MovementState.Jumping;
-                //            direction += new Vector2(0, -1);
-                //        }
-
-                //        break;
-
-                //    case MovementState.WalkingRight:
-
-                //        if (keyboardState.IsKeyDown(Keys.Left))
-                //        {
-                //            movementState = MovementState.WalkingLeft;
-                //            direction += new Vector2(-2, 0);
-                //        }
-                //        else if (!keyboardState.IsKeyDown(Keys.Right))
-                //        {
-                //            direction += new Vector2(-1, 0);
-                //        }
-
-                //        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-                //        {
-                //            movementState = MovementState.Idle;
-                //            direction += new Vector2(1, 0);
-                //        }
-
-                //        if (keyboardState.IsKeyDown(Keys.Up))
-                //        {
-                //            movementState = MovementState.Jumping;
-                //            direction += new Vector2(0, -1);
-                //        }
-
-                //        break;
-
-                //    case MovementState.Jumping:
-                //        break;
-
-                //    case MovementState.Falling:
-                //        break;
-                //}
-                
-                //if (direction == Vector2.Zero)
-                //    movementState = MovementState.Idle;
-
-                //localPlayer.position += direction * localPlayer.speed;
-                #endregion
-
                 acceleration = Vector2.Zero;
 
                 if (keyboardState.IsKeyDown(Keys.Left))
@@ -210,15 +117,19 @@ namespace ProjetoFinal.Managers
                     OnPlayerStateChanged(PlayerState.Idle);
                 }
 
-                // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
-                acceleration += new Vector2(0.0f, localPlayer.Gravity);
+                acceleration += localPlayer.Gravity;
+                
+                // TODO: Refactor
+                if (localPlayer.speed.Y >= 10)
+                    localPlayer.speed.Y = 10;
+                else
+                    localPlayer.speed.Y += acceleration.Y;
 
-                localPlayer.speed += acceleration;
+                localPlayer.speed.X += acceleration.X;
                 localPlayer.speed.X *= localPlayer.Friction;
 
-                Vector2 nextPosition = localPlayer.Position;
-                nextPosition += localPlayer.speed;
-
+                Vector2 nextPosition = localPlayer.Position + localPlayer.speed;
+                
                 Point xy = new Point( (int)(nextPosition.X % clientBounds.Width) / 32, (int)(nextPosition.Y % clientBounds.Height) / 32);
                 
                 Tile actualTile = collisionLayer.GetTileId(xy);
