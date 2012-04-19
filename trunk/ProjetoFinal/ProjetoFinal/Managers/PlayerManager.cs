@@ -93,7 +93,7 @@ namespace ProjetoFinal.Managers
 
                 // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
 
-                acceleration += new Vector2(0.0f, player.Gravity);
+                acceleration += player.Gravity;
 
                 player.speed += acceleration;
                 player.speed.X *= player.Friction;
@@ -129,6 +129,5 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, r.Width, borderWidth), Color.White);   
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
-
     }
 }

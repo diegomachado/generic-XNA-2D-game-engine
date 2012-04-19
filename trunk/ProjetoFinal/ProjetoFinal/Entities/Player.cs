@@ -29,7 +29,7 @@ namespace ProjetoFinal.Entities
         bool OnGround { get; set; } 
 
         public float Friction   { get; set; }
-        public float Gravity    { get; set; }
+        public Vector2 Gravity  { get; set; }
         public float JumpForce  { get; set; }
 
         public Vector2 speed = Vector2.Zero;
@@ -40,9 +40,8 @@ namespace ProjetoFinal.Entities
         {
             Skin = playerSkin;
             Position = playerPosition;
-            speed = Vector2.Zero;
             Friction = 0.85f;
-            Gravity = 0.3f;
+            Gravity = new Vector2(0.0f, 0.3f);
             JumpForce = -8.0f;
             State = PlayerState.Idle;
             BoundingBox = boundingBox;
