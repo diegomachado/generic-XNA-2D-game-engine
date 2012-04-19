@@ -11,7 +11,8 @@ namespace ProjetoFinal.Managers
 {
     public enum TextureList {
         Bear,
-        Ranger
+        Ranger,
+        CollisionBoxBorder
     }
 
     class TextureManager
@@ -19,10 +20,12 @@ namespace ProjetoFinal.Managers
         private static TextureManager instance;
 
         ContentManager Content;
+        GraphicsDevice GraphicsDevice;
 
-        public void setContent(ContentManager Content)
+        public void setContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            this.Content = Content;
+            this.Content = content;
+            this.GraphicsDevice = graphicsDevice;
         }
 
         public static TextureManager Instance
@@ -52,6 +55,14 @@ namespace ProjetoFinal.Managers
             }
 
             return this.Content.Load<Texture2D>( String.Format(@"sprites/{0}", textureName) );       
+        }
+
+        public Texture2D getPixelTextureByColor(Color color)
+        {
+            var t = new Texture2D(GraphicsDevice, 1, 1);
+            t.SetData(new[] { color });
+
+            return t;
         }
     }
 }

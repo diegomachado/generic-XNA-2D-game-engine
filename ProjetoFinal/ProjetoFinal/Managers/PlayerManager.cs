@@ -28,7 +28,7 @@ namespace ProjetoFinal.Managers
             if (this.players.ContainsKey(id))
                 return this.players[id];
 
-            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240));
+            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240), new Rectangle(6, 2, 24, 30));
 
             this.players.Add(id, player);
 
@@ -38,7 +38,7 @@ namespace ProjetoFinal.Managers
         public void AddPlayer(short id)
         {
             if (!this.players.ContainsKey(id))
-                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240)));
+                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240), new Rectangle(6, 2, 24, 30)));
         }
 
         // TODO: Criar função que atualiza posições de cada um dos jogadores
@@ -53,19 +53,16 @@ namespace ProjetoFinal.Managers
                 switch (player.State)
                 {
                     case PlayerState.WalkingLeft:
-
                         acceleration += new Vector2(-0.5f, 0.0f);
 
                         break;
 
                     case PlayerState.WalkingRight:
-
                         acceleration += new Vector2(0.5f, 0.0f);
 
                         break;
 
                     case PlayerState.JumpingRight:
-
                         if (player.Position.Y == (clientBounds.Height - player.Height))
                         {
                             acceleration += new Vector2(0.0f, player.JumpForce);
@@ -77,7 +74,6 @@ namespace ProjetoFinal.Managers
                         break;
 
                     case PlayerState.JumpingLeft:
-
                         if (player.Position.Y == (clientBounds.Height - player.Height))
                         {
                             acceleration += new Vector2(0.0f, player.JumpForce);
@@ -89,7 +85,6 @@ namespace ProjetoFinal.Managers
                         break;
 
                     case PlayerState.Jumping:
-
                         if (player.Position.Y == (clientBounds.Height - player.Height))
                             acceleration += new Vector2(0.0f, player.JumpForce);
 
@@ -123,7 +118,17 @@ namespace ProjetoFinal.Managers
             {
                 player.Value.Draw(spriteBatch);
                 spriteBatch.DrawString(spriteFont, player.Key.ToString(), new Vector2(player.Value.Position.X + 8, player.Value.Position.Y - 25), Color.White);
+                DrawBoundingBox(player.Value.CollisionBox, 1, spriteBatch, TextureManager.Instance.getPixelTextureByColor(Color.Red));
             }
         }
+
+        public void DrawBoundingBox(Rectangle r, int borderWidth, SpriteBatch spriteBatch, Texture2D borderTexture)
+        {
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, borderWidth, r.Height), Color.White);  
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Right, r.Top, borderWidth, r.Height), Color.White); 
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, r.Width, borderWidth), Color.White);   
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
+        }
+
     }
 }
