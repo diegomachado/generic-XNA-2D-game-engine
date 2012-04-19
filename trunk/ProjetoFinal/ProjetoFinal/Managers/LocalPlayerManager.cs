@@ -59,7 +59,7 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0,240) );        
+            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(96,240), new Rectangle(6, 2, 24, 30));        
         }
         
         protected void OnPlayerStateChanged(PlayerState playerState)
@@ -223,14 +223,15 @@ namespace ProjetoFinal.Managers
                 
                 Tile actualTile = collisionLayer.GetTileId(xy);
                 
-                //Console.WriteLine(xy);
-                
                 localPlayer.Position += localPlayer.speed;
                 localPlayer.Position = new Vector2(MathHelper.Clamp(localPlayer.Position.X, 0, clientBounds.Width - localPlayer.Width),
                                                    MathHelper.Clamp(localPlayer.Position.Y, 0, clientBounds.Height - localPlayer.Height));
 
                 if (localPlayer.Position.Y == (clientBounds.Height - localPlayer.Height))
                     localPlayer.speed.Y = 0.0f;
+
+                localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
+                localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
 
                 lastKeyboardState = keyboardState;
             }
@@ -242,7 +243,16 @@ namespace ProjetoFinal.Managers
             {
                 localPlayer.Draw(spriteBatch);
                 spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 25), Color.White);
+                DrawBoundingBox(localPlayer.CollisionBox, 1, spriteBatch, TextureManager.Instance.getPixelTextureByColor(Color.Red));
             }
+        }
+
+        public void DrawBoundingBox(Rectangle r, int borderWidth, SpriteBatch spriteBatch, Texture2D borderTexture)
+        {
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, borderWidth, r.Height), Color.White); // Left
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Right, r.Top, borderWidth, r.Height), Color.White); // Right
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, r.Width, borderWidth), Color.White); // Top
+            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White); // Bottom
         }
     }
 }

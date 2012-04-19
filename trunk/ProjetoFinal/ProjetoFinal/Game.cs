@@ -91,7 +91,7 @@ namespace ProjetoFinal
 
             // Resources
             textureManager = TextureManager.Instance;
-            textureManager.setContent(Content);
+            textureManager.setContent(Content, GraphicsDevice);
 
             // Managers
             playerManager = new PlayerManager();
@@ -162,10 +162,7 @@ namespace ProjetoFinal
 
         private bool IsHost
         {
-            get
-            {
-                return this.networkManager is ServerNetworkManager;
-            }
+            get { return this.networkManager is ServerNetworkManager; }
         }
 
         // TODO: Achar um nome mais expressivo pra essa função
