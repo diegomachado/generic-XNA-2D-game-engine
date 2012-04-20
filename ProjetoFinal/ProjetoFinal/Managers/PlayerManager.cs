@@ -65,7 +65,7 @@ namespace ProjetoFinal.Managers
                     case PlayerState.JumpingRight:
                         if (player.Position.Y == (clientBounds.Height - player.Height))
                         {
-                            acceleration += new Vector2(0.0f, player.JumpForce);
+                            acceleration += player.JumpForce;
                             acceleration += new Vector2(0.5f, 0.0f);
 
                             player.State = PlayerState.WalkingRight;
@@ -76,7 +76,7 @@ namespace ProjetoFinal.Managers
                     case PlayerState.JumpingLeft:
                         if (player.Position.Y == (clientBounds.Height - player.Height))
                         {
-                            acceleration += new Vector2(0.0f, player.JumpForce);
+                            acceleration += player.JumpForce;
                             acceleration += new Vector2(-0.5f, 0.0f);
 
                             player.State = PlayerState.WalkingLeft;
@@ -86,7 +86,7 @@ namespace ProjetoFinal.Managers
 
                     case PlayerState.Jumping:
                         if (player.Position.Y == (clientBounds.Height - player.Height))
-                            acceleration += new Vector2(0.0f, player.JumpForce);
+                            acceleration += player.JumpForce;
 
                         break;
                 }

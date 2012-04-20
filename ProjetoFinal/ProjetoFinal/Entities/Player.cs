@@ -26,11 +26,11 @@ namespace ProjetoFinal.Entities
 
         public Rectangle BoundingBox { get; set; }
         public Rectangle CollisionBox;
-        bool OnGround { get; set; } 
+        public bool OnGround { get; set; } 
 
         public float Friction   { get; set; }
         public Vector2 Gravity  { get; set; }
-        public float JumpForce  { get; set; }
+        public Vector2 JumpForce  { get; set; }
 
         public Vector2 speed = Vector2.Zero;
 
@@ -42,7 +42,7 @@ namespace ProjetoFinal.Entities
             Position = playerPosition;
             Friction = 0.85f;
             Gravity = new Vector2(0.0f, 0.3f);
-            JumpForce = -8.0f;
+            JumpForce = new Vector2(0.0f, - 8.0f);
             State = PlayerState.Idle;
             BoundingBox = boundingBox;
 
