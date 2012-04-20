@@ -75,11 +75,15 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer != null)
             {
+                // Atualizo os valores da CollisionBox, tendo como parâmetro a posição atual do player
+                // mais os valores da BoundingBox
                 localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
                 localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
 
+                // If Ternário. Se a velocidade vertical é nula, ele está no chão (Bug: Wall Jump)
                 localPlayer.OnGround = localPlayer.speed.Y != 0 ? false : true;                     
 
+                // A princípio a aceleração é zero
                 acceleration = Vector2.Zero;
 
                 if (keyboardState.IsKeyDown(Keys.Left))
@@ -100,6 +104,7 @@ namespace ProjetoFinal.Managers
 
                 if (keyboardState.IsKeyDown(Keys.Space))
                 {
+                    // Se player está no chão, ele pode pular
                     if (localPlayer.OnGround)
                     {
                         if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
@@ -119,40 +124,54 @@ namespace ProjetoFinal.Managers
                 if (!keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
                     OnPlayerStateChanged(PlayerState.Idle);
 
+                // Adiciono a gravidade do player à aceleração
+                // Pensar: Vale a gravidade ser global, ou em cada player nos dará maior flexibilidade?
                 acceleration += localPlayer.Gravity;
                 
                 // TODO: Refactor
+                // Limito a velocidade vertical do Player
                 if (localPlayer.speed.Y >= 10)
                     localPlayer.speed.Y = 10;
                 else
                     localPlayer.speed.Y += acceleration.Y;
 
+                // Atualizo a velocidade horizontal do player
                 localPlayer.speed.X += acceleration.X;
+
+                // TODO: Friction pode estar associada ao tile em que o player pisa
                 localPlayer.speed.X *= localPlayer.Friction;
 
+                // Seto um retangulo que armazena a próxima posição a ser ocupada pelo player
                 Rectangle nextPosition = localPlayer.CollisionBox;
+
+                // Por enquanto, só atualizo o retangulo horizontalmente
                 nextPosition.Offset((int)localPlayer.speed.X, 0);
 
                 Point corner1, corner2;
 
                 // TODO: Criar uma função booleana em Tiles que retorna se ele é passável ou não, por pixel, pra não precisar ficar dividindo tudo por 32 (na mão)
+
+                // Se player tiver andando pra esquerda, seto os pontos de colisão TL, BL (em relação ao XY do tileGrid)
                 if (localPlayer.speed.X < 0)
                 {
                     corner1 = new Point((int)nextPosition.Left / 32, (int) (nextPosition.Top + 1) / 32);
                     corner2 = new Point((int)nextPosition.Left / 32, (int) (nextPosition.Bottom - 1) / 32);
                 }
+                // Se player tiver andando pra direita, seto os pontos de colisão TR, BR (em relação ao XY do tileGrid)
                 else
                 {
                     corner1 = new Point((int)nextPosition.Right / 32, (int) (nextPosition.Top + 1) / 32);
                     corner2 = new Point((int)nextPosition.Right / 32, (int) (nextPosition.Bottom - 1) / 32);
                 }
-
                 
+                // Se eu tiver uma parede em algum desses pontos de colisão, anulo a velocidade horizontal
                 if (collisionLayer.Tiles[corner1].Id == 1 || collisionLayer.Tiles[corner2].Id == 1)
-                {
                     localPlayer.speed.X = 0;
-                }
 
+                // Por enquanto, só atualizo a próxima posição verticalmente
+                nextPosition.Offset(0, (int)localPlayer.speed.Y);
+
+                // Análogo ao acima, porem os pontos de colisão são no topo e no fundo
                 if (localPlayer.speed.Y < 0)
                 {
                     corner1 = new Point((int)(nextPosition.Left + 1) / 32, (int)nextPosition.Top / 32);
@@ -164,6 +183,7 @@ namespace ProjetoFinal.Managers
                     corner2 = new Point((int)(nextPosition.Right - 1) / 32, (int)nextPosition.Bottom / 32);
                 }
 
+                // Checo paredes, anulo velocidade vertical
                 if (collisionLayer.Tiles[corner1].Id == 1 || collisionLayer.Tiles[corner2].Id == 1)
                 {
                     if (localPlayer.speed.Y > 0)
@@ -172,16 +192,8 @@ namespace ProjetoFinal.Managers
                     localPlayer.speed.Y = 0;
                 }
                 
-                Point xy = new Point( (int)(nextPosition.X % clientBounds.Width) / 32, (int)(nextPosition.Y % clientBounds.Height) / 32);
-                Tile actualTile = collisionLayer.GetTileId(xy);
-                
+                // Atualizo a posição de acordo com a velocidade
                 localPlayer.Position += localPlayer.speed;
-                localPlayer.Position = new Vector2(MathHelper.Clamp(localPlayer.Position.X, 0, clientBounds.Width - localPlayer.Width),
-                                                   MathHelper.Clamp(localPlayer.Position.Y, 0, clientBounds.Height - localPlayer.Height));
-
-                if (localPlayer.Position.Y == (clientBounds.Height - localPlayer.Height))
-                    localPlayer.speed.Y = 0.0f;                
-
                 lastKeyboardState = keyboardState;
             }
         }         
