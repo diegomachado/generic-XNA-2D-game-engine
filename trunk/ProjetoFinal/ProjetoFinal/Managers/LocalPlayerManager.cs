@@ -75,6 +75,11 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer != null)
             {
+                localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
+                localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
+
+                localPlayer.OnGround = localPlayer.speed.Y != 0 ? false : true;                     
+
                 acceleration = Vector2.Zero;
 
                 if (keyboardState.IsKeyDown(Keys.Left))
@@ -95,10 +100,12 @@ namespace ProjetoFinal.Managers
 
                 if (keyboardState.IsKeyDown(Keys.Space))
                 {
-                    if (localPlayer.Position.Y == (clientBounds.Height - localPlayer.Height))
+                    Console.WriteLine("Entrei");
+                    if (localPlayer.OnGround)
                     {
                         if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
                             OnPlayerStateChanged(PlayerState.Jumping);
+
                         if (keyboardState.IsKeyDown(Keys.Left))
                             OnPlayerStateChanged(PlayerState.JumpingLeft);
                         else if (keyboardState.IsKeyDown(Keys.Right))
@@ -106,16 +113,12 @@ namespace ProjetoFinal.Managers
                         else
                             OnPlayerStateChanged(PlayerState.Jumping);
 
-                        acceleration += new Vector2(0.0f, localPlayer.JumpForce);
+                        acceleration += localPlayer.JumpForce;
                     }
                 }
 
-                if (!keyboardState.IsKeyDown(Keys.Space) &&
-                    !keyboardState.IsKeyDown(Keys.Right) &&
-                    !keyboardState.IsKeyDown(Keys.Left))
-                {
+                if (!keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
                     OnPlayerStateChanged(PlayerState.Idle);
-                }
 
                 acceleration += localPlayer.Gravity;
                 
@@ -128,10 +131,49 @@ namespace ProjetoFinal.Managers
                 localPlayer.speed.X += acceleration.X;
                 localPlayer.speed.X *= localPlayer.Friction;
 
-                Vector2 nextPosition = localPlayer.Position + localPlayer.speed;
+                Rectangle nextPosition = localPlayer.CollisionBox;
+                nextPosition.Offset((int)localPlayer.speed.X, 0);
+
+                Point corner1, corner2;
+
+                // TODO: Criar uma função booleana em Tiles que retorna se ele é passável ou não, por pixel, pra não precisar ficar dividindo tudo por 32 (na mão)
+                if (localPlayer.speed.X < 0)
+                {
+                    corner1 = new Point((int)nextPosition.Left / 32, (int) (nextPosition.Top + 1) / 32);
+                    corner2 = new Point((int)nextPosition.Left / 32, (int) (nextPosition.Bottom - 1) / 32);
+                }
+                else
+                {
+                    corner1 = new Point((int)nextPosition.Right / 32, (int) (nextPosition.Top + 1) / 32);
+                    corner2 = new Point((int)nextPosition.Right / 32, (int) (nextPosition.Bottom - 1) / 32);
+                }
+
+                
+                if (collisionLayer.Tiles[corner1].Id == 1 || collisionLayer.Tiles[corner2].Id == 1)
+                {
+                    localPlayer.speed.X = 0;
+                }
+
+                if (localPlayer.speed.Y < 0)
+                {
+                    corner1 = new Point((int)(nextPosition.Left + 1) / 32, (int)nextPosition.Top / 32);
+                    corner2 = new Point((int)(nextPosition.Right - 1) / 32, (int)nextPosition.Top / 32);
+                }
+                else
+                {
+                    corner1 = new Point((int)(nextPosition.Left + 1) / 32, (int)nextPosition.Bottom / 32);
+                    corner2 = new Point((int)(nextPosition.Right - 1) / 32, (int)nextPosition.Bottom / 32);
+                }
+
+                if (collisionLayer.Tiles[corner1].Id == 1 || collisionLayer.Tiles[corner2].Id == 1)
+                {
+                    if (localPlayer.speed.Y > 0)
+                        localPlayer.OnGround = true;
+
+                    localPlayer.speed.Y = 0;
+                }
                 
                 Point xy = new Point( (int)(nextPosition.X % clientBounds.Width) / 32, (int)(nextPosition.Y % clientBounds.Height) / 32);
-                
                 Tile actualTile = collisionLayer.GetTileId(xy);
                 
                 localPlayer.Position += localPlayer.speed;
@@ -139,14 +181,11 @@ namespace ProjetoFinal.Managers
                                                    MathHelper.Clamp(localPlayer.Position.Y, 0, clientBounds.Height - localPlayer.Height));
 
                 if (localPlayer.Position.Y == (clientBounds.Height - localPlayer.Height))
-                    localPlayer.speed.Y = 0.0f;
-
-                localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
-                localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
+                    localPlayer.speed.Y = 0.0f;                
 
                 lastKeyboardState = keyboardState;
             }
-        }
+        }         
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
