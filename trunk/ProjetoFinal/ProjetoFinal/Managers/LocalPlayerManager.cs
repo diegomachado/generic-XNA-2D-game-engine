@@ -100,7 +100,6 @@ namespace ProjetoFinal.Managers
 
                 if (keyboardState.IsKeyDown(Keys.Space))
                 {
-                    Console.WriteLine("Entrei");
                     if (localPlayer.OnGround)
                     {
                         if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
