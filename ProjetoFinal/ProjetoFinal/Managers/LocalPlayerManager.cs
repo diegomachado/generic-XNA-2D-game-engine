@@ -81,7 +81,7 @@ namespace ProjetoFinal.Managers
                 localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
 
                 // If Ternário. Se a velocidade vertical é nula, ele está no chão (Bug: Wall Jump)
-                localPlayer.OnGround = localPlayer.speed.Y != 0 ? false : true;                     
+                //localPlayer.OnGround = localPlayer.speed.Y != 0 ? false : true;                     
 
                 // A princípio a aceleração é zero
                 acceleration = Vector2.Zero;
@@ -129,11 +129,11 @@ namespace ProjetoFinal.Managers
                 acceleration += localPlayer.Gravity;
                 
                 // TODO: Refactor
+                localPlayer.speed.Y += acceleration.Y;
+
                 // Limito a velocidade vertical do Player
                 if (localPlayer.speed.Y >= 10)
                     localPlayer.speed.Y = 10;
-                else
-                    localPlayer.speed.Y += acceleration.Y;
 
                 // Atualizo a velocidade horizontal do player
                 localPlayer.speed.X += acceleration.X;
@@ -149,6 +149,7 @@ namespace ProjetoFinal.Managers
 
                 Point corner1, corner2;
 
+                // TODO: Falta setar a posicao do cara depois da colisao, nao so anular a velocidade dele.
                 // TODO: Criar uma função booleana em Tiles que retorna se ele é passável ou não, por pixel, pra não precisar ficar dividindo tudo por 32 (na mão)
 
                 // Se player tiver andando pra esquerda, seto os pontos de colisão TL, BL (em relação ao XY do tileGrid)
@@ -176,20 +177,30 @@ namespace ProjetoFinal.Managers
                 {
                     corner1 = new Point((int)(nextPosition.Left + 1) / 32, (int)nextPosition.Top / 32);
                     corner2 = new Point((int)(nextPosition.Right - 1) / 32, (int)nextPosition.Top / 32);
+
+                    // Checo paredes, anulo velocidade vertical
+                    if (collisionLayer.Tiles[corner1].Id == 1 || collisionLayer.Tiles[corner2].Id == 1)
+                        localPlayer.speed.Y = 0;
+
+                    localPlayer.OnGround = false;
                 }
                 else
                 {
                     corner1 = new Point((int)(nextPosition.Left + 1) / 32, (int)nextPosition.Bottom / 32);
                     corner2 = new Point((int)(nextPosition.Right - 1) / 32, (int)nextPosition.Bottom / 32);
-                }
 
-                // Checo paredes, anulo velocidade vertical
-                if (collisionLayer.Tiles[corner1].Id == 1 || collisionLayer.Tiles[corner2].Id == 1)
-                {
-                    if (localPlayer.speed.Y > 0)
-                        localPlayer.OnGround = true;
+                    // Checo paredes, anulo velocidade vertical
+                    if (collisionLayer.Tiles[corner1].Id == 1 || collisionLayer.Tiles[corner2].Id == 1)
+                    {
+                        if (localPlayer.speed.Y > 0)
+                            localPlayer.OnGround = true;
 
-                    localPlayer.speed.Y = 0;
+                        localPlayer.speed.Y = 0;
+                    }
+                    else
+                    {
+                        localPlayer.OnGround = false;
+                    }
                 }
                 
                 // Atualizo a posição de acordo com a velocidade
