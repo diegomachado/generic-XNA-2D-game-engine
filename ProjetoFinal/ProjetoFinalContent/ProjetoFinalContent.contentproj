@@ -60,7 +60,11 @@
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="maps\unbearable.oep">
+      <Name>unbearable</Name>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="maps\unbearable-light.png">
       <Name>unbearable-light</Name>
