@@ -133,8 +133,6 @@ namespace ProjetoFinal.Managers
 
                 localPlayer.Position += moveAmount;
                 lastKeyboardState = keyboardState;
-
-                Console.WriteLine(localPlayer.Position.ToString());
             }
         }
 
