@@ -9,9 +9,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ProjetoFinal.Managers
 {
-    public enum TextureList {
+    public enum TextureList
+    {
         Bear,
         Ranger,
+        RandomSkin,
         CollisionBoxBorder
     }
 
@@ -30,7 +32,7 @@ namespace ProjetoFinal.Managers
 
         public static TextureManager Instance
         {
-            get 
+            get
             {
                 if (instance == null)
                     instance = new TextureManager();
@@ -42,19 +44,24 @@ namespace ProjetoFinal.Managers
         public Texture2D getTexture(TextureList texture)
         {
             String textureName = "bear";
+            String[] skinTextures = { "bear", "ranger" };
+            Random randomSkin = new Random();
 
             switch (texture)
             {
                 case TextureList.Bear:
-                    textureName = "bear";
+                    textureName = skinTextures[0];
                     break;
 
                 case TextureList.Ranger:
-                    textureName = "ranger";
+                    textureName = skinTextures[1];
+                    break;
+                case TextureList.RandomSkin:
+                    textureName = skinTextures[randomSkin.Next(0, skinTextures.Length)];
                     break;
             }
 
-            return this.Content.Load<Texture2D>( String.Format(@"sprites/{0}", textureName) );       
+            return this.Content.Load<Texture2D>(String.Format(@"sprites/{0}", textureName));
         }
 
         public Texture2D getPixelTextureByColor(Color color)

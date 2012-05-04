@@ -26,27 +26,44 @@ namespace ProjetoFinal.Entities
 
         public Rectangle BoundingBox { get; set; }
         public Rectangle CollisionBox;
+        public Rectangle NextPosition { get; set; }
         public bool OnGround { get; set; } 
 
-        public float Friction   { get; set; }
-        public Vector2 Gravity  { get; set; }
+        public Vector2 Speed { get; set; }
+        public Vector2 Gravity { get; set; }
         public Vector2 JumpForce  { get; set; }
+        public float Friction { get; set; }
 
         public Vector2 speed = Vector2.Zero;
 
         public double LastUpdateTime { get; set; }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox)
-        {
-            Skin = playerSkin;
-            Position = playerPosition;
+        {            
+            Speed = new Vector2(1.0f, 0.0f);
             Friction = 0.85f;
             Gravity = new Vector2(0.0f, 0.3f);
             JumpForce = new Vector2(0.0f, - 8.0f);
             State = PlayerState.Idle;
-            BoundingBox = boundingBox;
 
+            Skin = playerSkin;
+            Position = playerPosition;
+            BoundingBox = boundingBox;
             CollisionBox = new Rectangle((int)Position.X + BoundingBox.X, (int)Position.Y + BoundingBox.Y, BoundingBox.Width, BoundingBox.Height);
+        }
+
+        public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox, Vector2 gravity)
+        {            
+            Speed = new Vector2(1.0f, 0.0f);
+            Friction = 0.85f;            
+            JumpForce = new Vector2(0.0f, -8.0f);
+            State = PlayerState.Idle;
+
+            Skin = playerSkin;
+            Position = playerPosition;
+            BoundingBox = boundingBox;
+            CollisionBox = new Rectangle((int)Position.X + BoundingBox.X, (int)Position.Y + BoundingBox.Y, BoundingBox.Width, BoundingBox.Height);
+            Gravity = gravity;
         }
 
         public int Width { get { return Skin.Width; } }
@@ -63,7 +80,7 @@ namespace ProjetoFinal.Entities
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Skin, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);            
+            spriteBatch.Draw(Skin, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
     }
