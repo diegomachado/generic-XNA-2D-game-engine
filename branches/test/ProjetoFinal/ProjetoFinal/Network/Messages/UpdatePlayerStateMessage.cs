@@ -13,7 +13,6 @@ namespace ProjetoFinal.Network.Messages
         public double messageTime { get; set; }
         public Vector2 position { get; set; }
         public PlayerState playerState { get; set; }
-        public Vector2 speed { get; set; }
 
         public UpdatePlayerStateMessage(NetIncomingMessage im)
         {
@@ -26,7 +25,6 @@ namespace ProjetoFinal.Network.Messages
             messageTime = NetTime.Now;
             position = player.Position;
             playerState = player.State;
-            speed = player.speed;
         }
 
         public GameMessageType MessageType
@@ -40,7 +38,6 @@ namespace ProjetoFinal.Network.Messages
             messageTime = im.ReadDouble();
             position = im.ReadVector2();
             playerState = (PlayerState)im.ReadInt16();
-            speed = im.ReadVector2();
         }
 
         public void Encode(NetOutgoingMessage om)
@@ -49,7 +46,6 @@ namespace ProjetoFinal.Network.Messages
             om.Write(messageTime);
             om.Write(position);
             om.Write((short)playerState);
-            om.Write(speed);
         }
     }
 }

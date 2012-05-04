@@ -48,9 +48,27 @@ namespace OgmoLibrary
             ZIndex = zIndex;
         }
         
-        public Tile GetTileId(Point xy)
+        public Tile GetTileByGridPosition(Point xy)
         {
             return Tiles[xy];
         }
+
+        public Tile GetTileByPixelPosition(Point xy)
+        {
+            Point gridPoint = new Point(xy.X/32, xy.Y/32);
+            return Tiles[gridPoint];
+        }
+
+        public bool GetTileValueByGridPosition(Point xy)
+        {
+            return Convert.ToBoolean(Tiles[xy].Id);
+        }
+
+        public bool GetTileValueByPixelPosition(Point xy)
+        {
+            Point gridPoint = new Point(xy.X / 32, xy.Y / 32);
+            return Convert.ToBoolean(Tiles[gridPoint].Id);
+        }
+
     }
 }

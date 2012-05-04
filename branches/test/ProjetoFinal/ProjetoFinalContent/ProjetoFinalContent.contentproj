@@ -61,9 +61,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="maps\unbearable.oep">
+    <None Include="maps\unbearable.oep">
       <Name>unbearable</Name>
-    </Compile>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="maps\unbearable-light.png">

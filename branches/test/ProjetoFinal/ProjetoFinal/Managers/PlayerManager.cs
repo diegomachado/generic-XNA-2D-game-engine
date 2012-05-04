@@ -16,7 +16,8 @@ namespace ProjetoFinal.Managers
     class PlayerManager
     {
         Dictionary<short, Player> players;
-        Vector2 acceleration;
+        Vector2 acceleration = Vector2.Zero;
+        Vector2 moveAmount;
 
         public PlayerManager()
         {
@@ -28,7 +29,7 @@ namespace ProjetoFinal.Managers
             if (this.players.ContainsKey(id))
                 return this.players[id];
 
-            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240), new Rectangle(6, 2, 24, 30));
+            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(96, 240), new Rectangle(6, 2, 24, 30));
 
             this.players.Add(id, player);
 
@@ -38,77 +39,53 @@ namespace ProjetoFinal.Managers
         public void AddPlayer(short id)
         {
             if (!this.players.ContainsKey(id))
-                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240), new Rectangle(6, 2, 24, 30)));
+                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(96, 240), new Rectangle(6, 2, 24, 30)));
         }
 
-        // TODO: Criar função que atualiza posições de cada um dos jogadores
-        public void Update(Rectangle clientBounds)
+        public void Update()
         {
             foreach (KeyValuePair<short, Player> p in players)
             {
                 Player player = p.Value;
-
                 acceleration = Vector2.Zero;
+
+                player.CollisionBox.X = (int)player.Position.X + player.BoundingBox.X;
+                player.CollisionBox.Y = (int)player.Position.Y + player.BoundingBox.Y;
 
                 switch (player.State)
                 {
                     case PlayerState.WalkingLeft:
-                        acceleration += new Vector2(-0.5f, 0.0f);
-
+                        acceleration -= player.Speed;
                         break;
 
                     case PlayerState.WalkingRight:
-                        acceleration += new Vector2(0.5f, 0.0f);
-
-                        break;
-
-                    case PlayerState.JumpingRight:
-                        if (player.Position.Y == (clientBounds.Height - player.Height))
-                        {
-                            acceleration += player.JumpForce;
-                            acceleration += new Vector2(0.5f, 0.0f);
-
-                            player.State = PlayerState.WalkingRight;
-                        }
-
-                        break;
-
-                    case PlayerState.JumpingLeft:
-                        if (player.Position.Y == (clientBounds.Height - player.Height))
-                        {
-                            acceleration += player.JumpForce;
-                            acceleration += new Vector2(-0.5f, 0.0f);
-
-                            player.State = PlayerState.WalkingLeft;
-                        }
-
+                        acceleration += player.Speed;
                         break;
 
                     case PlayerState.Jumping:
-                        if (player.Position.Y == (clientBounds.Height - player.Height))
-                            acceleration += player.JumpForce;
+                        acceleration += player.JumpForce;
+                        break;
+                    
+                    case PlayerState.JumpingLeft:
+                        acceleration += player.JumpForce;
+                        acceleration -= player.Speed;
+                        player.State = PlayerState.WalkingLeft;
 
                         break;
-                }
 
-                // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
+                    case PlayerState.JumpingRight:                        
+                        acceleration += player.JumpForce;
+                        acceleration += player.Speed;
+                        player.State = PlayerState.WalkingRight;
+                        break;                    
+                }
 
                 acceleration += player.Gravity;
-
-                player.speed += acceleration;
-                player.speed.X *= player.Friction;
-
-                player.Position += player.speed;
-                player.Position = new Vector2(MathHelper.Clamp(player.Position.X, 0, clientBounds.Width - player.Width),
-                                              MathHelper.Clamp(player.Position.Y, 0, clientBounds.Height - player.Height));
-
-                if (player.Position.Y == (clientBounds.Height - player.Height))
-                {
-                    if (player.State == PlayerState.Jumping)
-                        player.State = PlayerState.Idle;
-
-                    player.speed.Y = 0.0f;
-                }
+                moveAmount += acceleration;
+                moveAmount.X *= player.Friction;
+                
+                player.Position += moveAmount;
+                Console.WriteLine(player.Position.ToString());
             }
         }
 
@@ -116,9 +93,9 @@ namespace ProjetoFinal.Managers
         {
             foreach (KeyValuePair<short, Player> player in players)
             {
-                player.Value.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, player.Key.ToString(), new Vector2(player.Value.Position.X + 8, player.Value.Position.Y - 25), Color.White);
                 DrawBoundingBox(player.Value.CollisionBox, 1, spriteBatch, TextureManager.Instance.getPixelTextureByColor(Color.Red));
+                player.Value.Draw(spriteBatch);
+                spriteBatch.DrawString(spriteFont, player.Key.ToString(), new Vector2(player.Value.Position.X + 8, player.Value.Position.Y - 25), Color.White);                
             }
         }
 
