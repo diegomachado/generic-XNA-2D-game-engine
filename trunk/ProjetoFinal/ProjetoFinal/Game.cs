@@ -135,10 +135,9 @@ namespace ProjetoFinal
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
-            localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, 
-                                      this.Window.ClientBounds, mapManager.GetCollisionLayer());
+            localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, mapManager.GetCollisionLayer());
 
-            playerManager.Update(this.Window.ClientBounds);
+            playerManager.Update();
 
             ProcessNetworkMessages();
             
