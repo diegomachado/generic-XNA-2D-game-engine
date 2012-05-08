@@ -48,10 +48,15 @@ namespace ProjetoFinal
         TextureManager textureManager;
         MapManager mapManager;
 
+        // Camera Globals
+        Camera camera;       
+        public static Point ScreenSize { get; set; }
+        public static Point MapWidthInPixels { get; set; }
 
         public Game()
         {
             graphics = new GraphicsDeviceManager(this);
+            this.Window.Title = "Projeto Final";
             Content.RootDirectory = "Content";
         }
 
@@ -108,8 +113,12 @@ namespace ProjetoFinal
             // Window Management
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 608;
-            graphics.ApplyChanges();
-                        
+            graphics.ApplyChanges();    
+        
+            // Camera
+            camera = Camera.Instance;
+            camera.Speed = 4f;
+                                    
             base.Initialize();
         }
 
@@ -117,6 +126,9 @@ namespace ProjetoFinal
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             SegoeFont = Content.Load<SpriteFont>(@"fonts/SegoeUI");
+
+            MapWidthInPixels = mapManager.GetMapSize();
+            ScreenSize = new Point(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
 
         protected override void UnloadContent()
@@ -129,14 +141,13 @@ namespace ProjetoFinal
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || currentKeyboardState.IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            previousKeyboardState = currentKeyboardState;
+            currentKeyboardState = Keyboard.GetState();
             previousGamePadState = currentGamePadState;
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            previousKeyboardState = currentKeyboardState;
-            currentKeyboardState = Keyboard.GetState();
-
+            camera.Update(currentKeyboardState);
             localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, mapManager.GetCollisionLayer());
-
             playerManager.Update();
 
             ProcessNetworkMessages();
@@ -144,14 +155,19 @@ namespace ProjetoFinal
             base.Update(gameTime);
         }
 
+        
+
         protected override void Draw(GameTime gameTime)
         {
+            float frameRate;
+            frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
 
-            mapManager.Draw(spriteBatch);
+            mapManager.Draw(spriteBatch, new Point((int)camera.Position.X, (int)camera.Position.Y));
             localPlayerManager.Draw(spriteBatch, SegoeFont);
+            spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(700, 5), Color.White);
             playerManager.Draw(spriteBatch, SegoeFont);            
 
             spriteBatch.End();
