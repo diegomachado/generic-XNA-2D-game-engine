@@ -30,7 +30,7 @@ namespace OgmoLibrary
         {          
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Point cameraPosition)
         {
             int x, y, id;
             Texture2D spriteSheet;
@@ -57,7 +57,7 @@ namespace OgmoLibrary
                         id = tile.Value.Id;
 
                         spriteBatch.Draw(spriteSheet,
-                                            new Rectangle(x * tileSize.X, y * tileSize.Y, tileSize.X, tileSize.Y),
+                                            new Rectangle(x * tileSize.X - cameraPosition.X, y * tileSize.Y - cameraPosition.Y, tileSize.X, tileSize.Y),
                                             new Rectangle((id * tileSize.X) % spriteSheet.Width,
                                                         ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y,
                                                         tileSize.X,

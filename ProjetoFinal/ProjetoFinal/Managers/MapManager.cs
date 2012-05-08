@@ -30,9 +30,23 @@ namespace ProjetoFinal.Managers
             return currentMap.Layers["Collision"];
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public Point GetMapSize()
         {
-            currentMap.Draw(spriteBatch);
+            return currentMap.MapSize;
+        }
+
+        public Point GetTileSizeInPixels()
+        {
+            return currentMap.TileSize;
+        }
+
+        public void Update()
+        {
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Point cameraPosition)
+        {
+            currentMap.Draw(spriteBatch, cameraPosition);
         }
 
     }

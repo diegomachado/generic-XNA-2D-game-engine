@@ -59,7 +59,7 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(96, 240), new Rectangle(6, 2, 24, 30));
+            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(6, 2, 24, 30));
             //localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(96, 240), new Rectangle(6, 2, 24, 30), new Vector2(0f, 0.1f));        
         }
         
@@ -78,9 +78,9 @@ namespace ProjetoFinal.Managers
                 localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
                 localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
 
-                localPlayer.NextPosition = localPlayer.CollisionBox;
-                localPlayer.NextPosition.Offset(20, 20);
-                
+                if (moveAmount.Y != 0)
+                    localPlayer.OnGround = false;
+
                 acceleration = Vector2.Zero;
 
                 localPlayer.OnGround = (moveAmount.Y == 0) ? true : false;
@@ -101,7 +101,7 @@ namespace ProjetoFinal.Managers
                     acceleration += localPlayer.Speed;
                 }
 
-                if (keyboardState.IsKeyDown(Keys.Space))
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
                 {
                     if (localPlayer.OnGround)
                     {
@@ -125,13 +125,14 @@ namespace ProjetoFinal.Managers
                 acceleration += localPlayer.Gravity;  
                 moveAmount += acceleration;
 
-                moveAmount.X *= localPlayer.Friction; 
-                moveAmount.Y = limitFallSpeed(10, moveAmount);
-
                 moveAmount = horizontalCollisionTest(moveAmount, collisionLayer);
                 moveAmount = verticalCollisionTest(moveAmount, collisionLayer);
 
+                moveAmount.X *= localPlayer.Friction;
+                moveAmount.Y = limitFallSpeed(10, moveAmount);
+
                 localPlayer.Position += moveAmount;
+                
                 lastKeyboardState = keyboardState;
             }
         }
@@ -158,11 +159,15 @@ namespace ProjetoFinal.Managers
             {
                 corner1 = new Point(nextPosition.Left, nextPosition.Top + 1);
                 corner2 = new Point(nextPosition.Left, nextPosition.Bottom - 1);
+                localPlayer.debugCorner1 = corner1;
+                localPlayer.debugCorner2 = corner2;
             }
             else
             {
                 corner1 = new Point(nextPosition.Right, nextPosition.Top + 1);
                 corner2 = new Point(nextPosition.Right, nextPosition.Bottom - 1);
+                localPlayer.debugCorner1 = corner1;
+                localPlayer.debugCorner2 = corner2;
             }
 
             if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
@@ -176,23 +181,29 @@ namespace ProjetoFinal.Managers
             Point corner1, corner2;
             Rectangle nextPosition = localPlayer.CollisionBox;
 
-            nextPosition.Offset(0, (int)moveAmount.Y);
+            nextPosition.Offset((int)moveAmount.X, (int)moveAmount.Y);
 
             if (moveAmount.Y < 0)
             {
                 corner1 = new Point(nextPosition.Left + 1, nextPosition.Top);
                 corner2 = new Point(nextPosition.Right - 1, nextPosition.Top);
+                localPlayer.debugCorner3 = corner1;
+                localPlayer.debugCorner4 = corner2;
             }
             else
             {
                 corner1 = new Point(nextPosition.Left + 1, nextPosition.Bottom);
                 corner2 = new Point(nextPosition.Right - 1, nextPosition.Bottom);
+                localPlayer.debugCorner3 = corner1;
+                localPlayer.debugCorner4 = corner2;
             }
 
             if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
             {
                 if (moveAmount.Y > 0)
                     localPlayer.OnGround = true;
+                else if(moveAmount.Y < 0)
+                    localPlayer.OnGround = false;                    
 
                 moveAmount.Y = 0;
             }
@@ -205,18 +216,35 @@ namespace ProjetoFinal.Managers
             if (localPlayer != null)
             {
                 localPlayer.Draw(spriteBatch);
-                DrawBoundingBox(localPlayer.CollisionBox, 1, spriteBatch, TextureManager.Instance.getPixelTextureByColor(Color.Red));
-                DrawBoundingBox(localPlayer.NextPosition, 1, spriteBatch, TextureManager.Instance.getPixelTextureByColor(Color.CornflowerBlue));
-                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 25), Color.White);                
+                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 25) - Camera.Instance.Position, Color.White);
+
+                // Debug na Tela
+                //DrawBoundingBox(localPlayer.CollisionBox, 1, Color.Red, spriteBatch);
+                //DrawBoundingBox(localPlayer.NextPosition, 1, Color.CornflowerBlue, spriteBatch);
+
+                spriteBatch.DrawString(spriteFont, "On Ground: " + localPlayer.OnGround.ToString(), new Vector2(5f, 5f), Color.White);
+                spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 25f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.Position.Y, new Vector2(5f, 45f), Color.White);
+                
+                DrawPoint(localPlayer.debugCorner1, 3, Color.Yellow, spriteBatch);
+                DrawPoint(localPlayer.debugCorner2, 3, Color.Yellow, spriteBatch);
+                DrawPoint(localPlayer.debugCorner3, 3, Color.Red, spriteBatch);
+                DrawPoint(localPlayer.debugCorner4, 3, Color.Red, spriteBatch);
+                
             }
         }
 
-        public void DrawBoundingBox(Rectangle r, int borderWidth, SpriteBatch spriteBatch, Texture2D borderTexture)
+        public void DrawPoint(Point position, int size, Color color, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, borderWidth, r.Height), Color.White); // Left
-            spriteBatch.Draw(borderTexture, new Rectangle(r.Right, r.Top, borderWidth, r.Height), Color.White); // Right
-            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, r.Width, borderWidth), Color.White); // Top
-            spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White); // Bottom
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(position.X - (int)Camera.Instance.Position.X, position.Y - (int)Camera.Instance.Position.Y, size, size), Color.White);
+        }
+
+        public void DrawBoundingBox(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left, r.Top, borderWidth, r.Height), Color.White); // Left
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right, r.Top, borderWidth, r.Height), Color.White); // Right
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left, r.Top, r.Width, borderWidth), Color.White); // Top
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White); // Bottom
         }
     }
 }

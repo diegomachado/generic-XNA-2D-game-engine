@@ -36,6 +36,11 @@ namespace ProjetoFinal.Entities
 
         public Vector2 speed = Vector2.Zero;
 
+        public Point debugCorner1 { get; set; }
+        public Point debugCorner2 { get; set; }
+        public Point debugCorner3 { get; set; }
+        public Point debugCorner4 { get; set; }
+
         public double LastUpdateTime { get; set; }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox)
@@ -79,8 +84,11 @@ namespace ProjetoFinal.Entities
         }
 
         public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Skin, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+        {            
+            if (State == PlayerState.WalkingLeft || State == PlayerState.JumpingLeft)
+                spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+            else
+                spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
     }

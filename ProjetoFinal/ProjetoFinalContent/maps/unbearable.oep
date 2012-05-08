@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OgmoVersion>2.0.0.38</OgmoVersion>
   <Name>Unbearable Shotgun</Name>
   <BackgroundColor A="255" R="0" G="0" B="0" />
   <GridColor A="255" R="87" G="87" B="87" />
@@ -15,7 +16,7 @@
     <Width>2560</Width>
     <Height>2560</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\diego\Desktop\ogmo_test\unbearable.oep</Filename>
+  <Filename>C:\Users\diego\Documents\Visual Studio 2010\Projects\ProjetoFinal\ProjetoFinal\ProjetoFinalContent\maps\unbearable.oep</Filename>
   <AngleMode>Degrees</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -52,17 +53,6 @@
       </ScrollFactor>
       <ExportMode>XML</ExportMode>
     </LayerDefinition>
-    <LayerDefinition xsi:type="EntityLayerDefinition">
-      <Name>Objects</Name>
-      <Grid>
-        <Width>32</Width>
-        <Height>32</Height>
-      </Grid>
-      <ScrollFactor>
-        <X>1</X>
-        <Y>1</Y>
-      </ScrollFactor>
-    </LayerDefinition>
     <LayerDefinition xsi:type="GridLayerDefinition">
       <Name>Collision</Name>
       <Grid>
@@ -80,16 +70,7 @@
   <Tilesets>
     <Tileset>
       <Name>unbearable-light</Name>
-      <FilePath>unbearable-spritesheet-light.png</FilePath>
-      <TileSize>
-        <Width>32</Width>
-        <Height>32</Height>
-      </TileSize>
-      <TileSep>0</TileSep>
-    </Tileset>
-    <Tileset>
-      <Name>unbearable-dark</Name>
-      <FilePath>unbearable-spritesheet-dark.png</FilePath>
+      <FilePath>unbearable-light.png</FilePath>
       <TileSize>
         <Width>32</Width>
         <Height>32</Height>
@@ -97,21 +78,5 @@
       <TileSep>0</TileSep>
     </Tileset>
   </Tilesets>
-  <EntityDefinitions>
-    <EntityDefinition Name="Bear" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
-      <Size>
-        <Width>32</Width>
-        <Height>32</Height>
-      </Size>
-      <Origin>
-        <X>0</X>
-        <Y>0</Y>
-      </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="bear.png" Tiled="false">
-        <RectColor A="255" R="255" G="0" B="0" />
-      </ImageDefinition>
-      <ValueDefinitions />
-      <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
-    </EntityDefinition>
-  </EntityDefinitions>
+  <EntityDefinitions />
 </project>
