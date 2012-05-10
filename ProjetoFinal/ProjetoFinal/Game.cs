@@ -280,7 +280,6 @@ namespace ProjetoFinal
                     //player.position = message.position += (message.speed * timeDelay);
                     player.Position = message.position;
                     player.State = message.playerState;
-                    player.speed = message.speed;
 
                     player.LastUpdateTime = message.messageTime;
                 }
