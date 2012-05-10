@@ -45,7 +45,7 @@ namespace ProjetoFinal.Managers
         public short playerId { get; set; }
         
         Player localPlayer;
-        Vector2 acceleration = Vector2.Zero;
+        Vector2 speed = Vector2.Zero;
         Vector2 moveAmount = Vector2.Zero;
 
         KeyboardState lastKeyboardState;
@@ -73,72 +73,70 @@ namespace ProjetoFinal.Managers
 
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Layer collisionLayer)
         {
-            if (localPlayer != null)
-            {
-                localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
-                localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
+            if (localPlayer == null)
+                return;
 
-                if (moveAmount.Y != 0)
-                    localPlayer.OnGround = false;
-
-                acceleration = Vector2.Zero;
-
-                localPlayer.OnGround = (moveAmount.Y == 0) ? true : false;
-
-                if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
-                {
-                    if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Left))
-                        OnPlayerStateChanged(PlayerState.WalkingLeft);
-
-                    acceleration -= localPlayer.Speed;
-                }
-
-                if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
-                {
-                    if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Right))
-                        OnPlayerStateChanged(PlayerState.WalkingRight);
-
-                    acceleration += localPlayer.Speed;
-                }
-
-                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
-                {
-                    if (localPlayer.OnGround)
-                    {
-                        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-                            OnPlayerStateChanged(PlayerState.Jumping);
-
-                        if (keyboardState.IsKeyDown(Keys.Left))
-                            OnPlayerStateChanged(PlayerState.JumpingLeft);
-                        else if (keyboardState.IsKeyDown(Keys.Right))
-                            OnPlayerStateChanged(PlayerState.JumpingRight);
-                        else
-                            OnPlayerStateChanged(PlayerState.Jumping);
-
-                        acceleration += localPlayer.JumpForce;
-                    }
-                }
-
-                if (!keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
-                    OnPlayerStateChanged(PlayerState.Idle);
-            
-                acceleration += localPlayer.Gravity;  
-                moveAmount += acceleration;
-
-                moveAmount = horizontalCollisionTest(moveAmount, collisionLayer);
-                moveAmount = verticalCollisionTest(moveAmount, collisionLayer);
-
-                moveAmount.X *= localPlayer.Friction;
-                moveAmount.Y = limitFallSpeed(10, moveAmount);
-
-                localPlayer.Position += moveAmount;
-
-                Camera.Instance.Position = localPlayer.Position - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
-                //Camera.Instance.Position = new Vector2(MathHelper.Lerp(Camera.Instance.Position.X, localPlayer.Position.X, 0.1f), MathHelper.Lerp(Camera.Instance.Position.Y, localPlayer.Position.Y, 0.1f));
-
+            localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
+            localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
                 
-                lastKeyboardState = keyboardState;
+            localPlayer.OnGround = (moveAmount.Y == 0) ? true : false;
+                
+            speed = Vector2.Zero;
+
+            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+            {
+                if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Left))
+                    OnPlayerStateChanged(PlayerState.WalkingLeft);
+
+                localPlayer.Flipped = true;
+                speed -= localPlayer.Speed;
             }
+
+            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+            {
+                if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Right))
+                    OnPlayerStateChanged(PlayerState.WalkingRight);
+
+                localPlayer.Flipped = false;
+                speed += localPlayer.Speed;                    
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
+            {
+                if (localPlayer.OnGround)
+                {
+                    if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+                        OnPlayerStateChanged(PlayerState.Jumping);
+
+                    if (keyboardState.IsKeyDown(Keys.Left))
+                        OnPlayerStateChanged(PlayerState.JumpingLeft);
+                    else if (keyboardState.IsKeyDown(Keys.Right))
+                        OnPlayerStateChanged(PlayerState.JumpingRight);
+                    else
+                        OnPlayerStateChanged(PlayerState.Jumping);
+
+                    speed += localPlayer.JumpForce;
+                }
+            }
+
+            if (!keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+                OnPlayerStateChanged(PlayerState.Idle);
+            
+            speed += localPlayer.Gravity;  
+            moveAmount += speed;
+
+            moveAmount = horizontalCollisionTest(moveAmount, collisionLayer);
+            moveAmount = verticalCollisionTest(moveAmount, collisionLayer);
+
+            moveAmount.X *= localPlayer.Friction;
+            moveAmount.Y = limitFallSpeed(10, moveAmount);
+                
+            localPlayer.Position += moveAmount;
+            Camera.Instance.Position = localPlayer.Position 
+                                        + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2) 
+                                        - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
+
+            lastKeyboardState = keyboardState;          
         }
 
         private float limitFallSpeed(float speedLimit, Vector2 moveAmount)
@@ -151,14 +149,13 @@ namespace ProjetoFinal.Managers
 
         private Vector2 horizontalCollisionTest(Vector2 moveAmount, Layer collisionLayer)
         {
-            Point corner1, corner2;
-            Rectangle nextPosition = localPlayer.CollisionBox;
-
             if (moveAmount.X == 0)
                 return moveAmount;
 
+            Rectangle nextPosition = localPlayer.CollisionBox;
             nextPosition.Offset((int)moveAmount.X, 0);
 
+            Point corner1, corner2;
             if (moveAmount.X < 0)
             {
                 corner1 = new Point(nextPosition.Left, nextPosition.Top + 1);
@@ -176,17 +173,19 @@ namespace ProjetoFinal.Managers
 
             if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
                 moveAmount.X = 0;
-
+            
             return moveAmount;
         }
 
         private Vector2 verticalCollisionTest(Vector2 moveAmount, Layer collisionLayer)
         {
-            Point corner1, corner2;
+            if (moveAmount.Y == 0)
+                return moveAmount;
+                        
             Rectangle nextPosition = localPlayer.CollisionBox;
-
             nextPosition.Offset((int)moveAmount.X, (int)moveAmount.Y);
 
+            Point corner1, corner2;
             if (moveAmount.Y < 0)
             {
                 corner1 = new Point(nextPosition.Left + 1, nextPosition.Top);
@@ -229,8 +228,9 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "On Ground: " + localPlayer.OnGround.ToString(), new Vector2(5f, 5f), Color.White);
                 spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 25f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.Position.Y, new Vector2(5f, 45f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Camera X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 65f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Camera Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 85f), Color.White);
+                
+                spriteBatch.DrawString(spriteFont, "Camera X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 85f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 105f), Color.White);
                 
                 DrawPoint(localPlayer.debugCorner1, 3, Color.Yellow, spriteBatch);
                 DrawPoint(localPlayer.debugCorner2, 3, Color.Yellow, spriteBatch);

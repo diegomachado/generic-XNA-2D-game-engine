@@ -21,20 +21,25 @@ namespace ProjetoFinal.Entities
     class Player
     {
         public PlayerState State { get; set; }
-        public Texture2D Skin   { get; set; }
-        public Vector2 Position { get; set; }
+        public Texture2D Skin { get; set; }
+        bool flipped = false;
+        public bool Flipped 
+        {
+            get { return flipped; }
+            set { flipped = value; }
+        }
 
+        public Vector2 Position { get; set; }
+        public Rectangle NextPosition { get; set; }
         public Rectangle BoundingBox { get; set; }
         public Rectangle CollisionBox;
-        public Rectangle NextPosition { get; set; }
+
+        public Vector2 Gravity { get; set; }
+        public Vector2 JumpForce { get; set; }
         public bool OnGround { get; set; } 
 
-        public Vector2 Speed { get; set; }
-        public Vector2 Gravity { get; set; }
-        public Vector2 JumpForce  { get; set; }
+        public Vector2 Speed { get; set; }        
         public float Friction { get; set; }
-
-        public Vector2 speed = Vector2.Zero;
 
         public Point debugCorner1 { get; set; }
         public Point debugCorner2 { get; set; }
@@ -85,7 +90,7 @@ namespace ProjetoFinal.Entities
 
         public void Draw(SpriteBatch spriteBatch)
         {            
-            if (State == PlayerState.WalkingLeft || State == PlayerState.JumpingLeft)
+            if (Flipped)
                 spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
                 spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

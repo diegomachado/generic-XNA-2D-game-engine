@@ -86,15 +86,15 @@ namespace ProjetoFinal.Managers
 
                 acceleration += player.Gravity;
 
-                player.speed += acceleration;
-                player.speed.X *= player.Friction;
+                //player.speed += acceleration;
+                //player.speed.X *= player.Friction;
 
-                player.Position += player.speed;
+                //player.Position += player.speed;
 
                 if (player.State == PlayerState.Jumping)
                     player.State = PlayerState.Idle;
 
-                player.speed.Y = 0.0f;                
+                //player.speed.Y = 0.0f;                
             }
         }
 
