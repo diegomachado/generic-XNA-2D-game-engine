@@ -167,7 +167,7 @@ namespace ProjetoFinal
 
             mapManager.Draw(spriteBatch, new Point((int)camera.Position.X, (int)camera.Position.Y));
             localPlayerManager.Draw(spriteBatch, SegoeFont);
-            spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(700, 5), Color.White);
+            spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(ScreenSize.X - 70, 5), Color.White);
             playerManager.Draw(spriteBatch, SegoeFont);            
 
             spriteBatch.End();

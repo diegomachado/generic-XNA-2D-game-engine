@@ -132,6 +132,10 @@ namespace ProjetoFinal.Managers
                 moveAmount.Y = limitFallSpeed(10, moveAmount);
 
                 localPlayer.Position += moveAmount;
+
+                Camera.Instance.Position = localPlayer.Position - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
+                //Camera.Instance.Position = new Vector2(MathHelper.Lerp(Camera.Instance.Position.X, localPlayer.Position.X, 0.1f), MathHelper.Lerp(Camera.Instance.Position.Y, localPlayer.Position.Y, 0.1f));
+
                 
                 lastKeyboardState = keyboardState;
             }
@@ -216,7 +220,7 @@ namespace ProjetoFinal.Managers
             if (localPlayer != null)
             {
                 localPlayer.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 25) - Camera.Instance.Position, Color.White);
+                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - Camera.Instance.Position, Color.White);
 
                 // Debug na Tela
                 //DrawBoundingBox(localPlayer.CollisionBox, 1, Color.Red, spriteBatch);
@@ -225,6 +229,8 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "On Ground: " + localPlayer.OnGround.ToString(), new Vector2(5f, 5f), Color.White);
                 spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 25f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.Position.Y, new Vector2(5f, 45f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 65f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 85f), Color.White);
                 
                 DrawPoint(localPlayer.debugCorner1, 3, Color.Yellow, spriteBatch);
                 DrawPoint(localPlayer.debugCorner2, 3, Color.Yellow, spriteBatch);
