@@ -46,7 +46,8 @@ namespace ProjetoFinal.Managers
         
         Player localPlayer;
         Vector2 speed = Vector2.Zero;
-        Vector2 moveAmount = Vector2.Zero;
+
+        Point corner1, corner2, corner3, corner4;
 
         KeyboardState lastKeyboardState;
         
@@ -79,17 +80,13 @@ namespace ProjetoFinal.Managers
             localPlayer.CollisionBox.X = (int)localPlayer.Position.X + localPlayer.BoundingBox.X;
             localPlayer.CollisionBox.Y = (int)localPlayer.Position.Y + localPlayer.BoundingBox.Y;
                 
-            localPlayer.OnGround = (moveAmount.Y == 0) ? true : false;
-                
-            speed = Vector2.Zero;
-
             if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
             {
                 if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Left))
                     OnPlayerStateChanged(PlayerState.WalkingLeft);
 
                 localPlayer.Flipped = true;
-                speed -= localPlayer.Speed;
+                speed -= localPlayer.walkForce;
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
@@ -98,40 +95,53 @@ namespace ProjetoFinal.Managers
                     OnPlayerStateChanged(PlayerState.WalkingRight);
 
                 localPlayer.Flipped = false;
-                speed += localPlayer.Speed;                    
+                speed += localPlayer.walkForce;                    
             }
 
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
+            Rectangle collisionBoxVerticalOffset = localPlayer.CollisionBox;
+            collisionBoxVerticalOffset.Offset(0, 1);
+
+            if (checkCollision(collisionBoxVerticalOffset, collisionLayer))
             {
-                if (localPlayer.OnGround)
+                localPlayer.OnGround = true;
+                speed.Y = 0;
+
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
                 {
-                    if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-                        OnPlayerStateChanged(PlayerState.Jumping);
+                    if (localPlayer.OnGround)
+                    {
+                        if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
+                            OnPlayerStateChanged(PlayerState.Jumping);
 
-                    if (keyboardState.IsKeyDown(Keys.Left))
-                        OnPlayerStateChanged(PlayerState.JumpingLeft);
-                    else if (keyboardState.IsKeyDown(Keys.Right))
-                        OnPlayerStateChanged(PlayerState.JumpingRight);
-                    else
-                        OnPlayerStateChanged(PlayerState.Jumping);
+                        if (keyboardState.IsKeyDown(Keys.Left))
+                            OnPlayerStateChanged(PlayerState.JumpingLeft);
+                        else if (keyboardState.IsKeyDown(Keys.Right))
+                            OnPlayerStateChanged(PlayerState.JumpingRight);
+                        else
+                            OnPlayerStateChanged(PlayerState.Jumping);
 
-                    speed += localPlayer.JumpForce;
+                        speed += localPlayer.JumpForce;
+                        localPlayer.OnGround = false;
+                    }
                 }
             }
+            else
+            {
+                speed += localPlayer.Gravity;
+            }
+
+            if (Math.Abs(speed.X) < 1)
+                speed.X = 0;
+            
 
             if (!keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
                 OnPlayerStateChanged(PlayerState.Idle);
-            
-            speed += localPlayer.Gravity;  
-            moveAmount += speed;
 
-            moveAmount = horizontalCollisionTest(moveAmount, collisionLayer);
-            moveAmount = verticalCollisionTest(moveAmount, collisionLayer);
-
-            moveAmount.X *= localPlayer.Friction;
-            moveAmount.Y = limitFallSpeed(10, moveAmount);
+            speed.X *= localPlayer.Friction;
+            speed.Y = limitFallSpeed(10, speed);
+            handleHorizontalCollision(localPlayer, collisionLayer);
+            handleVerticalCollision(localPlayer, collisionLayer);
                 
-            localPlayer.Position += moveAmount;
             Camera.Instance.Position = localPlayer.Position 
                                         + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2) 
                                         - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
@@ -139,6 +149,79 @@ namespace ProjetoFinal.Managers
             lastKeyboardState = keyboardState;          
         }
 
+        private bool checkCollision(Rectangle collisionBox, Layer collisionLayer)
+        {
+            if (speed.Y < 0)
+            {
+                corner3 = new Point(collisionBox.Left + 1, collisionBox.Top);
+                corner4 = new Point(collisionBox.Right - 1, collisionBox.Top);
+            }
+            else
+            {
+                corner3 = new Point(collisionBox.Left + 1, collisionBox.Bottom);
+                corner4 = new Point(collisionBox.Right - 1, collisionBox.Bottom);
+            }
+
+            if (collisionLayer.GetTileValueByPixelPosition(corner3) || collisionLayer.GetTileValueByPixelPosition(corner4))
+                return true;
+
+            if (speed.X < 0)
+            {
+                corner1 = new Point(collisionBox.Left, collisionBox.Top + 1);
+                corner2 = new Point(collisionBox.Left, collisionBox.Bottom - 1);
+            }
+            else
+            {
+                corner1 = new Point(collisionBox.Right, collisionBox.Top + 1);
+                corner2 = new Point(collisionBox.Right, collisionBox.Bottom - 1);
+            }
+
+            if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
+                return true;            
+            
+            return false;
+        }
+
+        private void handleHorizontalCollision(Player player, Layer collisionLayer)
+        {
+            Rectangle collisionBoxOffset = localPlayer.CollisionBox;
+
+            for (int i = 0; i < Math.Abs(speed.X); ++i)
+            {
+                collisionBoxOffset.Offset(Math.Sign(speed.X), 0);
+                if (!checkCollision(collisionBoxOffset, collisionLayer))
+                {
+                    player.Position += new Vector2(Math.Sign(speed.X), 0);
+                }
+                else
+                {
+                    speed.X = 0;
+                    break;
+                }
+            }
+        }
+
+        private void handleVerticalCollision(Player player, Layer collisionLayer)
+        {
+            Rectangle collisionBoxOffset = localPlayer.CollisionBox;            
+
+            for (int i = 0; i < Math.Abs(speed.Y); ++i)
+            {
+                collisionBoxOffset.Offset(0, Math.Sign(speed.Y));
+                
+                if (!checkCollision(collisionBoxOffset, collisionLayer))
+                {
+                    player.Position += new Vector2(0, Math.Sign(speed.Y));
+                }
+                else
+                {
+                    speed.Y = 0;
+                    break;
+                }
+            }
+        }
+
+        
         private float limitFallSpeed(float speedLimit, Vector2 moveAmount)
         {
             if (moveAmount.Y >= speedLimit)
@@ -146,96 +229,33 @@ namespace ProjetoFinal.Managers
 
             return moveAmount.Y;
         }
-
-        private Vector2 horizontalCollisionTest(Vector2 moveAmount, Layer collisionLayer)
-        {
-            if (moveAmount.X == 0)
-                return moveAmount;
-
-            Rectangle nextPosition = localPlayer.CollisionBox;
-            nextPosition.Offset((int)moveAmount.X, 0);
-
-            Point corner1, corner2;
-            if (moveAmount.X < 0)
-            {
-                corner1 = new Point(nextPosition.Left, nextPosition.Top + 1);
-                corner2 = new Point(nextPosition.Left, nextPosition.Bottom - 1);
-                localPlayer.debugCorner1 = corner1;
-                localPlayer.debugCorner2 = corner2;
-            }
-            else
-            {
-                corner1 = new Point(nextPosition.Right, nextPosition.Top + 1);
-                corner2 = new Point(nextPosition.Right, nextPosition.Bottom - 1);
-                localPlayer.debugCorner1 = corner1;
-                localPlayer.debugCorner2 = corner2;
-            }
-
-            if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
-                moveAmount.X = 0;
-            
-            return moveAmount;
-        }
-
-        private Vector2 verticalCollisionTest(Vector2 moveAmount, Layer collisionLayer)
-        {
-            if (moveAmount.Y == 0)
-                return moveAmount;
-                        
-            Rectangle nextPosition = localPlayer.CollisionBox;
-            nextPosition.Offset((int)moveAmount.X, (int)moveAmount.Y);
-
-            Point corner1, corner2;
-            if (moveAmount.Y < 0)
-            {
-                corner1 = new Point(nextPosition.Left + 1, nextPosition.Top);
-                corner2 = new Point(nextPosition.Right - 1, nextPosition.Top);
-                localPlayer.debugCorner3 = corner1;
-                localPlayer.debugCorner4 = corner2;
-            }
-            else
-            {
-                corner1 = new Point(nextPosition.Left + 1, nextPosition.Bottom);
-                corner2 = new Point(nextPosition.Right - 1, nextPosition.Bottom);
-                localPlayer.debugCorner3 = corner1;
-                localPlayer.debugCorner4 = corner2;
-            }
-
-            if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
-            {
-                if (moveAmount.Y > 0)
-                    localPlayer.OnGround = true;
-                else if(moveAmount.Y < 0)
-                    localPlayer.OnGround = false;                    
-
-                moveAmount.Y = 0;
-            }
-
-            return moveAmount;
-        }
-
+        
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             if (localPlayer != null)
             {
                 localPlayer.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - Camera.Instance.Position, Color.White);
-
-                // Debug na Tela
                 //DrawBoundingBox(localPlayer.CollisionBox, 1, Color.Red, spriteBatch);
                 //DrawBoundingBox(localPlayer.NextPosition, 1, Color.CornflowerBlue, spriteBatch);
-
-                spriteBatch.DrawString(spriteFont, "On Ground: " + localPlayer.OnGround.ToString(), new Vector2(5f, 5f), Color.White);
+                
+                // On-Screen Debug
+                spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 140, 150), new Color(0, 0, 0, 0.2f));
+                
+                spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - Camera.Instance.Position, Color.White);
+                spriteBatch.DrawString(spriteFont, "OnGround: " + localPlayer.OnGround.ToString(), new Vector2(5f, 5f), Color.White);                
                 spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 25f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.Position.Y, new Vector2(5f, 45f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)speed.X, new Vector2(5f, 65f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)speed.Y, new Vector2(5f, 85f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 105f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 125f), Color.White);
                 
-                spriteBatch.DrawString(spriteFont, "Camera X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 85f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Camera Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 105f), Color.White);
-                
-                DrawPoint(localPlayer.debugCorner1, 3, Color.Yellow, spriteBatch);
-                DrawPoint(localPlayer.debugCorner2, 3, Color.Yellow, spriteBatch);
-                DrawPoint(localPlayer.debugCorner3, 3, Color.Red, spriteBatch);
-                DrawPoint(localPlayer.debugCorner4, 3, Color.Red, spriteBatch);
+                /*
+                DrawPoint(corner1, 3, Color.Yellow, spriteBatch);
+                DrawPoint(corner2, 3, Color.Yellow, spriteBatch);
+                DrawPoint(corner3, 3, Color.Red, spriteBatch);
+                DrawPoint(corner4, 3, Color.Red, spriteBatch);
+                 */
                 
             }
         }
@@ -247,10 +267,10 @@ namespace ProjetoFinal.Managers
 
         public void DrawBoundingBox(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left, r.Top, borderWidth, r.Height), Color.White); // Left
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right, r.Top, borderWidth, r.Height), Color.White); // Right
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left, r.Top, r.Width, borderWidth), Color.White); // Top
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White); // Bottom
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White); // Left
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White); // Right
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White); // Top
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Bottom - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White); // 
         }
     }
 }
