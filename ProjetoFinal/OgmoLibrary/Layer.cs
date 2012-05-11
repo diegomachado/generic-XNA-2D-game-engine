@@ -70,11 +70,5 @@ namespace OgmoLibrary
             return Convert.ToBoolean(Tiles[gridPoint].Id);
         }
 
-        /*public bool GetTileValueByPixelPosition(Vector2 xy)
-        {
-            Point gridPoint = new Point((int)xy.X / 32, (int)xy.Y / 32);
-            return Convert.ToBoolean(Tiles[gridPoint].Id);
-        }*/
-
     }
 }

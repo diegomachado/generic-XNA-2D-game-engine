@@ -38,19 +38,14 @@ namespace ProjetoFinal.Entities
         public Vector2 JumpForce { get; set; }
         public bool OnGround { get; set; } 
 
-        public Vector2 Speed { get; set; }        
+        public Vector2 walkForce { get; set; }        
         public float Friction { get; set; }
-
-        public Point debugCorner1 { get; set; }
-        public Point debugCorner2 { get; set; }
-        public Point debugCorner3 { get; set; }
-        public Point debugCorner4 { get; set; }
-
+        
         public double LastUpdateTime { get; set; }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox)
         {            
-            Speed = new Vector2(1.0f, 0.0f);
+            walkForce = new Vector2(1.0f, 0.0f);
             Friction = 0.85f;
             Gravity = new Vector2(0.0f, 0.3f);
             JumpForce = new Vector2(0.0f, - 8.0f);
@@ -64,7 +59,7 @@ namespace ProjetoFinal.Entities
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox, Vector2 gravity)
         {            
-            Speed = new Vector2(1.0f, 0.0f);
+            walkForce = new Vector2(1.0f, 0.0f);
             Friction = 0.85f;            
             JumpForce = new Vector2(0.0f, -8.0f);
             State = PlayerState.Idle;
