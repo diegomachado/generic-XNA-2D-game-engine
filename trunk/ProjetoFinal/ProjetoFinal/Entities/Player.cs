@@ -77,19 +77,21 @@ namespace ProjetoFinal.Entities
 
         public void Initialize()
         {
+
         }
 
         public virtual void Update()
         {
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
-        {            
+        {
+            // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
             if (Flipped)
                 spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
                 spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
-
     }
 }

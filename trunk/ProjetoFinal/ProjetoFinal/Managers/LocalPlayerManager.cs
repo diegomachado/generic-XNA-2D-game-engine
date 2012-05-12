@@ -141,7 +141,7 @@ namespace ProjetoFinal.Managers
             speed.Y = limitFallSpeed(10, speed);
             handleHorizontalCollision(localPlayer, collisionLayer);
             handleVerticalCollision(localPlayer, collisionLayer);
-                
+               
             Camera.Instance.Position = localPlayer.Position 
                                         + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2) 
                                         - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
@@ -262,11 +262,13 @@ namespace ProjetoFinal.Managers
 
         public void DrawPoint(Point position, int size, Color color, SpriteBatch spriteBatch)
         {
+            // TODO: Transformar conta com Camera em uma funcao de Camera
             spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(position.X - (int)Camera.Instance.Position.X, position.Y - (int)Camera.Instance.Position.Y, size, size), Color.White);
         }
 
         public void DrawBoundingBox(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch)
         {
+            // TODO: Transformar conta com Camera em uma funcao de Camera
             spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White); // Left
             spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White); // Right
             spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White); // Top

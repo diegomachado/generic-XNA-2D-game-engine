@@ -56,6 +56,7 @@ namespace OgmoLibrary
                         y = tile.Key.Y;
                         id = tile.Value.Id;
 
+                        // TODO: Colocar essas contas em um metodo de Camera
                         spriteBatch.Draw(spriteSheet,
                                             new Rectangle(x * tileSize.X - cameraPosition.X, y * tileSize.Y - cameraPosition.Y, tileSize.X, tileSize.Y),
                                             new Rectangle((id * tileSize.X) % spriteSheet.Width,
