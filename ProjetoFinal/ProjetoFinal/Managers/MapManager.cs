@@ -48,6 +48,5 @@ namespace ProjetoFinal.Managers
         {
             currentMap.Draw(spriteBatch, cameraPosition);
         }
-
     }
 }

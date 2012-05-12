@@ -165,6 +165,7 @@ namespace ProjetoFinal
 
             spriteBatch.Begin();
 
+            // Fazer metodo get X position de camera retornar inteiro pra nao ter que converter toda vez (podemos talvez criar uma subclasse nossa de Vector2 pra Position de Camera que funciona assim, sobrescrevendo o get X e Y dela ou acrescentando um getXInt novo a ela. Pq isso garante que vira inteiro e não dependemos de ter que lembrar.
             mapManager.Draw(spriteBatch, new Point((int)camera.Position.X, (int)camera.Position.Y));
             localPlayerManager.Draw(spriteBatch, SegoeFont);
             spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(ScreenSize.X - 70, 5), Color.White);

@@ -82,6 +82,5 @@ namespace ProjetoFinal.Entities
         {
             Position = Vector2.Add(Position, new Vector2(Speed, 0));
         }
-
     }
 }
