@@ -64,6 +64,12 @@ namespace ProjetoFinal.Managers
             return this.Content.Load<Texture2D>(String.Format(@"sprites/{0}", textureName));
         }
 
+        public Texture2D getEmptyTexture()
+        {
+            var t = new Texture2D(GraphicsDevice, 1, 1);
+            return t;
+        }
+
         public Texture2D getPixelTextureByColor(Color color)
         {
             var t = new Texture2D(GraphicsDevice, 1, 1);

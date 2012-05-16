@@ -48,9 +48,6 @@ namespace ProjetoFinal.Managers
             {
                 Player player = p.Value;
 
-                player.CollisionBox.X = (int)player.Position.X + player.BoundingBox.X;
-                player.CollisionBox.Y = (int)player.Position.Y + player.BoundingBox.Y;
-
                 acceleration = Vector2.Zero;
 
                 switch (player.State)
