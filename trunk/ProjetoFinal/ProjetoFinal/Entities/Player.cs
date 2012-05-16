@@ -32,7 +32,17 @@ namespace ProjetoFinal.Entities
         public Vector2 Position { get; set; }
         public Rectangle NextPosition { get; set; }
         public Rectangle BoundingBox { get; set; }
-        public Rectangle CollisionBox;
+
+        private Rectangle collisionBox;
+        public Rectangle CollisionBox
+        {
+            get
+            {
+                collisionBox.X = (int)Position.X + BoundingBox.X;
+                collisionBox.Y = (int)Position.Y + BoundingBox.Y;
+                return collisionBox;
+            }
+        }
 
         public Vector2 Gravity { get; set; }
         public Vector2 JumpForce { get; set; }
@@ -45,16 +55,15 @@ namespace ProjetoFinal.Entities
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox)
         {            
-            walkForce = new Vector2(1.0f, 0.0f);
+            walkForce = new Vector2(1, 0);
             Friction = 0.85f;
-            Gravity = new Vector2(0.0f, 0.3f);
-            JumpForce = new Vector2(0.0f, - 8.0f);
+            Gravity = new Vector2(0, 0.3f);
+            JumpForce = new Vector2(0, -8);
             State = PlayerState.Idle;
-
             Skin = playerSkin;
             Position = playerPosition;
             BoundingBox = boundingBox;
-            CollisionBox = new Rectangle((int)Position.X + BoundingBox.X, (int)Position.Y + BoundingBox.Y, BoundingBox.Width, BoundingBox.Height);
+            collisionBox = boundingBox;
         }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox, Vector2 gravity)
@@ -67,7 +76,6 @@ namespace ProjetoFinal.Entities
             Skin = playerSkin;
             Position = playerPosition;
             BoundingBox = boundingBox;
-            CollisionBox = new Rectangle((int)Position.X + BoundingBox.X, (int)Position.Y + BoundingBox.Y, BoundingBox.Width, BoundingBox.Height);
             Gravity = gravity;
         }
 
