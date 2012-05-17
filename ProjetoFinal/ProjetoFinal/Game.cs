@@ -87,6 +87,8 @@ namespace ProjetoFinal
                     clientNetworkManager.ip = "localhost";
 
                     networkManager = clientNetworkManager;
+                    
+                    clients.Add(0, new Client("[CLIENT]" + options["nickname"]));
 
                     break;
             }
@@ -169,7 +171,20 @@ namespace ProjetoFinal
             mapManager.Draw(spriteBatch, new Point((int)camera.Position.X, (int)camera.Position.Y));
             localPlayerManager.Draw(spriteBatch, SegoeFont);
             spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(ScreenSize.X - 70, 5), Color.White);
-            playerManager.Draw(spriteBatch, SegoeFont);            
+            playerManager.Draw(spriteBatch, SegoeFont);
+
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 170, 170), new Color(0, 0, 0, 0.2f));
+
+            
+            spriteBatch.DrawString(SegoeFont, "Players:", new Vector2(ScreenSize.X - 70, 25), Color.White);
+            int yTemp = 25;
+
+            foreach (KeyValuePair<short, Client> client in clients)
+            {
+                yTemp += 20;
+                spriteBatch.DrawString(SegoeFont, client.Value.nickname, new Vector2(ScreenSize.X - 200, yTemp), Color.White);               
+            }
+           
 
             spriteBatch.End();
 

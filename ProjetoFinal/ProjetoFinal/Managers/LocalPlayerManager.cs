@@ -86,18 +86,23 @@ namespace ProjetoFinal.Managers
                 return;
 
             // Input
-
             if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
-                localPlayerState = localPlayerState.Jumped(localPlayer, localPlayerStates);
+            {
+                localPlayerState = localPlayerState.Jumped(playerId, localPlayer, localPlayerStates);
+            }
 
-            if ( (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right)) || 
-                 (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D)) )
-                localPlayerState = localPlayerState.MovingLeft(localPlayer, localPlayerStates);
-            else if ( (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left)) || 
-                      (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A)) )
-                localPlayerState = localPlayerState.MovingRight(localPlayer, localPlayerStates);
+            if ((keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right)) ||
+                 (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D)))
+            {
+                localPlayerState = localPlayerState.MovingLeft(playerId, localPlayer, localPlayerStates);
+            }
+            else if ((keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left)) ||
+                      (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A)))
+            {
+                localPlayerState = localPlayerState.MovingRight(playerId, localPlayer, localPlayerStates);
+            }
 
-            localPlayerState = localPlayerState.Update(gameTime, localPlayer, collisionLayer, localPlayerStates);
+            localPlayerState = localPlayerState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerStates);
 
             Camera.Instance.Position = localPlayer.Position
                                         + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+
+using ProjetoFinal.EventArgs;
 using ProjetoFinal.Entities;
 using OgmoLibrary;
 
@@ -11,16 +13,18 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     abstract class LocalPlayerState
     {
-        public abstract LocalPlayerState Update(GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
+        public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
+
+        public abstract LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
 
         #region Public Messages
 
-        public virtual LocalPlayerState Jumped(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual LocalPlayerState Jumped(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             return this;
         }
 
-        public virtual LocalPlayerState MovingLeft(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual LocalPlayerState MovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
@@ -28,7 +32,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public virtual LocalPlayerState MovingRight(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual LocalPlayerState MovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
@@ -123,6 +127,14 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             }
 
             return false;
+        }
+
+        protected void OnPlayerStateChanged(short playerId, Player localPlayer, PlayerState playerState)
+        {
+            localPlayer.State = playerState;
+
+            if (PlayerStateChanged != null)
+                PlayerStateChanged(this, new PlayerStateChangedArgs(playerId, localPlayer));
         }
 
         // So player doesn't slide forever        
