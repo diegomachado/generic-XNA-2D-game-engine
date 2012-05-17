@@ -11,18 +11,16 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     abstract class LocalPlayerState
     {
-        static Dictionary<Enum, LocalPlayerState> localPlayerStates = new Dictionary<Enum, LocalPlayerState>();
-
-        public abstract LocalPlayerState Update(GameTime gameTime, Player localPlayer, Layer collisionLayer);
+        public abstract LocalPlayerState Update(GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
 
         #region Public Messages
 
-        public virtual LocalPlayerState Jumped(Player localPlayer)
+        public virtual LocalPlayerState Jumped(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             return this;
         }
 
-        public virtual LocalPlayerState MovingLeft(Player localPlayer)
+        public virtual LocalPlayerState MovingLeft(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
@@ -30,7 +28,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public virtual LocalPlayerState MovingRight(Player localPlayer)
+        public virtual LocalPlayerState MovingRight(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
@@ -127,17 +125,19 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return false;
         }
 
-        /*
-        protected LocalPlayerState clampHorizontalSpeed(Vector2 speed, LocalPlayerState localPlayerState)
-        {
-            // So player doesn't slide forever
-            if (Math.Abs(speed.X) < 0.2)
+        // So player doesn't slide forever        
+        protected bool clampHorizontalSpeed(Player localPlayer)
+        {            
+            if (Math.Abs(localPlayer.Speed.X) < 0.2)
             {
-                speed.X = 0;
+                localPlayer.SpeedX = 0;
 
-                return localPlayerState;
+                return true;   
             }
-        }*/
+
+            return false;
+        }
+
         #endregion
     }
 }

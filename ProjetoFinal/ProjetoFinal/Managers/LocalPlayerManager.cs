@@ -50,12 +50,20 @@ namespace ProjetoFinal.Managers
 
         KeyboardState lastKeyboardState;
         LocalPlayerState localPlayerState;
+        Dictionary<PlayerState, LocalPlayerState> localPlayerStates = new Dictionary<PlayerState, LocalPlayerState>();
         
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
         public LocalPlayerManager()
         {
-            localPlayerState = new JumpingStraightState();
+            localPlayerStates[PlayerState.Idle] = new IdleState();
+            localPlayerStates[PlayerState.JumpingStraight] = new JumpingStraightState();
+            localPlayerStates[PlayerState.JumpingLeft] = new JumpingLeftState();
+            localPlayerStates[PlayerState.JumpingRight] = new JumpingRightState();
+            localPlayerStates[PlayerState.WalkingLeft] = new WalkingLeftState();
+            localPlayerStates[PlayerState.WalkingRight] = new WalkingRightState();
+
+            localPlayerState = localPlayerStates[PlayerState.JumpingStraight];
         }
 
         public void createLocalPlayer(short id)
@@ -77,17 +85,19 @@ namespace ProjetoFinal.Managers
             if (localPlayer == null)
                 return;
 
+            // Input
+
             if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
-                localPlayerState = localPlayerState.Jumped(localPlayer);
+                localPlayerState = localPlayerState.Jumped(localPlayer, localPlayerStates);
 
             if ( (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right)) || 
                  (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D)) )
-                localPlayerState = localPlayerState.MovingLeft(localPlayer);
+                localPlayerState = localPlayerState.MovingLeft(localPlayer, localPlayerStates);
             else if ( (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left)) || 
                       (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A)) )
-                localPlayerState = localPlayerState.MovingRight(localPlayer);            
-            
-            localPlayerState = localPlayerState.Update(gameTime, localPlayer, collisionLayer);
+                localPlayerState = localPlayerState.MovingRight(localPlayer, localPlayerStates);
+
+            localPlayerState = localPlayerState.Update(gameTime, localPlayer, collisionLayer, localPlayerStates);
 
             Camera.Instance.Position = localPlayer.Position
                                         + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)

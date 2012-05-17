@@ -13,22 +13,22 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class WalkingRightState : WalkingSidewaysState
     {
-        public override LocalPlayerState Jumped(Player localPlayer)
+        public override LocalPlayerState Jumped(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.JumpForce;
 
-            return new JumpingRightState();
+            return localPlayerStates[PlayerState.JumpingRight];
         }
 
-        public override LocalPlayerState MovingLeft(Player localPlayer)
+        public override LocalPlayerState MovingLeft(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
 
-            return new WalkingLeftState();
+            return localPlayerStates[PlayerState.WalkingLeft];
         }
 
-        public override LocalPlayerState MovingRight(Player localPlayer)
+        public override LocalPlayerState MovingRight(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
@@ -36,9 +36,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        protected override LocalPlayerState getWalkingState()
+        protected override LocalPlayerState getWalkingState(Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
-            return new JumpingRightState();
+            return localPlayerStates[PlayerState.JumpingRight];
         }
 
         public override string ToString()
