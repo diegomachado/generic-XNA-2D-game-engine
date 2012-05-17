@@ -40,7 +40,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         #endregion
 
-        #region Private Methods
+        #region Protected Methods
 
         protected bool checkVerticalCollision(Rectangle collisionBox, Vector2 speed, Layer collisionLayer)
         {
@@ -127,6 +127,17 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return false;
         }
 
+        /*
+        protected LocalPlayerState clampHorizontalSpeed(Vector2 speed, LocalPlayerState localPlayerState)
+        {
+            // So player doesn't slide forever
+            if (Math.Abs(speed.X) < 0.2)
+            {
+                speed.X = 0;
+
+                return localPlayerState;
+            }
+        }*/
         #endregion
     }
 }

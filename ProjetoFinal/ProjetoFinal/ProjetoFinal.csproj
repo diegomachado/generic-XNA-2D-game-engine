@@ -122,11 +122,14 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="EventArgs\PlayerStateChangedArgs.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
+    <Compile Include="Managers\LocalPlayerStates\WalkingSidewaysState.cs" />
+    <Compile Include="Managers\LocalPlayerStates\JumpingSideways.cs" />
+    <Compile Include="Managers\LocalPlayerStates\JumpingState.cs" />
     <Compile Include="Managers\LocalPlayerStates\JumpingLeftState.cs" />
     <Compile Include="Managers\LocalPlayerStates\JumpingRightState.cs" />
     <Compile Include="Managers\LocalPlayerStates\WalkingLeftState.cs" />
     <Compile Include="Managers\LocalPlayerStates\WalkingRightState.cs" />
-    <Compile Include="Managers\LocalPlayerStates\JumpingState.cs" />
+    <Compile Include="Managers\LocalPlayerStates\JumpingStraightState.cs" />
     <Compile Include="Managers\LocalPlayerStates\IdleState.cs" />
     <Compile Include="Managers\LocalPlayerStates\LocalPlayerState.cs" />
     <Compile Include="Managers\MapManager.cs" />
