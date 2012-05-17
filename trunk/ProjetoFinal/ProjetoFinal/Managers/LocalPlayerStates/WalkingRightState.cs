@@ -13,22 +13,24 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class WalkingRightState : WalkingSidewaysState
     {
-        public override LocalPlayerState Jumped(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState Jumped(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.JumpForce;
 
+            OnPlayerStateChanged(playerId, localPlayer, PlayerState.JumpingRight);
             return localPlayerStates[PlayerState.JumpingRight];
         }
 
-        public override LocalPlayerState MovingLeft(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState MovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
 
+            OnPlayerStateChanged(playerId, localPlayer, PlayerState.WalkingLeft);
             return localPlayerStates[PlayerState.WalkingLeft];
         }
 
-        public override LocalPlayerState MovingRight(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState MovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
@@ -36,9 +38,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        protected override LocalPlayerState getWalkingState(Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        protected override PlayerState getWalkingState()
         {
-            return localPlayerStates[PlayerState.JumpingRight];
+            return PlayerState.JumpingRight;
         }
 
         public override string ToString()

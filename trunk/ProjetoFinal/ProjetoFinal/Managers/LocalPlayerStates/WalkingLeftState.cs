@@ -13,14 +13,15 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class WalkingLeftState : WalkingSidewaysState
     {
-        public override LocalPlayerState Jumped(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState Jumped(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.JumpForce;
 
+            OnPlayerStateChanged(playerId, localPlayer, PlayerState.JumpingLeft);
             return localPlayerStates[PlayerState.JumpingLeft];
         }
 
-        public override LocalPlayerState MovingLeft(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState MovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
@@ -28,17 +29,18 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public override LocalPlayerState MovingRight(Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState MovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
 
+            OnPlayerStateChanged(playerId, localPlayer, PlayerState.WalkingRight);
             return localPlayerStates[PlayerState.WalkingRight];
         }
 
-        protected override LocalPlayerState getWalkingState(Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        protected override PlayerState getWalkingState()
         {
-            return localPlayerStates[PlayerState.JumpingLeft];
+            return PlayerState.JumpingLeft;
         }
 
         public override string ToString()

@@ -13,7 +13,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     abstract class WalkingSidewaysState : LocalPlayerState
     {
-        public override LocalPlayerState Update(GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             Rectangle collisionBoxVerticalOffset = localPlayer.CollisionBox;
             collisionBoxVerticalOffset.Offset(0, 1);
@@ -22,20 +22,29 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             {
                 localPlayer.OnGround = false;
 
-                return getWalkingState(localPlayerStates);
+                OnPlayerStateChanged(playerId, localPlayer, getWalkingState());
+                return localPlayerStates[getWalkingState()];
             }
 
             localPlayer.SpeedX *= localPlayer.Friction;
 
             if (clampHorizontalSpeed(localPlayer))
-                return localPlayerStates[PlayerState.Idle];            
+            {
+                OnPlayerStateChanged(playerId, localPlayer, PlayerState.Idle);
+                return localPlayerStates[PlayerState.Idle];
+            }
 
             if (handleHorizontalCollision(localPlayer, collisionLayer))
+            {
+                OnPlayerStateChanged(playerId, localPlayer, PlayerState.Idle);
                 return localPlayerStates[PlayerState.Idle];
+            }
             else
+            {
                 return this;
+            }
         }
 
-        abstract protected LocalPlayerState getWalkingState(Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
+        abstract protected PlayerState getWalkingState();
     }
 }
