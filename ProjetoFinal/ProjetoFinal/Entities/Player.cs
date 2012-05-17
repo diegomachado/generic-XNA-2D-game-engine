@@ -23,7 +23,7 @@ namespace ProjetoFinal.Entities
         public PlayerState State { get; set; }
         public Texture2D Skin { get; set; }
         bool flipped = false;
-        public bool Flipped 
+        public bool FacingLeft 
         {
             get { return flipped; }
             set { flipped = value; }
@@ -50,6 +50,24 @@ namespace ProjetoFinal.Entities
 
         public Vector2 walkForce { get; set; }        
         public float Friction { get; set; }
+        private Vector2 speed;
+
+        public Vector2 Speed {
+            get { return speed; }
+            set { speed = value; }
+        }
+
+        public float SpeedX
+        {
+            get { return speed.X; }
+            set { speed.X = value; }
+        }
+        
+        public float SpeedY
+        {
+            get { return speed.Y; }
+            set { speed.Y = value; }
+        }
         
         public double LastUpdateTime { get; set; }
 
@@ -96,7 +114,7 @@ namespace ProjetoFinal.Entities
         public void Draw(SpriteBatch spriteBatch)
         {
             // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
-            if (Flipped)
+            if (FacingLeft)
                 spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
                 spriteBatch.Draw(Skin, Position - Camera.Instance.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

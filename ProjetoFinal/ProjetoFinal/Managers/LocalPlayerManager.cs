@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.EventArgs;
 using ProjetoFinal.Entities;
+using ProjetoFinal.Managers.LocalPlayerStates;
 
 using OgmoLibrary;
 
@@ -47,20 +48,20 @@ namespace ProjetoFinal.Managers
         Player localPlayer;
         Vector2 speed = Vector2.Zero;
 
-        Point corner1, corner2, corner3, corner4;
-
         KeyboardState lastKeyboardState;
+        LocalPlayerState localPlayerState;
         
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
         public LocalPlayerManager()
         {
+            localPlayerState = new JumpingState();
         }
 
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(6, 2, 24, 30));   
+            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30));   
         }
         
         protected void OnPlayerStateChanged(PlayerState playerState)
@@ -76,152 +77,21 @@ namespace ProjetoFinal.Managers
             if (localPlayer == null)
                 return;
 
-            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
-            {
-                if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Left))
-                {
-                    if(localPlayer.OnGround)
-                        OnPlayerStateChanged(PlayerState.WalkingLeft);
-                    else
-                        OnPlayerStateChanged(PlayerState.JumpingLeft);                    
-                }
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
+                localPlayerState = localPlayerState.Jumped(localPlayer);
 
-                localPlayer.Flipped = true;
-                speed -= localPlayer.walkForce;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
-            {
-                if (lastKeyboardState != null && !lastKeyboardState.IsKeyDown(Keys.Right))
-                {
-                    if (localPlayer.OnGround)
-                        OnPlayerStateChanged(PlayerState.WalkingRight);
-                    else
-                        OnPlayerStateChanged(PlayerState.JumpingRight);
-                }
-                 
-
-                localPlayer.Flipped = false;
-                speed += localPlayer.walkForce;                    
-            }
-
-            Rectangle collisionBoxVerticalOffset = localPlayer.CollisionBox;
-            collisionBoxVerticalOffset.Offset(0, 1);
-
-            if (checkCollision(collisionBoxVerticalOffset, collisionLayer))
-            {
-                localPlayer.OnGround = true;
-                speed.Y = 0;
-
-                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
-                {
-                    if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
-                        OnPlayerStateChanged(PlayerState.Jumping);
-                    else if (keyboardState.IsKeyDown(Keys.Left))
-                        OnPlayerStateChanged(PlayerState.JumpingLeft);
-                    else if (keyboardState.IsKeyDown(Keys.Right))
-                        OnPlayerStateChanged(PlayerState.JumpingRight);
-                    else
-                        OnPlayerStateChanged(PlayerState.Jumping);
-
-                    speed += localPlayer.JumpForce;
-                    localPlayer.OnGround = false;
-                }
-            }
-            else
-            {
-                speed += localPlayer.Gravity;
-            }
-
-            // So player doesn't slide forever
-            if (Math.Abs(speed.X) < 1)
-                speed.X = 0;
+            if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+                localPlayerState = localPlayerState.MovingLeft(localPlayer);
+            else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+                localPlayerState = localPlayerState.MovingRight(localPlayer);            
             
-            if (localPlayer.OnGround && !keyboardState.IsKeyDown(Keys.Space) && !keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
-                OnPlayerStateChanged(PlayerState.Idle);
+            localPlayerState = localPlayerState.Update(gameTime, localPlayer, collisionLayer);
 
-            speed.X *= localPlayer.Friction;
-            speed.Y = MathHelper.Clamp(speed.Y, localPlayer.JumpForce.Y, 10);
-            handleHorizontalCollision(collisionLayer);
-            handleVerticalCollision(collisionLayer);
-               
-            Camera.Instance.Position = localPlayer.Position 
-                                        + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2) 
+            Camera.Instance.Position = localPlayer.Position
+                                        + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)
                                         - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
 
-            lastKeyboardState = keyboardState;          
-        }
-
-        private bool checkCollision(Rectangle collisionBox, Layer collisionLayer)
-        {
-            if (speed.Y < 0)
-            {
-                corner1 = new Point(collisionBox.Left, collisionBox.Top);
-                corner2 = new Point(collisionBox.Right, collisionBox.Top);
-            }
-            else
-            {
-                corner1 = new Point(collisionBox.Left, collisionBox.Bottom);
-                corner2 = new Point(collisionBox.Right, collisionBox.Bottom);
-            }
-
-            if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
-                return true;
-
-            if (speed.X < 0)
-            {
-                corner3 = new Point(collisionBox.Left, collisionBox.Top);
-                corner4 = new Point(collisionBox.Left, collisionBox.Bottom);
-            }
-            else
-            {
-                corner3 = new Point(collisionBox.Right, collisionBox.Top);
-                corner4 = new Point(collisionBox.Right, collisionBox.Bottom);
-            }
-
-            if (collisionLayer.GetTileValueByPixelPosition(corner3) || collisionLayer.GetTileValueByPixelPosition(corner4))
-                return true;            
-            
-            return false;
-        }
-
-        private void handleHorizontalCollision(Layer collisionLayer)
-        {
-            Rectangle collisionBoxOffset = localPlayer.CollisionBox;
-
-            for (int i = 0; i < Math.Abs(speed.X); ++i)
-            {
-                collisionBoxOffset.Offset(Math.Sign(speed.X), 0);
-                if (!checkCollision(collisionBoxOffset, collisionLayer))
-                {
-                    localPlayer.Position += new Vector2(Math.Sign(speed.X), 0);
-                }
-                else
-                {
-                    speed.X = 0;
-                    break;
-                }
-            }
-        }
-
-        private void handleVerticalCollision(Layer collisionLayer)
-        {
-            Rectangle collisionBoxOffset = localPlayer.CollisionBox;            
-
-            for (int i = 0; i < Math.Abs(speed.Y); ++i)
-            {
-                collisionBoxOffset.Offset(0, Math.Sign(speed.Y));
-                
-                if (!checkCollision(collisionBoxOffset, collisionLayer))
-                {
-                    localPlayer.Position += new Vector2(0, Math.Sign(speed.Y));
-                }
-                else
-                {
-                    speed.Y = 0;
-                    break;
-                }
-            }
+            lastKeyboardState = keyboardState;      
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -239,16 +109,18 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "OnGround: " + localPlayer.OnGround.ToString(), new Vector2(5f, 5f), Color.White);                
                 spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 25f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.Position.Y, new Vector2(5f, 45f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)speed.X, new Vector2(5f, 65f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)speed.Y, new Vector2(5f, 85f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.Speed.X, new Vector2(5f, 65f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.Speed.Y, new Vector2(5f, 85f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 105f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 125f), Color.White);
-                spriteBatch.DrawString(spriteFont, "State: " + localPlayer.State, new Vector2(5f, 145f), Color.White);
+                spriteBatch.DrawString(spriteFont, "State: " + localPlayerState, new Vector2(5f, 145f), Color.White);
            
+                /*
                 DrawPoint(spriteBatch, corner1, 3, Color.Yellow);
                 DrawPoint(spriteBatch, corner2, 3, Color.Yellow);
                 DrawPoint(spriteBatch, corner3, 3, Color.Red);
                 DrawPoint(spriteBatch, corner4, 3, Color.Red);                
+                 */
             }
         }
 
