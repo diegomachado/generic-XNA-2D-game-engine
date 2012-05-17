@@ -80,9 +80,11 @@ namespace ProjetoFinal.Managers
             if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
                 localPlayerState = localPlayerState.Jumped(localPlayer);
 
-            if (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+            if ( (keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right)) || 
+                 (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D)) )
                 localPlayerState = localPlayerState.MovingLeft(localPlayer);
-            else if (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left))
+            else if ( (keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left)) || 
+                      (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A)) )
                 localPlayerState = localPlayerState.MovingRight(localPlayer);            
             
             localPlayerState = localPlayerState.Update(gameTime, localPlayer, collisionLayer);
