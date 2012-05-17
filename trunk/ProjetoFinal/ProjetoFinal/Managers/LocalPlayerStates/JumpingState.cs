@@ -17,44 +17,17 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             localPlayer.Speed += localPlayer.Gravity;
 
-            Rectangle collisionBoxVerticalOffset = localPlayer.CollisionBox;
-            collisionBoxVerticalOffset.Offset(0, 1);
-
-            if (checkVerticalCollision(collisionBoxVerticalOffset, localPlayer.Speed, collisionLayer))
-            {
-                localPlayer.OnGround = true;
-                localPlayer.Speed = Vector2.Zero;
-
-                return new IdleState();
-            }
-            
-            localPlayer.SpeedY = MathHelper.Clamp(localPlayer.Speed.Y, localPlayer.JumpForce.Y, 10);
-
-            if (handleVerticalCollision(localPlayer, collisionLayer) && localPlayer.Speed.Y > 0)
-                return new IdleState();                    
-            else
-                return this;
+            return this;
         }
 
         public override LocalPlayerState MovingLeft(Player localPlayer)
         {
-            localPlayer.Speed -= localPlayer.walkForce;
-            localPlayer.FacingLeft = true;
-
-            return new JumpingLeftState();
+            return this;
         }
 
         public override LocalPlayerState MovingRight(Player localPlayer)
         {
-            localPlayer.Speed += localPlayer.walkForce;
-            localPlayer.FacingLeft = false;
-
-            return new JumpingRightState();
-        }
-
-        public override string ToString()
-        {
-            return "Jumping";
+            return this;
         }
     }
 }

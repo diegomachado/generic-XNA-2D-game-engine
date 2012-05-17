@@ -55,7 +55,7 @@ namespace ProjetoFinal.Managers
 
         public LocalPlayerManager()
         {
-            localPlayerState = new JumpingState();
+            localPlayerState = new JumpingStraightState();
         }
 
         public void createLocalPlayer(short id)
@@ -101,10 +101,7 @@ namespace ProjetoFinal.Managers
             if (localPlayer != null)
             {
                 localPlayer.Draw(spriteBatch);
-                //DrawBoundingBox(localPlayer.CollisionBox, 1, Color.Red, spriteBatch);
-                //DrawBoundingBox(localPlayer.NextPosition, 1, Color.CornflowerBlue, spriteBatch);
                 
-                // On-Screen Debug
                 spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 170, 170), new Color(0, 0, 0, 0.2f));
                 
                 spriteBatch.DrawString(spriteFont, playerId.ToString(), new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - Camera.Instance.Position, Color.White);
@@ -116,14 +113,7 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 105f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 125f), Color.White);
                 spriteBatch.DrawString(spriteFont, "State: " + localPlayerState, new Vector2(5f, 145f), Color.White);
-           
-                /*
-                DrawPoint(spriteBatch, corner1, 3, Color.Yellow);
-                DrawPoint(spriteBatch, corner2, 3, Color.Yellow);
-                DrawPoint(spriteBatch, corner3, 3, Color.Red);
-                DrawPoint(spriteBatch, corner4, 3, Color.Red);                
-                 */
-            }
+           }
         }
 
         public void DrawPoint(SpriteBatch spriteBatch, Point position, int size, Color color)

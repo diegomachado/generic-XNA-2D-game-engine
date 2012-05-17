@@ -22,7 +22,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             localPlayer.Speed += localPlayer.JumpForce;
 
-            return new JumpingState();
+            return new JumpingStraightState();
         }
 
         public override LocalPlayerState MovingLeft(Player localPlayer)
