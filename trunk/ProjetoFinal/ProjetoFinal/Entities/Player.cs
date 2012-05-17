@@ -13,7 +13,7 @@ namespace ProjetoFinal.Entities
         Idle,
         WalkingLeft,
         WalkingRight,
-        Jumping,
+        JumpingStraight,
         JumpingRight,
         JumpingLeft
     }

@@ -74,7 +74,7 @@ namespace ProjetoFinal.Managers
                         player.State = PlayerState.WalkingLeft;
                         break;
 
-                    case PlayerState.Jumping:
+                    case PlayerState.JumpingStraight:
                         acceleration += player.JumpForce;
                         break;
                 }
@@ -88,7 +88,7 @@ namespace ProjetoFinal.Managers
 
                 //player.Position += player.speed;
 
-                if (player.State == PlayerState.Jumping)
+                if (player.State == PlayerState.JumpingStraight)
                     player.State = PlayerState.Idle;
 
                 //player.speed.Y = 0.0f;                

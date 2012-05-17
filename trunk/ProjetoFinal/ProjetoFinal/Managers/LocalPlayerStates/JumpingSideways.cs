@@ -13,29 +13,24 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     abstract class JumpingSideways : JumpingState
     {
-        public override LocalPlayerState Update(GameTime gameTime, Player localPlayer, Layer collisionLayer)
+        public override LocalPlayerState Update(GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
-            base.Update(gameTime, localPlayer, collisionLayer);
+            base.Update(gameTime, localPlayer, collisionLayer, localPlayerStates);
 
             Rectangle collisionBoxVerticalOffset = localPlayer.CollisionBox;
             collisionBoxVerticalOffset.Offset(0, 1);
 
             localPlayer.SpeedX *= localPlayer.Friction;
 
-            // So player doesn't slide forever
-            if (Math.Abs(localPlayer.Speed.X) < 0.2)
-            {
-                localPlayer.SpeedX = 0;
-
-                return new JumpingStraightState();
-            }
+            if (clampHorizontalSpeed(localPlayer))
+                return localPlayerStates[PlayerState.JumpingStraight]; 
 
             if (checkVerticalCollision(collisionBoxVerticalOffset, localPlayer.Speed, collisionLayer))
             {
                 localPlayer.OnGround = true;
                 localPlayer.SpeedY = 0;
 
-                return getWalkingState();
+                return getWalkingState(localPlayerStates);
             }
             
             localPlayer.SpeedY = MathHelper.Clamp(localPlayer.Speed.Y, localPlayer.JumpForce.Y, 10);
@@ -44,15 +39,15 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             bool collidedVertically = handleVerticalCollision(localPlayer, collisionLayer);
 
             if (collidedHorizontally && collidedVertically && localPlayer.Speed.Y > 0)
-                return new IdleState();
+                return localPlayerStates[PlayerState.Idle];
             else if (collidedHorizontally)
-                return new JumpingStraightState();
+                return localPlayerStates[PlayerState.JumpingStraight];
             else if (collidedVertically && localPlayer.Speed.Y > 0)
-                return getWalkingState();
+                return getWalkingState(localPlayerStates);
             else
                 return this;
         }
 
-        abstract protected LocalPlayerState getWalkingState();
+        abstract protected LocalPlayerState getWalkingState(Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
     }
 }
