@@ -121,6 +121,7 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="EventArgs\PlayerStateChangedArgs.cs" />
+    <Compile Include="Managers\EventManager.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
     <Compile Include="Managers\LocalPlayerStates\WalkingSidewaysState.cs" />
     <Compile Include="Managers\LocalPlayerStates\JumpingSideways.cs" />
