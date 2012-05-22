@@ -94,7 +94,7 @@ namespace ProjetoFinal
             }
 
             networkManager.Connect();
-            clientCounter = 1;
+            clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
 
             // Resources
             textureManager = TextureManager.Instance;
@@ -109,6 +109,7 @@ namespace ProjetoFinal
                 localPlayerManager.createLocalPlayer(0);
 
             // Registering Events
+            //this.localPlayerManager.PlayerStateChanged += 
             this.localPlayerManager.PlayerStateChanged += 
                     (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player));
 
@@ -155,9 +156,7 @@ namespace ProjetoFinal
             ProcessNetworkMessages();
             
             base.Update(gameTime);
-        }
-
-        
+        }        
 
         protected override void Draw(GameTime gameTime)
         {
@@ -173,18 +172,13 @@ namespace ProjetoFinal
             spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(ScreenSize.X - 70, 5), Color.White);
             playerManager.Draw(spriteBatch, SegoeFont);
 
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 170, 170), new Color(0, 0, 0, 0.2f));
-
-            
             spriteBatch.DrawString(SegoeFont, "Players:", new Vector2(ScreenSize.X - 70, 25), Color.White);
             int yTemp = 25;
-
             foreach (KeyValuePair<short, Client> client in clients)
             {
                 yTemp += 20;
                 spriteBatch.DrawString(SegoeFont, client.Value.nickname, new Vector2(ScreenSize.X - 200, yTemp), Color.White);               
-            }
-           
+            }           
 
             spriteBatch.End();
 
@@ -288,7 +282,6 @@ namespace ProjetoFinal
                 Player player = this.playerManager.GetPlayer(message.playerId);
 
                 // TODO: Tentar implementar algo de Lag Prediction
-
                 //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
 
                 if (player.LastUpdateTime < message.messageTime)

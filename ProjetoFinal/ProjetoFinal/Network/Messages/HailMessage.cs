@@ -46,7 +46,6 @@ namespace ProjetoFinal.Network.Messages
         {
             om.Write(clientId);
             om.Write((short)clientsInfo.Count);
-            //short numClients = (short)clientsInfo.Count;
             
             foreach (KeyValuePair<short, Client> clientInfo in clientsInfo)
             {
