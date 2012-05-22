@@ -38,6 +38,50 @@ namespace OgmoLibrary
 
             Point tileSize = this.TileSize;
 
+            Rectangle destinationRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
+            Rectangle sourceRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
+
+            var orderedLayers = from layer in Layers.Keys
+                                orderby Layers[layer].ZIndex descending
+                                select layer;                 
+
+            foreach (string layerName in orderedLayers)
+            {
+                currentLayer = Layers[layerName];
+
+                if (currentLayer.ExportMode == "XML")
+                {
+                    spriteSheet = currentLayer.SpriteSheet;
+
+                    foreach (KeyValuePair<Point, Tile> tile in currentLayer.Tiles)
+                    {
+                        x = tile.Key.X;
+                        y = tile.Key.Y;
+                        id = tile.Value.Id;
+
+                        destinationRectangle.X = x * tileSize.X - cameraPosition.X;
+                        destinationRectangle.Y = y * tileSize.Y - cameraPosition.Y;
+
+                        sourceRectangle.X = (id * tileSize.X) % spriteSheet.Width;
+                        sourceRectangle.Y = ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y;
+
+                        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White);
+                    }
+                }
+            }
+        }
+
+        public void DrawEfficiently(SpriteBatch spriteBatch, Point  ,Point cameraPosition)
+        {
+            int x, y, id;
+            Texture2D spriteSheet;
+            Layer currentLayer;
+
+            Point tileSize = this.TileSize;
+
+            Rectangle destinationRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
+            Rectangle sourceRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
+
             var orderedLayers = from layer in Layers.Keys
                                 orderby Layers[layer].ZIndex descending
                                 select layer;
@@ -56,14 +100,13 @@ namespace OgmoLibrary
                         y = tile.Key.Y;
                         id = tile.Value.Id;
 
-                        // TODO: Colocar essas contas em um metodo de Camera
-                        spriteBatch.Draw(spriteSheet,
-                                            new Rectangle(x * tileSize.X - cameraPosition.X, y * tileSize.Y - cameraPosition.Y, tileSize.X, tileSize.Y),
-                                            new Rectangle((id * tileSize.X) % spriteSheet.Width,
-                                                        ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y,
-                                                        tileSize.X,
-                                                        tileSize.Y),
-                                            Color.White);
+                        destinationRectangle.X = x * tileSize.X - cameraPosition.X;
+                        destinationRectangle.Y = y * tileSize.Y - cameraPosition.Y;
+
+                        sourceRectangle.X = (id * tileSize.X) % spriteSheet.Width;
+                        sourceRectangle.Y = ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y;
+
+                        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White);
                     }
                 }
             }

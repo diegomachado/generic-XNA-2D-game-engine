@@ -50,7 +50,7 @@ namespace ProjetoFinal.Managers
 
         KeyboardState lastKeyboardState;
         LocalPlayerState localPlayerState;
-        Dictionary<PlayerState, LocalPlayerState> localPlayerStates = new Dictionary<PlayerState, LocalPlayerState>();
+        public Dictionary<PlayerState, LocalPlayerState> localPlayerStates = new Dictionary<PlayerState, LocalPlayerState>();
         
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
