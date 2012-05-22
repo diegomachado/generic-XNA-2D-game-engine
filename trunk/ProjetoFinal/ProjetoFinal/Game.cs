@@ -149,7 +149,6 @@ namespace ProjetoFinal
             previousGamePadState = currentGamePadState;
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            camera.Update(currentKeyboardState);
             localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, mapManager.GetCollisionLayer());
             playerManager.Update();
 
@@ -159,30 +158,48 @@ namespace ProjetoFinal
         }        
 
         protected override void Draw(GameTime gameTime)
-        {
-            float frameRate;
-            frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
+        {            
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
 
-            // Fazer metodo get X position de camera retornar inteiro pra nao ter que converter toda vez (podemos talvez criar uma subclasse nossa de Vector2 pra Position de Camera que funciona assim, sobrescrevendo o get X e Y dela ou acrescentando um getXInt novo a ela. Pq isso garante que vira inteiro e não dependemos de ter que lembrar.
-            mapManager.Draw(spriteBatch, new Point((int)camera.Position.X, (int)camera.Position.Y));
+            // Drawing Entities
+
+            mapManager.DrawEfficiently(spriteBatch, 
+                                       camera.PositionToPoint(), 
+                                       PositionToTileCoord(camera.Position, mapManager.GetTileSize()),
+                                       PositionToTileCoord(camera.Position + ViewportVector(mapManager.GetTileSize()), mapManager.GetTileSize()));
+
             localPlayerManager.Draw(spriteBatch, SegoeFont);
-            spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(ScreenSize.X - 70, 5), Color.White);
             playerManager.Draw(spriteBatch, SegoeFont);
 
+            // In Game Debug
+            float frameRate;
+            frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
+            spriteBatch.DrawString(SegoeFont, "FPS: " + Math.Round(frameRate), new Vector2(ScreenSize.X - 70, 5), Color.White);
+            
             spriteBatch.DrawString(SegoeFont, "Players:", new Vector2(ScreenSize.X - 70, 25), Color.White);
-            int yTemp = 25;
+            
+            Vector2 playersDebugTextPosition = new Vector2(ScreenSize.X - 200, 25);
             foreach (KeyValuePair<short, Client> client in clients)
             {
-                yTemp += 20;
-                spriteBatch.DrawString(SegoeFont, client.Value.nickname, new Vector2(ScreenSize.X - 200, yTemp), Color.White);               
+                playersDebugTextPosition.Y += 20;
+                spriteBatch.DrawString(SegoeFont, client.Value.nickname, playersDebugTextPosition, Color.White);               
             }           
 
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public Point PositionToTileCoord(Vector2 position, Point tileSize)
+        {
+            return new Point((int)position.X / tileSize.X, (int)position.Y / tileSize.Y);
+        }
+
+        private Vector2 ViewportVector(Point tileSize)
+        {
+            return new Vector2( ScreenSize.X + tileSize.X, ScreenSize.Y + tileSize.Y);
         }
 
         private bool IsHost

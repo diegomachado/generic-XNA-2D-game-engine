@@ -71,7 +71,7 @@ namespace OgmoLibrary
             }
         }
 
-        public void DrawEfficiently(SpriteBatch spriteBatch, Point  ,Point cameraPosition)
+        public void DrawEfficiently(SpriteBatch spriteBatch, Point cameraPosition, Point firstTile, Point lastTile)
         {
             int x, y, id;
             Texture2D spriteSheet;
@@ -86,6 +86,9 @@ namespace OgmoLibrary
                                 orderby Layers[layer].ZIndex descending
                                 select layer;
 
+            //Console.WriteLine(firstTile.ToString());
+            //Console.WriteLine(lastTile.ToString());
+            
             foreach (string layerName in orderedLayers)
             {
                 currentLayer = Layers[layerName];
@@ -98,6 +101,15 @@ namespace OgmoLibrary
                     {
                         x = tile.Key.X;
                         y = tile.Key.Y;
+
+                        // TODO: Rever lógica com o Guifes
+                        if (x < firstTile.X || y < firstTile.Y || x > lastTile.X || y > lastTile.Y)
+                            continue;
+
+                        // Por que isso buga?
+                        // if( x > lastTile.X || y > lastTile.Y )
+                        //      break;
+
                         id = tile.Value.Id;
 
                         destinationRectangle.X = x * tileSize.X - cameraPosition.X;
