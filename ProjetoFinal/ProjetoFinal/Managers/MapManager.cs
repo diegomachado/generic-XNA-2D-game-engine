@@ -35,7 +35,7 @@ namespace ProjetoFinal.Managers
             return currentMap.MapSize;
         }
 
-        public Point GetTileSizeInPixels()
+        public Point GetTileSize()
         {
             return currentMap.TileSize;
         }
@@ -47,6 +47,11 @@ namespace ProjetoFinal.Managers
         public void Draw(SpriteBatch spriteBatch, Point cameraPosition)
         {
             currentMap.Draw(spriteBatch, cameraPosition);
+        }
+
+        public void DrawEfficiently(SpriteBatch spriteBatch, Point cameraPosition, Point firstTile, Point lastTile)
+        {
+            currentMap.DrawEfficiently(spriteBatch, cameraPosition, firstTile, lastTile);
         }
     }
 }

@@ -51,36 +51,9 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public void Update(KeyboardState keyboardState)
+        public Point PositionToPoint()
         {
-            if (keyboardState.IsKeyDown(Keys.I))
-                ScrollUp();
-            if (keyboardState.IsKeyDown(Keys.K))
-                ScrollDown();
-            if (keyboardState.IsKeyDown(Keys.J))
-                ScrollLeft();
-            if (keyboardState.IsKeyDown(Keys.L))
-                ScrollRight();
-        }
-
-        public void ScrollUp()
-        {
-            Position = Vector2.Add(Position, new Vector2(0, Speed));
-        }
-
-        public void ScrollDown()
-        {
-            Position = Vector2.Add(Position, new Vector2(0, Speed));
-        }
-
-        public void ScrollLeft()
-        {
-            Position = Vector2.Add(Position, new Vector2(-Speed, 0));
-        }
-
-        public void ScrollRight()
-        {
-            Position = Vector2.Add(Position, new Vector2(Speed, 0));
+            return new Point((int)position.X, (int)position.Y);
         }
     }
 }
