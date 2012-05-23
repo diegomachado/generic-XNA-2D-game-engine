@@ -46,6 +46,7 @@ namespace ProjetoFinal
         PlayerManager playerManager;
         LocalPlayerManager localPlayerManager;
         TextureManager textureManager;
+        EventManager eventManager;
         MapManager mapManager;
 
         // Camera Globals
@@ -100,6 +101,9 @@ namespace ProjetoFinal
             textureManager = TextureManager.Instance;
             textureManager.setContent(Content, GraphicsDevice);
 
+            // Events
+            eventManager = EventManager.Instance;
+
             // Managers
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
@@ -109,9 +113,7 @@ namespace ProjetoFinal
                 localPlayerManager.createLocalPlayer(0);
 
             // Registering Events
-            //this.localPlayerManager.PlayerStateChanged += 
-            this.localPlayerManager.PlayerStateChanged += 
-                    (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player));
+            eventManager.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player));
 
             // Window Management
             graphics.PreferredBackBufferWidth = 800;

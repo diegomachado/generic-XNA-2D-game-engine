@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using ProjetoFinal.EventArgs;
 using ProjetoFinal.Entities;
 using ProjetoFinal.Managers.LocalPlayerStates;
 
@@ -52,8 +51,6 @@ namespace ProjetoFinal.Managers
         LocalPlayerState localPlayerState;
         public Dictionary<PlayerState, LocalPlayerState> localPlayerStates = new Dictionary<PlayerState, LocalPlayerState>();
         
-        public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
-
         public LocalPlayerManager()
         {
             localPlayerStates[PlayerState.Idle] = new IdleState();
@@ -74,14 +71,6 @@ namespace ProjetoFinal.Managers
         {
             playerId = id;
             localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30));   
-        }
-        
-        protected void OnPlayerStateChanged(PlayerState playerState)
-        {
-            localPlayer.State = playerState;
-
-            if (PlayerStateChanged != null)
-                PlayerStateChanged(this, new PlayerStateChangedArgs(playerId, localPlayer));
         }
         
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Layer collisionLayer)

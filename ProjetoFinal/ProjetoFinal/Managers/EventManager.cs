@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ProjetoFinal.EventArgs;
+using ProjetoFinal.Entities;
+
 namespace ProjetoFinal.Managers
 {
     class EventManager
@@ -18,6 +21,14 @@ namespace ProjetoFinal.Managers
 
                 return instance;
             }
+        }
+
+        public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
+
+        public void throwPlayerStateChanged(short id, Player player)
+        {
+            if (PlayerStateChanged != null)
+                PlayerStateChanged(this, new PlayerStateChangedArgs(id, player));
         }
     }
 }

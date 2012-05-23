@@ -23,7 +23,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override LocalPlayerState StoppedMovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
-            //OnPlayerStateChanged(playerId, localPlayer, PlayerState.WalkingLeft);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerState.StoppingJumpingLeft);
             return localPlayerStates[PlayerState.StoppingJumpingLeft];
         }
 
