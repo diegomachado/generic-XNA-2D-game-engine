@@ -5,7 +5,6 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
-using ProjetoFinal.EventArgs;
 using ProjetoFinal.Entities;
 using OgmoLibrary;
 
@@ -13,8 +12,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     abstract class LocalPlayerState
     {
-        public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
-        
         public abstract LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
 
         #region Public Messages
@@ -143,8 +140,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             localPlayer.State = playerState;
 
-            if (PlayerStateChanged != null)
-                PlayerStateChanged(this, new PlayerStateChangedArgs(playerId, localPlayer));
+            EventManager.Instance.throwPlayerStateChanged(playerId, localPlayer);
         }
 
         // So player doesn't slide forever        

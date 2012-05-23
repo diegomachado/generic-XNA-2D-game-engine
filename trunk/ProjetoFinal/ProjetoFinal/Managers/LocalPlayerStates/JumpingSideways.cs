@@ -33,7 +33,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 localPlayer.OnGround = true;
                 localPlayer.SpeedY = 0;
 
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.JumpingLeft);
+                OnPlayerStateChanged(playerId, localPlayer, getWalkingState());
                 return localPlayerStates[getWalkingState()];
             }
             
