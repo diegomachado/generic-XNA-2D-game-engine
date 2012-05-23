@@ -161,14 +161,19 @@ namespace ProjetoFinal
         {            
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            //Matrix scaleMatrix = Matrix.CreateScale(0.5f);
+            
+            //spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, scaleMatrix);
             spriteBatch.Begin();
 
             // Drawing Entities
 
-            mapManager.DrawEfficiently(spriteBatch, 
-                                       camera.PositionToPoint(), 
+            mapManager.DrawEfficiently(spriteBatch,
+                                       camera.PositionToPoint(),
                                        PositionToTileCoord(camera.Position, mapManager.GetTileSize()),
                                        PositionToTileCoord(camera.Position + ViewportVector(mapManager.GetTileSize()), mapManager.GetTileSize()));
+      
+            //mapManager.Draw(spriteBatch, camera.PositionToPoint());
 
             localPlayerManager.Draw(spriteBatch, SegoeFont);
             playerManager.Draw(spriteBatch, SegoeFont);

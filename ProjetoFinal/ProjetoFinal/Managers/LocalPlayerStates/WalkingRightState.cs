@@ -21,7 +21,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return localPlayerStates[PlayerState.JumpingRight];
         }
 
-        public override LocalPlayerState MovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
@@ -30,12 +30,18 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return localPlayerStates[PlayerState.WalkingLeft];
         }
 
-        public override LocalPlayerState MovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override LocalPlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
 
             return this;
+        }
+
+        public override LocalPlayerState StoppedMovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        {
+            //OnPlayerStateChanged(playerId, localPlayer, PlayerState.WalkingLeft);
+            return localPlayerStates[PlayerState.StoppingWalkingRight];
         }
 
         protected override PlayerState getWalkingState()
