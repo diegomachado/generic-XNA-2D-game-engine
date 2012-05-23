@@ -123,6 +123,10 @@
     <Compile Include="EventArgs\PlayerStateChangedArgs.cs" />
     <Compile Include="Managers\EventManager.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
+    <Compile Include="Managers\LocalPlayerStates\StoppingJumpingLeftState.cs" />
+    <Compile Include="Managers\LocalPlayerStates\StoppingJumpingRightState.cs" />
+    <Compile Include="Managers\LocalPlayerStates\StoppingWalkingLeftState.cs" />
+    <Compile Include="Managers\LocalPlayerStates\StoppingWalkingRightState.cs" />
     <Compile Include="Managers\LocalPlayerStates\WalkingSidewaysState.cs" />
     <Compile Include="Managers\LocalPlayerStates\JumpingSideways.cs" />
     <Compile Include="Managers\LocalPlayerStates\JumpingState.cs" />

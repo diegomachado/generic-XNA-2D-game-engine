@@ -14,7 +14,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     abstract class LocalPlayerState
     {
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
-
+        
         public abstract LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
 
         #region Public Messages
@@ -24,7 +24,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public virtual LocalPlayerState MovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual LocalPlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
@@ -32,11 +32,21 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public virtual LocalPlayerState MovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual LocalPlayerState StoppedMovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        {
+            return this;
+        }
+
+        public virtual LocalPlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
 
+            return this;
+        }
+
+        public virtual LocalPlayerState StoppedMovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        {
             return this;
         }
 

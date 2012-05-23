@@ -12,10 +12,14 @@ namespace ProjetoFinal.Entities
     {
         Idle,
         WalkingLeft,
+        StoppingWalkingLeft,
         WalkingRight,
+        StoppingWalkingRight,
         JumpingStraight,
         JumpingRight,
-        JumpingLeft
+        StoppingJumpingRight,
+        JumpingLeft,
+        StoppingJumpingLeft
     }
 
     class Player

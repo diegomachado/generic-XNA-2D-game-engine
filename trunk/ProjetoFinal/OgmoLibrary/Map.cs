@@ -106,7 +106,7 @@ namespace OgmoLibrary
                         if (x < firstTile.X || y < firstTile.Y || x > lastTile.X || y > lastTile.Y)
                             continue;
 
-                        // Por que isso buga?
+                        // Por que isso buga? Ordem dos Tiles no Dictionary?
                         // if( x > lastTile.X || y > lastTile.Y )
                         //      break;
 

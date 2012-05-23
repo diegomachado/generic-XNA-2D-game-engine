@@ -62,6 +62,10 @@ namespace ProjetoFinal.Managers
             localPlayerStates[PlayerState.JumpingRight] = new JumpingRightState();
             localPlayerStates[PlayerState.WalkingLeft] = new WalkingLeftState();
             localPlayerStates[PlayerState.WalkingRight] = new WalkingRightState();
+            localPlayerStates[PlayerState.StoppingJumpingLeft] = new StoppingJumpingLeftState();
+            localPlayerStates[PlayerState.StoppingJumpingRight] = new StoppingJumpingRightState();
+            localPlayerStates[PlayerState.StoppingWalkingLeft] = new StoppingWalkingLeftState();
+            localPlayerStates[PlayerState.StoppingWalkingRight] = new StoppingWalkingRightState();
 
             localPlayerState = localPlayerStates[PlayerState.JumpingStraight];
         }
@@ -79,28 +83,85 @@ namespace ProjetoFinal.Managers
             if (PlayerStateChanged != null)
                 PlayerStateChanged(this, new PlayerStateChangedArgs(playerId, localPlayer));
         }
-
+        
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Layer collisionLayer)
         {
+            double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
+
             if (localPlayer == null)
                 return;
 
+            /*if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                // Key Just Pressed
+                if (!lastKeyboardState.IsKeyDown(Keys.Space))
+                {
+                }
+                // Key kept pressed
+                else
+                {
+                }
+            }
+            // Key Released
+            else if (lastKeyboardState.IsKeyDown(Keys.Space))
+            {
+            }*/
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                localPlayerState = localPlayerState.MovedLeft(playerId, localPlayer, localPlayerStates);
+
+                // Key Just Pressed
+                if (!lastKeyboardState.IsKeyDown(Keys.Left))
+                {
+                }
+                // Key kept pressed
+                else
+                {
+                }
+            }
+            // Key Released
+            else if (lastKeyboardState.IsKeyDown(Keys.Left))
+            {
+                localPlayerState = localPlayerState.StoppedMovingLeft(playerId, localPlayer, localPlayerStates);
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                localPlayerState = localPlayerState.MovedRight(playerId, localPlayer, localPlayerStates);
+
+                // Key Just Pressed
+                if (!lastKeyboardState.IsKeyDown(Keys.Right))
+                {
+                }
+                // Key kept pressed
+                else
+                {
+                }
+            }
+            // Key Released
+            else if (lastKeyboardState.IsKeyDown(Keys.Right))
+            {
+                localPlayerState = localPlayerState.StoppedMovingRight(playerId, localPlayer, localPlayerStates);
+            }
+
             // Input
+           
             if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
             {
                 localPlayerState = localPlayerState.Jumped(playerId, localPlayer, localPlayerStates);
             }
-
-            if ((keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right)) ||
-                 (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D)))
-            {
-                localPlayerState = localPlayerState.MovingLeft(playerId, localPlayer, localPlayerStates);
-            }
-            else if ((keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left)) ||
-                      (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A)))
-            {
-                localPlayerState = localPlayerState.MovingRight(playerId, localPlayer, localPlayerStates);
-            }
+            /*
+           if ((keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right)) ||
+                (keyboardState.IsKeyDown(Keys.A) && !keyboardState.IsKeyDown(Keys.D)))
+           {
+               localPlayerState = localPlayerState.MovedLeft(playerId, localPlayer, localPlayerStates);
+           }
+           else if ((keyboardState.IsKeyDown(Keys.Right) && !keyboardState.IsKeyDown(Keys.Left)) ||
+                     (keyboardState.IsKeyDown(Keys.D) && !keyboardState.IsKeyDown(Keys.A)))
+           {
+               localPlayerState = localPlayerState.MovedRight(playerId, localPlayer, localPlayerStates);
+           }*/
 
             localPlayerState = localPlayerState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerStates);
 
@@ -128,6 +189,7 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 105f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 125f), Color.White);
                 spriteBatch.DrawString(spriteFont, "State: " + localPlayerState, new Vector2(5f, 145f), Color.White);
+                
            }
         }
 
