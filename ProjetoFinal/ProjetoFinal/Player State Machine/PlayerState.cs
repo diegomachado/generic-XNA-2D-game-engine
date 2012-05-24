@@ -10,6 +10,15 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
+    enum PlayerStateMessage
+    {
+        Jumped,
+        MovedLeft,
+        StoppedMovingLeft,
+        MovedRight,
+        StoppedMovingRight
+    }
+
     abstract class PlayerState
     {
         bool isLocal;
@@ -134,12 +143,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return false;
         }
 
-        protected void OnPlayerStateChanged(short playerId, Player player, PlayerStateType playerState)
+        protected void OnPlayerStateChanged(short playerId, Player player, PlayerStateType playerState, PlayerStateMessage message)
         {
             player.State = playerState;
 
             if(isLocal)
-                EventManager.Instance.throwPlayerStateChanged(playerId, player);
+                EventManager.Instance.throwPlayerStateChanged(playerId, player, message);
         }
 
         // So player doesn't slide forever        

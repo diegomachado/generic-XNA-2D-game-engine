@@ -19,13 +19,13 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             localPlayer.FacingLeft = true;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingLeft);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.StoppingJumpingRight, PlayerStateMessage.MovedLeft);
             return localPlayerStates[PlayerStateType.JumpingLeft];
         }
 
         public override PlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingRight);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.StoppingJumpingRight, PlayerStateMessage.MovedRight);
             return localPlayerStates[PlayerStateType.JumpingRight];
         }
 

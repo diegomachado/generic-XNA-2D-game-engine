@@ -26,7 +26,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             localPlayer.Speed += localPlayer.JumpForce;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingRight);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.WalkingRight, PlayerStateMessage.Jumped);
             return localPlayerStates[PlayerStateType.JumpingRight];
         }
 
@@ -34,13 +34,13 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             localPlayer.FacingLeft = true;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.WalkingLeft);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.WalkingRight, PlayerStateMessage.MovedLeft);
             return localPlayerStates[PlayerStateType.WalkingLeft];
         }
 
         public override PlayerState StoppedMovingRight(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.StoppingWalkingRight);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.WalkingRight, PlayerStateMessage.StoppedMovingRight);
             return localPlayerStates[PlayerStateType.StoppingWalkingRight];
         }
 

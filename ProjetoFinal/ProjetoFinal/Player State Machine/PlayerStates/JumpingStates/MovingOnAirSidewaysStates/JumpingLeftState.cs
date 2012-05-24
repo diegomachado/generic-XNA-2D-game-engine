@@ -24,7 +24,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override PlayerState StoppedMovingLeft(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.StoppingJumpingLeft);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingLeft, PlayerStateMessage.StoppedMovingLeft);
             return localPlayerStates[PlayerStateType.StoppingJumpingLeft];
         }
 
@@ -32,7 +32,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             localPlayer.FacingLeft = false;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingRight);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingLeft, PlayerStateMessage.MovedRight);
             return localPlayerStates[PlayerStateType.JumpingRight];
         }
 
