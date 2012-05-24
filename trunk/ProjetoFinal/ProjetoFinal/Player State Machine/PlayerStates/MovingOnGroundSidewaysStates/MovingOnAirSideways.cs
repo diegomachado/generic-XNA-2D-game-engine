@@ -25,17 +25,13 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             localPlayer.SpeedX *= localPlayer.Friction;
 
             if (clampHorizontalSpeed(localPlayer))
-            {
-                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingStraight);
                 return localPlayerStates[PlayerStateType.JumpingStraight];
-            }
 
             if (checkVerticalCollision(collisionBoxVerticalOffset, localPlayer.Speed, collisionLayer))
             {
                 localPlayer.OnGround = true;
                 localPlayer.SpeedY = 0;
 
-                //OnPlayerStateChanged(playerId, localPlayer, getWalkingState());
                 return localPlayerStates[getWalkingState()];
             }
             
@@ -45,24 +41,13 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             bool collidedVertically = handleVerticalCollision(localPlayer, collisionLayer);
 
             if (collidedHorizontally && collidedVertically && localPlayer.Speed.Y > 0)
-            {
-                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
                 return localPlayerStates[PlayerStateType.Idle];
-            }
             else if (collidedHorizontally)
-            {
-                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingStraight);
                 return localPlayerStates[PlayerStateType.JumpingStraight];
-            }
             else if (collidedVertically && localPlayer.Speed.Y > 0)
-            {
-                //OnPlayerStateChanged(playerId, localPlayer, getWalkingState());
                 return localPlayerStates[getWalkingState()];
-            }
             else
-            {
                 return this;
-            }
         }
 
         abstract protected PlayerStateType getWalkingState();

@@ -24,27 +24,18 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             {
                 localPlayer.OnGround = false;
 
-                //OnPlayerStateChanged(playerId, localPlayer, getJumpingState(), );
                 return localPlayerStates[getJumpingState()];
             }
 
             localPlayer.SpeedX *= localPlayer.Friction;
 
             if (clampHorizontalSpeed(localPlayer))
-            {
-                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
                 return localPlayerStates[PlayerStateType.Idle];
-            }
 
             if (handleHorizontalCollision(localPlayer, collisionLayer))
-            {
-                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
                 return localPlayerStates[PlayerStateType.Idle];
-            }
             else
-            {
                 return this;
-            }
         }
 
         abstract protected PlayerStateType getJumpingState();
