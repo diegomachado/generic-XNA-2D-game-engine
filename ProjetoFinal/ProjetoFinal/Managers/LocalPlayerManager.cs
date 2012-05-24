@@ -48,9 +48,9 @@ namespace ProjetoFinal.Managers
         Vector2 speed = Vector2.Zero;
 
         KeyboardState lastKeyboardState;
-        SidewaysState localPlayerSidewaysState;
+        HorizontalMovementState localPlayerSidewaysState;
         VerticalMovementState localPlayerVerticalState;
-        Dictionary<HorizontalStateType, SidewaysState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, SidewaysState>();
+        Dictionary<HorizontalStateType, HorizontalMovementState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
         Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
         
         public LocalPlayerManager()

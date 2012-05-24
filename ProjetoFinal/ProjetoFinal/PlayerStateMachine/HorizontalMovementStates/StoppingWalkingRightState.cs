@@ -11,9 +11,9 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    class StoppingWalkingRightState : SidewaysState
+    class StoppingWalkingRightState : HorizontalMovementState
     {
-        public override SidewaysState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             player.SpeedX *= player.Friction;
 
@@ -23,12 +23,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 return this;
         }
 
-        public override SidewaysState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public override HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return playerStates[HorizontalStateType.WalkingLeft];
         }
 
-        public override SidewaysState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public override HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return playerStates[HorizontalStateType.WalkingRight];
         }
