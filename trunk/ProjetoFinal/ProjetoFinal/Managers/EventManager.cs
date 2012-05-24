@@ -26,10 +26,10 @@ namespace ProjetoFinal.Managers
 
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
-        public void throwPlayerStateChanged(short id, Player player, PlayerStateMessage message)
+        public void throwPlayerStateChanged(short id, Player player/*, PlayerStateMessage message*/)
         {
             if (PlayerStateChanged != null)
-                PlayerStateChanged(this, new PlayerStateChangedArgs(id, player, message));
+                PlayerStateChanged(this, new PlayerStateChangedArgs(id, player/*, message*/));
         }
     }
 }

@@ -19,16 +19,16 @@ namespace ProjetoFinal.Managers
     class PlayerManager
     {
         Dictionary<short, Player> players;
-        Dictionary <short, PlayerState> playerState;
-        Dictionary<PlayerStateType, PlayerState> playerStates;
+        //Dictionary <short, PlayerState> playerState;
+        //Dictionary<PlayerStateType, PlayerState> playerStates;
 
         public PlayerManager()
         {
             players = new Dictionary<short, Player>();
-            playerState = new Dictionary<short, PlayerState>();
-            playerStates = new Dictionary<PlayerStateType, PlayerState>();
+            //playerState = new Dictionary<short, PlayerState>();
+            //playerStates = new Dictionary<PlayerStateType, PlayerState>();
 
-            playerStates[PlayerStateType.Idle] = new IdleState(false);
+            /*playerStates[PlayerStateType.Idle] = new IdleState(false);
             playerStates[PlayerStateType.JumpingStraight] = new JumpingStraightState(false);
             playerStates[PlayerStateType.JumpingLeft] = new JumpingLeftState(false);
             playerStates[PlayerStateType.JumpingRight] = new JumpingRightState(false);
@@ -37,7 +37,7 @@ namespace ProjetoFinal.Managers
             playerStates[PlayerStateType.StoppingJumpingLeft] = new StoppingJumpingLeftState(false);
             playerStates[PlayerStateType.StoppingJumpingRight] = new StoppingJumpingRightState(false);
             playerStates[PlayerStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState(false);
-            playerStates[PlayerStateType.StoppingWalkingRight] = new StoppingWalkingRightState(false);
+            playerStates[PlayerStateType.StoppingWalkingRight] = new StoppingWalkingRightState(false);*/
         }
 
         public Player GetPlayer(short id)
@@ -48,7 +48,7 @@ namespace ProjetoFinal.Managers
             Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 240), new Rectangle(5, 1, 24, 30));
 
             players.Add(id, player);
-            playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
+            //playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
 
             return player;
         }
@@ -58,7 +58,7 @@ namespace ProjetoFinal.Managers
             if (!this.players.ContainsKey(id))
             {
                 this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30)));
-                playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
+                //playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
             }
         }
 
@@ -69,7 +69,7 @@ namespace ProjetoFinal.Managers
                 Player player = p.Value;
                 short playerId = p.Key;
 
-                playerState[playerId] = playerState[playerId].Update(playerId, gameTime, player, collisionLayer, playerStates);
+                //playerState[playerId] = playerState[playerId].Update(playerId, gameTime, player, collisionLayer, playerStates);
             }
         }
 
@@ -105,13 +105,13 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, PlayerStateType playerStateType, Vector2 position, PlayerStateMessage message, double updateTime)
+        public void UpdatePlayer(short playerId, PlayerStateType playerStateType, Vector2 position/*, PlayerStateMessage message*/, double updateTime)
         {
             players[playerId].Position = position;
             players[playerId].LastState = playerStateType;
             players[playerId].LastUpdateTime = updateTime;
 
-            playerState[playerId] = playerStates[playerStateType];
+            /*playerState[playerId] = playerStates[playerStateType];
 
             switch (message)
             {
@@ -135,6 +135,7 @@ namespace ProjetoFinal.Managers
                     playerState[playerId] = playerState[playerId].StoppedMovingRight(playerId, players[playerId], playerStates);
                     break;
             }
+             * */
         }
     }
 }
