@@ -24,7 +24,7 @@ namespace ProjetoFinal.Entities
 
     class Player
     {
-        public PlayerStateType State { get; set; }
+        public PlayerStateType LastState { get; set; }
         public Texture2D Skin { get; set; }
         bool flipped = false;
         public bool FacingLeft 
@@ -81,7 +81,7 @@ namespace ProjetoFinal.Entities
             Friction = 0.85f;
             Gravity = new Vector2(0, 0.3f);
             JumpForce = new Vector2(0, -8);
-            State = PlayerStateType.Idle;
+            LastState = PlayerStateType.Idle;
             Skin = playerSkin;
             Position = playerPosition;
             BoundingBox = boundingBox;
@@ -93,7 +93,7 @@ namespace ProjetoFinal.Entities
             walkForce = new Vector2(1.0f, 0.0f);
             Friction = 0.85f;            
             JumpForce = new Vector2(0.0f, -8.0f);
-            State = PlayerStateType.Idle;
+            LastState = PlayerStateType.Idle;
 
             Skin = playerSkin;
             Position = playerPosition;

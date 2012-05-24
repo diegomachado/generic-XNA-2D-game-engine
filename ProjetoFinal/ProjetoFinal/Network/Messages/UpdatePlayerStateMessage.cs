@@ -27,7 +27,7 @@ namespace ProjetoFinal.Network.Messages
             playerId = id;
             messageTime = NetTime.Now;
             position = player.Position;
-            playerState = player.State;
+            playerState = player.LastState;
             playerStateMessage = message;
         }
 
