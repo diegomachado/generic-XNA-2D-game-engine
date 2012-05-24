@@ -48,23 +48,29 @@ namespace ProjetoFinal.Managers
         Vector2 speed = Vector2.Zero;
 
         KeyboardState lastKeyboardState;
-        PlayerState localPlayerState;
-        Dictionary<PlayerStateType, PlayerState> localPlayerStates = new Dictionary<PlayerStateType, PlayerState>();
+        SidewaysState localPlayerSidewaysState;
+        VerticalMovementState localPlayerVerticalState;
+        Dictionary<HorizontalStateType, SidewaysState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, SidewaysState>();
+        Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
         
         public LocalPlayerManager()
         {
-            localPlayerStates[PlayerStateType.Idle] = new IdleState(true);
-            localPlayerStates[PlayerStateType.JumpingStraight] = new JumpingStraightState(true);
-            localPlayerStates[PlayerStateType.JumpingLeft] = new JumpingLeftState(true);
-            localPlayerStates[PlayerStateType.JumpingRight] = new JumpingRightState(true);
-            localPlayerStates[PlayerStateType.WalkingLeft] = new WalkingLeftState(true);
-            localPlayerStates[PlayerStateType.WalkingRight] = new WalkingRightState(true);
-            localPlayerStates[PlayerStateType.StoppingJumpingLeft] = new StoppingJumpingLeftState(true);
-            localPlayerStates[PlayerStateType.StoppingJumpingRight] = new StoppingJumpingRightState(true);
-            localPlayerStates[PlayerStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState(true);
-            localPlayerStates[PlayerStateType.StoppingWalkingRight] = new StoppingWalkingRightState(true);
+            // Horizontal
+            
+            localPlayerHorizontalStates[HorizontalStateType.Idle] = new HorizontalIdleState();
+            localPlayerHorizontalStates[HorizontalStateType.WalkingLeft] = new WalkingLeftState();
+            localPlayerHorizontalStates[HorizontalStateType.WalkingRight] = new WalkingRightState();
+            localPlayerHorizontalStates[HorizontalStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState();
+            localPlayerHorizontalStates[HorizontalStateType.StoppingWalkingRight] = new StoppingWalkingRightState();
 
-            localPlayerState = localPlayerStates[PlayerStateType.JumpingStraight];
+            localPlayerSidewaysState = localPlayerHorizontalStates[HorizontalStateType.Idle];
+
+            // Vertical
+
+            localPlayerVerticalStates[VerticalStateType.Idle] = new VerticalIdleState();
+            localPlayerVerticalStates[VerticalStateType.Jumping] = new JumpingState();
+
+            localPlayerVerticalState = localPlayerVerticalStates[VerticalStateType.Jumping];
         }
 
         public void createLocalPlayer(short id)
@@ -100,30 +106,31 @@ namespace ProjetoFinal.Managers
 
             if (keyboardState.IsKeyDown(Keys.Space))
             {
-                localPlayerState = localPlayerState.Jumped(playerId, localPlayer, localPlayerStates);
+                localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
             }
 
             if (keyboardState.IsKeyDown(Keys.Left))
             {
-                localPlayerState = localPlayerState.MovedLeft(playerId, localPlayer, localPlayerStates);
+                localPlayerSidewaysState = localPlayerSidewaysState.MovedLeft(playerId, localPlayer, localPlayerHorizontalStates);
             }
             // Key Released
             else if (lastKeyboardState.IsKeyDown(Keys.Left))
             {
-                localPlayerState = localPlayerState.StoppedMovingLeft(playerId, localPlayer, localPlayerStates);
+                localPlayerSidewaysState = localPlayerSidewaysState.StoppedMovingLeft(playerId, localPlayer, localPlayerHorizontalStates);
             }
 
             if (keyboardState.IsKeyDown(Keys.Right))
             {
-                localPlayerState = localPlayerState.MovedRight(playerId, localPlayer, localPlayerStates);
+                localPlayerSidewaysState = localPlayerSidewaysState.MovedRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
             // Key Released
             else if (lastKeyboardState.IsKeyDown(Keys.Right))
             {
-                localPlayerState = localPlayerState.StoppedMovingRight(playerId, localPlayer, localPlayerStates);
+                localPlayerSidewaysState = localPlayerSidewaysState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
 
-            localPlayerState = localPlayerState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerStates);
+            localPlayerSidewaysState = localPlayerSidewaysState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
+            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
 
             Camera.Instance.Position = localPlayer.Position
                                         + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)
@@ -140,7 +147,7 @@ namespace ProjetoFinal.Managers
                 
                 spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 170, 170), new Color(0, 0, 0, 0.2f));
 
-                spriteBatch.DrawString(spriteFont, "" + localPlayerState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - Camera.Instance.Position, Color.White);
+                spriteBatch.DrawString(spriteFont, "" + localPlayerSidewaysState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - Camera.Instance.Position, Color.White);
 
                 spriteBatch.DrawString(spriteFont, "OnGround: " + localPlayer.OnGround.ToString(), new Vector2(5f, 5f), Color.White);                
                 spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 25f), Color.White);
@@ -149,7 +156,7 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.Speed.Y, new Vector2(5f, 85f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 105f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 125f), Color.White);
-                spriteBatch.DrawString(spriteFont, "State: " + localPlayerState, new Vector2(5f, 145f), Color.White);
+                spriteBatch.DrawString(spriteFont, "State: " + localPlayerSidewaysState, new Vector2(5f, 145f), Color.White);
                 
            }
         }
