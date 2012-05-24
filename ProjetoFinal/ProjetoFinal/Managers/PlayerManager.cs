@@ -45,10 +45,10 @@ namespace ProjetoFinal.Managers
             if (this.players.ContainsKey(id))
                 return this.players[id];
 
-            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240), new Rectangle(6, 2, 24, 30));
+            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 240), new Rectangle(5, 1, 24, 30));
 
             players.Add(id, player);
-            playerState.Add(id, playerStates[PlayerStateType.Idle]);
+            playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
 
             return player;
         }
@@ -57,7 +57,7 @@ namespace ProjetoFinal.Managers
         {
             if (!this.players.ContainsKey(id))
             {
-                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(6, 2, 24, 30)));
+                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30)));
                 playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
             }
         }
@@ -69,54 +69,31 @@ namespace ProjetoFinal.Managers
                 Player player = p.Value;
                 short playerId = p.Key;
 
-                switch (player.State)
-                {
-                    case PlayerStateType.WalkingLeft:
-                        playerState[playerId] = playerState[playerId].MovedLeft(playerId, player, playerStates);
-                        break;
-
-                    case PlayerStateType.WalkingRight:
-                        playerState[playerId] = playerState[playerId].MovedRight(playerId, player, playerStates);
-                        break;
-
-                    case PlayerStateType.JumpingStraight:
-                        playerState[playerId] = playerState[playerId].Jumped(playerId, player, playerStates);
-                        break;
-
-                    case PlayerStateType.JumpingLeft:
-                        playerState[playerId] = playerState[playerId].MovedLeft(playerId, player, playerStates);
-                        break;
-
-                    case PlayerStateType.JumpingRight:
-                        playerState[playerId] = playerState[playerId].MovedRight(playerId, player, playerStates);
-                        break;
-                }
-
                 playerState[playerId] = playerState[playerId].Update(playerId, gameTime, player, collisionLayer, playerStates);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            Player currentPlayer;
+            Player player;
 
-            foreach (KeyValuePair<short, Player> player in players)
+            foreach (KeyValuePair<short, Player> p in players)
             {
-                currentPlayer = player.Value;
-                currentPlayer.Draw(spriteBatch);
-
-                spriteBatch.DrawString(spriteFont, currentPlayer.State.ToString(), new Vector2(currentPlayer.Position.X + 8, currentPlayer.Position.Y - 25) - Camera.Instance.Position, Color.White);
+                player = p.Value;
+                player.Draw(spriteBatch);
+                
+                spriteBatch.DrawString(spriteFont, player.State.ToString(), new Vector2(player.Position.X + 8, player.Position.Y - 25) - Camera.Instance.Position, Color.White);
 
                 spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
 
-                spriteBatch.DrawString(spriteFont, "OnGround: " + currentPlayer.OnGround.ToString(), new Vector2(5f, 435f), Color.White);
-                spriteBatch.DrawString(spriteFont, "X: " + (int)currentPlayer.Position.X, new Vector2(5f, 455f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Y: " + (int)currentPlayer.Position.Y, new Vector2(5f, 475f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)currentPlayer.Speed.X, new Vector2(5f, 495f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)currentPlayer.Speed.Y, new Vector2(5f, 515f), Color.White);
+                spriteBatch.DrawString(spriteFont, "OnGround: " + player.OnGround.ToString(), new Vector2(5f, 435f), Color.White);
+                spriteBatch.DrawString(spriteFont, "X: " + (int)player.Position.X, new Vector2(5f, 455f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Y: " + (int)player.Position.Y, new Vector2(5f, 475f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)player.Speed.X, new Vector2(5f, 495f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)player.Speed.Y, new Vector2(5f, 515f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 535f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 555f), Color.White);
-                spriteBatch.DrawString(spriteFont, "State: " + currentPlayer.State, new Vector2(5f, 575f), Color.White);
+                spriteBatch.DrawString(spriteFont, "State: " + player.State, new Vector2(5f, 575f), Color.White);
             }
         }
 
@@ -126,6 +103,15 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Right, r.Top, borderWidth, r.Height), Color.White); 
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, r.Width, borderWidth), Color.White);   
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
+        }
+
+        public void UpdatePlayer(short playerId, PlayerStateType playerStateType, Vector2 position, double updateTime)
+        {
+            players[playerId].Position = position;
+            players[playerId].State = playerStateType;
+            players[playerId].LastUpdateTime = updateTime;
+
+            playerState[playerId] = playerStates[playerStateType];
         }
     }
 }

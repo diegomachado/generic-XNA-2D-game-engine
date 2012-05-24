@@ -98,7 +98,7 @@ namespace ProjetoFinal.Managers
 
             // Input
 
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space))
+            if (keyboardState.IsKeyDown(Keys.Space))
             {
                 localPlayerState = localPlayerState.Jumped(playerId, localPlayer, localPlayerStates);
             }

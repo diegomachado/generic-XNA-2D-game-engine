@@ -88,10 +88,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 corner2 = new Point(collisionBox.Right, collisionBox.Bottom);
             }
 
-            if (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2))
-                return true;
-
-            return false;
+            return (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2));
         }
 
         protected bool handleHorizontalCollision(Player localPlayer, Layer collisionLayer)
@@ -137,12 +134,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return false;
         }
 
-        protected void OnPlayerStateChanged(short playerId, Player localPlayer, PlayerStateType playerState)
+        protected void OnPlayerStateChanged(short playerId, Player player, PlayerStateType playerState)
         {
-            localPlayer.State = playerState;
+            player.State = playerState;
 
             if(isLocal)
-                EventManager.Instance.throwPlayerStateChanged(playerId, localPlayer);
+                EventManager.Instance.throwPlayerStateChanged(playerId, player);
         }
 
         // So player doesn't slide forever        

@@ -30,7 +30,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override PlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
-            localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
 
             OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.WalkingLeft);
@@ -39,7 +38,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         
         public override PlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
-            localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
 
             OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.WalkingRight);

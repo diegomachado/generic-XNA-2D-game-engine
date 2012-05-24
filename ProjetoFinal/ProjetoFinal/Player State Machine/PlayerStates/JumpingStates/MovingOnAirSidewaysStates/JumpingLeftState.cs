@@ -11,7 +11,7 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    class JumpingLeftState : StoppingJumpingLeftState
+    class JumpingLeftState : MovingOnAirSideways
     {
         public JumpingLeftState(bool isLocal) : base(isLocal) { }
 

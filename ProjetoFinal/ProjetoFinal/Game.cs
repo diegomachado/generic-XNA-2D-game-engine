@@ -303,18 +303,15 @@ namespace ProjetoFinal
 
             if (message.playerId != localPlayerManager.playerId)
             {
-                Player player = this.playerManager.GetPlayer(message.playerId);
+                Player player = playerManager.GetPlayer(message.playerId);
 
                 // TODO: Tentar implementar algo de Lag Prediction
                 //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
 
                 if (player.LastUpdateTime < message.messageTime)
                 {
-                    //player.position = message.position += (message.speed * timeDelay);
-                    player.Position = message.position;
-                    player.State = message.playerState;
-
-                    player.LastUpdateTime = message.messageTime;
+                    playerManager.UpdatePlayer(message.playerId, message.playerState, message.position/*, message.speed*/, message.messageTime);
+                    // TODO: Pensar sobre isso: layer.position = message.position += (message.speed * timeDelay);
                 }
 
                 if (IsHost)
