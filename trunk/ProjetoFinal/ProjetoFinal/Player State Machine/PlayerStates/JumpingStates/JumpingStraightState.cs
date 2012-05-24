@@ -27,7 +27,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 localPlayer.OnGround = true;
                 localPlayer.Speed = Vector2.Zero;
 
-                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
+                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
                 return localPlayerStates[PlayerStateType.Idle];
             }
             
@@ -35,7 +35,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             if (handleVerticalCollision(localPlayer, collisionLayer) && localPlayer.Speed.Y > 0)
             {
-                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
+                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
                 return localPlayerStates[PlayerStateType.Idle];
             }
             else
@@ -49,7 +49,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingLeft);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingStraight, PlayerStateMessage.MovedLeft);
             return localPlayerStates[PlayerStateType.JumpingLeft];
         }
 
@@ -58,7 +58,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingRight);
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingStraight, PlayerStateMessage.MovedRight);
             return localPlayerStates[PlayerStateType.JumpingRight];
         }
 

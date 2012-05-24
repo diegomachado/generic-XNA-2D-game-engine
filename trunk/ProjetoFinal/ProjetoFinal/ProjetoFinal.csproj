@@ -128,7 +128,7 @@
     <Compile Include="Player State Machine\PlayerStates\MovingOnGroundSidewaysStates\StoppingWalkingLeftState.cs" />
     <Compile Include="Player State Machine\PlayerStates\MovingOnGroundSidewaysStates\StoppingWalkingRightState.cs" />
     <Compile Include="Player State Machine\PlayerStates\MovingOnGroundSidewaysState.cs" />
-    <Compile Include="Player State Machine\PlayerStates\JumpingStates\MovingOnAirSideways.cs" />
+    <Compile Include="Player State Machine\PlayerStates\MovingOnGroundSidewaysStates\MovingOnAirSideways.cs" />
     <Compile Include="Player State Machine\PlayerStates\JumpingState.cs" />
     <Compile Include="Player State Machine\PlayerStates\JumpingStates\MovingOnAirSidewaysStates\JumpingLeftState.cs" />
     <Compile Include="Player State Machine\PlayerStates\JumpingStates\MovingOnAirSidewaysStates\JumpingRightState.cs" />

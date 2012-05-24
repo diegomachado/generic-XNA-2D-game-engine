@@ -105,13 +105,36 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, PlayerStateType playerStateType, Vector2 position, double updateTime)
+        public void UpdatePlayer(short playerId, PlayerStateType playerStateType, Vector2 position, PlayerStateMessage message, double updateTime)
         {
             players[playerId].Position = position;
             players[playerId].State = playerStateType;
             players[playerId].LastUpdateTime = updateTime;
 
             playerState[playerId] = playerStates[playerStateType];
+
+            switch (message)
+            {
+                case PlayerStateMessage.Jumped:
+                    playerState[playerId] = playerState[playerId].Jumped(playerId, players[playerId], playerStates);
+                    break;
+
+                case PlayerStateMessage.MovedLeft:
+                    playerState[playerId] = playerState[playerId].MovedLeft(playerId, players[playerId], playerStates);
+                    break;
+
+                case PlayerStateMessage.MovedRight:
+                    playerState[playerId] = playerState[playerId].MovedRight(playerId, players[playerId], playerStates);
+                    break;
+
+                case PlayerStateMessage.StoppedMovingLeft:
+                    playerState[playerId] = playerState[playerId].StoppedMovingLeft(playerId, players[playerId], playerStates);
+                    break;
+
+                case PlayerStateMessage.StoppedMovingRight:
+                    playerState[playerId] = playerState[playerId].StoppedMovingRight(playerId, players[playerId], playerStates);
+                    break;
+            }
         }
     }
 }
