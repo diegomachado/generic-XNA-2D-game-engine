@@ -27,21 +27,15 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 localPlayer.OnGround = true;
                 localPlayer.Speed = Vector2.Zero;
 
-                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
                 return localPlayerStates[PlayerStateType.Idle];
             }
             
             localPlayer.SpeedY = MathHelper.Clamp(localPlayer.Speed.Y, localPlayer.JumpForce.Y, 10);
 
             if (handleVerticalCollision(localPlayer, collisionLayer) && localPlayer.Speed.Y > 0)
-            {
-                //OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
                 return localPlayerStates[PlayerStateType.Idle];
-            }
             else
-            {
                 return this;
-            }
         }
 
         public override PlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
