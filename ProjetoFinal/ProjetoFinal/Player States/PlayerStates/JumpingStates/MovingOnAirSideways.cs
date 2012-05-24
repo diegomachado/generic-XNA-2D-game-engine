@@ -11,9 +11,11 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    abstract class JumpingSideways : JumpingState
+    abstract class MovingOnAirSideways : JumpingState
     {
-        public override LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public MovingOnAirSideways(bool isLocal) : base(isLocal) { }
+
+        public override PlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             base.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerStates);
 
@@ -24,8 +26,8 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             if (clampHorizontalSpeed(localPlayer))
             {
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.JumpingStraight);
-                return localPlayerStates[PlayerState.JumpingStraight];
+                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingStraight);
+                return localPlayerStates[PlayerStateType.JumpingStraight];
             }
 
             if (checkVerticalCollision(collisionBoxVerticalOffset, localPlayer.Speed, collisionLayer))
@@ -44,13 +46,13 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             if (collidedHorizontally && collidedVertically && localPlayer.Speed.Y > 0)
             {
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.Idle);
-                return localPlayerStates[PlayerState.Idle];
+                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
+                return localPlayerStates[PlayerStateType.Idle];
             }
             else if (collidedHorizontally)
             {
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.JumpingStraight);
-                return localPlayerStates[PlayerState.JumpingStraight];
+                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingStraight);
+                return localPlayerStates[PlayerStateType.JumpingStraight];
             }
             else if (collidedVertically && localPlayer.Speed.Y > 0)
             {
@@ -63,6 +65,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             }
         }
 
-        abstract protected PlayerState getWalkingState();
+        abstract protected PlayerStateType getWalkingState();
     }
 }

@@ -10,17 +10,34 @@ using Lidgren.Network;
 
 using ProjetoFinal.Entities;
 using ProjetoFinal.EventArgs;
+using ProjetoFinal.Managers.LocalPlayerStates;
+using Microsoft.Xna.Framework.Input;
+using OgmoLibrary;
 
 namespace ProjetoFinal.Managers
 {
     class PlayerManager
     {
         Dictionary<short, Player> players;
-        Vector2 acceleration;
+        Dictionary <short, PlayerState> playerState;
+        Dictionary<PlayerStateType, PlayerState> playerStates;
 
         public PlayerManager()
         {
-            players = new Dictionary<short,Player>();
+            players = new Dictionary<short, Player>();
+            playerState = new Dictionary<short, PlayerState>();
+            playerStates = new Dictionary<PlayerStateType, PlayerState>();
+
+            playerStates[PlayerStateType.Idle] = new IdleState(false);
+            playerStates[PlayerStateType.JumpingStraight] = new JumpingStraightState(false);
+            playerStates[PlayerStateType.JumpingLeft] = new JumpingLeftState(false);
+            playerStates[PlayerStateType.JumpingRight] = new JumpingRightState(false);
+            playerStates[PlayerStateType.WalkingLeft] = new WalkingLeftState(false);
+            playerStates[PlayerStateType.WalkingRight] = new WalkingRightState(false);
+            playerStates[PlayerStateType.StoppingJumpingLeft] = new StoppingJumpingLeftState(false);
+            playerStates[PlayerStateType.StoppingJumpingRight] = new StoppingJumpingRightState(false);
+            playerStates[PlayerStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState(false);
+            playerStates[PlayerStateType.StoppingWalkingRight] = new StoppingWalkingRightState(false);
         }
 
         public Player GetPlayer(short id)
@@ -30,7 +47,8 @@ namespace ProjetoFinal.Managers
 
             Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240), new Rectangle(6, 2, 24, 30));
 
-            this.players.Add(id, player);
+            players.Add(id, player);
+            playerState.Add(id, playerStates[PlayerStateType.Idle]);
 
             return player;
         }
@@ -38,70 +56,67 @@ namespace ProjetoFinal.Managers
         public void AddPlayer(short id)
         {
             if (!this.players.ContainsKey(id))
-                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(0, 240), new Rectangle(6, 2, 24, 30)));
+            {
+                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(6, 2, 24, 30)));
+                playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
+            }
         }
 
-        // TODO: Criar função que atualiza posições de cada um dos jogadores
-        public void Update()
+        public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Layer collisionLayer)
         {
             foreach (KeyValuePair<short, Player> p in players)
             {
                 Player player = p.Value;
-
-                acceleration = Vector2.Zero;
+                short playerId = p.Key;
 
                 switch (player.State)
                 {
-                    case PlayerState.WalkingLeft:
-                        acceleration += new Vector2(-0.5f, 0.0f);
+                    case PlayerStateType.WalkingLeft:
+                        playerState[playerId] = playerState[playerId].MovedLeft(playerId, player, playerStates);
                         break;
 
-                    case PlayerState.WalkingRight:
-                        acceleration += new Vector2(0.5f, 0.0f);
+                    case PlayerStateType.WalkingRight:
+                        playerState[playerId] = playerState[playerId].MovedRight(playerId, player, playerStates);
                         break;
 
-                    case PlayerState.JumpingRight:
-                        acceleration += player.JumpForce;
-                        acceleration += new Vector2(0.5f, 0.0f);
-
-                        player.State = PlayerState.WalkingRight;
+                    case PlayerStateType.JumpingStraight:
+                        playerState[playerId] = playerState[playerId].Jumped(playerId, player, playerStates);
                         break;
 
-                    case PlayerState.JumpingLeft:
-                        acceleration += player.JumpForce;
-                        acceleration += new Vector2(-0.5f, 0.0f);
-
-                        player.State = PlayerState.WalkingLeft;
+                    case PlayerStateType.JumpingLeft:
+                        playerState[playerId] = playerState[playerId].MovedLeft(playerId, player, playerStates);
                         break;
 
-                    case PlayerState.JumpingStraight:
-                        acceleration += player.JumpForce;
+                    case PlayerStateType.JumpingRight:
+                        playerState[playerId] = playerState[playerId].MovedRight(playerId, player, playerStates);
                         break;
                 }
 
-                // TODO: Ajeitar colisão com o chão e testes se o jogador esta no chão ou não
-
-                acceleration += player.Gravity;
-
-                //player.speed += acceleration;
-                //player.speed.X *= player.Friction;
-
-                //player.Position += player.speed;
-
-                if (player.State == PlayerState.JumpingStraight)
-                    player.State = PlayerState.Idle;
-
-                //player.speed.Y = 0.0f;                
+                playerState[playerId] = playerState[playerId].Update(playerId, gameTime, player, collisionLayer, playerStates);
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
+            Player currentPlayer;
+
             foreach (KeyValuePair<short, Player> player in players)
             {
-                player.Value.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, player.Key.ToString(), new Vector2(player.Value.Position.X + 8, player.Value.Position.Y - 25), Color.White);
-                DrawBoundingBox(player.Value.CollisionBox, 1, spriteBatch, TextureManager.Instance.getPixelTextureByColor(Color.Red));
+                currentPlayer = player.Value;
+                currentPlayer.Draw(spriteBatch);
+
+                spriteBatch.DrawString(spriteFont, currentPlayer.State.ToString(), new Vector2(currentPlayer.Position.X + 8, currentPlayer.Position.Y - 25) - Camera.Instance.Position, Color.White);
+
+                spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
+
+                spriteBatch.DrawString(spriteFont, "OnGround: " + currentPlayer.OnGround.ToString(), new Vector2(5f, 435f), Color.White);
+                spriteBatch.DrawString(spriteFont, "X: " + (int)currentPlayer.Position.X, new Vector2(5f, 455f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Y: " + (int)currentPlayer.Position.Y, new Vector2(5f, 475f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)currentPlayer.Speed.X, new Vector2(5f, 495f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)currentPlayer.Speed.Y, new Vector2(5f, 515f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 535f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 555f), Color.White);
+                spriteBatch.DrawString(spriteFont, "State: " + currentPlayer.State, new Vector2(5f, 575f), Color.White);
             }
         }
 

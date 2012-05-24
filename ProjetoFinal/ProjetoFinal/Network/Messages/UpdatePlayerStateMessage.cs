@@ -12,7 +12,7 @@ namespace ProjetoFinal.Network.Messages
         public short playerId { get; set; }
         public double messageTime { get; set; }
         public Vector2 position { get; set; }
-        public PlayerState playerState { get; set; }
+        public PlayerStateType playerState { get; set; }
         public Vector2 speed { get; set; }
 
         public UpdatePlayerStateMessage(NetIncomingMessage im)
@@ -38,7 +38,7 @@ namespace ProjetoFinal.Network.Messages
             playerId = im.ReadInt16();
             messageTime = im.ReadDouble();
             position = im.ReadVector2();
-            playerState = (PlayerState)im.ReadInt16();
+            playerState = (PlayerStateType)im.ReadInt16();
         }
 
         public void Encode(NetOutgoingMessage om)

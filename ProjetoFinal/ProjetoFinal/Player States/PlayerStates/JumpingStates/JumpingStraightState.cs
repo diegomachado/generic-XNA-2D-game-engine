@@ -13,7 +13,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class JumpingStraightState : JumpingState
     {
-        public override LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public JumpingStraightState(bool isLocal) : base(isLocal) { }
+
+        public override PlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             base.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerStates);
 
@@ -25,16 +27,16 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 localPlayer.OnGround = true;
                 localPlayer.Speed = Vector2.Zero;
 
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.Idle);
-                return localPlayerStates[PlayerState.Idle];
+                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
+                return localPlayerStates[PlayerStateType.Idle];
             }
             
             localPlayer.SpeedY = MathHelper.Clamp(localPlayer.Speed.Y, localPlayer.JumpForce.Y, 10);
 
             if (handleVerticalCollision(localPlayer, collisionLayer) && localPlayer.Speed.Y > 0)
             {
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.Idle);
-                return localPlayerStates[PlayerState.Idle];
+                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
+                return localPlayerStates[PlayerStateType.Idle];
             }
             else
             {
@@ -42,22 +44,22 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             }
         }
 
-        public override LocalPlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override PlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             localPlayer.Speed -= localPlayer.walkForce;
             localPlayer.FacingLeft = true;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerState.JumpingLeft);
-            return localPlayerStates[PlayerState.JumpingLeft];
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingLeft);
+            return localPlayerStates[PlayerStateType.JumpingLeft];
         }
 
-        public override LocalPlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public override PlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             localPlayer.Speed += localPlayer.walkForce;
             localPlayer.FacingLeft = false;
 
-            OnPlayerStateChanged(playerId, localPlayer, PlayerState.JumpingRight);
-            return localPlayerStates[PlayerState.JumpingRight];
+            OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.JumpingRight);
+            return localPlayerStates[PlayerStateType.JumpingRight];
         }
 
         public override string ToString()
