@@ -152,7 +152,7 @@ namespace ProjetoFinal
             currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
             localPlayerManager.Update(gameTime, currentKeyboardState, currentGamePadState, mapManager.GetCollisionLayer());
-            playerManager.Update();
+            playerManager.Update(gameTime, currentKeyboardState, currentGamePadState, mapManager.GetCollisionLayer());
 
             ProcessNetworkMessages();
             

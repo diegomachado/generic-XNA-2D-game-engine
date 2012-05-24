@@ -10,39 +10,40 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    abstract class LocalPlayerState
+    abstract class PlayerState
     {
-        public abstract LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates);
+        bool isLocal;
+
+        protected PlayerState(bool isLocal)
+        {
+            this.isLocal = isLocal;
+        }
+
+        public abstract PlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates);
 
         #region Public Messages
 
-        public virtual LocalPlayerState Jumped(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual PlayerState Jumped(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             return this;
         }
 
-        public virtual LocalPlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
-        {
-            localPlayer.Speed -= localPlayer.walkForce;
-            localPlayer.FacingLeft = true;
-
-            return this;
-        }
-
-        public virtual LocalPlayerState StoppedMovingLeft(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual PlayerState MovedLeft(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             return this;
         }
 
-        public virtual LocalPlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual PlayerState StoppedMovingLeft(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
-            localPlayer.Speed += localPlayer.walkForce;
-            localPlayer.FacingLeft = false;
-
             return this;
         }
 
-        public virtual LocalPlayerState StoppedMovingRight(short playerId, Player localPlayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public virtual PlayerState MovedRight(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
+        {
+            return this;
+        }
+
+        public virtual PlayerState StoppedMovingRight(short playerId, Player localPlayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             return this;
         }
@@ -136,11 +137,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return false;
         }
 
-        protected void OnPlayerStateChanged(short playerId, Player localPlayer, PlayerState playerState)
+        protected void OnPlayerStateChanged(short playerId, Player localPlayer, PlayerStateType playerState)
         {
             localPlayer.State = playerState;
 
-            EventManager.Instance.throwPlayerStateChanged(playerId, localPlayer);
+            if(isLocal)
+                EventManager.Instance.throwPlayerStateChanged(playerId, localPlayer);
         }
 
         // So player doesn't slide forever        

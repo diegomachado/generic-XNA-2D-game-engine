@@ -11,9 +11,11 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    abstract class WalkingSidewaysState : LocalPlayerState
+    abstract class MovingOnGroundSidewaysState : PlayerState
     {
-        public override LocalPlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerState, LocalPlayerState> localPlayerStates)
+        public MovingOnGroundSidewaysState(bool isLocal) : base(isLocal) { }
+
+        public override PlayerState Update(short playerId, GameTime gameTime, Player localPlayer, Layer collisionLayer, Dictionary<PlayerStateType, PlayerState> localPlayerStates)
         {
             Rectangle collisionBoxVerticalOffset = localPlayer.CollisionBox;
             collisionBoxVerticalOffset.Offset(0, 1);
@@ -22,22 +24,22 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             {
                 localPlayer.OnGround = false;
 
-                OnPlayerStateChanged(playerId, localPlayer, getWalkingState());
-                return localPlayerStates[getWalkingState()];
+                OnPlayerStateChanged(playerId, localPlayer, getJumpingState());
+                return localPlayerStates[getJumpingState()];
             }
 
             localPlayer.SpeedX *= localPlayer.Friction;
 
             if (clampHorizontalSpeed(localPlayer))
             {
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.Idle);
-                return localPlayerStates[PlayerState.Idle];
+                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
+                return localPlayerStates[PlayerStateType.Idle];
             }
 
             if (handleHorizontalCollision(localPlayer, collisionLayer))
             {
-                OnPlayerStateChanged(playerId, localPlayer, PlayerState.Idle);
-                return localPlayerStates[PlayerState.Idle];
+                OnPlayerStateChanged(playerId, localPlayer, PlayerStateType.Idle);
+                return localPlayerStates[PlayerStateType.Idle];
             }
             else
             {
@@ -45,6 +47,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             }
         }
 
-        abstract protected PlayerState getWalkingState();
+        abstract protected PlayerStateType getJumpingState();
     }
 }
