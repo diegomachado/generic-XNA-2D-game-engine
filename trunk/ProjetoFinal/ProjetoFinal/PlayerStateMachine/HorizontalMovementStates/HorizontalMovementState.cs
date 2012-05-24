@@ -19,30 +19,28 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         StoppingWalkingRight
     }
 
-    abstract class SidewaysState
+    abstract class HorizontalMovementState
     {
-        bool isLocal;
-
-        public abstract SidewaysState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, SidewaysState> playerStates);
+        public abstract HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates);
 
         #region Public Messages
 
-        public virtual SidewaysState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public virtual HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return this;
         }
 
-        public virtual SidewaysState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public virtual HorizontalMovementState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return this;
         }
 
-        public virtual SidewaysState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public virtual HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return this;
         }
 
-        public virtual SidewaysState StoppedMovingRight(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public virtual HorizontalMovementState StoppedMovingRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return this;
         }

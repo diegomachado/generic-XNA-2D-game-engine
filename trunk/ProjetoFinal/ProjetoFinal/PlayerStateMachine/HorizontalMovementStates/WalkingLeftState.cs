@@ -11,12 +11,12 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    class WalkingLeftState : SidewaysState
+    class WalkingLeftState : HorizontalMovementState
     {
-        public override SidewaysState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
+            player.FacingLeft = true;
             player.Speed -= player.walkForce;
-
             player.SpeedX *= player.Friction;
 
             if (clampHorizontalSpeed(player) || handleHorizontalCollision(player, collisionLayer))
@@ -25,12 +25,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 return this;
         }
 
-        public override SidewaysState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public override HorizontalMovementState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return playerStates[HorizontalStateType.StoppingWalkingLeft];
         }
 
-        public override SidewaysState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, SidewaysState> playerStates)
+        public override HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return playerStates[HorizontalStateType.WalkingRight];
         }
