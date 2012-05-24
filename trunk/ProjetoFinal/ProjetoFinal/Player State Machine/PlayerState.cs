@@ -145,7 +145,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         protected void OnPlayerStateChanged(short playerId, Player player, PlayerStateType playerState, PlayerStateMessage message)
         {
-            player.State = playerState;
+            player.LastState = playerState;
 
             if(isLocal)
                 EventManager.Instance.throwPlayerStateChanged(playerId, player, message);
