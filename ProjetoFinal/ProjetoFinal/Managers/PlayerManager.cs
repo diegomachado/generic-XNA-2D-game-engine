@@ -117,8 +117,6 @@ namespace ProjetoFinal.Managers
             //players[playerId].Speed = speed;
             players[playerId].LastUpdateTime = updateTime;
 
-            
-
             switch (updatePlayerStateMessageType)
             {
                 case UpdatePlayerStateMessageType.Horizontal:
