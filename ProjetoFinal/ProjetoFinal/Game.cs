@@ -113,7 +113,7 @@ namespace ProjetoFinal
                 localPlayerManager.createLocalPlayer(0);
 
             // Registering Events
-            eventManager.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player/*, e.message*/));
+            eventManager.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player, e.messageType));
 
             // Window Management
             graphics.PreferredBackBufferWidth = 800;
@@ -310,12 +310,12 @@ namespace ProjetoFinal
 
                 if (player.LastUpdateTime < message.messageTime)
                 {
-                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, message.messageTime);
+                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, message.messageTime, message.messageType, message.playerState);
                     // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
                 }
 
                 if (IsHost)
-                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player/*, message.playerStateMessage*/));
+                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player, message.messageType));
             }
         }
 

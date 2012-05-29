@@ -11,6 +11,7 @@ using ProjetoFinal.Entities;
 using ProjetoFinal.Managers.LocalPlayerStates;
 
 using OgmoLibrary;
+using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
 
 namespace ProjetoFinal.Managers
 {
@@ -69,6 +70,7 @@ namespace ProjetoFinal.Managers
 
             localPlayerVerticalStates[VerticalStateType.Idle] = new VerticalIdleState();
             localPlayerVerticalStates[VerticalStateType.Jumping] = new JumpingState();
+            localPlayerVerticalStates[VerticalStateType.StartedJumping] = new StartedJumpingState();
 
             localPlayerVerticalState = localPlayerVerticalStates[VerticalStateType.Jumping];
         }

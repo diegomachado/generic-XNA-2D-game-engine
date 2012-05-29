@@ -124,6 +124,7 @@
     <Compile Include="Managers\EventManager.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
     <Compile Include="PlayerStateMachine\PlayerState.cs" />
+    <Compile Include="PlayerStateMachine\VerticalMovementStates\StartedJumpingState.cs" />
     <Compile Include="PlayerStateMachine\VerticalMovementStates\VerticalIdleState.cs" />
     <Compile Include="PlayerStateMachine\HorizontalMovementStates\HorizontalIdleState.cs" />
     <Compile Include="PlayerStateMachine\HorizontalMovementStates\StoppingWalkingLeftState.cs" />

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
 using OgmoLibrary;
+using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
@@ -27,14 +28,14 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.WalkingLeft);
 
             return playerStates[HorizontalStateType.WalkingLeft];
         }
 
         public override HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.WalkingRight);
 
             return playerStates[HorizontalStateType.WalkingRight];
         }

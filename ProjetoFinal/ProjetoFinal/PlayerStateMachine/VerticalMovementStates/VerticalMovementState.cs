@@ -15,7 +15,8 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     enum VerticalStateType : short
     {
         Idle,
-        Jumping
+        Jumping,
+        StartedJumping
     }
 
     abstract class VerticalMovementState : PlayerState

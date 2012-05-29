@@ -8,29 +8,43 @@ using ProjetoFinal.Managers.LocalPlayerStates;
 
 namespace ProjetoFinal.Network.Messages
 {
+    enum UpdatePlayerStateMessageType : short
+    {
+        Horizontal,
+        Vertical
+    }
+
     class UpdatePlayerStateMessage : IGameMessage
     {
         public short playerId { get; set; }
         public double messageTime { get; set; }
         public Vector2 position { get; set; }
-        public VerticalStateType playerVerticalState { get; set; }
-        public HorizontalStateType playerHorizontalState { get; set; }
+        public short playerState { get; set; }
         public Vector2 speed { get; set; }
-        //public PlayerStateMessage playerStateMessage { get; set; }
+        public UpdatePlayerStateMessageType messageType { get; set; }
 
         public UpdatePlayerStateMessage(NetIncomingMessage im)
         {
             Decode(im);
         }
 
-        public UpdatePlayerStateMessage(short id, Player player/*, PlayerStateMessage message*/)
+        public UpdatePlayerStateMessage(short id, Player player, UpdatePlayerStateMessageType mt)
         {
             playerId = id;
             messageTime = NetTime.Now;
             position = player.Position;
-            //playerVerticalState = player.LastVerticalState;
-            //playerHorizontalState = player.LastHorizontalState;
-            //playerStateMessage = message;
+
+            switch (mt)
+            {
+                case UpdatePlayerStateMessageType.Horizontal:
+                    playerState = (short)player.LastHorizontalState;
+                    break;
+                case UpdatePlayerStateMessageType.Vertical:
+                    playerState = (short)player.LastVerticalState;
+                    break;
+            }
+
+            messageType = mt;
         }
 
         public GameMessageType MessageType
@@ -43,8 +57,8 @@ namespace ProjetoFinal.Network.Messages
             playerId = im.ReadInt16();
             messageTime = im.ReadDouble();
             position = im.ReadVector2();
-            //playerState = (PlayerStateType)im.ReadInt16();
-            //playerStateMessage = (PlayerStateMessage)im.ReadInt16();
+            messageType = (UpdatePlayerStateMessageType)im.ReadInt16();
+            playerState = im.ReadInt16();
         }
 
         public void Encode(NetOutgoingMessage om)
@@ -52,8 +66,8 @@ namespace ProjetoFinal.Network.Messages
             om.Write(playerId);
             om.Write(messageTime);
             om.Write(position);
-            //om.Write((short)playerState);
-            //om.Write((short)playerStateMessage);
+            om.Write((short)messageType);
+            om.Write(playerState);
         }
     }
 }
