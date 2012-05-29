@@ -24,7 +24,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             if (checkVerticalCollision(collisionBoxVerticalOffset, player.Speed, collisionLayer))
             {
-                player.OnGround = true;
                 player.SpeedY = 0;
 
                 return playerStates[VerticalStateType.Idle];
@@ -38,6 +37,11 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 return playerStates[VerticalStateType.Idle];
             else
                 return this;
+        }
+
+        public override string ToString()
+        {
+            return "Jumping";
         }
     }
 }

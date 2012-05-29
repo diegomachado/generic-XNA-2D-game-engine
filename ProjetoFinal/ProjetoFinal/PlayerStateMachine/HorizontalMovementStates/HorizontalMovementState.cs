@@ -95,20 +95,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             if (isLocal)
                 EventManager.Instance.throwPlayerStateChanged(playerId, player, message);
         }*/
-
-        // So player doesn't slide forever        
-        protected bool clampHorizontalSpeed(Player localPlayer)
-        {
-            if (Math.Abs(localPlayer.Speed.X) < 0.2)
-            {
-                localPlayer.SpeedX = 0;
-
-                return true;
-            }
-
-            return false;
-        }
-
         #endregion
     }
 }
