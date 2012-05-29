@@ -310,7 +310,9 @@ namespace ProjetoFinal
 
                 if (player.LastUpdateTime < message.messageTime)
                 {
-                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, message.messageTime, message.messageType, message.playerState);
+                    var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
+
+                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, timeDelay, message.messageType, message.playerState);
                     // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
                 }
 
