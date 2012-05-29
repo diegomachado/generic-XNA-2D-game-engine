@@ -117,13 +117,26 @@ namespace ProjetoFinal.Managers
             //players[playerId].Speed = speed;
             players[playerId].LastUpdateTime = updateTime;
 
+            
+
             switch (updatePlayerStateMessageType)
             {
                 case UpdatePlayerStateMessageType.Horizontal:
                     horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
+
+                    if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
+                        (HorizontalStateType)playerState == HorizontalStateType.WalkingRight)
+                    {
+                        players[playerId].SpeedX = 0;
+                    }
                     break;
                 case UpdatePlayerStateMessageType.Vertical:
                     verticalPlayerState[playerId] = verticalPlayerStates[(VerticalStateType)playerState];
+
+                    if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)
+                    {
+                        players[playerId].SpeedY = 0;
+                    }
                     break;
             }
         }
