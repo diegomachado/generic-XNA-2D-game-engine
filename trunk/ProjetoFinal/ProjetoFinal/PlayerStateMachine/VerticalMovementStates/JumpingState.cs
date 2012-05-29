@@ -15,6 +15,8 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
+            double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
+
             player.Speed += player.Gravity;
 
             Rectangle collisionBoxVerticalOffset = player.CollisionBox;
@@ -28,9 +30,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 return playerStates[VerticalStateType.Idle];
             }
 
-            player.SpeedY = MathHelper.Clamp(player.Speed.Y, player.JumpForce.Y, 10);
+            player.SpeedY = MathHelper.Clamp(player.Speed.Y, player.JumpForce.Y, 500);
 
-            bool collidedVertically = handleVerticalCollision(player, collisionLayer);
+            bool collidedVertically = handleVerticalCollision(player, collisionLayer, elapsedTime);
 
             if (collidedVertically && player.Speed.Y > 0)
                 return playerStates[VerticalStateType.Idle];

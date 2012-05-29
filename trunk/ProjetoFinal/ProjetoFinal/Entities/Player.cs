@@ -77,10 +77,10 @@ namespace ProjetoFinal.Entities
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox)
         {            
-            walkForce = new Vector2(1, 0);
+            walkForce = new Vector2(60, 0);
             Friction = 0.85f;
-            Gravity = new Vector2(0, 0.3f);
-            JumpForce = new Vector2(0, -8);
+            Gravity = new Vector2(0, 20f);
+            JumpForce = new Vector2(0, -480f);
             LastState = PlayerStateType.Idle;
             Skin = playerSkin;
             Position = playerPosition;

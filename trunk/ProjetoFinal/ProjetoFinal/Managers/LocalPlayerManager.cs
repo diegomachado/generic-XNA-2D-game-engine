@@ -81,8 +81,6 @@ namespace ProjetoFinal.Managers
         
         public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Layer collisionLayer)
         {
-            //double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
-
             if (localPlayer == null)
                 return;
 
