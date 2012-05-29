@@ -19,16 +19,10 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             collisionBoxVerticalOffset.Offset(0, 1);
 
             if (!checkVerticalCollision(collisionBoxVerticalOffset, player.Speed, collisionLayer))
-            {
-                player.OnGround = false;
-
                 return playerStates[VerticalStateType.Jumping];
-            }
             else
-            {
                 return this;
-            }
-
+            
             /*player.SpeedY = MathHelper.Clamp(player.Speed.Y, player.JumpForce.Y, 10);
 
             bool collidedVertically = handleVerticalCollision(player, collisionLayer);
@@ -47,7 +41,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override string ToString()
         {
-            return "Horizontal Idle";
+            return "Vertical Idle";
         }
     }
 }

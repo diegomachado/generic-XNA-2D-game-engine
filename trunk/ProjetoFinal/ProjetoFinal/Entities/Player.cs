@@ -50,13 +50,13 @@ namespace ProjetoFinal.Entities
 
         public Vector2 Gravity { get; set; }
         public Vector2 JumpForce { get; set; }
-        public bool OnGround { get; set; } 
 
         public Vector2 walkForce { get; set; }        
         public float Friction { get; set; }
         private Vector2 speed;
 
-        public Vector2 Speed {
+        public Vector2 Speed 
+        {
             get { return speed; }
             set { speed = value; }
         }
@@ -64,13 +64,41 @@ namespace ProjetoFinal.Entities
         public float SpeedX
         {
             get { return speed.X; }
-            set { speed.X = value; }
+            set 
+            {
+                if (Math.Abs(value) < 30)
+                    speed.X = 0;
+                else
+                    speed.X = value; 
+            }
         }
         
         public float SpeedY
         {
             get { return speed.Y; }
-            set { speed.Y = value; }
+            set 
+            {
+                if (Math.Abs(value) > 500)
+                    speed.Y = 500;
+                else
+                    speed.Y = value;
+            }
+        }
+
+        public bool isMovingHorizontally
+        {
+            get
+            {
+                return (speed.X == 0);
+            }
+        }
+
+        public bool isMovingVertically
+        {
+            get
+            {
+                return (speed.Y == 0);
+            }
         }
         
         public double LastUpdateTime { get; set; }
@@ -89,16 +117,7 @@ namespace ProjetoFinal.Entities
         }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox, Vector2 gravity)
-        {            
-            walkForce = new Vector2(1.0f, 0.0f);
-            Friction = 0.85f;            
-            JumpForce = new Vector2(0.0f, -8.0f);
-            LastState = PlayerStateType.Idle;
-
-            Skin = playerSkin;
-            Position = playerPosition;
-            BoundingBox = boundingBox;
-            Gravity = gravity;
+        {
         }
 
         public int Width { get { return Skin.Width; } }
