@@ -82,7 +82,7 @@ namespace ProjetoFinal.Managers
                 player = p.Value;
                 player.Draw(spriteBatch);
                 
-                spriteBatch.DrawString(spriteFont, player.LastState.ToString(), new Vector2(player.Position.X + 8, player.Position.Y - 25) - Camera.Instance.Position, Color.White);
+                //spriteBatch.DrawString(spriteFont, player.LastState.ToString(), new Vector2(player.Position.X + 8, player.Position.Y - 25) - Camera.Instance.Position, Color.White);
 
                 spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
 
@@ -92,7 +92,7 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)player.Speed.Y, new Vector2(5f, 515f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 535f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 555f), Color.White);
-                spriteBatch.DrawString(spriteFont, "State: " + player.LastState, new Vector2(5f, 575f), Color.White);
+                //spriteBatch.DrawString(spriteFont, "State: " + player.LastState, new Vector2(5f, 575f), Color.White);
             }
         }
 
@@ -104,37 +104,10 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, PlayerStateType playerStateType, Vector2 position/*, PlayerStateMessage message*/, double updateTime)
+        public void UpdatePlayer(short playerId, Vector2 position, double updateTime)
         {
             players[playerId].Position = position;
-            players[playerId].LastState = playerStateType;
             players[playerId].LastUpdateTime = updateTime;
-
-            /*playerState[playerId] = playerStates[playerStateType];
-
-            switch (message)
-            {
-                case PlayerStateMessage.Jumped:
-                    playerState[playerId] = playerState[playerId].Jumped(playerId, players[playerId], playerStates);
-                    break;
-
-                case PlayerStateMessage.MovedLeft:
-                    playerState[playerId] = playerState[playerId].MovedLeft(playerId, players[playerId], playerStates);
-                    break;
-
-                case PlayerStateMessage.MovedRight:
-                    playerState[playerId] = playerState[playerId].MovedRight(playerId, players[playerId], playerStates);
-                    break;
-
-                case PlayerStateMessage.StoppedMovingLeft:
-                    playerState[playerId] = playerState[playerId].StoppedMovingLeft(playerId, players[playerId], playerStates);
-                    break;
-
-                case PlayerStateMessage.StoppedMovingRight:
-                    playerState[playerId] = playerState[playerId].StoppedMovingRight(playerId, players[playerId], playerStates);
-                    break;
-            }
-             * */
         }
     }
 }

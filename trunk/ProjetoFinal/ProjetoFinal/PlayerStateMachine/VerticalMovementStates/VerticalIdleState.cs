@@ -22,20 +22,14 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 return playerStates[VerticalStateType.Jumping];
             else
                 return this;
-            
-            /*player.SpeedY = MathHelper.Clamp(player.Speed.Y, player.JumpForce.Y, 10);
-
-            bool collidedVertically = handleVerticalCollision(player, collisionLayer);
-
-            if (collidedVertically && player.Speed.Y > 0)
-                return playerStates[VerticalStateType.Idle];
-            else
-                return this;*/
         }
 
         public override VerticalMovementState Jumped(short playerId, Player player, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
             player.Speed += player.JumpForce;
+
+            OnPlayerStateChanged(playerId, player);
+
             return playerStates[VerticalStateType.Jumping];
         }
 

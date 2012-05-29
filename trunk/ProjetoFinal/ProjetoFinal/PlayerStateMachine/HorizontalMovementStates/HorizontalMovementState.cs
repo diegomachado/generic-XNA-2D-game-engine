@@ -7,10 +7,11 @@ using Microsoft.Xna.Framework;
 
 using ProjetoFinal.Entities;
 using OgmoLibrary;
+using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    enum HorizontalStateType
+    enum HorizontalStateType : short
     {
         Idle,
         WalkingLeft,
@@ -19,7 +20,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         StoppingWalkingRight
     }
 
-    abstract class HorizontalMovementState
+    abstract class HorizontalMovementState : PlayerState
     {
         public abstract HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates);
 
@@ -88,13 +89,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return false;
         }
 
-        /*protected void OnPlayerStateChanged(short playerId, Player player, PlayerStateType playerState, PlayerStateMessage message)
-        {
-            player.LastState = playerState;
-
-            if (isLocal)
-                EventManager.Instance.throwPlayerStateChanged(playerId, player, message);
-        }*/
         #endregion
     }
 }

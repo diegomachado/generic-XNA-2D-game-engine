@@ -5,26 +5,14 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ProjetoFinal.Managers.LocalPlayerStates;
 
 namespace ProjetoFinal.Entities
 {
-    public enum PlayerStateType : short
-    {
-        Idle,
-        WalkingLeft,
-        StoppingWalkingLeft,
-        WalkingRight,
-        StoppingWalkingRight,
-        JumpingStraight,
-        JumpingRight,
-        StoppingJumpingRight,
-        JumpingLeft,
-        StoppingJumpingLeft
-    }
-
     class Player
     {
-        public PlayerStateType LastState { get; set; }
+        public VerticalStateType LastVerticalState { get; set; }
+        public HorizontalStateType LastHorizontalState { get; set; }
         public Texture2D Skin { get; set; }
         bool flipped = false;
         public bool FacingLeft 
@@ -109,7 +97,8 @@ namespace ProjetoFinal.Entities
             Friction = 0.85f;
             Gravity = new Vector2(0, 20f);
             JumpForce = new Vector2(0, -480f);
-            LastState = PlayerStateType.Idle;
+            LastVerticalState = VerticalStateType.Idle;
+            LastHorizontalState = HorizontalStateType.Idle;
             Skin = playerSkin;
             Position = playerPosition;
             BoundingBox = boundingBox;

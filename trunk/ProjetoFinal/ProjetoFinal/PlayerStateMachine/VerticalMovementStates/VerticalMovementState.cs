@@ -8,16 +8,17 @@ using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
 using OgmoLibrary;
+using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    enum VerticalStateType
+    enum VerticalStateType : short
     {
         Idle,
         Jumping
     }
 
-    abstract class VerticalMovementState
+    abstract class VerticalMovementState : PlayerState
     {
         public abstract VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates);
 
