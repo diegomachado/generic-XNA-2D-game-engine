@@ -15,9 +15,11 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
+            double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
+
             player.SpeedX *= player.Friction;
 
-            if (clampHorizontalSpeed(player) || handleHorizontalCollision(player, collisionLayer))
+            if (clampHorizontalSpeed(player) || handleHorizontalCollision(player, collisionLayer, elapsedTime))
                 return playerStates[HorizontalStateType.Idle];
             else
                 return this;

@@ -53,11 +53,11 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return false;
         }
 
-        protected bool handleVerticalCollision(Player localPlayer, Layer collisionLayer)
+        protected bool handleVerticalCollision(Player localPlayer, Layer collisionLayer, double elapsedTime)
         {
             Rectangle collisionBoxOffset = localPlayer.CollisionBox;
 
-            for (int i = 0; i < Math.Abs(localPlayer.Speed.Y); ++i)
+            for (int i = 0; i < Math.Abs(localPlayer.Speed.Y * elapsedTime); ++i)
             {
                 collisionBoxOffset.Offset(0, Math.Sign(localPlayer.Speed.Y));
 

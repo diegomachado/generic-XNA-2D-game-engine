@@ -67,11 +67,11 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2));
         }
 
-        protected bool handleHorizontalCollision(Player localPlayer, Layer collisionLayer)
+        protected bool handleHorizontalCollision(Player localPlayer, Layer collisionLayer, double elapsedTime)
         {
             Rectangle collisionBoxOffset = localPlayer.CollisionBox;
 
-            for (int i = 0; i < Math.Abs(localPlayer.Speed.X); ++i)
+            for (int i = 0; i < Math.Abs(localPlayer.Speed.X * elapsedTime); ++i)
             {
                 collisionBoxOffset.Offset(Math.Sign(localPlayer.Speed.X), 0);
                 if (!checkHorizontalCollision(collisionBoxOffset, localPlayer.Speed, collisionLayer))
