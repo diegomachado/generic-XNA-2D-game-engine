@@ -310,7 +310,7 @@ namespace ProjetoFinal
 
                 if (player.LastUpdateTime < message.messageTime)
                 {
-                    playerManager.UpdatePlayer(message.playerId, message.position, message.messageTime);
+                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, message.messageTime);
                     // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
                 }
 

@@ -104,9 +104,10 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, Vector2 position, double updateTime)
+        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double updateTime)
         {
             players[playerId].Position = position;
+            players[playerId].Speed = speed;
             players[playerId].LastUpdateTime = updateTime;
         }
     }
