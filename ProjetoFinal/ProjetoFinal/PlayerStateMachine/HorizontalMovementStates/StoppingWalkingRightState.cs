@@ -27,11 +27,15 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
+            OnPlayerStateChanged(playerId, player);
+
             return playerStates[HorizontalStateType.WalkingLeft];
         }
 
         public override HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
+            OnPlayerStateChanged(playerId, player);
+
             return playerStates[HorizontalStateType.WalkingRight];
         }
 
