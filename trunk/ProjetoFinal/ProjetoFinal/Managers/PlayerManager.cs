@@ -13,31 +13,35 @@ using ProjetoFinal.EventArgs;
 using ProjetoFinal.Managers.LocalPlayerStates;
 using Microsoft.Xna.Framework.Input;
 using OgmoLibrary;
+using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
+using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers
 {
     class PlayerManager
     {
         Dictionary<short, Player> players;
-        //Dictionary <short, PlayerState> playerState;
-        //Dictionary<PlayerStateType, PlayerState> playerStates;
+        Dictionary <short, HorizontalMovementState> horizontalPlayerState;
+        Dictionary<HorizontalStateType, HorizontalMovementState> horizontalPlayerStates;
+        Dictionary<short, VerticalMovementState> verticalPlayerState;
+        Dictionary<VerticalStateType, VerticalMovementState> verticalPlayerStates;
 
         public PlayerManager()
         {
             players = new Dictionary<short, Player>();
-            //playerState = new Dictionary<short, PlayerState>();
-            //playerStates = new Dictionary<PlayerStateType, PlayerState>();
+            horizontalPlayerState = new Dictionary<short, HorizontalMovementState>();
+            horizontalPlayerStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
+            verticalPlayerState = new Dictionary<short, VerticalMovementState> ();
+            verticalPlayerStates = new Dictionary<VerticalStateType, VerticalMovementState>();
 
-            /*playerStates[PlayerStateType.Idle] = new IdleState(false);
-            playerStates[PlayerStateType.JumpingStraight] = new JumpingStraightState(false);
-            playerStates[PlayerStateType.JumpingLeft] = new JumpingLeftState(false);
-            playerStates[PlayerStateType.JumpingRight] = new JumpingRightState(false);
-            playerStates[PlayerStateType.WalkingLeft] = new WalkingLeftState(false);
-            playerStates[PlayerStateType.WalkingRight] = new WalkingRightState(false);
-            playerStates[PlayerStateType.StoppingJumpingLeft] = new StoppingJumpingLeftState(false);
-            playerStates[PlayerStateType.StoppingJumpingRight] = new StoppingJumpingRightState(false);
-            playerStates[PlayerStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState(false);
-            playerStates[PlayerStateType.StoppingWalkingRight] = new StoppingWalkingRightState(false);*/
+            horizontalPlayerStates[HorizontalStateType.Idle] = new HorizontalIdleState();
+            horizontalPlayerStates[HorizontalStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState();
+            horizontalPlayerStates[HorizontalStateType.StoppingWalkingRight] = new StoppingWalkingRightState();
+            horizontalPlayerStates[HorizontalStateType.WalkingLeft] = new WalkingLeftState();
+            horizontalPlayerStates[HorizontalStateType.WalkingRight] = new WalkingRightState();
+            verticalPlayerStates[VerticalStateType.Idle] = new VerticalIdleState();
+            verticalPlayerStates[VerticalStateType.Jumping] = new JumpingState();
+            verticalPlayerStates[VerticalStateType.StartedJumping] = new StartedJumpingState();
         }
 
         public Player GetPlayer(short id)
@@ -48,7 +52,8 @@ namespace ProjetoFinal.Managers
             Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 240), new Rectangle(5, 1, 24, 30));
 
             players.Add(id, player);
-            //playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
+            horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
+            verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
 
             return player;
         }
@@ -58,7 +63,8 @@ namespace ProjetoFinal.Managers
             if (!this.players.ContainsKey(id))
             {
                 this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30)));
-                //playerState.Add(id, playerStates[PlayerStateType.JumpingStraight]);
+                horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
+                verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
             }
         }
 
@@ -69,7 +75,8 @@ namespace ProjetoFinal.Managers
                 Player player = p.Value;
                 short playerId = p.Key;
 
-                //playerState[playerId] = playerState[playerId].Update(playerId, gameTime, player, collisionLayer, playerStates);
+                horizontalPlayerState[playerId] = horizontalPlayerState[playerId].Update(playerId, gameTime, player, collisionLayer, horizontalPlayerStates);
+                verticalPlayerState[playerId] = verticalPlayerState[playerId].Update(playerId, gameTime, player, collisionLayer, verticalPlayerStates);
             }
         }
 
@@ -104,11 +111,21 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double updateTime)
+        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double updateTime, UpdatePlayerStateMessageType updatePlayerStateMessageType, short playerState)
         {
             players[playerId].Position = position;
-            players[playerId].Speed = speed;
+            //players[playerId].Speed = speed;
             players[playerId].LastUpdateTime = updateTime;
+
+            switch (updatePlayerStateMessageType)
+            {
+                case UpdatePlayerStateMessageType.Horizontal:
+                    horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
+                    break;
+                case UpdatePlayerStateMessageType.Vertical:
+                    verticalPlayerState[playerId] = verticalPlayerStates[(VerticalStateType)playerState];
+                    break;
+            }
         }
     }
 }

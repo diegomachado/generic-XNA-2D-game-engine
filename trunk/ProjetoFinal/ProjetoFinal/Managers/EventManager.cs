@@ -6,6 +6,7 @@ using System.Text;
 using ProjetoFinal.EventArgs;
 using ProjetoFinal.Entities;
 using ProjetoFinal.Managers.LocalPlayerStates;
+using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers
 {
@@ -26,10 +27,10 @@ namespace ProjetoFinal.Managers
 
         public event EventHandler<PlayerStateChangedArgs> PlayerStateChanged;
 
-        public void throwPlayerStateChanged(short id, Player player/*, PlayerStateMessage message*/)
+        public void throwPlayerStateChanged(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
             if (PlayerStateChanged != null)
-                PlayerStateChanged(this, new PlayerStateChangedArgs(id, player/*, message*/));
+                PlayerStateChanged(this, new PlayerStateChangedArgs(id, player, messageType));
         }
     }
 }

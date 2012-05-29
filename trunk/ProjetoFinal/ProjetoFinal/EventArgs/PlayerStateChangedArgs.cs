@@ -4,18 +4,19 @@ namespace ProjetoFinal.EventArgs
 {
     using System;
     using ProjetoFinal.Managers.LocalPlayerStates;
+    using ProjetoFinal.Network.Messages;
 
     class PlayerStateChangedArgs : EventArgs
     {
         public short id { get; set; }
         public Player player { get; set; }
-        //public PlayerStateMessage message { get; set; }
+        public UpdatePlayerStateMessageType messageType { get; set; }
 
-        public PlayerStateChangedArgs(short id, Player player/*, PlayerStateMessage message*/)
+        public PlayerStateChangedArgs(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
             this.id = id;
             this.player = player;
-            //this.message = message;
+            this.messageType = messageType;
         }
     }
 }

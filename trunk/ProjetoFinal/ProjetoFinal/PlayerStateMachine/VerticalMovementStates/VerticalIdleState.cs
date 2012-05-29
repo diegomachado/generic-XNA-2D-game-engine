@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
 using OgmoLibrary;
+using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
@@ -26,11 +27,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override VerticalMovementState Jumped(short playerId, Player player, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
-            player.Speed += player.JumpForce;
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Vertical, (short)VerticalStateType.StartedJumping);
 
-            OnPlayerStateChanged(playerId, player);
-
-            return playerStates[VerticalStateType.Jumping];
+            return playerStates[VerticalStateType.StartedJumping];
         }
 
         public override string ToString()
