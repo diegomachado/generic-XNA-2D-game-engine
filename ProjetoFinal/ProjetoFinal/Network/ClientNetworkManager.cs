@@ -57,9 +57,7 @@ namespace ProjetoFinal.Network
 
             this.netClient = new NetClient(config);
             this.netClient.Start();
-
-            //this.netClient.Connect(new IPEndPoint(NetUtility.Resolve(this.ip), this.port));
-            this.netClient.Connect(new IPEndPoint(NetUtility.Resolve("127.0.0.1"), 666));
+            this.netClient.Connect(new IPEndPoint(NetUtility.Resolve(ip), port));
         }
 
         public void Disconnect()

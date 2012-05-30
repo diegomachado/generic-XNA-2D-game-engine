@@ -85,7 +85,7 @@ namespace ProjetoFinal
 
                     ClientNetworkManager clientNetworkManager = new ClientNetworkManager();
                     clientNetworkManager.port = 666;
-                    clientNetworkManager.ip = "localhost";
+                    clientNetworkManager.ip = "189.24.202.85";
 
                     networkManager = clientNetworkManager;
                     
