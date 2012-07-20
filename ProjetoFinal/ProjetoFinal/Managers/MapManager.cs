@@ -11,18 +11,42 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Managers
 {
+    public enum MapType
+    {
+        Level1
+    }
+
     class MapManager
     {
+        private static MapManager instance;
+
+        public ContentManager Content
+        {
+            set { content =  value }
+        }
+        ContentManager content;
+       
         Map currentMap;
 
-        public MapManager()
+        public static MapManager Instance
         {
+            get
+            {
+                if (instance == null)
+                    instance = new MapManager();
 
+                return instance;
+            }
         }
 
-        public MapManager(ContentManager Content)
+        public void LoadMap(MapType type)
         {
-            currentMap = Content.Load<Map>(@"maps/big");
+            switch(type)
+            {
+                case MapType.Level1:
+                    currentMap = content.Load<Map>(@"maps/big");
+                    break;
+            }
         }
 
         public Layer GetCollisionLayer()
