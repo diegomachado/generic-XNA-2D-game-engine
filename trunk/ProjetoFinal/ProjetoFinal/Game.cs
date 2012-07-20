@@ -32,99 +32,25 @@ namespace ProjetoFinal
         Dictionary<short, Client> clients;
 
         // Graphics
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        SpriteFont SegoeFont;
+        //GraphicsDeviceManager graphics;
+        //SpriteBatch spriteBatch;
         
         // Input
-        KeyboardState currentKeyboardState;
-        KeyboardState previousKeyboardState;
-        GamePadState currentGamePadState;
-        GamePadState previousGamePadState;
+        //KeyboardState currentKeyboardState;
+        //KeyboardState previousKeyboardState;
+        //GamePadState currentGamePadState;
+        //GamePadState previousGamePadState;
 
-        // Managers
-        PlayerManager playerManager;
-        LocalPlayerManager localPlayerManager;
-        TextureManager textureManager;
-        EventManager eventManager;
-        MapManager mapManager;
-
-        // Camera Globals
-        Camera camera;       
-        public static Point ScreenSize { get; set; }
-        public static Point MapWidthInPixels { get; set; }
-
-        public Game()
-        {
-            graphics = new GraphicsDeviceManager(this);
-            this.Window.Title = "Projeto Final";
-            Content.RootDirectory = "Content";
-        }
+        //public Game()
+        //{
+        //    graphics = new GraphicsDeviceManager(this);
+        //    this.Window.Title = "Projeto Final";
+        //    Content.RootDirectory = "Content";
+        //}
 
         protected override void Initialize()
         {
-            options = SelectMenu();
-            clients = new Dictionary<short, Client>();
             
-            // Network
-            // TODO: Definir IP e Porta dinamicamente
-            switch (int.Parse(options["type"]))
-            {
-                case 1:
-                    ServerNetworkManager serverNetworkManager = new ServerNetworkManager();
-                    serverNetworkManager.port = 666;
-
-                    networkManager = serverNetworkManager;
-
-                    clients.Add(0, new Client("[SERVER]" + options["nickname"]));
-
-                    break;
-                case 2:
-                    //Console.WriteLine("IP?");
-                    //ip = Console.ReadLine();
-
-                    ClientNetworkManager clientNetworkManager = new ClientNetworkManager();
-                    clientNetworkManager.port = 666;
-                    clientNetworkManager.ip = "189.24.202.85";
-
-                    networkManager = clientNetworkManager;
-                    
-                    clients.Add(0, new Client("[CLIENT]" + options["nickname"]));
-
-                    break;
-            }
-
-            networkManager.Connect();
-            clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
-
-            // Resources
-            textureManager = TextureManager.Instance;
-            textureManager.setContent(Content, GraphicsDevice);
-
-            // Events
-            eventManager = EventManager.Instance;
-
-            // Managers
-            playerManager = new PlayerManager();
-            localPlayerManager = new LocalPlayerManager();
-            mapManager = new MapManager(Content);
-
-            if (IsHost)
-                localPlayerManager.createLocalPlayer(0);
-
-            // Registering Events
-            eventManager.PlayerStateChanged += (sender, e) => this.networkManager.SendMessage(new UpdatePlayerStateMessage(e.id, e.player, e.messageType));
-
-            // Window Management
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 608;
-            graphics.ApplyChanges();    
-        
-            // Camera
-            camera = Camera.Instance;
-            camera.Speed = 4f;
-                                    
-            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -209,124 +135,6 @@ namespace ProjetoFinal
             return new Vector2( ScreenSize.X + tileSize.X, ScreenSize.Y + tileSize.Y);
         }
 
-        private bool IsHost
-        {
-            get { return this.networkManager is ServerNetworkManager; }
-        }
-
-        // TODO: Achar um nome mais expressivo pra essa função
-        private Dictionary<string, string> SelectMenu()
-        {
-            Dictionary<string, string> returnValues = new Dictionary<string, string>();
-
-            Console.WriteLine("==========================");
-            Console.WriteLine("       What are you?      ");
-            Console.WriteLine("==========================");
-            Console.WriteLine("1. I'm a Server");
-            Console.WriteLine("2. I'm a Client");
-            returnValues.Add("type", Console.ReadLine());
-            //Console.WriteLine("Type your nickname:");
-            //returnValues.Add("nickname", Console.ReadLine());
-            returnValues.Add("nickname", "BomberMacFaggot");
-            
-            //Console.WriteLine("Port?");
-            //port = int.Parse(Console.ReadLine());
-
-            return returnValues;
-        }
-
-        private void ProcessNetworkMessages()
-        {
-            NetIncomingMessage im;
-
-            while ((im = this.networkManager.ReadMessage()) != null)
-            {
-                switch (im.MessageType)
-                {
-                    case NetIncomingMessageType.VerboseDebugMessage:
-                    case NetIncomingMessageType.DebugMessage:
-                    case NetIncomingMessageType.WarningMessage:
-                    case NetIncomingMessageType.ErrorMessage:
-                        Console.WriteLine(im.ReadString());
-                        break;
-
-                    case NetIncomingMessageType.StatusChanged:
-                        switch ((NetConnectionStatus)im.ReadByte())
-                        {
-                            case NetConnectionStatus.RespondedAwaitingApproval:
-                                NetOutgoingMessage hailMessage = this.networkManager.CreateMessage();
-                                new HailMessage(clientCounter++, clients).Encode(hailMessage);
-                                im.SenderConnection.Approve(hailMessage);
-
-                                break;
-
-                            case NetConnectionStatus.Connected:
-                                if (!this.IsHost)
-                                {
-                                    this.HandleHailMessage(new HailMessage(im.SenderConnection.RemoteHailMessage));
-                                    Console.WriteLine("Connected to {0}", im.SenderEndpoint);
-                                }
-                                else
-                                {
-                                    Console.WriteLine("{0} Connected", im.SenderEndpoint);
-                                }
-
-                                break;
-
-                            case NetConnectionStatus.Disconnected:
-                                Console.WriteLine(this.IsHost ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
-                                break;
-                            
-                        }
-                        break;
-
-                    case NetIncomingMessageType.Data:
-                        var gameMessageType = (GameMessageType)im.ReadByte();
-                        switch (gameMessageType)
-                        {
-                            case GameMessageType.UpdatePlayerState:
-                                this.HandleUpdatePlayerStateMessage(im);
-
-                                break;
-                        }
-                        break;
-
-                }
-
-                this.networkManager.Recycle(im);
-            }
-        }
-
-        private void HandleUpdatePlayerStateMessage(NetIncomingMessage im)
-        {
-            UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im);
-
-            if (message.playerId != localPlayerManager.playerId)
-            {
-                Player player = playerManager.GetPlayer(message.playerId);
-
-                // TODO: Tentar implementar algo de Lag Prediction
-                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
-
-                if (player.LastUpdateTime < message.messageTime)
-                {
-                    var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
-
-                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, timeDelay, message.messageType, message.playerState);
-                    // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
-                }
-
-                if (IsHost)
-                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player, message.messageType));
-            }
-        }
-
-        private void HandleHailMessage(HailMessage message)
-        {
-            localPlayerManager.createLocalPlayer(message.clientId);
-
-            foreach (short id in message.clientsInfo.Keys)
-                this.playerManager.AddPlayer(id);
-        }
+ 
     }
 }
