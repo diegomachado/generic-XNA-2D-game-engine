@@ -147,12 +147,12 @@
     <Compile Include="Managers\MapManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\TextureManager.cs" />
-    <Compile Include="Network\ClientNetworkManager.cs" />
+    <Compile Include="Network\Managers\ClientNetworkManager.cs" />
     <Compile Include="Network\INetworkManager.cs" />
     <Compile Include="Network\Messages\HailMessage.cs" />
-    <Compile Include="Network\Messages\IGameMessage.cs" />
+    <Compile Include="Network\IGameMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
-    <Compile Include="Network\ServerNetworkManager.cs" />
+    <Compile Include="Network\Managers\ServerNetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
