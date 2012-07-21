@@ -13,6 +13,7 @@ namespace ProjetoFinal.Managers
     {
         private static NetworkManager instance;
 
+        // TODO: Renomear esse fdp
         INetworkManager someShit;
 
         public bool IsServer { get; set; }
@@ -34,6 +35,8 @@ namespace ProjetoFinal.Managers
                 return instance;
             }
         }
+
+        public bool IsHost { get { return someShit is ServerNetworkManager; } }
         
         // Método utilizado para realizar uma conexão de client com server ou para criar um servidor
         public void Connect()
@@ -66,24 +69,11 @@ namespace ProjetoFinal.Managers
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
         }
 
-        public bool IsHost
-        {
-            get
-            {
-               return someShit is ServerNetworkManager;
-            }
-        }
-
-        internal object SendMessage(Network.Messages.UpdatePlayerStateMessage updatePlayerStateMessage)
-        {
-            throw new NotImplementedException();
-        }
-
         public void ProcessNetworkMessages()
         {
             NetIncomingMessage im;
 
-            while ((im = ReadMessage()) != null)
+            while ((im = someShit.ReadMessage()) != null)
             {
                 switch (im.MessageType)
                 {
@@ -93,6 +83,7 @@ namespace ProjetoFinal.Managers
                     case NetIncomingMessageType.ErrorMessage:
 
                         Console.WriteLine(im.ReadString());
+
                         break;
 
                     case NetIncomingMessageType.StatusChanged:
@@ -101,9 +92,7 @@ namespace ProjetoFinal.Managers
                         {
                             case NetConnectionStatus.RespondedAwaitingApproval:
 
-                                NetOutgoingMessage hailMessage = CreateMessage();
-                                new HailMessage(clientCounter++, clients).Encode(hailMessage);
-                                im.SenderConnection.Approve(hailMessage);
+                                im.SenderConnection.Approve(CreateHailMessage());
 
                                 break;
 
@@ -112,8 +101,8 @@ namespace ProjetoFinal.Managers
                                 if (!IsHost)
                                 {
                                     // TODO: Lançar evento de Recebimento de HailStateMessage
-                                    OnHailMessageReceived();
-                                    //this.HandleHailMessage(new HailMessage(im.SenderConnection.RemoteHailMessage));
+                                    OnHailMessageReceived(new HailMessage(im.SenderConnection.RemoteHailMessage));
+
                                     Console.WriteLine("Connected to {0}", im.SenderEndpoint);
                                 }
                                 else
@@ -126,9 +115,11 @@ namespace ProjetoFinal.Managers
                             case NetConnectionStatus.Disconnected:
 
                                 Console.WriteLine(IsHost ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
+
                                 break;
 
                         }
+
                         break;
 
                     case NetIncomingMessageType.Data:
@@ -139,9 +130,7 @@ namespace ProjetoFinal.Managers
                         {
                             case GameMessageType.UpdatePlayerState:
                                 // TODO: Lançar evento de Recebimento de UpdatePlayerStateMessage
-                                //this.HandleUpdatePlayerStateMessage(im);
-
-                                OnUpdatePlayerStateMessageReceived();
+                                OnUpdatePlayerStateMessageReceived(im);
 
                                 break;
                         }
@@ -149,21 +138,21 @@ namespace ProjetoFinal.Managers
                         break;
                 }
 
-                Recycle(im);
+                someShit.Recycle(im);
             }
         }
 
         // Eventos
 
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
-        private void OnUpdatePlayerStateMessageReceived()
+        private void OnUpdatePlayerStateMessageReceived(NetIncomingMessage im)
         {
             if (UpdatePlayerStateMessageReceived != null)
                 UpdatePlayerStateMessageReceived(this, null);
         }
 
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
-        private void OnHailMessageReceived()
+        private void OnHailMessageReceived(HailMessage hailMessage)
         {
             if (UpdatePlayerStateMessageReceived != null)
                 UpdatePlayerStateMessageReceived(this, null);
@@ -171,19 +160,16 @@ namespace ProjetoFinal.Managers
 
         // Util
 
-        private void Recycle(NetIncomingMessage im)
+        public void SendMessage(Network.Messages.UpdatePlayerStateMessage updatePlayerStateMessage)
         {
-            throw new NotImplementedException();
+            someShit.SendMessage(updatePlayerStateMessage);
         }
 
-        private NetOutgoingMessage CreateMessage()
+        private NetOutgoingMessage CreateHailMessage()
         {
-            throw new NotImplementedException();
-        }
-
-        private NetIncomingMessage ReadMessage()
-        {
-            throw new NotImplementedException();
+            NetOutgoingMessage hailMessage = someShit.CreateMessage();
+            new HailMessage(clientCounter++, clients).Encode(hailMessage);
+            return hailMessage;
         }
     }
 }
