@@ -17,22 +17,15 @@ namespace ProjetoFinal.GameStateEngine
 
         SpriteBatch spriteBatch;
         SpriteFont spriteFont;
+
         InputManager inputManager = InputManager.Instance;
         NetworkManager networkManager = NetworkManager.Instance;
 
-        public bool TraceEnabled
-        {
-            get { return traceEnabled; }
-            set { traceEnabled = value; }
-        }
-        bool traceEnabled;
+        public bool TraceEnabled { get; set; }
 
         bool isInitialized;
         
-        public GameStatesManager(Game game) : base(game)
-        {
-
-        }
+        public GameStatesManager(Game game) : base(game) { }
 
         public override void Initialize()
         {
@@ -56,7 +49,6 @@ namespace ProjetoFinal.GameStateEngine
 
         protected override void UnloadContent()
         {
-            // Tell each of the screens to unload their content.
             foreach (GameState state in states)
             {
                 state.UnloadContent();
@@ -110,7 +102,7 @@ namespace ProjetoFinal.GameStateEngine
             networkManager.ProcessNetworkMessages();
 
             // Print debug trace?
-            if (traceEnabled)
+            if (TraceEnabled)
                 TraceScreens();
         }
 
@@ -118,6 +110,7 @@ namespace ProjetoFinal.GameStateEngine
         {
             foreach (GameState state in states)
             {
+                // TODO: Mudar os estados dos estados (Ainda não fazemos isso!)
                 if (state.State == GameStateState.Hidden)
                     continue;
 
@@ -128,7 +121,6 @@ namespace ProjetoFinal.GameStateEngine
         public void AddState(GameState state/*, PlayerIndex? controllingPlayer*/)
         {
             //screen.ControllingPlayer = controllingPlayer;
-            //screen.ScreenManager = this;
             //screen.IsExiting = false;
 
             // If we have a graphics device, tell the screen to load content.

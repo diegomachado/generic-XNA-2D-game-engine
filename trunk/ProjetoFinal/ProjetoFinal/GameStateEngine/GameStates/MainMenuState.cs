@@ -14,6 +14,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             if (inputManager.Exit)
                 gameStateManager.ExitGame();
+
+            // TODO: Criar menu de seleção inicial
         }
 
         public virtual void LoadContent() { }
