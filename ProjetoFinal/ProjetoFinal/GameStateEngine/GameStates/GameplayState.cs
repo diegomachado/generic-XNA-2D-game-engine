@@ -136,5 +136,16 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             //foreach (short id in message.clientsInfo.Keys)
             //    this.playerManager.AddPlayer(id);
         }
+
+        // TODO: Tirar isso daqui e por no lugar certo
+        /*public Point PositionToTileCoord(Vector2 position, Point tileSize)
+        {
+            return new Point((int)position.X / tileSize.X, (int)position.Y / tileSize.Y);
+        }
+
+        private Vector2 ViewportVector(Point tileSize)
+        {
+            return new Vector2(ScreenSize.X + tileSize.X, ScreenSize.Y + tileSize.Y);
+        }*/
     }
 }
