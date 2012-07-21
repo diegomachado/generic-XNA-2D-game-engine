@@ -29,11 +29,11 @@ namespace ProjetoFinal.Managers
             keyboardState = Keyboard.GetState();
         }
 
-        public bool Exit
-        {
-            get
-            {
-                return false;//GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || currentKeyboardState.IsKeyDown(Keys.Escape));
-            }
+        public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape); } }
+        public bool Jump { get { return keyboardState.IsKeyDown(Keys.Space); } }
+        public bool Left { get { return keyboardState.IsKeyDown(Keys.Left); } }
+        public bool PreviouslyLeft { get { return previousKeyboardState.IsKeyDown(Keys.Left); } }
+        public bool Right { get { return keyboardState.IsKeyDown(Keys.Right); } }
+        public bool PreviouslyRight { get { return previousKeyboardState.IsKeyDown(Keys.Right); } }
     }
 }

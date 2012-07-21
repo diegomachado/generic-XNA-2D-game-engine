@@ -68,7 +68,7 @@ namespace ProjetoFinal.Managers
             }
         }
 
-        public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Layer collisionLayer)
+        public void Update(GameTime gameTime, Layer collisionLayer)
         {
             foreach (KeyValuePair<short, Player> p in players)
             {

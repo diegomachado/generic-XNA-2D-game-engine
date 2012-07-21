@@ -57,7 +57,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 gameStateManager.ExitGame();
 
             localPlayerManager.Update(gameTime, inputManager, mapManager.GetCollisionLayer());
-            playerManager.Update(gameTime, inputManager, mapManager.GetCollisionLayer());
+            playerManager.Update(gameTime, mapManager.GetCollisionLayer());
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -98,6 +98,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         }
 
         public override void UnloadContent() { }
+
+        // Eventos de Network
 
         private void HandleUpdatePlayerStateMessage(object sender, EventArgs e)
         {

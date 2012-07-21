@@ -35,6 +35,7 @@ namespace ProjetoFinal.Managers
             }
         }
         
+        // Método utilizado para realizar uma conexão de client com server ou para criar um servidor
         public void Connect()
         {
             clients = new Dictionary<short, Client>();
@@ -90,13 +91,16 @@ namespace ProjetoFinal.Managers
                     case NetIncomingMessageType.DebugMessage:
                     case NetIncomingMessageType.WarningMessage:
                     case NetIncomingMessageType.ErrorMessage:
+
                         Console.WriteLine(im.ReadString());
                         break;
 
                     case NetIncomingMessageType.StatusChanged:
+
                         switch ((NetConnectionStatus)im.ReadByte())
                         {
                             case NetConnectionStatus.RespondedAwaitingApproval:
+
                                 NetOutgoingMessage hailMessage = CreateMessage();
                                 new HailMessage(clientCounter++, clients).Encode(hailMessage);
                                 im.SenderConnection.Approve(hailMessage);
@@ -104,10 +108,12 @@ namespace ProjetoFinal.Managers
                                 break;
 
                             case NetConnectionStatus.Connected:
+
                                 if (!IsHost)
                                 {
                                     // TODO: Lançar evento de Recebimento de HailStateMessage
-                                    this.HandleHailMessage(new HailMessage(im.SenderConnection.RemoteHailMessage));
+                                    OnHailMessageReceived();
+                                    //this.HandleHailMessage(new HailMessage(im.SenderConnection.RemoteHailMessage));
                                     Console.WriteLine("Connected to {0}", im.SenderEndpoint);
                                 }
                                 else
@@ -118,6 +124,7 @@ namespace ProjetoFinal.Managers
                                 break;
 
                             case NetConnectionStatus.Disconnected:
+
                                 Console.WriteLine(IsHost ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
                                 break;
 
@@ -125,7 +132,9 @@ namespace ProjetoFinal.Managers
                         break;
 
                     case NetIncomingMessageType.Data:
+
                         var gameMessageType = (GameMessageType)im.ReadByte();
+
                         switch (gameMessageType)
                         {
                             case GameMessageType.UpdatePlayerState:
@@ -144,6 +153,8 @@ namespace ProjetoFinal.Managers
             }
         }
 
+        // Eventos
+
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
         private void OnUpdatePlayerStateMessageReceived()
         {
@@ -157,6 +168,8 @@ namespace ProjetoFinal.Managers
             if (UpdatePlayerStateMessageReceived != null)
                 UpdatePlayerStateMessageReceived(this, null);
         }
+
+        // Util
 
         private void Recycle(NetIncomingMessage im)
         {

@@ -80,51 +80,33 @@ namespace ProjetoFinal.Managers
             playerId = id;
             localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30));   
         }
-        
-        public void Update(GameTime gameTime, KeyboardState keyboardState, GamePadState gamePadState, Layer collisionLayer)
+
+        public void Update(GameTime gameTime, InputManager inputManager, Layer collisionLayer)
         {
             if (localPlayer == null)
                 return;
 
-            /*if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                // Key Just Pressed
-                if (!lastKeyboardState.IsKeyDown(Keys.Space))
-                {
-                }
-                // Key kept pressed
-                else
-                {
-                }
-            }
-            // Key Released
-            else if (lastKeyboardState.IsKeyDown(Keys.Space))
-            {
-            }*/
-
             // Input
 
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (inputManager.Jump)
             {
                 localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
             }
 
-            if (keyboardState.IsKeyDown(Keys.Left))
+            if (inputManager.Left)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.MovedLeft(playerId, localPlayer, localPlayerHorizontalStates);
             }
-            // Key Released
-            else if (lastKeyboardState.IsKeyDown(Keys.Left))
+            else if (inputManager.PreviouslyLeft) // Key Released
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingLeft(playerId, localPlayer, localPlayerHorizontalStates);
             }
 
-            if (keyboardState.IsKeyDown(Keys.Right))
+            if (inputManager.Right)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.MovedRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
-            // Key Released
-            else if (lastKeyboardState.IsKeyDown(Keys.Right))
+            else if (inputManager.PreviouslyRight) // Key Released
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
@@ -135,8 +117,6 @@ namespace ProjetoFinal.Managers
             Camera.Instance.Position = localPlayer.Position
                                         + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)
                                         - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
-
-            lastKeyboardState = keyboardState;      
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
