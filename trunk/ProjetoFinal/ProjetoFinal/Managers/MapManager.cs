@@ -82,7 +82,7 @@ namespace ProjetoFinal.Managers
         {
             get
             {
-                return (currentMap != null);
+                return (currentMap != null);  
             }
         }
     }

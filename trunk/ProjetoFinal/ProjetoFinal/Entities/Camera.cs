@@ -15,8 +15,8 @@ namespace ProjetoFinal.Entities
         private MapManager mapManager = MapManager.Instance;
         private GraphicsManager graphicsManager = GraphicsManager.Instance;
 
-        Vector2 position;
-        float speed;
+        private Vector2 position;
+        private float speed;
 
         public static Camera Instance
         {
@@ -64,7 +64,7 @@ namespace ProjetoFinal.Entities
 
         public void FollowLocalPlayer(Player player)
         {
-            this.position= player.Position + new Vector2(player.Skin.Width / 2, player.Skin.Height / 2)
+            this.Position = player.Position + new Vector2(player.Skin.Width / 2, player.Skin.Height / 2)
                                           - new Vector2(graphicsManager.ScreenSize.X / 2, graphicsManager.ScreenSize.Y / 2);
         }
     }

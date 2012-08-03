@@ -58,13 +58,13 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             spriteBatch.Begin();
 
             // Drawing Entities
-            /*mapManager.DrawEfficiently(spriteBatch,
+            mapManager.DrawEfficiently(spriteBatch,
                                        camera.PositionToPoint(),
                                        PositionToTileCoord(camera.Position, mapManager.GetTileSize()),
-                                       PositionToTileCoord(camera.Position + ViewportVector(mapManager.GetTileSize()), mapManager.GetTileSize()));*/
+                                       PositionToTileCoord(camera.Position + ViewportVector(mapManager.GetTileSize()), mapManager.GetTileSize()));
 
             // TODO: Fazer saporra eficiente e foda-se
-            mapManager.Draw(spriteBatch, camera.PositionToPoint());
+            //mapManager.Draw(spriteBatch, camera.PositionToPoint());
 
             localPlayerManager.Draw(spriteBatch, spriteFont);
             playerManager.Draw(spriteBatch, spriteFont);
@@ -84,6 +84,16 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             }
 
             spriteBatch.End();
+        }
+
+        public Point PositionToTileCoord(Vector2 position, Point tileSize)
+        {
+            return new Point((int)position.X / tileSize.X, (int)position.Y / tileSize.Y);
+        }
+
+        private Vector2 ViewportVector(Point tileSize)
+        {
+            return new Vector2(graphicsManager.ScreenSize.X + tileSize.X, graphicsManager.ScreenSize.Y + tileSize.Y);
         }
 
         public override void UnloadContent() { }
