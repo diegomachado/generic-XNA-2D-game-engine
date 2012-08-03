@@ -13,7 +13,7 @@ namespace ProjetoFinal.Managers
 {
     public enum MapType
     {
-        Level1
+        Level1,
     }
 
     class MapManager
@@ -22,7 +22,7 @@ namespace ProjetoFinal.Managers
 
         public ContentManager Content
         {
-            set { content =  value }
+            set { content = value; }
         }
         ContentManager content;
        
@@ -76,6 +76,14 @@ namespace ProjetoFinal.Managers
         public void DrawEfficiently(SpriteBatch spriteBatch, Point cameraPosition, Point firstTile, Point lastTile)
         {
             currentMap.DrawEfficiently(spriteBatch, cameraPosition, firstTile, lastTile);
+        }
+
+        public bool IsCurrentMapLoaded
+        {
+            get
+            {
+                return (currentMap != null);
+            }
         }
     }
 }

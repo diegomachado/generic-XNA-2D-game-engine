@@ -120,12 +120,14 @@
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
-    <Compile Include="EventArgs\PlayerStateChangedArgs.cs" />
+    <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
+    <Compile Include="EventHeaders\PlayerStateUpdateEventArgs.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameStateEngine\GameState.cs" />
     <Compile Include="GameStateEngine\GameStates\HostGameState.cs" />
     <Compile Include="GameStateEngine\GameStates\JoinGameState.cs" />
     <Compile Include="GameStateEngine\GameStates\MainMenuState.cs" />
+    <Compile Include="Managers\GraphicsManager.cs" />
     <Compile Include="Managers\GameStatesManager.cs" />
     <Compile Include="GameStateEngine\GameStates\BackgroundState.cs" />
     <Compile Include="GameStateEngine\GameStates\GameplayState.cs" />
@@ -154,7 +156,6 @@
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
     <Compile Include="Network\Managers\ServerNetworkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

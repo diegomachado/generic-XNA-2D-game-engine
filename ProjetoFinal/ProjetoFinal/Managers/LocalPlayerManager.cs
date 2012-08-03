@@ -46,13 +46,18 @@ namespace ProjetoFinal.Managers
         public short playerId { get; set; }
         
         Player localPlayer;
-        Vector2 speed = Vector2.Zero;
 
-        KeyboardState lastKeyboardState;
+        public Player LocalPlayer 
+        {
+            get { return localPlayer; }
+        }
+
         HorizontalMovementState localPlayerHorizontalState;
         VerticalMovementState localPlayerVerticalState;
         Dictionary<HorizontalStateType, HorizontalMovementState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
         Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
+
+        Camera camera = Camera.Instance;
         
         public LocalPlayerManager()
         {
@@ -113,10 +118,6 @@ namespace ProjetoFinal.Managers
 
             localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
             localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
-
-            Camera.Instance.Position = localPlayer.Position
-                                        + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)
-                                        - new Vector2(Game.ScreenSize.X / 2, Game.ScreenSize.Y / 2);
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -127,15 +128,15 @@ namespace ProjetoFinal.Managers
                 
                 spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
 
-                spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - Camera.Instance.Position, Color.White);
-                spriteBatch.DrawString(spriteFont, "" + localPlayerVerticalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 40) - Camera.Instance.Position, Color.White);
+                spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - camera.Position, Color.White);
+                spriteBatch.DrawString(spriteFont, "" + localPlayerVerticalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 40) - camera.Position, Color.White);
 
                 spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 05f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.Position.Y, new Vector2(5f, 25f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.Speed.X, new Vector2(5f, 45f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.Speed.Y, new Vector2(5f, 65f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 85f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 105f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)camera.Position.X, new Vector2(5f, 85f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)camera.Position.Y, new Vector2(5f, 105f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Horizontal State: " + localPlayerHorizontalState, new Vector2(5f, 125f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Vertical State: " + localPlayerVerticalState, new Vector2(5f, 145f), Color.White);
            }
@@ -144,16 +145,16 @@ namespace ProjetoFinal.Managers
         public void DrawPoint(SpriteBatch spriteBatch, Point position, int size, Color color)
         {
             // TODO: Transformar conta com Camera em uma funcao de Camera
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(position.X - (int)Camera.Instance.Position.X, position.Y - (int)Camera.Instance.Position.Y, size, size), Color.White);
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(position.X - (int)camera.Position.X, position.Y - (int)camera.Position.Y, size, size), Color.White);
         }
 
         public void DrawBoundingBox(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch)
         {
             // TODO: Transformar conta com Camera em uma funcao de Camera
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White); // Left
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White); // Right
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White); // Top
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Bottom - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White); // 
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Top - (int)camera.Position.Y, borderWidth, r.Height), Color.White); // Left
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right - (int)camera.Position.X, r.Top - (int)camera.Position.Y, borderWidth, r.Height), Color.White); // Right
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Top - (int)camera.Position.Y, r.Width, borderWidth), Color.White); // Top
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Bottom - (int)camera.Position.Y, r.Width, borderWidth), Color.White); // 
         }
     }
 }

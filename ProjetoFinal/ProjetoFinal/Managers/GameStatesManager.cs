@@ -29,9 +29,12 @@ namespace ProjetoFinal.GameStateEngine
 
         public override void Initialize()
         {
-            base.Initialize();
-
             isInitialized = true;
+
+            //TODO: Tirar saporra daqui
+            networkManager.Connect();
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -43,7 +46,7 @@ namespace ProjetoFinal.GameStateEngine
 
             foreach (GameState state in states)
             {
-                state.LoadContent();
+                state.LoadContent(content);
             }
         }
 
@@ -71,8 +74,8 @@ namespace ProjetoFinal.GameStateEngine
             //bool coveredByOtherScreen = false;
 
             // Loop as long as there are screens waiting to be updated.
-            while (states.Count > 0)
-            {
+            //while (states.Count > 0)
+            //{
                 // Pop the topmost screen off the waiting list.
                 GameState state = states[states.Count - 1];
 
@@ -97,7 +100,7 @@ namespace ProjetoFinal.GameStateEngine
                     //if (!screen.IsPopup)
                     //    coveredByOtherScreen = true;
                 }*/
-            }
+            //}
 
             networkManager.ProcessNetworkMessages();
 
@@ -125,10 +128,8 @@ namespace ProjetoFinal.GameStateEngine
 
             // If we have a graphics device, tell the screen to load content.
             if (isInitialized)
-            {
-                state.LoadContent();
-            }
-
+                state.LoadContent(Game.Content);
+            
             states.Add(state);
         }
 
@@ -136,9 +137,7 @@ namespace ProjetoFinal.GameStateEngine
         {
             // If we have a graphics device, tell the screen to unload content.
             if (isInitialized)
-            {
                 state.UnloadContent();
-            }
 
             states.Remove(state);
             //screensToUpdate.Remove(screen);
