@@ -118,6 +118,10 @@ namespace ProjetoFinal.Managers
 
             localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
             localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
+
+            Camera.Instance.Position = localPlayer.Position
+                                        + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)
+                                        - new Vector2(GraphicsManager.Instance.ScreenSize.X / 2, GraphicsManager.Instance.ScreenSize.Y / 2);
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
