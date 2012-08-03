@@ -6,6 +6,7 @@ using Lidgren.Network;
 using ProjetoFinal.Network.Messages;
 using ProjetoFinal.Network;
 using ProjetoFinal.Entities;
+using ProjetoFinal.EventHeaders;
 
 namespace ProjetoFinal.Managers
 {
@@ -21,9 +22,8 @@ namespace ProjetoFinal.Managers
         public Dictionary<short, Entities.Client> clients; // TODO: Fazer property
 
         // Events
-
-        public event EventHandler UpdatePlayerStateMessageReceived;
-        public event EventHandler HailMessageReceived;
+        public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated;
+        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
         
         public static NetworkManager Instance
         {
@@ -45,7 +45,8 @@ namespace ProjetoFinal.Managers
 
             // Network
             // TODO: Definir IP e Porta dinamicamente
-            if(IsServer)
+            //if(IsServer)
+            if(true)
             {
                 ServerNetworkManager serverNetworkManager = new ServerNetworkManager();
                 serverNetworkManager.port = 666;
@@ -73,6 +74,7 @@ namespace ProjetoFinal.Managers
         {
             NetIncomingMessage im;
 
+            // TODO: Someshit
             while ((im = someShit.ReadMessage()) != null)
             {
                 switch (im.MessageType)
@@ -100,8 +102,7 @@ namespace ProjetoFinal.Managers
 
                                 if (!IsHost)
                                 {
-                                    // TODO: Lançar evento de Recebimento de HailStateMessage
-                                    OnHailMessageReceived(new HailMessage(im.SenderConnection.RemoteHailMessage));
+                                    OnClientConnected(new HailMessage(im.SenderConnection.RemoteHailMessage));
 
                                     Console.WriteLine("Connected to {0}", im.SenderEndpoint);
                                 }
@@ -130,7 +131,7 @@ namespace ProjetoFinal.Managers
                         {
                             case GameMessageType.UpdatePlayerState:
                                 // TODO: Lançar evento de Recebimento de UpdatePlayerStateMessage
-                                OnUpdatePlayerStateMessageReceived(im);
+                                OnPlayerStateUpdated(new UpdatePlayerStateMessage(im));
 
                                 break;
                         }
@@ -145,25 +146,20 @@ namespace ProjetoFinal.Managers
         // Eventos
 
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
-        private void OnUpdatePlayerStateMessageReceived(NetIncomingMessage im)
+        private void OnPlayerStateUpdated(UpdatePlayerStateMessage updatePlayerStateMessage)
         {
-            if (UpdatePlayerStateMessageReceived != null)
-                UpdatePlayerStateMessageReceived(this, null);
+            if (PlayerStateUpdated != null)
+                PlayerStateUpdated(this, new PlayerStateUpdatedEventArgs(updatePlayerStateMessage));
         }
 
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
-        private void OnHailMessageReceived(HailMessage hailMessage)
+        private void OnClientConnected(HailMessage hailMessage)
         {
-            if (UpdatePlayerStateMessageReceived != null)
-                UpdatePlayerStateMessageReceived(this, null);
+            if (ClientConnected != null)
+                ClientConnected(this, new ClientConnectedEventArgs(hailMessage));
         }
 
         // Util
-
-        public void SendMessage(Network.Messages.UpdatePlayerStateMessage updatePlayerStateMessage)
-        {
-            someShit.SendMessage(updatePlayerStateMessage);
-        }
 
         private NetOutgoingMessage CreateHailMessage()
         {
@@ -171,5 +167,46 @@ namespace ProjetoFinal.Managers
             new HailMessage(clientCounter++, clients).Encode(hailMessage);
             return hailMessage;
         }
+
+        public void SendPlayerStateChangedMessage(short id, Player player, UpdatePlayerStateMessageType messageType)
+        {
+            someShit.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
+        }
+
+        /*private void HandleUpdatePlayerStateMessage(object sender, EventArgs e)
+        {
+            //private void HandleUpdatePlayerStateMessage(NetIncomingMessage im)
+
+            /*UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im);
+
+            if (message.playerId != localPlayerManager.playerId)
+            {
+                Player player = playerManager.GetPlayer(message.playerId);
+
+                // TODO: Tentar implementar algo de Lag Prediction
+                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
+
+                if (player.LastUpdateTime < message.messageTime)
+                {
+                    var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
+
+                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, timeDelay, message.messageType, message.playerState);
+                    // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
+                }
+
+                if (IsHost)
+                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player, message.messageType));
+            }*/
+        /*}*/
+
+        /*private void HandleHailMessage(object sender, EventArgs e)
+        {
+            //private void HandleHailMessage(HailMessage message)
+
+            //localPlayerManager.createLocalPlayer(message.clientId);
+
+            //foreach (short id in message.clientsInfo.Keys)
+            //    this.playerManager.AddPlayer(id);
+        }*/
     }
 }

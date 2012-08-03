@@ -23,7 +23,7 @@ namespace ProjetoFinal.PlayerStateMachine
                     break;
             }
 
-            EventManager.Instance.throwPlayerStateChanged(playerId, player, messageType);
+            EventManager.Instance.ThrowPlayerStateChanged(playerId, player, messageType);
         }
     }
 }

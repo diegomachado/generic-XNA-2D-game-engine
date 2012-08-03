@@ -10,14 +10,15 @@ namespace ProjetoFinal
     {
         GraphicsDeviceManager graphics;
         GameStatesManager gameStatesManager;
+        GraphicsManager graphicsManager = GraphicsManager.Instance;
 
         public ProjetoFinal()
         {
             Content.RootDirectory = "Content";
 
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 608;
+            graphics.PreferredBackBufferWidth  = graphicsManager.ScreenSize.X;
+            graphics.PreferredBackBufferHeight = graphicsManager.ScreenSize.Y;
             graphics.ApplyChanges();
 
             gameStatesManager = new GameStatesManager(this);
@@ -26,12 +27,14 @@ namespace ProjetoFinal
 
             // TODO: Colocar os primeiros estados na lista
             //gameStatesManager.AddState(new BackgroundState(), null);
-            gameStatesManager.AddState(new MainMenuState());
         }
 
         protected override void Initialize()
         {
             TextureManager.Instance.setContent(Content, GraphicsDevice);
+            gameStatesManager.AddState(new GameplayState());
+
+            base.Initialize();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -42,9 +45,10 @@ namespace ProjetoFinal
         }
     }
 
+#if WINDOWS || XBOX
     static class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
             using (ProjetoFinal game = new ProjetoFinal())
             {
@@ -52,4 +56,5 @@ namespace ProjetoFinal
             }
         }
     }
+#endif
 }

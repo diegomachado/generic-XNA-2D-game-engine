@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Lidgren.Network;
 
 using ProjetoFinal.Entities;
-using ProjetoFinal.EventArgs;
+using ProjetoFinal.EventHeaders;
 using ProjetoFinal.Managers.LocalPlayerStates;
 using Microsoft.Xna.Framework.Input;
 using OgmoLibrary;

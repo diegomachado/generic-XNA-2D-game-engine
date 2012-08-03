@@ -16,12 +16,12 @@ namespace ProjetoFinal.Network.Messages
 
     class UpdatePlayerStateMessage : IGameMessage
     {
-        public short playerId { get; set; }
+        public short playerId     { get; set; }
         public double messageTime { get; set; }
-        public Vector2 position { get; set; }
-        public short playerState { get; set; }
-        public Vector2 speed { get; set; }
-        public UpdatePlayerStateMessageType messageType { get; set; }
+        public Vector2 position   { get; set; }
+        public short playerState  { get; set; }
+        public Vector2 speed      { get; set; }
+        public UpdatePlayerStateMessageType movementType { get; set; }
 
         public UpdatePlayerStateMessage(NetIncomingMessage im)
         {
@@ -44,7 +44,7 @@ namespace ProjetoFinal.Network.Messages
                     break;
             }
 
-            messageType = mt;
+            movementType = mt;
         }
 
         public GameMessageType MessageType
@@ -57,7 +57,7 @@ namespace ProjetoFinal.Network.Messages
             playerId = im.ReadInt16();
             messageTime = im.ReadDouble();
             position = im.ReadVector2();
-            messageType = (UpdatePlayerStateMessageType)im.ReadInt16();
+            movementType = (UpdatePlayerStateMessageType)im.ReadInt16();
             playerState = im.ReadInt16();
         }
 
@@ -66,7 +66,7 @@ namespace ProjetoFinal.Network.Messages
             om.Write(playerId);
             om.Write(messageTime);
             om.Write(position);
-            om.Write((short)messageType);
+            om.Write((short)movementType);
             om.Write(playerState);
         }
     }
