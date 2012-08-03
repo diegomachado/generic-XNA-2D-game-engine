@@ -12,7 +12,7 @@ namespace ProjetoFinal.Network
     /// <summary>
     /// TODO: Atualizar Sumário
     /// </summary>
-    public class ServerNetworkManager : INetworkManager
+    public class ServerInterface : NetworkInterface
     {
         public int port {get; set;}
 

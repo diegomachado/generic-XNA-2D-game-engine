@@ -13,7 +13,7 @@ namespace ProjetoFinal.Network
     /// <summary>
     /// TODO: Atualizar Sumário
     /// </summary>
-    public class ClientNetworkManager : INetworkManager
+    public class ClientInterface : NetworkInterface
     {
         public int port {get; set;}
         public String ip {get; set;}
