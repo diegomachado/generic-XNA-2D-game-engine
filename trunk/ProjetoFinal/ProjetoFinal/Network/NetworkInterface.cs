@@ -1,7 +1,6 @@
 ﻿using System;
 
 using Lidgren.Network;
-
 using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Network
@@ -9,7 +8,7 @@ namespace ProjetoFinal.Network
     /// <summary>
     /// TODO: Atualizar Sumário
     /// </summary>
-    public interface INetworkManager : IDisposable
+    public interface NetworkInterface : IDisposable
     {
         void Connect();
 

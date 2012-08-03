@@ -66,16 +66,16 @@ namespace ProjetoFinal.Managers
 
         public void Update()
         {
-        }
+        }      
 
-        public void Draw(SpriteBatch spriteBatch, Point cameraPosition)
-        {
-            currentMap.Draw(spriteBatch, cameraPosition);
-        }
-
-        public void DrawEfficiently(SpriteBatch spriteBatch, Point cameraPosition, Point firstTile, Point lastTile)
+        public void Draw(SpriteBatch spriteBatch, Point cameraPosition, Point firstTile, Point lastTile)
         {
             currentMap.DrawEfficiently(spriteBatch, cameraPosition, firstTile, lastTile);
+        }
+
+        public void DrawPoorly(SpriteBatch spriteBatch, Point cameraPosition)
+        {
+            currentMap.Draw(spriteBatch, cameraPosition);
         }
 
         public bool IsCurrentMapLoaded

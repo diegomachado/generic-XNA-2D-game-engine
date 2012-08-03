@@ -13,30 +13,30 @@ namespace ProjetoFinal.Managers
     class NetworkManager
     {
         private static NetworkManager instance;
+        private EventManager eventManager;
+        private NetworkInterface networkInterface;
 
-        // TODO: Renomear esse fdp
-        INetworkManager someShit;
-
-        public bool IsServer { get; set; }
+        public bool IsServer 
+        { 
+            //TODO: Chamar o menu idiota no console como antigamente
+            get{ return true; }
+        }
         public short clientCounter; // TODO: Fazer property
         public Dictionary<short, Entities.Client> clients; // TODO: Fazer property
-
-        // Events
-        public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated;
-        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
         
         public static NetworkManager Instance
         {
             get
             {
                 if (instance == null)
+                {
                     instance = new NetworkManager();
+                    instance.eventManager = EventManager.Instance;
+                }
 
                 return instance;
             }
         }
-
-        public bool IsHost { get { return someShit is ServerNetworkManager; } }
         
         // Método utilizado para realizar uma conexão de client com server ou para criar um servidor
         public void Connect()
@@ -45,28 +45,27 @@ namespace ProjetoFinal.Managers
 
             // Network
             // TODO: Definir IP e Porta dinamicamente
-            //if(IsServer)
-            if(true)
+            if(IsServer)
             {
-                ServerNetworkManager serverNetworkManager = new ServerNetworkManager();
+                ServerInterface serverNetworkManager = new ServerInterface();
                 serverNetworkManager.port = 666;
 
-                someShit = serverNetworkManager;
+                networkInterface = serverNetworkManager;
 
                 clients.Add(0, new Client("[SERVER]"));
             }
             else
             {
-                ClientNetworkManager clientNetworkManager = new ClientNetworkManager();
+                ClientInterface clientNetworkManager = new ClientInterface();
                 clientNetworkManager.port = 666;
                 clientNetworkManager.ip = "localhost";
 
-                someShit = clientNetworkManager;
+                networkInterface = clientNetworkManager;
 
                 clients.Add(0, new Client("[CLIENT]"));
             }
 
-            someShit.Connect();
+            networkInterface.Connect();
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
         }
 
@@ -74,8 +73,7 @@ namespace ProjetoFinal.Managers
         {
             NetIncomingMessage im;
 
-            // TODO: Someshit
-            while ((im = someShit.ReadMessage()) != null)
+            while ((im = networkInterface.ReadMessage()) != null)
             {
                 switch (im.MessageType)
                 {
@@ -100,7 +98,7 @@ namespace ProjetoFinal.Managers
 
                             case NetConnectionStatus.Connected:
 
-                                if (!IsHost)
+                                if (!IsServer)
                                 {
                                     OnClientConnected(new HailMessage(im.SenderConnection.RemoteHailMessage));
 
@@ -115,7 +113,7 @@ namespace ProjetoFinal.Managers
 
                             case NetConnectionStatus.Disconnected:
 
-                                Console.WriteLine(IsHost ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
+                                Console.WriteLine(IsServer ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
 
                                 break;
 
@@ -130,8 +128,11 @@ namespace ProjetoFinal.Managers
                         switch (gameMessageType)
                         {
                             case GameMessageType.UpdatePlayerState:
-                                // TODO: Lançar evento de Recebimento de UpdatePlayerStateMessage
-                                OnPlayerStateUpdated(new UpdatePlayerStateMessage(im));
+
+                                UpdatePlayerStateMessage updatePlayerStateMessage = new UpdatePlayerStateMessage(im);
+                                double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateMessage.messageTime);
+
+                                OnPlayerStateUpdated(updatePlayerStateMessage, localTime);
 
                                 break;
                         }
@@ -139,74 +140,38 @@ namespace ProjetoFinal.Managers
                         break;
                 }
 
-                someShit.Recycle(im);
+                networkInterface.Recycle(im);
             }
         }
 
         // Eventos
 
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
-        private void OnPlayerStateUpdated(UpdatePlayerStateMessage updatePlayerStateMessage)
+        private void OnPlayerStateUpdated(UpdatePlayerStateMessage updatePlayerStateMessage, double localTime)
         {
-            if (PlayerStateUpdated != null)
-                PlayerStateUpdated(this, new PlayerStateUpdatedEventArgs(updatePlayerStateMessage));
+            eventManager.ThrowPlayerStateUpdated(this, new PlayerStateUpdatedEventArgs(updatePlayerStateMessage, localTime));
         }
 
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
         private void OnClientConnected(HailMessage hailMessage)
         {
-            if (ClientConnected != null)
-                ClientConnected(this, new ClientConnectedEventArgs(hailMessage));
+            eventManager.throwClientConnected(this, new ClientConnectedEventArgs(hailMessage));
         }
 
         // Util
-
         private NetOutgoingMessage CreateHailMessage()
         {
-            NetOutgoingMessage hailMessage = someShit.CreateMessage();
+            NetOutgoingMessage hailMessage = networkInterface.CreateMessage();
             new HailMessage(clientCounter++, clients).Encode(hailMessage);
             return hailMessage;
         }
 
+        // Outgoing Messages
         public void SendPlayerStateChangedMessage(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
-            someShit.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
+            networkInterface.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
         }
 
-        /*private void HandleUpdatePlayerStateMessage(object sender, EventArgs e)
-        {
-            //private void HandleUpdatePlayerStateMessage(NetIncomingMessage im)
-
-            /*UpdatePlayerStateMessage message = new UpdatePlayerStateMessage(im);
-
-            if (message.playerId != localPlayerManager.playerId)
-            {
-                Player player = playerManager.GetPlayer(message.playerId);
-
-                // TODO: Tentar implementar algo de Lag Prediction
-                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
-
-                if (player.LastUpdateTime < message.messageTime)
-                {
-                    var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
-
-                    playerManager.UpdatePlayer(message.playerId, message.position, message.speed, timeDelay, message.messageType, message.playerState);
-                    // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
-                }
-
-                if (IsHost)
-                    networkManager.SendMessage(new UpdatePlayerStateMessage(message.playerId, player, message.messageType));
-            }*/
-        /*}*/
-
-        /*private void HandleHailMessage(object sender, EventArgs e)
-        {
-            //private void HandleHailMessage(HailMessage message)
-
-            //localPlayerManager.createLocalPlayer(message.clientId);
-
-            //foreach (short id in message.clientsInfo.Keys)
-            //    this.playerManager.AddPlayer(id);
-        }*/
+        
     }
 }

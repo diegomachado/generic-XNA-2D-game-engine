@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Content;
 using ProjetoFinal.Managers;
 using ProjetoFinal.Entities;
 using ProjetoFinal.Network.Messages;
+using ProjetoFinal.EventHeaders;
+using Lidgren.Network;
 
 namespace ProjetoFinal.GameStateEngine.GameStates
 {
@@ -21,10 +23,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public GameplayState() : base()
         {
-            // TODO: configurar networkManager
-            // Fazer com que esse estado assine os metodos que ele precisa de network manager nesse ponto
-            //networkManager.UpdatePlayerStateMessageReceived += HandleUpdatePlayerStateMessage;
-            //networkManager.HailMessageReceived += HandleHailMessage;         
+            eventManager.PlayerStateUpdated += HandleUpdatePlayerStateMessage;
+            //eventManager.HailMessageReceived += HandleHailMessage;
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
@@ -58,13 +58,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             spriteBatch.Begin();
 
             // Drawing Entities
-            mapManager.DrawEfficiently(spriteBatch,
+            mapManager.Draw(spriteBatch,
                                        camera.PositionToPoint(),
                                        PositionToTileCoord(camera.Position, mapManager.GetTileSize()),
                                        PositionToTileCoord(camera.Position + ViewportVector(mapManager.GetTileSize()), mapManager.GetTileSize()));
-
-            // TODO: Fazer saporra eficiente e foda-se
-            //mapManager.Draw(spriteBatch, camera.PositionToPoint());
 
             localPlayerManager.Draw(spriteBatch, spriteFont);
             playerManager.Draw(spriteBatch, spriteFont);
@@ -86,6 +83,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             spriteBatch.End();
         }
 
+        // TODO: REFACTOR THIS XIT
         public Point PositionToTileCoord(Vector2 position, Point tileSize)
         {
             return new Point((int)position.X / tileSize.X, (int)position.Y / tileSize.Y);
@@ -99,15 +97,40 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public override void UnloadContent() { }
 
         // Eventos de Network
-        // TODO: Tirar isso daqui e por no lugar certo
-        /*public Point PositionToTileCoord(Vector2 position, Point tileSize)
+        private void HandleUpdatePlayerStateMessage(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
-            return new Point((int)position.X / tileSize.X, (int)position.Y / tileSize.Y);
+            if (playerStateUpdatedEventArgs.playerId != localPlayerManager.playerId)
+            {
+                Player player = playerManager.GetPlayer(playerStateUpdatedEventArgs.playerId);
+
+                // TODO: Tentar implementar algo de Lag Prediction
+                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
+
+                if (player.LastUpdateTime < playerStateUpdatedEventArgs.messageTime)
+                {
+                    var timeDelay = (float)(NetTime.Now - playerStateUpdatedEventArgs.localTime);
+
+                    playerManager.UpdatePlayer(playerStateUpdatedEventArgs.playerId,
+                                               playerStateUpdatedEventArgs.position, 
+                                               playerStateUpdatedEventArgs.speed, 
+                                               timeDelay,
+                                               playerStateUpdatedEventArgs.movementType,
+                                               playerStateUpdatedEventArgs.playerState);
+                    // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
+                }
+
+                eventManager.ThrowOtherClientPlayerStateChanged(playerStateUpdatedEventArgs.playerId, player, playerStateUpdatedEventArgs.movementType);
+            }
         }
 
-        private Vector2 ViewportVector(Point tileSize)
+        private void HandleHailMessage(object sender, EventArgs e)
         {
-            return new Vector2(ScreenSize.X + tileSize.X, ScreenSize.Y + tileSize.Y);
-        }*/
+            //private void HandleHailMessage(HailMessage message)
+
+            //localPlayerManager.createLocalPlayer(message.clientId);
+
+            //foreach (short id in message.clientsInfo.Keys)
+            //    this.playerManager.AddPlayer(id);
+        }
     }
 }

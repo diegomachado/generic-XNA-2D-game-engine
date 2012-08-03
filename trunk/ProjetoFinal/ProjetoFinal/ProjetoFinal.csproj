@@ -121,7 +121,7 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
-    <Compile Include="EventHeaders\PlayerStateUpdateEventArgs.cs" />
+    <Compile Include="EventHeaders\PlayerStateUpdatedEventArgs.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameStateEngine\GameState.cs" />
     <Compile Include="GameStateEngine\GameStates\HostGameState.cs" />
@@ -149,12 +149,12 @@
     <Compile Include="Managers\MapManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\TextureManager.cs" />
-    <Compile Include="Network\Managers\ClientNetworkManager.cs" />
-    <Compile Include="Network\INetworkManager.cs" />
+    <Compile Include="Network\Interfaces\ClientInterface.cs" />
+    <Compile Include="Network\NetworkInterface.cs" />
     <Compile Include="Network\Messages\HailMessage.cs" />
     <Compile Include="Network\IGameMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
-    <Compile Include="Network\Managers\ServerNetworkManager.cs" />
+    <Compile Include="Network\Interfaces\ServerInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
