@@ -38,6 +38,23 @@ namespace ProjetoFinal.Managers
             }
         }
         
+        public void Host()
+        {
+            clients = new Dictionary<short, Client>();
+
+            // Network
+            // TODO: Definir IP e Porta dinamicamente
+            ServerInterface serverNetworkManager = new ServerInterface();
+            serverNetworkManager.port = 666;
+
+            networkInterface = serverNetworkManager;
+
+            clients.Add(0, new Client("[SERVER]"));
+ 
+            networkInterface.Connect();
+            clientCounter = 1;
+        }
+
         // Método utilizado para realizar uma conexão de client com server ou para criar um servidor
         public void Connect()
         {
@@ -45,26 +62,14 @@ namespace ProjetoFinal.Managers
 
             // Network
             // TODO: Definir IP e Porta dinamicamente
-            if(IsServer)
-            {
-                ServerInterface serverNetworkManager = new ServerInterface();
-                serverNetworkManager.port = 666;
+            ClientInterface clientNetworkManager = new ClientInterface();
+            clientNetworkManager.port = 666;
+            clientNetworkManager.ip = "localhost";
 
-                networkInterface = serverNetworkManager;
+            networkInterface = clientNetworkManager;
 
-                clients.Add(0, new Client("[SERVER]"));
-            }
-            else
-            {
-                ClientInterface clientNetworkManager = new ClientInterface();
-                clientNetworkManager.port = 666;
-                clientNetworkManager.ip = "localhost";
-
-                networkInterface = clientNetworkManager;
-
-                clients.Add(0, new Client("[CLIENT]"));
-            }
-
+            clients.Add(0, new Client("[CLIENT]"));
+        
             networkInterface.Connect();
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
         }

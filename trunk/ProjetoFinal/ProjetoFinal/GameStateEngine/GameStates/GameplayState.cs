@@ -23,8 +23,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public GameplayState() : base()
         {
-            eventManager.PlayerStateUpdated += HandleUpdatePlayerStateMessage;
-            //eventManager.HailMessageReceived += HandleHailMessage;
+            eventManager.PlayerStateUpdated += OnOtherClientPlayerStateUpdated;
+            eventManager.ClientConnected += OnClientConnected;
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
@@ -97,7 +97,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public override void UnloadContent() { }
 
         // Eventos de Network
-        private void HandleUpdatePlayerStateMessage(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
+        private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
             if (playerStateUpdatedEventArgs.playerId != localPlayerManager.playerId)
             {
@@ -123,14 +123,12 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             }
         }
 
-        private void HandleHailMessage(object sender, EventArgs e)
+        private void OnClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
         {
-            //private void HandleHailMessage(HailMessage message)
+            localPlayerManager.createLocalPlayer(clientConnectedEventArgs.clientId);
 
-            //localPlayerManager.createLocalPlayer(message.clientId);
-
-            //foreach (short id in message.clientsInfo.Keys)
-            //    this.playerManager.AddPlayer(id);
+            foreach (short id in clientConnectedEventArgs.clientsInfo.Keys)
+                this.playerManager.AddPlayer(id);
         }
     }
 }

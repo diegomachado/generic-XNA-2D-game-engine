@@ -32,9 +32,40 @@ namespace ProjetoFinal.GameStateEngine
             isInitialized = true;
 
             //TODO: Tirar saporra daqui
-            networkManager.Connect();
+            Dictionary<string, string> options = SelectMenu();
+
+            switch (int.Parse(options["type"]))
+            {
+                case 1:
+                    networkManager.Host();
+                    break;
+                case 2:
+                    networkManager.Connect();
+                    break;
+            }
+            
 
             base.Initialize();
+        }
+
+        private Dictionary<string, string> SelectMenu()
+        {
+            Dictionary<string, string> returnValues = new Dictionary<string, string>();
+
+            Console.WriteLine("==========================");
+            Console.WriteLine("       What are you?      ");
+            Console.WriteLine("==========================");
+            Console.WriteLine("1. I'm a Server");
+            Console.WriteLine("2. I'm a Client");
+            returnValues.Add("type", Console.ReadLine());
+            //Console.WriteLine("Type your nickname:");
+            //returnValues.Add("nickname", Console.ReadLine());
+            returnValues.Add("nickname", "BomberMacFaggot");
+
+            //Console.WriteLine("Port?");
+            //port = int.Parse(Console.ReadLine());
+
+            return returnValues;
         }
 
         protected override void LoadContent()
