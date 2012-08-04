@@ -99,6 +99,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         // Eventos de Network
         private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
+            Console.WriteLine(playerStateUpdatedEventArgs.playerState);
+
             if (playerStateUpdatedEventArgs.playerId != localPlayerManager.playerId)
             {
                 Player player = playerManager.GetPlayer(playerStateUpdatedEventArgs.playerId);
