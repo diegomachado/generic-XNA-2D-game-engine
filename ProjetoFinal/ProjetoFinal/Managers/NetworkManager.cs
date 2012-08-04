@@ -18,8 +18,10 @@ namespace ProjetoFinal.Managers
 
         public bool IsServer 
         { 
-            //TODO: Chamar o menu idiota no console como antigamente
-            get{ return true; }
+            get
+            {
+                return networkInterface is ServerInterface;
+            }
         }
         public short clientCounter; // TODO: Fazer property
         public Dictionary<short, Entities.Client> clients; // TODO: Fazer property
@@ -176,7 +178,5 @@ namespace ProjetoFinal.Managers
         {
             networkInterface.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
         }
-
-        
     }
 }
