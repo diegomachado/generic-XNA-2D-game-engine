@@ -142,6 +142,8 @@ namespace ProjetoFinal.GameStateEngine
 
         public override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin();
+
             foreach (GameState state in states)
             {
                 // TODO: Mudar os estados dos estados (Ainda não fazemos isso!)
@@ -150,6 +152,8 @@ namespace ProjetoFinal.GameStateEngine
 
                 state.Draw(gameTime, spriteBatch, spriteFont);
             }
+
+            spriteBatch.End();
         }
 
         public void AddState(GameState state/*, PlayerIndex? controllingPlayer*/)
@@ -187,6 +191,11 @@ namespace ProjetoFinal.GameStateEngine
         public void ExitGame()
         {
             Game.Exit();
+        }
+
+        public void ResignState(GameState item)
+        {
+            states.Remove(item);
         }
     }
 }

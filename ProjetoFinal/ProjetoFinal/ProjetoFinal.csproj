@@ -124,6 +124,7 @@
     <Compile Include="EventHeaders\PlayerStateUpdatedEventArgs.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameStateEngine\GameState.cs" />
+    <Compile Include="GameStateEngine\GameStates\PauseState.cs" />
     <Compile Include="GameStateEngine\GameStates\HostGameState.cs" />
     <Compile Include="GameStateEngine\GameStates\JoinGameState.cs" />
     <Compile Include="GameStateEngine\GameStates\MainMenuState.cs" />

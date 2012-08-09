@@ -37,12 +37,9 @@ namespace ProjetoFinal.GameStateEngine
 
         GameStateState state = GameStateState.TransitionOn;
                 
-        public virtual void Update(GameStatesManager gameStateManager, InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
-        {        
-        }
-
         public virtual void LoadContent(ContentManager content) { }
+        public virtual void Update(GameStatesManager gameStateManager, InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/) { }
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont) { }   
         public virtual void UnloadContent() { }
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont) { }        
     }
 }
