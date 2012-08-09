@@ -18,16 +18,9 @@ namespace ProjetoFinal.Managers
 
     class MapManager
     {
-        private static MapManager instance;
-
-        public ContentManager Content
-        {
-            set { content = value; }
-        }
-        ContentManager content;
-       
         Map currentMap;
 
+        private static MapManager instance;
         public static MapManager Instance
         {
             get
@@ -39,9 +32,20 @@ namespace ProjetoFinal.Managers
             }
         }
 
+        ContentManager content;
+        public ContentManager Content
+        {
+            set { content = value; }
+        }
+
+        public Layer CollisionLayer { get { return currentMap.Layers["Collision"]; } }
+        public Point MapSize { get { return currentMap.MapSize; } }
+        public Point TileSize { get { return currentMap.TileSize; } }
+        public bool IsCurrentMapLoaded { get { return (currentMap != null); } }
+
         public void LoadMap(MapType type)
         {
-            switch(type)
+            switch (type)
             {
                 case MapType.Level1:
                     currentMap = content.Load<Map>(@"maps/big");
@@ -49,41 +53,14 @@ namespace ProjetoFinal.Managers
             }
         }
 
-        public Layer GetCollisionLayer()
+        public void Draw(SpriteBatch spriteBatch, Point cameraPosition, Point screenSize)
         {
-            return currentMap.Layers["Collision"];
-        }
-
-        public Point GetMapSize()
-        {
-            return currentMap.MapSize;
-        }
-
-        public Point GetTileSize()
-        {
-            return currentMap.TileSize;
-        }
-
-        public void Update()
-        {
-        }      
-
-        public void Draw(SpriteBatch spriteBatch, Point cameraPosition, Point firstTile, Point lastTile)
-        {
-            currentMap.DrawEfficiently(spriteBatch, cameraPosition, firstTile, lastTile);
+            currentMap.DrawEfficiently(spriteBatch, cameraPosition, screenSize);
         }
 
         public void DrawPoorly(SpriteBatch spriteBatch, Point cameraPosition)
         {
             currentMap.Draw(spriteBatch, cameraPosition);
-        }
-
-        public bool IsCurrentMapLoaded
-        {
-            get
-            {
-                return (currentMap != null);  
-            }
         }
     }
 }
