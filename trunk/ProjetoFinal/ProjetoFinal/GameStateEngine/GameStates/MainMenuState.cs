@@ -18,8 +18,12 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             // TODO: Criar menu de seleção inicial
         }
 
-        public override void LoadContent(ContentManager content) { }
-        public override void UnloadContent() { }
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont) { }
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
+        {
+            spriteBatch.DrawString(spriteFont,
+                                   "TEST",
+                                   new Vector2(graphicsManager.ScreenSize.X / 2, graphicsManager.ScreenSize.Y / 2),
+                                   Color.Cyan);
+        }
     }
 }

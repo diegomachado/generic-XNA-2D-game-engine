@@ -43,22 +43,18 @@ namespace ProjetoFinal.Managers
 
     class LocalPlayerManager
     {
-        public short playerId { get; set; }
-        
-        Player localPlayer;
-
-        public Player LocalPlayer 
-        {
-            get { return localPlayer; }
-        }
+        Camera camera = Camera.Instance;
 
         HorizontalMovementState localPlayerHorizontalState;
         VerticalMovementState localPlayerVerticalState;
         Dictionary<HorizontalStateType, HorizontalMovementState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
         Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
 
-        Camera camera = Camera.Instance;
+        public short playerId { get; set; }
         
+        Player localPlayer;
+        public Player LocalPlayer { get { return localPlayer; } }
+
         public LocalPlayerManager()
         {
             // Horizontal
@@ -119,7 +115,7 @@ namespace ProjetoFinal.Managers
             localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
             localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
 
-            Camera.Instance.Position = localPlayer.Position
+            camera.Position = localPlayer.Position
                                         + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)
                                         - new Vector2(GraphicsManager.Instance.ScreenSize.X / 2, GraphicsManager.Instance.ScreenSize.Y / 2);
         }

@@ -24,15 +24,13 @@ namespace ProjetoFinal
             gameStatesManager = new GameStatesManager(this);
 
             Components.Add(gameStatesManager);
-
-            // TODO: Colocar os primeiros estados na lista
-            //gameStatesManager.AddState(new BackgroundState(), null);
         }
 
         protected override void Initialize()
         {
             TextureManager.Instance.setContent(Content, GraphicsDevice);
             gameStatesManager.AddState(new GameplayState());
+            //gameStatesManager.AddState(new MainMenuState());
 
             base.Initialize();
         }

@@ -11,13 +11,10 @@ namespace ProjetoFinal.Entities
 {
     class Camera
     {
-        private static Camera instance;
         private MapManager mapManager = MapManager.Instance;
         private GraphicsManager graphicsManager = GraphicsManager.Instance;
 
-        private Vector2 position;
-        private float speed;
-
+        private static Camera instance;
         public static Camera Instance
         {
             get
@@ -29,37 +26,35 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Camera()
-        {
-            Position = new Vector2();
-            speed = 4f;
-        }
-
+        private float speed;
         public float Speed
         {
             get { return speed; }
             set { speed = MathHelper.Clamp(value, 0.5f, 50f); }
         }
 
+        private Vector2 position;
         public Vector2 Position
         {
-            get 
-            { 
-                return position; 
+            get
+            {
+                return position;
             }
             set
             {
                 if (mapManager.IsCurrentMapLoaded)
                 {
-                    position.X = MathHelper.Clamp(value.X, 0, mapManager.GetMapSize().X - graphicsManager.ScreenSize.X);
-                    position.Y = MathHelper.Clamp(value.Y, 0, mapManager.GetMapSize().Y - graphicsManager.ScreenSize.Y);    
-                }                
+                    position.X = MathHelper.Clamp(value.X, 0, mapManager.MapSize.X - graphicsManager.ScreenSize.X);
+                    position.Y = MathHelper.Clamp(value.Y, 0, mapManager.MapSize.Y - graphicsManager.ScreenSize.Y);
+                }
             }
         }
+        public Point PositionToPoint { get { return new Point((int)position.X, (int)position.Y); } }
 
-        public Point PositionToPoint()
+        public Camera()
         {
-            return new Point((int)position.X, (int)position.Y);
+            Position = new Vector2();
+            speed = 4f;
         }
 
         public void FollowLocalPlayer(Player player)

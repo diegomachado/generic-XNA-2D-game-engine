@@ -13,10 +13,6 @@ namespace OgmoLibrary
         public Point MapSize { get; set; }
         public Point TileSize { get; set; } 
         public Dictionary<string, Layer> Layers;
-
-        public Map()
-        {
-        }
         
         public Map(Point mapSize, Point tileSize, Dictionary<string, Layer> layers)
         {
@@ -27,7 +23,8 @@ namespace OgmoLibrary
 
         // TODO: Develop dat xit Map::MapToString()
         public void MapToString()
-        {          
+        {
+
         }
 
         public void Draw(SpriteBatch spriteBatch, Point cameraPosition)
@@ -71,7 +68,7 @@ namespace OgmoLibrary
             }
         }
 
-        public void DrawEfficiently(SpriteBatch spriteBatch, Point cameraPosition, Point firstTile, Point lastTile)
+        public void DrawEfficiently(SpriteBatch spriteBatch, Point cameraPosition, Point screenSize)
         {
             int x, y, id;
             Texture2D spriteSheet;
@@ -85,6 +82,9 @@ namespace OgmoLibrary
             var orderedLayers = from layer in Layers.Keys
                                 orderby Layers[layer].ZIndex descending
                                 select layer;
+
+            Point firstTile = PositionToTileCoord(cameraPosition);
+            Point lastTile = PositionToTileCoord(new Point(cameraPosition.X + screenSize.X, cameraPosition.Y + screenSize.Y));
 
             //Console.WriteLine(firstTile.ToString());
             //Console.WriteLine(lastTile.ToString());
@@ -122,6 +122,11 @@ namespace OgmoLibrary
                     }
                 }
             }
+        }
+
+        public Point PositionToTileCoord(Point position)
+        {
+            return new Point((int)position.X / TileSize.X, (int)position.Y / TileSize.Y);
         }
     }
 }

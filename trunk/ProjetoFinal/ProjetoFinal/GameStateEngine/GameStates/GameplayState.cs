@@ -50,23 +50,20 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             if (inputManager.Pause)
                 gameStateManager.AddState(new PauseState());
 
-            localPlayerManager.Update(gameTime, inputManager, mapManager.GetCollisionLayer());
+            localPlayerManager.Update(gameTime, inputManager, mapManager.CollisionLayer);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
             
-            playerManager.Update(gameTime, mapManager.GetCollisionLayer());
+            playerManager.Update(gameTime, mapManager.CollisionLayer);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             // Drawing Entities
-            mapManager.Draw(spriteBatch,
-                                       camera.PositionToPoint(),
-                                       PositionToTileCoord(camera.Position, mapManager.GetTileSize()),
-                                       PositionToTileCoord(camera.Position + ViewportVector(mapManager.GetTileSize()), mapManager.GetTileSize()));
-
+            mapManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.ScreenSize);
             localPlayerManager.Draw(spriteBatch, spriteFont);
             playerManager.Draw(spriteBatch, spriteFont);
 
+            // TODO: THIS SHIT HAS TO GET THE HELL OTTA HERE
             // In Game Debug
             float frameRate;
             frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -82,16 +79,12 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             }
         }
 
+        // TODO: REVER PORQUE FUNCIONOU SEM O TILESIZE_X e TILESIZE_Y em Map.cs depois do refactoring do Guifes
         // TODO: REFACTOR THIS XIT
-        public Point PositionToTileCoord(Vector2 position, Point tileSize)
-        {
-            return new Point((int)position.X / tileSize.X, (int)position.Y / tileSize.Y);
-        }
-
-        private Vector2 ViewportVector(Point tileSize)
-        {
-            return new Vector2(graphicsManager.ScreenSize.X + tileSize.X, graphicsManager.ScreenSize.Y + tileSize.Y);
-        }
+        //private Vector2 ViewportVector(Point tileSize)
+        //{
+        //    return new Vector2(graphicsManager.ScreenSize.X + tileSize.X, graphicsManager.ScreenSize.Y + tileSize.Y);
+        //}
 
         // Eventos de Network
         private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)

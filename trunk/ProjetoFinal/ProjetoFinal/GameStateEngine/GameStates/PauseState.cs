@@ -22,7 +22,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            spriteBatch.DrawString(spriteFont, "GAME PAUSED", new Vector2(300, 300), Color.Red);
+            spriteBatch.DrawString(spriteFont,
+                                   "GAME PAUSED",
+                                   new Vector2(graphicsManager.ScreenSize.X / 2, graphicsManager.ScreenSize.Y / 2),
+                                   Color.Red);
         }
     }
 }
