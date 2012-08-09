@@ -47,6 +47,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             if (inputManager.Exit)
                 gameStateManager.ExitGame();
 
+            if (inputManager.Pause)
+                gameStateManager.AddState(new PauseState());
+
             localPlayerManager.Update(gameTime, inputManager, mapManager.GetCollisionLayer());
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
             
@@ -55,8 +58,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            spriteBatch.Begin();
-
             // Drawing Entities
             mapManager.Draw(spriteBatch,
                                        camera.PositionToPoint(),
@@ -79,8 +80,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 playersDebugTextPosition.Y += 20;
                 spriteBatch.DrawString(spriteFont, client.Value.nickname, playersDebugTextPosition, Color.White);
             }
-
-            spriteBatch.End();
         }
 
         // TODO: REFACTOR THIS XIT
@@ -93,8 +92,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             return new Vector2(graphicsManager.ScreenSize.X + tileSize.X, graphicsManager.ScreenSize.Y + tileSize.Y);
         }
-
-        public override void UnloadContent() { }
 
         // Eventos de Network
         private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)

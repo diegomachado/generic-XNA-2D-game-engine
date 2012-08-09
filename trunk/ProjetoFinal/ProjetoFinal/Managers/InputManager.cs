@@ -35,5 +35,6 @@ namespace ProjetoFinal.Managers
         public bool PreviouslyLeft { get { return previousKeyboardState.IsKeyDown(Keys.Left); } }
         public bool Right { get { return keyboardState.IsKeyDown(Keys.Right); } }
         public bool PreviouslyRight { get { return previousKeyboardState.IsKeyDown(Keys.Right); } }
+        public bool Pause { get { return keyboardState.IsKeyDown(Keys.P) && !previousKeyboardState.IsKeyDown(Keys.P); } }
     }
 }
