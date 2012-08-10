@@ -7,5 +7,8 @@ namespace ProjetoFinal.GUI
 {
     class GUIManager
     {
+        List<GUIElement> elements;
+
+        // TODO: Update, Draw, AddElement
     }
 }
