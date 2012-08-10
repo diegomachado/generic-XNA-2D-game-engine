@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProjetoFinal.GUI.Elements
 {
-    class Button
+    class Button : GUIElement
     {
     }
 }
