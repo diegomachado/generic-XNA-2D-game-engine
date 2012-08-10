@@ -10,5 +10,9 @@ namespace ProjetoFinal.GUI
     {
         Rectangle frame;
 
+        public GUIElement(Rectangle frame)
+        {
+            this.frame = frame;
+        }
     }
 }
