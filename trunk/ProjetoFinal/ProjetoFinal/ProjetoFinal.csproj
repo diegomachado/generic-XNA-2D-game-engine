@@ -128,6 +128,8 @@
     <Compile Include="GameStateEngine\GameStates\HostGameState.cs" />
     <Compile Include="GameStateEngine\GameStates\JoinGameState.cs" />
     <Compile Include="GameStateEngine\GameStates\MainMenuState.cs" />
+    <Compile Include="GUI\Elements\Button.cs" />
+    <Compile Include="Managers\GUIManager.cs" />
     <Compile Include="Managers\GraphicsManager.cs" />
     <Compile Include="Managers\GameStatesManager.cs" />
     <Compile Include="GameStateEngine\GameStates\BackgroundState.cs" />
