@@ -131,6 +131,7 @@
     <Compile Include="GameStateEngine\GameStates\JoinGameState.cs" />
     <Compile Include="GameStateEngine\GameStates\MainMenuState.cs" />
     <Compile Include="GUI\Elements\Button.cs" />
+    <Compile Include="GUI\Elements\TextField.cs" />
     <Compile Include="GUI\GUIElement.cs" />
     <Compile Include="Managers\GUIManager.cs" />
     <Compile Include="Managers\GraphicsManager.cs" />
