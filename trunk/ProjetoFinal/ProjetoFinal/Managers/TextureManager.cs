@@ -14,7 +14,8 @@ namespace ProjetoFinal.Managers
         Bear,
         Ranger,
         RandomSkin,
-        CollisionBoxBorder
+        CollisionBoxBorder,
+        ButtonFrame
     }
 
     class TextureManager
@@ -56,8 +57,13 @@ namespace ProjetoFinal.Managers
                 case TextureList.Ranger:
                     textureName = skinTextures[1];
                     break;
+
                 case TextureList.RandomSkin:
                     textureName = skinTextures[randomSkin.Next(0, skinTextures.Length)];
+                    break;
+
+                case TextureList.ButtonFrame:
+                    textureName = "button";
                     break;
             }
 

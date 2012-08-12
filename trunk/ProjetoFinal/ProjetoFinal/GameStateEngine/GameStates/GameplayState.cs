@@ -33,7 +33,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
             //if (networkManager.IsHost)
                 localPlayerManager.createLocalPlayer(0);
-
         }
 
         public override void LoadContent(ContentManager content) 

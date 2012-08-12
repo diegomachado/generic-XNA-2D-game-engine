@@ -14,6 +14,8 @@ namespace ProjetoFinal
 
         public ProjetoFinal()
         {
+            IsMouseVisible = true;
+
             Content.RootDirectory = "Content";
 
             graphics = new GraphicsDeviceManager(this);
@@ -29,8 +31,8 @@ namespace ProjetoFinal
         protected override void Initialize()
         {
             TextureManager.Instance.setContent(Content, GraphicsDevice);
-            gameStatesManager.AddState(new GameplayState());
-            //gameStatesManager.AddState(new MainMenuState());
+            //gameStatesManager.AddState(new GameplayState());
+            gameStatesManager.AddState(new MainMenuState());
 
             base.Initialize();
         }

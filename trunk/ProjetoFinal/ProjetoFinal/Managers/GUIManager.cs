@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using ProjetoFinal.GUI.Elements;
+using ProjetoFinal.Managers;
 
 namespace ProjetoFinal.GUI
 {
@@ -9,6 +12,30 @@ namespace ProjetoFinal.GUI
     {
         List<GUIElement> elements;
 
-        // TODO: Update, Draw, AddElement
+        public GUIManager()
+        {
+            elements = new List<GUIElement>();
+        }
+
+        public void Update(InputManager inputManager)
+        {
+            foreach (GUIElement element in elements)
+            {
+                element.Update(inputManager);
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        {
+            foreach (GUIElement element in elements)
+            {
+                element.Draw(spriteBatch, spriteFont);
+            }
+        }
+
+        public void AddElement(GUIElement button)
+        {
+            elements.Add(button);
+        }
     }
 }
