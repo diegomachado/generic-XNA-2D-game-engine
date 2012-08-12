@@ -13,7 +13,7 @@ using Lidgren.Network;
 
 namespace ProjetoFinal.GameStateEngine.GameStates
 {
-    class GameplayState : GameState
+    class GameplayState : NetworkGameState
     {
         // Managers
         PlayerManager playerManager;
@@ -43,6 +43,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void Update(InputManager inputManager, GameTime gameTime)
         {
+            base.Update(inputManager, gameTime);
+
             if (inputManager.Exit)
                 gameStatesManager.ExitGame();
 
