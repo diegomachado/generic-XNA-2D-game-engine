@@ -36,13 +36,58 @@ namespace ProjetoFinal.Managers
 
         // Keyboard
 
-        public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape); } }
+        public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape); } }
         public bool Jump { get { return keyboardState.IsKeyDown(Keys.Space); } }
         public bool Left { get { return keyboardState.IsKeyDown(Keys.Left); } }
         public bool PreviouslyLeft { get { return previousKeyboardState.IsKeyDown(Keys.Left); } }
         public bool Right { get { return keyboardState.IsKeyDown(Keys.Right); } }
         public bool PreviouslyRight { get { return previousKeyboardState.IsKeyDown(Keys.Right); } }
-        public bool Pause { get { return keyboardState.IsKeyDown(Keys.P) && !previousKeyboardState.IsKeyDown(Keys.P); } }
+        public bool Pause { get { return keyboardState.IsKeyDown(Keys.P) && previousKeyboardState.IsKeyUp(Keys.P); } }
+        public bool BackSpace { get { return keyboardState.IsKeyDown(Keys.Back) && previousKeyboardState.IsKeyUp(Keys.Back); } }
+
+        public String TextInput
+        {
+            get
+            {
+                /*
+                String output = "";
+
+                foreach (Keys key in keyboardState.GetPressedKeys())
+                    output += key.ToString() + ", ";
+
+                Console.WriteLine(output);
+                */
+
+                String buffer = "";
+                
+                foreach (Keys key in keyboardState.GetPressedKeys())
+                {
+                    if (key == Keys.D0 ||
+                        key == Keys.D1 ||
+                        key == Keys.D2 ||
+                        key == Keys.D3 ||
+                        key == Keys.D4 ||
+                        key == Keys.D5 ||
+                        key == Keys.D6 ||
+                        key == Keys.D7 ||
+                        key == Keys.D8 ||
+                        key == Keys.D9 ||
+                        key == Keys.OemPeriod
+                       )
+                    {
+                        if (previousKeyboardState.IsKeyUp(key))
+                        {
+                            if (key == Keys.OemPeriod)
+                                buffer += ".";
+                            else
+                                buffer += key.ToString().Substring(1, 1);
+                        }
+                    }
+                }
+
+                return buffer;
+            }
+        }
 
         // Mouse
 
