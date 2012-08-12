@@ -33,6 +33,8 @@ namespace ProjetoFinal
             base.Initialize();
 
             TextureManager.Instance.setContent(Content, GraphicsDevice);
+
+            //gameStatesManager.TraceEnabled = true;
             //gameStatesManager.AddState(new GameplayState());
             gameStatesManager.AddState(new MainMenuState());
         }

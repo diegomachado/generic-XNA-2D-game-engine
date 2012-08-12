@@ -25,11 +25,12 @@ namespace ProjetoFinal.GameStateEngine
         protected EventManager eventManager = EventManager.Instance;
         protected NetworkManager networkManager = NetworkManager.Instance;
 
-        public GameStatesManager GameStateManager { protected get; set; }
+        // TODO: Refactor this mother fucker name bitch!
+        public GameStatesManager gameStatesManager { protected get; set; }
         public GameStateState State
         {
             get { return state; }
-            protected set { state = value; }
+            set { state = value; }
         }
         
         //public bool IsPopup

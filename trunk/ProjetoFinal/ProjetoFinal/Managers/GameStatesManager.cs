@@ -158,18 +158,26 @@ namespace ProjetoFinal.GameStateEngine
             //screen.ControllingPlayer = controllingPlayer;
             //screen.IsExiting = false;
 
-            state.GameStateManager = this;
+            // TODO: Refactor-me, maybe?
+            if(states.Count > 0)
+                states[states.Count - 1].State = GameStateState.Hidden;
+
+            state.gameStatesManager = this;
             state.LoadContent(Game.Content);
 
             states.Add(state);
         }
 
-        public void RemoveState(GameState state)
+        // TODO: Refactor-me, maybe?
+        public void ResignState(GameState state)
         {
             state.UnloadContent();
 
             states.Remove(state);
             //screensToUpdate.Remove(screen);
+
+            // TODO: This shit needs some refactoring man!
+            states[states.Count - 1].State = GameStateState.Active;
         }
 
         void TraceScreens()
@@ -179,17 +187,12 @@ namespace ProjetoFinal.GameStateEngine
             foreach (GameState state in states)
                 statesNames.Add(state.GetType().Name);
 
-            Debug.WriteLine(string.Join(", ", statesNames.ToArray()));
+            Console.WriteLine(string.Join(", ", statesNames.ToArray()));
         }
 
         public void ExitGame()
         {
             Game.Exit();
-        }
-
-        public void ResignState(GameState item)
-        {
-            states.Remove(item);
         }
     }
 }
