@@ -40,14 +40,14 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             mapManager.Content = content;
             mapManager.LoadMap(MapType.Level1);
         }
-        
-        public override void Update(GameStatesManager gameStateManager, InputManager inputManager, GameTime gameTime)
+
+        public override void Update(InputManager inputManager, GameTime gameTime)
         {
             if (inputManager.Exit)
-                gameStateManager.ExitGame();
+                GameStateManager.ExitGame();
 
             if (inputManager.Pause)
-                gameStateManager.AddState(new PauseState());
+                GameStateManager.AddState(new PauseState());
 
             localPlayerManager.Update(gameTime, inputManager, mapManager.CollisionLayer);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);

@@ -11,13 +11,13 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 {
     class PauseState : GameState
     {
-        public override void Update(GameStatesManager gameStateManager, InputManager inputManager, GameTime gameTime)
+        public override void Update(InputManager inputManager, GameTime gameTime)
         {
             if (inputManager.Exit)
-                gameStateManager.ExitGame();
+                GameStateManager.ExitGame();
 
             if (inputManager.Pause)
-                gameStateManager.ResignState(this);
+                GameStateManager.ResignState(this);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
