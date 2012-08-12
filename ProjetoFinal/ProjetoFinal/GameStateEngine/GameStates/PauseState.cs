@@ -14,10 +14,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public override void Update(InputManager inputManager, GameTime gameTime)
         {
             if (inputManager.Exit)
-                GameStateManager.ExitGame();
+                gameStatesManager.ExitGame();
 
             if (inputManager.Pause)
-                GameStateManager.ResignState(this);
+                gameStatesManager.ResignState(this);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)

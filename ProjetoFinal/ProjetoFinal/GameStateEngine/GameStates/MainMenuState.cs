@@ -10,15 +10,10 @@ using ProjetoFinal.GUI.Elements;
 
 namespace ProjetoFinal.GameStateEngine.GameStates
 {
-    class MainMenuState : GameState
+    class MainMenuState : GUIGameState
     {
-        // Managers
-        GUIManager guiManager;
-
-        public MainMenuState()
+        public MainMenuState() : base()
         {
-            guiManager = new GUIManager();
-
             guiManager.AddElement(new Button("Host Game", new Rectangle(100, 100, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnHostGameButtonPressed));
 
             guiManager.AddElement(new Button("Exit", new Rectangle(100, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnExitGameButtonPressed));
@@ -26,45 +21,27 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void Update(InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
         {
+            base.Update(inputManager, gameTime);
+
             if (inputManager.Exit)
-                GameStateManager.ExitGame();
-
-            guiManager.Update(inputManager);
-        }
-
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
-        {
-            guiManager.Draw(spriteBatch, spriteFont);
+                gameStatesManager.ExitGame();
         }
 
         // Callbacks
 
         public void OnHostGameButtonPressed(object sender)
         {
-            // TODO: Empilhar estado de HostGame
-            // Nesse caso tenho que refatorar pq eh necessario acessar o GameStateManager, o qual so tenho acesso em Update
-
-            Console.WriteLine("Host Game");
-
-            GameStateManager.AddState(new HostGameState());
+            gameStatesManager.AddState(new HostGameState());
         }
 
         public void OnJoinGameButtonPressed(object sender)
         {
-            // TODO: Empilhar estado de JoinGame
-            // Nesse caso tenho que refatorar pq eh necessario acessar o GameStateManager, o qual so tenho acesso em Update
-
             Console.WriteLine("Join Game");
         }
 
         public void OnExitGameButtonPressed(object sender)
         {
-            // TODO: Empilhar estado de JoinGame
-            // Nesse caso tenho que refatorar pq eh necessario acessar o GameStateManager, o qual so tenho acesso em Update
-
-            Console.WriteLine("Exit Game");
-
-            GameStateManager.ExitGame();
+            gameStatesManager.ExitGame();
         }
     }
 }

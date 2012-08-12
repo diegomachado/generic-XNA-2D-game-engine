@@ -36,7 +36,7 @@ namespace ProjetoFinal.Managers
 
         // Keyboard
 
-        public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape); } }
+        public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && !previousKeyboardState.IsKeyDown(Keys.Escape); } }
         public bool Jump { get { return keyboardState.IsKeyDown(Keys.Space); } }
         public bool Left { get { return keyboardState.IsKeyDown(Keys.Left); } }
         public bool PreviouslyLeft { get { return previousKeyboardState.IsKeyDown(Keys.Left); } }

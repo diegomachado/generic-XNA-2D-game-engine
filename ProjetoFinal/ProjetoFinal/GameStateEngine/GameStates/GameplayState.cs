@@ -44,10 +44,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public override void Update(InputManager inputManager, GameTime gameTime)
         {
             if (inputManager.Exit)
-                GameStateManager.ExitGame();
+                gameStatesManager.ExitGame();
 
             if (inputManager.Pause)
-                GameStateManager.AddState(new PauseState());
+                gameStatesManager.AddState(new PauseState());
 
             localPlayerManager.Update(gameTime, inputManager, mapManager.CollisionLayer);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
