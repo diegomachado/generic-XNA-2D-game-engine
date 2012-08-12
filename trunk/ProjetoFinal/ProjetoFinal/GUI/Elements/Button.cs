@@ -52,8 +52,10 @@ namespace ProjetoFinal.GUI.Elements
 
         public override void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
+            Vector2 stringSize = spriteFont.MeasureString(label);
+
             spriteBatch.Draw(backgroundImage, frame, Color.White);
-            spriteBatch.DrawString(spriteFont, label, new Vector2(frame.Center.X, frame.Center.Y), (hover) ? Color.Red : Color.Blue);
+            spriteBatch.DrawString(spriteFont, label, new Vector2(frame.Center.X - (stringSize.X / 2), frame.Center.Y - (stringSize.Y / 2)), (hover) ? Color.Red : Color.Blue);
         }
     }
 }

@@ -11,7 +11,6 @@ namespace ProjetoFinal.GUI
     abstract class GUIElement
     {
         protected Rectangle frame;
-        private Texture2D texture2D;
 
         public GUIElement(Rectangle frame)
         {

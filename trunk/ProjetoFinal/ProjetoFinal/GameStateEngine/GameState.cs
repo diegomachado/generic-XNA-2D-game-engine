@@ -18,27 +18,28 @@ namespace ProjetoFinal.GameStateEngine
 
     abstract class GameState
     {
+        GameStateState state = GameStateState.TransitionOn;
+        
         protected GraphicsManager graphicsManager = GraphicsManager.Instance;
         protected TextureManager textureManager = TextureManager.Instance;
         protected EventManager eventManager = EventManager.Instance;
         protected NetworkManager networkManager = NetworkManager.Instance;
 
+        public GameStatesManager GameStateManager { protected get; set; }
         public GameStateState State
         {
             get { return state; }
             protected set { state = value; }
         }
-
-        public bool IsPopup
-        {
-            get { return isPopup; }
-        }
-        bool isPopup;
-
-        GameStateState state = GameStateState.TransitionOn;
+        
+        //public bool IsPopup
+        //{
+        //    get { return isPopup; }
+        //}
+        //bool isPopup;
 
         public virtual void LoadContent(ContentManager content) { }
-        public virtual void Update(GameStatesManager gameStateManager, InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/) { }
+        public virtual void Update(InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/) { }
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont) { }
         public virtual void UnloadContent() { }
     }

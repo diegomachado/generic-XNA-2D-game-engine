@@ -23,13 +23,13 @@ namespace ProjetoFinal.GameStateEngine
 
         public bool TraceEnabled { get; set; }
 
-        bool isInitialized;
-        
         public GameStatesManager(Game game) : base(game) { }
 
         public override void Initialize()
         {
-            isInitialized = true;
+            base.Initialize();
+
+            //isInitialized = true;
 
             //TODO: Tirar saporra daqui
             Dictionary<string, string> options = SelectMenu();
@@ -43,9 +43,6 @@ namespace ProjetoFinal.GameStateEngine
                     networkManager.Connect();
                     break;
             }
-            
-
-            base.Initialize();
         }
 
         private Dictionary<string, string> SelectMenu()
@@ -113,7 +110,7 @@ namespace ProjetoFinal.GameStateEngine
                 //states.RemoveAt(states.Count - 1);
 
                 // Update the screen.
-                state.Update(this, inputManager, gameTime/*, otherScreenHasFocus, coveredByOtherScreen*/);
+                state.Update(inputManager, gameTime/*, otherScreenHasFocus, coveredByOtherScreen*/);
 
                 /*if (state.ScreenState == ScreenState.TransitionOn || state.ScreenState == ScreenState.Active)
                 {
@@ -161,18 +158,15 @@ namespace ProjetoFinal.GameStateEngine
             //screen.ControllingPlayer = controllingPlayer;
             //screen.IsExiting = false;
 
-            // If we have a graphics device, tell the screen to load content.
-            if (isInitialized)
-                state.LoadContent(Game.Content);
-            
+            state.GameStateManager = this;
+            state.LoadContent(Game.Content);
+
             states.Add(state);
         }
 
         public void RemoveState(GameState state)
         {
-            // If we have a graphics device, tell the screen to unload content.
-            if (isInitialized)
-                state.UnloadContent();
+            state.UnloadContent();
 
             states.Remove(state);
             //screensToUpdate.Remove(screen);

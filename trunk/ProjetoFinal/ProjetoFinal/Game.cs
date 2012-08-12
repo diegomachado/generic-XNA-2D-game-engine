@@ -30,11 +30,11 @@ namespace ProjetoFinal
 
         protected override void Initialize()
         {
+            base.Initialize();
+
             TextureManager.Instance.setContent(Content, GraphicsDevice);
             //gameStatesManager.AddState(new GameplayState());
             gameStatesManager.AddState(new MainMenuState());
-
-            base.Initialize();
         }
 
         protected override void Draw(GameTime gameTime)
