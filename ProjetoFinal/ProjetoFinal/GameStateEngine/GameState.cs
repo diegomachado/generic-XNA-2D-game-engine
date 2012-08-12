@@ -23,7 +23,6 @@ namespace ProjetoFinal.GameStateEngine
         protected GraphicsManager graphicsManager = GraphicsManager.Instance;
         protected TextureManager textureManager = TextureManager.Instance;
         protected EventManager eventManager = EventManager.Instance;
-        protected NetworkManager networkManager = NetworkManager.Instance;
 
         // TODO: Refactor this mother fucker name bitch!
         public GameStatesManager gameStatesManager { protected get; set; }

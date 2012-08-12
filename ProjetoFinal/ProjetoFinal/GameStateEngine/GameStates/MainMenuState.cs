@@ -16,7 +16,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             guiManager.AddElement(new Button("Host Game", new Rectangle(100, 100, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnHostGameButtonPressed));
 
-            guiManager.AddElement(new Button("Exit", new Rectangle(100, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnExitGameButtonPressed));
+            guiManager.AddElement(new Button("Join Game", new Rectangle(100, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnJoinGameButtonPressed));
+
+            guiManager.AddElement(new Button("Exit Game", new Rectangle(100, 300, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnExitGameButtonPressed));
         }
 
         public override void Update(InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
@@ -36,7 +38,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public void OnJoinGameButtonPressed(object sender)
         {
-            Console.WriteLine("Join Game");
+            gameStatesManager.AddState(new JoinGameState());
         }
 
         public void OnExitGameButtonPressed(object sender)

@@ -15,17 +15,25 @@ namespace ProjetoFinal.Managers
         private static NetworkManager instance;
         private EventManager eventManager;
         private NetworkInterface networkInterface;
+        public short clientCounter; // TODO: Fazer property
+        public Dictionary<short, Entities.Client> clients; // TODO: Fazer property
 
-        public bool IsServer 
-        { 
+        public bool IsServer
+        {
             get
             {
                 return networkInterface is ServerInterface;
             }
         }
-        public short clientCounter; // TODO: Fazer property
-        public Dictionary<short, Entities.Client> clients; // TODO: Fazer property
-        
+
+        public bool IsConnected
+        {
+            get
+            {
+                return networkInterface != null;
+            }
+        }
+
         public static NetworkManager Instance
         {
             get
@@ -40,14 +48,12 @@ namespace ProjetoFinal.Managers
             }
         }
         
-        public void Host()
+        public void Host(int port)
         {
             clients = new Dictionary<short, Client>();
-
-            // Network
-            // TODO: Definir IP e Porta dinamicamente
+            
             ServerInterface serverNetworkManager = new ServerInterface();
-            serverNetworkManager.port = 666;
+            serverNetworkManager.port = port;
 
             networkInterface = serverNetworkManager;
 
@@ -58,15 +64,13 @@ namespace ProjetoFinal.Managers
         }
 
         // Método utilizado para realizar uma conexão de client com server ou para criar um servidor
-        public void Connect()
+        public void Connect(String ip, int port)
         {
             clients = new Dictionary<short, Client>();
 
-            // Network
-            // TODO: Definir IP e Porta dinamicamente
             ClientInterface clientNetworkManager = new ClientInterface();
-            clientNetworkManager.port = 666;
-            clientNetworkManager.ip = "localhost";
+            clientNetworkManager.port = port;
+            clientNetworkManager.ip = ip;
 
             networkInterface = clientNetworkManager;
 
