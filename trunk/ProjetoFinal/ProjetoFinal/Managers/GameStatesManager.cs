@@ -140,7 +140,6 @@ namespace ProjetoFinal.GameStateEngine
             states.Remove(state);
             //screensToUpdate.Remove(screen);
 
-            // TODO: This shit needs some refactoring man!
             states[states.Count - 1].State = GameStateState.Active;
         }
 

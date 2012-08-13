@@ -9,10 +9,7 @@ using Lidgren.Network;
 using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Network
-{  
-    /// <summary>
-    /// TODO: Atualizar Sumário
-    /// </summary>
+{
     public class ClientInterface : NetworkInterface
     {
         public int port {get; set;}
