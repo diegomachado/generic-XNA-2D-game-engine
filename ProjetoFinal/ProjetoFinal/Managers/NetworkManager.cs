@@ -42,6 +42,7 @@ namespace ProjetoFinal.Managers
                 {
                     instance = new NetworkManager();
                     instance.eventManager = EventManager.Instance;
+                    instance.clients = new Dictionary<short, Client>();
                 }
 
                 return instance;
@@ -50,8 +51,6 @@ namespace ProjetoFinal.Managers
         
         public void Host(int port)
         {
-            clients = new Dictionary<short, Client>();
-            
             ServerInterface serverNetworkManager = new ServerInterface();
             serverNetworkManager.port = port;
 
@@ -65,8 +64,6 @@ namespace ProjetoFinal.Managers
 
         public void Connect(String ip, int port)
         {
-            clients = new Dictionary<short, Client>();
-
             ClientInterface clientNetworkManager = new ClientInterface();
             clientNetworkManager.port = port;
             clientNetworkManager.ip = ip;

@@ -5,9 +5,6 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Network
 {
-    /// <summary>
-    /// TODO: Atualizar Sumário
-    /// </summary>
     public interface NetworkInterface : IDisposable
     {
         void Connect();

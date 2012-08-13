@@ -9,9 +9,6 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Network
 {
-    /// <summary>
-    /// TODO: Atualizar Sumário
-    /// </summary>
     public class ServerInterface : NetworkInterface
     {
         public int port {get; set;}
@@ -22,11 +19,9 @@ namespace ProjetoFinal.Network
 
         public void Connect()
         {
-            // TODO: Obter a porta dinamicamente
             var config = new NetPeerConfiguration("ProjetoFinal")
             {
-                Port = 666,
-                //Port = port,
+                Port = port,
                 //SimulatedMinimumLatency = 0.2f, 
                 //SimulatedLoss = 0.1f 
             };

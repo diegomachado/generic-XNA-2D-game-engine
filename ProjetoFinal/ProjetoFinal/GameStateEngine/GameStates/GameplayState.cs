@@ -73,25 +73,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             mapManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.ScreenSize);
             localPlayerManager.Draw(spriteBatch, spriteFont);
             playerManager.Draw(spriteBatch, spriteFont);
-
-            // TODO: THIS SHIT HAS TO GET THE HELL OTTA HERE
-            // In Game Debug
-            float frameRate;
-            frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
-            spriteBatch.DrawString(spriteFont, "FPS: " + Math.Round(frameRate), new Vector2(graphicsManager.ScreenSize.X - 70, 5), Color.White);
-
-            spriteBatch.DrawString(spriteFont, "Players:", new Vector2(graphicsManager.ScreenSize.X - 70, 25), Color.White);
-
-            Vector2 playersDebugTextPosition = new Vector2(graphicsManager.ScreenSize.X - 200, 25);
-            foreach (KeyValuePair<short, Client> client in networkManager.clients)
-            {
-                playersDebugTextPosition.Y += 20;
-                spriteBatch.DrawString(spriteFont, client.Value.nickname, playersDebugTextPosition, Color.White);
-            }
         }
 
         // TODO: REVER PORQUE FUNCIONOU SEM O TILESIZE_X e TILESIZE_Y em Map.cs depois do refactoring do Guifes
-        // TODO: REFACTOR THIS XIT
         //private Vector2 ViewportVector(Point tileSize)
         //{
         //    return new Vector2(graphicsManager.ScreenSize.X + tileSize.X, graphicsManager.ScreenSize.Y + tileSize.Y);
@@ -122,7 +106,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             }
             else
             {
-                // TODO: VERIFICAR SAPORRA, acontece, refactoring previsto em network manager
+                // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
                 Console.WriteLine("Olha a merda > " + playerStateUpdatedEventArgs.playerId);
             }
         }
