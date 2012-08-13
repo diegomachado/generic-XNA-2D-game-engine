@@ -21,18 +21,28 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         MapManager mapManager = MapManager.Instance;
         Camera camera = Camera.Instance;
 
-        public GameplayState() : base()
+        public GameplayState(short playerId) : base()
         {
             eventManager.PlayerStateUpdated += OnOtherClientPlayerStateUpdated;
-            eventManager.ClientConnected += OnClientConnected;
+            eventManager.ClientDisconnected += OnClientDisconnected;
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
 
-            camera.Speed = 4f;
+            localPlayerManager.createLocalPlayer(playerId);
 
-            //if (networkManager.IsHost)
-                localPlayerManager.createLocalPlayer(0);
+            camera.Speed = 4f;
+        }
+
+        public GameplayState() : this(0)
+        {
+            
+        }
+        
+        public GameplayState(short playerId, Dictionary<short, Client> clientsInfo) : this(playerId)
+        {
+            foreach (short id in clientsInfo.Keys)
+                this.playerManager.AddPlayer(id);
         }
 
         public override void LoadContent(ContentManager content) 
@@ -104,24 +114,24 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                     var timeDelay = (float)(NetTime.Now - playerStateUpdatedEventArgs.localTime);
 
                     playerManager.UpdatePlayer(playerStateUpdatedEventArgs.playerId,
-                                               playerStateUpdatedEventArgs.position, 
-                                               playerStateUpdatedEventArgs.speed, 
+                                               playerStateUpdatedEventArgs.position,
+                                               playerStateUpdatedEventArgs.speed,
                                                timeDelay,
                                                playerStateUpdatedEventArgs.movementType,
                                                playerStateUpdatedEventArgs.playerState);
                     // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
                 }
-
-                eventManager.ThrowOtherClientPlayerStateChanged(playerStateUpdatedEventArgs.playerId, player, playerStateUpdatedEventArgs.movementType);
+            }
+            else
+            {
+                // TODO: VERIFICAR SAPORRA, acontece, refactoring previsto em network manager
+                Console.WriteLine("Olha a merda > " + playerStateUpdatedEventArgs.playerId);
             }
         }
 
-        private void OnClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
+        private void OnClientDisconnected(object sender, EventArgs eventArgs)
         {
-            localPlayerManager.createLocalPlayer(clientConnectedEventArgs.clientId);
-
-            foreach (short id in clientConnectedEventArgs.clientsInfo.Keys)
-                this.playerManager.AddPlayer(id);
+            gameStatesManager.ResignState(this);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace ProjetoFinal.Managers
         // Events
         public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated;
         public event EventHandler<ClientConnectedEventArgs> ClientConnected;
+        public event EventHandler<EventArgs> ClientDisconnected;
 
         public static EventManager Instance
         {
@@ -37,28 +38,28 @@ namespace ProjetoFinal.Managers
 
         public void ThrowPlayerStateChanged(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
+            Console.WriteLine("SHIT");
             networkManager.SendPlayerStateChangedMessage(id, player, messageType);
-        }
-
-        public void ThrowOtherClientPlayerStateChanged(short id, Player player, UpdatePlayerStateMessageType messageType)
-        {
-            if (networkManager.IsServer)
-                ThrowPlayerStateChanged(id, player, messageType);
         }
 
         // Eventos Indiretos
 
         public void ThrowPlayerStateUpdated(NetworkManager networkManager, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
-            // TODO: Questionar se tenho que mandar o sender e quem será?
             if (PlayerStateUpdated != null)
                 PlayerStateUpdated(networkManager, playerStateUpdatedEventArgs);
         }
 
-        internal void throwClientConnected(NetworkManager networkManager, ClientConnectedEventArgs clientConnectedEventArgs)
+        public void ThrowClientConnected(NetworkManager networkManager, ClientConnectedEventArgs clientConnectedEventArgs)
         {
             if (ClientConnected != null)
                 ClientConnected(networkManager, clientConnectedEventArgs);
+        }
+
+        public void ThrowClientDisconnected(NetworkManager networkManager, ClientConnectedEventArgs clientConnectedEventArgs)
+        {
+            if (ClientDisconnected != null)
+                ClientDisconnected(networkManager, clientConnectedEventArgs);
         }
     }
 }

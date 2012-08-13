@@ -17,7 +17,7 @@ namespace ProjetoFinal.GUI.Elements
         OnClicked onClicked;
         
         // Events
-        public delegate void OnClicked(object sender);
+        public delegate void OnClicked();
 
         public Button(String label, Rectangle frame)
             : base(frame)
@@ -42,7 +42,7 @@ namespace ProjetoFinal.GUI.Elements
                 hover = true;
 
                 if (inputManager.MouseLeftButton)
-                    onClicked(this);
+                    onClicked();
             }
             else
             {
