@@ -63,7 +63,6 @@ namespace ProjetoFinal.Managers
             clientCounter = 1;
         }
 
-        // Método utilizado para realizar uma conexão de client com server ou para criar um servidor
         public void Connect(String ip, int port)
         {
             clients = new Dictionary<short, Client>();
@@ -78,6 +77,11 @@ namespace ProjetoFinal.Managers
         
             networkInterface.Connect();
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
+        }
+
+        public void Disconnect()
+        {
+            networkInterface.Disconnect();
         }
 
         public void ProcessNetworkMessages()
@@ -117,6 +121,8 @@ namespace ProjetoFinal.Managers
                                 }
                                 else
                                 {
+                                    // TODO: Server poderia nesse momento, disparar uma mensagem a todos dizendo que um novo jogador se conectou para que cada client crie o boneco no seu jogo
+                                    // TODO: O proprio server tambem tem que criar o boneco no seu jogo
                                     Console.WriteLine("{0} Connected", im.SenderEndpoint);
                                 }
 
@@ -124,10 +130,18 @@ namespace ProjetoFinal.Managers
 
                             case NetConnectionStatus.Disconnected:
 
-                                Console.WriteLine(IsServer ? "{0} Disconnected" : "Disconnected from {0}", im.SenderEndpoint);
+                                if (!IsServer)
+                                {
+                                    OnClientDisconnected();
+
+                                    Console.WriteLine("Disconnected from {0}", im.SenderEndpoint);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("{0} Disconnected", im.SenderEndpoint);
+                                }
 
                                 break;
-
                         }
 
                         break;
@@ -144,6 +158,11 @@ namespace ProjetoFinal.Managers
                                 double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateMessage.messageTime);
 
                                 OnPlayerStateUpdated(updatePlayerStateMessage, localTime);
+                                
+                                // If server, resend UpdatePlayerState to all clients
+                                // TODO: Refactor this shit so that a client doesn't receive it's own message back
+                                if(IsServer)
+                                    networkInterface.SendMessage(updatePlayerStateMessage);
 
                                 break;
                         }
@@ -166,7 +185,12 @@ namespace ProjetoFinal.Managers
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
         private void OnClientConnected(HailMessage hailMessage)
         {
-            eventManager.throwClientConnected(this, new ClientConnectedEventArgs(hailMessage));
+            eventManager.ThrowClientConnected(this, new ClientConnectedEventArgs(hailMessage));
+        }
+
+        private void OnClientDisconnected()
+        {
+            eventManager.ThrowClientDisconnected(this, null);
         }
 
         // Util

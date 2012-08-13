@@ -33,14 +33,14 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         // Callbacks
 
-        public void OnStartServerButtonPressed(object sender)
+        public void OnStartServerButtonPressed()
         {
             networkManager.Host(int.Parse(portTextField.Text));
 
             gameStatesManager.AddState(new GameplayState());
         }
 
-        public void OnMainMenuButtonPressed(object sender)
+        public void OnMainMenuButtonPressed()
         {
             gameStatesManager.ResignState(this);
         }

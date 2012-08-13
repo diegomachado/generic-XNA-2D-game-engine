@@ -31,12 +31,8 @@ namespace ProjetoFinal.GameStateEngine
             get { return state; }
             set { state = value; }
         }
-        
-        //public bool IsPopup
-        //{
-        //    get { return isPopup; }
-        //}
-        //bool isPopup;
+
+        public bool IsPopup { get; protected set; }
 
         public virtual void LoadContent(ContentManager content) { }
         public virtual void Update(InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/) { }

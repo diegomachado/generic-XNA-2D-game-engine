@@ -31,17 +31,17 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         // Callbacks
 
-        public void OnHostGameButtonPressed(object sender)
+        public void OnHostGameButtonPressed()
         {
             gameStatesManager.AddState(new HostGameState());
         }
 
-        public void OnJoinGameButtonPressed(object sender)
+        public void OnJoinGameButtonPressed()
         {
             gameStatesManager.AddState(new JoinGameState());
         }
 
-        public void OnExitGameButtonPressed(object sender)
+        public void OnExitGameButtonPressed()
         {
             gameStatesManager.ExitGame();
         }

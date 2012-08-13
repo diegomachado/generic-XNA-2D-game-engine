@@ -123,6 +123,7 @@
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateUpdatedEventArgs.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameStateEngine\GameStates\ConnectingGameState.cs" />
     <Compile Include="GameStateEngine\NetworkGUIGameState.cs" />
     <Compile Include="GameStateEngine\NetworkGameState.cs" />
     <Compile Include="GameStateEngine\GUIGameState.cs" />
