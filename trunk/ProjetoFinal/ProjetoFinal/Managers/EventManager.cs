@@ -38,7 +38,6 @@ namespace ProjetoFinal.Managers
 
         public void ThrowPlayerStateChanged(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
-            Console.WriteLine("SHIT");
             networkManager.SendPlayerStateChangedMessage(id, player, messageType);
         }
 
