@@ -138,6 +138,8 @@ namespace ProjetoFinal.Managers
                                 }
                                 else
                                 {
+                                    // TODO: Server poderia nesse momento, disparar uma mensagem a todos dizendo que um jogador se desconectou para que cada client destrua o boneco no seu jogo
+                                    // TODO: O proprio server tambem tem que destruir o boneco no seu jogo
                                     Console.WriteLine("{0} Disconnected", im.SenderEndpoint);
                                 }
 
@@ -161,6 +163,7 @@ namespace ProjetoFinal.Managers
                                 
                                 // If server, resend UpdatePlayerState to all clients
                                 // TODO: Refactor this shit so that a client doesn't receive it's own message back
+                                // This fucking shit ta causando um overhead chato na rede e acho que tem como consertar usando SendMessage ao inves de SendToAll no serverNetworkInterface porém como a porra do código é fechado temos que fazer testes manuais pra saber se a gente vai estar ganhando desempenho ou perdendo.
                                 if(IsServer)
                                     networkInterface.SendMessage(updatePlayerStateMessage);
 
