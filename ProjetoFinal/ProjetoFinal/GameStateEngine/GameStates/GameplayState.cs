@@ -56,10 +56,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             base.Update(inputManager, gameTime);
 
             if (inputManager.Exit)
-                gameStatesManager.ExitGame();
+                GameStatesManager.ExitGame();
 
             if (inputManager.Pause)
-                gameStatesManager.AddState(new PauseState());
+                GameStatesManager.AddState(new PauseState());
 
             localPlayerManager.Update(gameTime, inputManager, mapManager.CollisionLayer);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
@@ -113,7 +113,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         private void OnClientDisconnected(object sender, EventArgs eventArgs)
         {
-            gameStatesManager.ResignState(this);
+            GameStatesManager.ResignState(this);
         }
     }
 }

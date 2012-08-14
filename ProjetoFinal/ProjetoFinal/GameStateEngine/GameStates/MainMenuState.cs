@@ -15,9 +15,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public MainMenuState() : base()
         {
             guiManager.AddElement(new Button("Host Game", new Rectangle(100, 100, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnHostGameButtonPressed));
-
             guiManager.AddElement(new Button("Join Game", new Rectangle(100, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnJoinGameButtonPressed));
-
             guiManager.AddElement(new Button("Exit Game", new Rectangle(100, 300, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnExitGameButtonPressed));
         }
 
@@ -26,24 +24,24 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             base.Update(inputManager, gameTime);
 
             if (inputManager.Exit)
-                gameStatesManager.ExitGame();
+                GameStatesManager.ExitGame();
         }
 
         // Callbacks
 
         public void OnHostGameButtonPressed()
         {
-            gameStatesManager.AddState(new HostGameState());
+            GameStatesManager.AddState(new HostGameState());
         }
 
         public void OnJoinGameButtonPressed()
         {
-            gameStatesManager.AddState(new JoinGameState());
+            GameStatesManager.AddState(new JoinGameState());
         }
 
         public void OnExitGameButtonPressed()
         {
-            gameStatesManager.ExitGame();
+            GameStatesManager.ExitGame();
         }
     }
 }

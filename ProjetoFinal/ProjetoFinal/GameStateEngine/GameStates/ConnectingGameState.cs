@@ -59,19 +59,19 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public void OnCancelButtonClicked()
         {
             networkManager.Disconnect();
-            gameStatesManager.ResignState(this);
+            GameStatesManager.ResignState(this);
         }
 
         private void OnClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
         {
-            gameStatesManager.ResignState(this);
-            gameStatesManager.AddState(new GameplayState(clientConnectedEventArgs.clientId, clientConnectedEventArgs.clientsInfo));
+            GameStatesManager.ResignState(this);
+            GameStatesManager.AddState(new GameplayState(clientConnectedEventArgs.clientId, clientConnectedEventArgs.clientsInfo));
         }
 
         private void OnClientDisconnected(object sender, EventArgs eventArgs)
         {
             // TODO: Talvez precise dar disconnect aqui, talvez não, tem que ver!
-            gameStatesManager.ResignState(this);
+            GameStatesManager.ResignState(this);
         }
     }
 }

@@ -39,17 +39,13 @@ namespace ProjetoFinal.GameStateEngine
             spriteFont = content.Load<SpriteFont>(@"fonts/SegoeUI");
 
             foreach (GameState state in states)
-            {
                 state.LoadContent(content);
-            }
         }
 
         protected override void UnloadContent()
         {
             foreach (GameState state in states)
-            {
                 state.UnloadContent();
-            }
         }
 
         public override void Update(GameTime gameTime)
@@ -126,7 +122,7 @@ namespace ProjetoFinal.GameStateEngine
             if(states.Count > 0)
                 states[states.Count - 1].State = GameStateState.Hidden;
 
-            state.gameStatesManager = this;
+            state.GameStatesManager = this;
             state.LoadContent(Game.Content);
 
             states.Add(state);
