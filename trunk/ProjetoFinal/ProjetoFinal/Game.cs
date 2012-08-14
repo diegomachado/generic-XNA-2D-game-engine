@@ -24,7 +24,6 @@ namespace ProjetoFinal
             graphics.ApplyChanges();
 
             gameStatesManager = new GameStatesManager(this);
-
             Components.Add(gameStatesManager);
         }
 

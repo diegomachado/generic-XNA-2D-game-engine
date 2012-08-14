@@ -12,26 +12,22 @@ namespace ProjetoFinal.GUI.Elements
     class Button : GUIElement
     {
         String label;
-        bool hover;
+        bool hover = false;
         Texture2D backgroundImage;
         OnClicked onClicked;
         
         // Events
         public delegate void OnClicked();
 
-        public Button(String label, Rectangle frame)
-            : base(frame)
+        public Button(String label, Rectangle frame) : base(frame)
         {
             this.label = label;
-            this.hover = false;
         }
 
-        public Button(String label, Rectangle frame, Texture2D texture2D, OnClicked onClicked)
-            : base(frame)
+        public Button(String label, Rectangle frame, Texture2D texture, OnClicked onClicked) : base(frame)
         {
             this.label = label;
-            this.hover = false;
-            this.backgroundImage = texture2D;
+            this.backgroundImage = texture;
             this.onClicked = onClicked;
         }
 

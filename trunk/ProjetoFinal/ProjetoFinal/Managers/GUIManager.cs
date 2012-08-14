@@ -20,22 +20,18 @@ namespace ProjetoFinal.GUI
         public void Update(InputManager inputManager)
         {
             foreach (GUIElement element in elements)
-            {
                 element.Update(inputManager);
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             foreach (GUIElement element in elements)
-            {
                 element.Draw(spriteBatch, spriteFont);
-            }
         }
 
-        public void AddElement(GUIElement button)
+        public void AddElement(GUIElement element)
         {
-            elements.Add(button);
+            elements.Add(element);
         }
     }
 }

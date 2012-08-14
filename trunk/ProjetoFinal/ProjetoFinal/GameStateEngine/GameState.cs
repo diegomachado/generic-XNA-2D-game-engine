@@ -23,9 +23,8 @@ namespace ProjetoFinal.GameStateEngine
         protected GraphicsManager graphicsManager = GraphicsManager.Instance;
         protected TextureManager textureManager = TextureManager.Instance;
         protected EventManager eventManager = EventManager.Instance;
-
-        // TODO: Refactor this mother fucker name bitch! É property, deveria começar maiusculo so que nao da!
-        public GameStatesManager gameStatesManager { protected get; set; }
+        
+        public GameStatesManager GameStatesManager { protected get; set; }
         public GameStateState State
         {
             get { return state; }

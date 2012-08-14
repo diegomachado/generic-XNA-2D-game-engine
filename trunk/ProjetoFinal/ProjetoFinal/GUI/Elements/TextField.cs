@@ -15,10 +15,9 @@ namespace ProjetoFinal.GUI.Elements
 
         public String Text { get; private set; }
 
-        public TextField(String text, Rectangle frame, Texture2D texture2D)
-            : base(frame)
+        public TextField(String text, Rectangle frame, Texture2D texture) : base(frame)
         {
-            this.backgroundImage = texture2D;
+            this.backgroundImage = texture;
             Text = text;
         }
 

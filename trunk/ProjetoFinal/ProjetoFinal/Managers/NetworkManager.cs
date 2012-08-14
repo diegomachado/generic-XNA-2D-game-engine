@@ -49,20 +49,20 @@ namespace ProjetoFinal.Managers
             }
         }
         
-        public void Host(int port)
+        public void Host(int port, string nickname)
         {
             ServerInterface serverNetworkManager = new ServerInterface();
             serverNetworkManager.port = port;
 
             networkInterface = serverNetworkManager;
 
-            clients.Add(0, new Client("[SERVER]"));
+            clients.Add(0, new Client("[SERVER] " + nickname));
  
             networkInterface.Connect();
             clientCounter = 1;
         }
 
-        public void Connect(String ip, int port)
+        public void Connect(String ip, int port, string nickname)
         {
             ClientInterface clientNetworkManager = new ClientInterface();
             clientNetworkManager.port = port;
@@ -70,7 +70,7 @@ namespace ProjetoFinal.Managers
 
             networkInterface = clientNetworkManager;
 
-            clients.Add(0, new Client("[CLIENT]"));
+            clients.Add(0, new Client("[CLIENT] " + nickname));
         
             networkInterface.Connect();
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)

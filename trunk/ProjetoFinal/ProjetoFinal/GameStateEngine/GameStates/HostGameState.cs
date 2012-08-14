@@ -11,16 +11,24 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 {
     class HostGameState : NetworkGUIGameState
     {
-        TextField portTextField;
+        Button startServerButton,
+               mainMenuButton;
+        
+        TextField portTextField,
+                  nicknameTextField;
 
         public HostGameState() : base()
         {
-            guiManager.AddElement(new Button("Start Server", new Rectangle(100, 100, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnStartServerButtonPressed));
+            startServerButton = new Button("Start Server", new Rectangle(100, 100, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnStartServerButtonPressed);
+            mainMenuButton = new Button("Main Menu", new Rectangle(100, 400, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnMainMenuButtonPressed);
 
             portTextField = new TextField("666", new Rectangle(100, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame));
-            guiManager.AddElement(portTextField);
+            nicknameTextField = new TextField("AdminNick", new Rectangle(100, 300, 305, 51), textureManager.getTexture(TextureList.ButtonFrame));
 
-            guiManager.AddElement(new Button("Main Menu", new Rectangle(100, 300, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnMainMenuButtonPressed));
+            guiManager.AddElement(startServerButton);            
+            guiManager.AddElement(portTextField);
+            guiManager.AddElement(nicknameTextField);
+            guiManager.AddElement(mainMenuButton);
         }
 
         public override void Update(Managers.InputManager inputManager, GameTime gameTime)
@@ -28,21 +36,20 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             base.Update(inputManager, gameTime);
 
             if (inputManager.Exit)
-                gameStatesManager.ResignState(this);
+                GameStatesManager.ResignState(this);
         }
 
         // Callbacks
-
         public void OnStartServerButtonPressed()
         {
-            networkManager.Host(int.Parse(portTextField.Text));
+            networkManager.Host(int.Parse(portTextField.Text), nicknameTextField.Text);
 
-            gameStatesManager.AddState(new GameplayState());
+            GameStatesManager.AddState(new GameplayState());
         }
 
         public void OnMainMenuButtonPressed()
         {
-            gameStatesManager.ResignState(this);
+            GameStatesManager.ResignState(this);
         }
     }
 }
