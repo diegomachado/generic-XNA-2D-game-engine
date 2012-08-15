@@ -15,40 +15,16 @@ using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
 
 namespace ProjetoFinal.Managers
 {
-    #region StatesAndShitCommented
-    public enum MovementState
-    {
-        Idle,
-
-        WalkingLeft,
-        WalkingRight,
-        WalkingDead,
-
-        Jumping,
-        JumpingLeft,
-        JumpingRight,
-
-        Falling,
-        FallingLeft,
-        FallingRight
-    }
-
-    public enum ActionState
-    {
-        Idle,
-        Striking,
-        Shooting        
-    }
-    #endregion
-
     class LocalPlayerManager
     {
         Camera camera = Camera.Instance;
 
         HorizontalMovementState localPlayerHorizontalState;
         VerticalMovementState localPlayerVerticalState;
+        ActionState localPlayerActionState;
         Dictionary<HorizontalStateType, HorizontalMovementState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
         Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
+        Dictionary<ActionType, ActionState> localPlayerActionStates = new Dictionary<ActionType, ActionState>();
 
         public short playerId { get; set; }
         
@@ -74,12 +50,21 @@ namespace ProjetoFinal.Managers
             localPlayerVerticalStates[VerticalStateType.StartedJumping] = new StartedJumpingState();
 
             localPlayerVerticalState = localPlayerVerticalStates[VerticalStateType.Jumping];
+
+            // Action
+
+            localPlayerActionStates[ActionType.Idle] = new ActionIdleState();
+            localPlayerActionStates[ActionType.Attacking] = new ActionAttackingState();
+            localPlayerActionStates[ActionType.Defending] = new ActionDefendingState();
+            localPlayerActionStates[ActionType.Shooting] = new ActionShootingState();
+
+            localPlayerActionState = localPlayerActionStates[ActionType.Idle];
         }
 
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30));   
+            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30));  
         }
 
         public void Update(GameTime gameTime, InputManager inputManager, Layer collisionLayer)

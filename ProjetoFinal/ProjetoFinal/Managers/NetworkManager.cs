@@ -56,6 +56,7 @@ namespace ProjetoFinal.Managers
 
             networkInterface = serverNetworkManager;
 
+            // TODO: Vai adcionar outro cara no index 0 quando passar aqui denovo, ajeitar isso
             clients.Add(0, new Client("[SERVER] " + nickname));
  
             networkInterface.Connect();
@@ -70,6 +71,7 @@ namespace ProjetoFinal.Managers
 
             networkInterface = clientNetworkManager;
 
+            // TODO: Vai adcionar outro cara no index 0 quando passar aqui denovo, ajeitar isso
             clients.Add(0, new Client("[CLIENT] " + nickname));
         
             networkInterface.Connect();
