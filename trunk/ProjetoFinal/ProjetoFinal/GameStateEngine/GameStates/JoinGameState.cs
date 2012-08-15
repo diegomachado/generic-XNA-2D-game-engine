@@ -24,6 +24,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
             ipTextField = new TextField("127.0.0.1", new Rectangle(100, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame));
             portTextField = new TextField("666", new Rectangle(100, 300, 305, 51), textureManager.getTexture(TextureList.ButtonFrame));
+            // TODO: Criar TextField que aceite letras em inputManager
             nicknameTextField = new TextField("ClientNick", new Rectangle(100, 400, 305, 51), textureManager.getTexture(TextureList.ButtonFrame));
 
             guiManager.AddElement(joinServerButton);
