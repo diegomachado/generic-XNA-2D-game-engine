@@ -15,7 +15,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class ActionShootingState : ActionState
     {
-        public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
             // TODO: Sincronizar animação de atirar com criação e disparo da flecha
             return this;

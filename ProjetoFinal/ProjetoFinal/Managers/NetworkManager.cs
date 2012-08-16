@@ -196,6 +196,7 @@ namespace ProjetoFinal.Managers
         }
 
         // Util
+
         private NetOutgoingMessage CreateHailMessage()
         {
             NetOutgoingMessage hailMessage = networkInterface.CreateMessage();
@@ -204,9 +205,15 @@ namespace ProjetoFinal.Managers
         }
 
         // Outgoing Messages
+
         public void SendPlayerStateChangedMessage(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
             networkInterface.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
+        }
+
+        public void SendCreateArrowMessage(short id, Player player)
+        {
+            networkInterface.SendMessage(new CreateArrowMessage(id, player));
         }
     }
 }

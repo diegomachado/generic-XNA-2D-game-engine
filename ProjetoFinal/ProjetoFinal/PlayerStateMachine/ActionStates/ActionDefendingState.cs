@@ -15,7 +15,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class ActionDefendingState : ActionState
     {
-        public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }

@@ -15,24 +15,24 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class ActionIdleState : ActionState
     {
-        public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }
 
-        public override ActionState Shot(short playerId, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public override ActionState Shot(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            return playerStates[ActionType.Shooting];
+            return playerStates[ActionStateType.Shooting];
         }
 
-        public override ActionState Defended(short playerId, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public override ActionState Defended(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            return playerStates[ActionType.Defending];
+            return playerStates[ActionStateType.Defending];
         }
 
-        public override ActionState Attacked(short playerId, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public override ActionState Attacked(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            return playerStates[ActionType.Attacking];
+            return playerStates[ActionStateType.Attacking];
         }
 
         public override string ToString()
