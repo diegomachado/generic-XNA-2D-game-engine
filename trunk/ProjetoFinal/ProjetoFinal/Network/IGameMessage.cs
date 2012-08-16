@@ -5,7 +5,8 @@ namespace ProjetoFinal.Network.Messages
     public enum GameMessageType
     {
         ClientInfo,
-        UpdatePlayerState
+        UpdatePlayerState,
+        CreateArrow
     }
 
     public interface IGameMessage

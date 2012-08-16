@@ -24,7 +24,7 @@ namespace ProjetoFinal.Managers
         ActionState localPlayerActionState;
         Dictionary<HorizontalStateType, HorizontalMovementState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
         Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
-        Dictionary<ActionType, ActionState> localPlayerActionStates = new Dictionary<ActionType, ActionState>();
+        Dictionary<ActionStateType, ActionState> localPlayerActionStates = new Dictionary<ActionStateType, ActionState>();
 
         public short playerId { get; set; }
         
@@ -53,12 +53,12 @@ namespace ProjetoFinal.Managers
 
             // Action
 
-            localPlayerActionStates[ActionType.Idle] = new ActionIdleState();
-            localPlayerActionStates[ActionType.Attacking] = new ActionAttackingState();
-            localPlayerActionStates[ActionType.Defending] = new ActionDefendingState();
-            localPlayerActionStates[ActionType.Shooting] = new ActionShootingState();
+            localPlayerActionStates[ActionStateType.Idle] = new ActionIdleState();
+            localPlayerActionStates[ActionStateType.Attacking] = new ActionAttackingState();
+            localPlayerActionStates[ActionStateType.Defending] = new ActionDefendingState();
+            localPlayerActionStates[ActionStateType.Shooting] = new ActionShootingState();
 
-            localPlayerActionState = localPlayerActionStates[ActionType.Idle];
+            localPlayerActionState = localPlayerActionStates[ActionStateType.Idle];
         }
 
         public void createLocalPlayer(short id)
@@ -72,7 +72,7 @@ namespace ProjetoFinal.Managers
             if (localPlayer == null)
                 return;
 
-            // Input
+            // Movement Input
 
             if (inputManager.Jump)
             {
@@ -96,6 +96,15 @@ namespace ProjetoFinal.Managers
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
+
+            // Action Input
+
+            if (inputManager.Shoot)
+            {
+                localPlayerActionState = localPlayerActionState.Shot(playerId, localPlayer, localPlayerActionStates);
+            }
+
+            // Updates
 
             localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
             localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);

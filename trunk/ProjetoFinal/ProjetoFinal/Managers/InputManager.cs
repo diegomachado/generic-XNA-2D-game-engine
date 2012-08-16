@@ -93,5 +93,6 @@ namespace ProjetoFinal.Managers
 
         public Point MousePosition { get { return new Point(mouseState.X, mouseState.Y); } }
         public bool MouseLeftButton { get { return ((mouseState.LeftButton == ButtonState.Pressed) && (previousMouseState.LeftButton == ButtonState.Released)); } }
+        public bool Shoot { get { return MouseLeftButton; } }
     }
 }

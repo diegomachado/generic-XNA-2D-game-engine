@@ -12,7 +12,7 @@ using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    enum ActionType : short
+    enum ActionStateType : short
     {
         Idle,
         Shooting,
@@ -22,21 +22,21 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
     abstract class ActionState : PlayerState
     {
-        public abstract ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionType, ActionState> playerStates);
+        public abstract ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates);
 
         #region Public Messages
 
-        public virtual ActionState Shot(short playerId, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public virtual ActionState Shot(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }
 
-        public virtual ActionState Defended(short playerId, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public virtual ActionState Defended(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }
 
-        public virtual ActionState Attacked(short playerId, Player player, Dictionary<ActionType, ActionState> playerStates)
+        public virtual ActionState Attacked(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }

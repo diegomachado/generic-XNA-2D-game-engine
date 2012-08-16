@@ -9,80 +9,20 @@ using ProjetoFinal.Managers.LocalPlayerStates;
 
 namespace ProjetoFinal.Entities
 {
-    class Player
+    class Player : Entity
     {
         private Camera camera = Camera.Instance;
 
         public VerticalStateType LastVerticalState { get; set; }
         public HorizontalStateType LastHorizontalState { get; set; }
-        public Texture2D Skin { get; set; }
-        public Vector2 Position { get; set; }
-        public Rectangle NextPosition { get; set; }
-        public Rectangle BoundingBox { get; set; }
-        public Vector2 Gravity { get; set; }
+        public ActionStateType LastActionState { get; set; }
         public Vector2 JumpForce { get; set; }
         public Vector2 walkForce { get; set; }        
         public float Friction { get; set; }
-        public double LastUpdateTime { get; set; }
         public bool FacingLeft { get; set; }
-        public int Width { get { return Skin.Width; } }
-        public int Height { get { return Skin.Height; } }
-        public float SpeedX
-        {
-            get { return speed.X; }
-            set
-            {
-                if (Math.Abs(value) < 30)
-                    speed.X = 0;
-                else
-                    speed.X = value;
-            }
-        }
-        public float SpeedY
-        {
-            get { return speed.Y; }
-            set
-            {
-                if (Math.Abs(value) > 500)
-                    speed.Y = 500;
-                else
-                    speed.Y = value;
-            }
-        }
-        public bool isMovingHorizontally
-        {
-            get
-            {
-                return (speed.X == 0);
-            }
-        }
-        public bool isMovingVertically
-        {
-            get
-            {
-                return (speed.Y == 0);
-            }
-        }
-
-        private Vector2 speed;
-        public Vector2 Speed 
-        {
-            get { return speed; }
-            set { speed = value; }
-        }
-
-        private Rectangle collisionBox;
-        public Rectangle CollisionBox
-        {
-            get
-            {
-                collisionBox.X = (int)Position.X + BoundingBox.X;
-                collisionBox.Y = (int)Position.Y + BoundingBox.Y;
-                return collisionBox;
-            }
-        }
 
         public Player(Texture2D playerSkin, Vector2 playerPosition, Rectangle boundingBox)
+            : base(playerSkin, playerPosition, boundingBox)
         {            
             walkForce = new Vector2(60, 0);
             Friction = 0.85f;
@@ -90,13 +30,10 @@ namespace ProjetoFinal.Entities
             JumpForce = new Vector2(0, -480f);
             LastVerticalState = VerticalStateType.Idle;
             LastHorizontalState = HorizontalStateType.Idle;
-            Skin = playerSkin;
-            Position = playerPosition;
-            BoundingBox = boundingBox;
-            collisionBox = boundingBox;
+            LastActionState = ActionStateType.Idle;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
             if (FacingLeft)

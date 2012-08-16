@@ -119,6 +119,7 @@
   <ItemGroup>
     <Compile Include="Entities\Arrow.cs" />
     <Compile Include="Entities\Camera.cs" />
+    <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="GUI\Elements\Button.cs" />
     <Compile Include="GUI\Elements\TextField.cs" />
     <Compile Include="GUI\GUIElement.cs" />
+    <Compile Include="Managers\ArrowManager.cs" />
     <Compile Include="Managers\GUIManager.cs" />
     <Compile Include="Managers\GraphicsManager.cs" />
     <Compile Include="Managers\GameStatesManager.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
     <Compile Include="Managers\NetworkManager.cs" />
+    <Compile Include="Network\Messages\CreateArrowMessage.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionIdleState.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionState.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionShootingState.cs" />
