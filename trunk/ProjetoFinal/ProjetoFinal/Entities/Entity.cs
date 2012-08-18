@@ -9,16 +9,18 @@ namespace ProjetoFinal.Entities
 {
     class Entity
     {
-        public Texture2D Skin { get; set; }
+        protected Camera camera = Camera.Instance;
+        protected Texture2D skin;
+        
         public Vector2 Position { get; set; }
-        public Rectangle NextPosition { get; set; }
         public Rectangle BoundingBox { get; set; }
         public Vector2 Gravity { get; set; }
         public double LastUpdateTime { get; set; }
-        public int Width { get { return Skin.Width; } }
-        public int Height { get { return Skin.Height; } }
+        public int Width { get { return skin.Width; } }
+        public int Height { get { return skin.Height; } }
         public bool isMovingHorizontally { get { return (speed.X == 0); } }
         public bool isMovingVertically { get { return (speed.Y == 0); } }
+        public Vector2 Center { get { return new Vector2(Position.X + (Width / 2), Position.Y + (Height / 2)); } } // TODO: Guardar esse valor pra não calcular sempre
 
         public float SpeedX
         {
@@ -61,10 +63,10 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Entity(Texture2D playerSkin, Vector2 position, Rectangle boundingBox)
+        public Entity(Texture2D texture, Vector2 position, Rectangle boundingBox)
         {
             Gravity = new Vector2(0, 20f);
-            Skin = playerSkin;
+            skin = texture;
             Position = position;
             BoundingBox = boundingBox;
             collisionBox = boundingBox;

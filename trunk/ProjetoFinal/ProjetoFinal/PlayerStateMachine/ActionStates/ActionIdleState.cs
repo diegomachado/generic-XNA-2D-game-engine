@@ -20,9 +20,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public override ActionState Shot(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
+        public override ActionState PreparingShot(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            return playerStates[ActionStateType.Shooting];
+            return playerStates[ActionStateType.PreparingShot];
         }
 
         public override ActionState Defended(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)

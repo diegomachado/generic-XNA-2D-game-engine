@@ -18,6 +18,7 @@ namespace ProjetoFinal.Managers
     class LocalPlayerManager
     {
         Camera camera = Camera.Instance;
+        Player localPlayer;
 
         HorizontalMovementState localPlayerHorizontalState;
         VerticalMovementState localPlayerVerticalState;
@@ -27,8 +28,6 @@ namespace ProjetoFinal.Managers
         Dictionary<ActionStateType, ActionState> localPlayerActionStates = new Dictionary<ActionStateType, ActionState>();
 
         public short playerId { get; set; }
-        
-        Player localPlayer;
         public Player LocalPlayer { get { return localPlayer; } }
 
         public LocalPlayerManager()
@@ -54,9 +53,10 @@ namespace ProjetoFinal.Managers
             // Action
 
             localPlayerActionStates[ActionStateType.Idle] = new ActionIdleState();
-            localPlayerActionStates[ActionStateType.Attacking] = new ActionAttackingState();
-            localPlayerActionStates[ActionStateType.Defending] = new ActionDefendingState();
-            localPlayerActionStates[ActionStateType.Shooting] = new ActionShootingState();
+            localPlayerActionStates[ActionStateType.Attacking] = new AttackingState();
+            localPlayerActionStates[ActionStateType.Defending] = new DefendingState();
+            localPlayerActionStates[ActionStateType.Shooting] = new ShootingState();
+            localPlayerActionStates[ActionStateType.PreparingShot] = new PreparingShotState();
 
             localPlayerActionState = localPlayerActionStates[ActionStateType.Idle];
         }
@@ -99,19 +99,19 @@ namespace ProjetoFinal.Managers
 
             // Action Input
 
-            if (inputManager.Shoot)
+            if (inputManager.PreparingShot)
             {
-                localPlayerActionState = localPlayerActionState.Shot(playerId, localPlayer, localPlayerActionStates);
+                localPlayerActionState = localPlayerActionState.PreparingShot(playerId, localPlayer, localPlayerActionStates);
+            }
+            else
+            {
+                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, localPlayerActionStates);
             }
 
             // Updates
 
             localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
             localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
-
-            camera.Position = localPlayer.Position
-                                        + new Vector2(localPlayer.Skin.Width / 2, localPlayer.Skin.Height / 2)
-                                        - new Vector2(GraphicsManager.Instance.ScreenSize.X / 2, GraphicsManager.Instance.ScreenSize.Y / 2);
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)

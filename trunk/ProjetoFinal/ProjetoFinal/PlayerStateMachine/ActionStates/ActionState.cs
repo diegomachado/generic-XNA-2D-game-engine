@@ -16,6 +16,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         Idle,
         Shooting,
+        PreparingShot,
         Defending,
         Attacking
     }
@@ -26,7 +27,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         #region Public Messages
 
-        public virtual ActionState Shot(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
+        public virtual ActionState PreparingShot(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
+        {
+            return this;
+        }
+
+        public virtual ActionState ShotReleased(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }

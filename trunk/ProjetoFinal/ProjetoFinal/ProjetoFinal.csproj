@@ -150,9 +150,10 @@
     <Compile Include="Network\Messages\CreateArrowMessage.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionIdleState.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionState.cs" />
-    <Compile Include="PlayerStateMachine\ActionStates\ActionShootingState.cs" />
-    <Compile Include="PlayerStateMachine\ActionStates\ActionAttackingState.cs" />
-    <Compile Include="PlayerStateMachine\ActionStates\ActionDefendingState.cs" />
+    <Compile Include="PlayerStateMachine\ActionStates\ShootingState.cs" />
+    <Compile Include="PlayerStateMachine\ActionStates\AttackingState.cs" />
+    <Compile Include="PlayerStateMachine\ActionStates\DefendingState.cs" />
+    <Compile Include="PlayerStateMachine\ActionStates\PreparingShotState.cs" />
     <Compile Include="PlayerStateMachine\PlayerState.cs" />
     <Compile Include="PlayerStateMachine\VerticalMovementStates\StartedJumpingState.cs" />
     <Compile Include="PlayerStateMachine\VerticalMovementStates\VerticalIdleState.cs" />
