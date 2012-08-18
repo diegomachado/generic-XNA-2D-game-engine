@@ -11,8 +11,6 @@ namespace ProjetoFinal.Entities
 {
     class Player : Entity
     {
-        private Camera camera = Camera.Instance;
-
         public VerticalStateType LastVerticalState { get; set; }
         public HorizontalStateType LastHorizontalState { get; set; }
         public ActionStateType LastActionState { get; set; }
@@ -37,9 +35,9 @@ namespace ProjetoFinal.Entities
         {
             // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
             if (FacingLeft)
-                spriteBatch.Draw(Skin, Position - camera.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
-                spriteBatch.Draw(Skin, Position - camera.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }
 }

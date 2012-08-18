@@ -59,8 +59,7 @@ namespace ProjetoFinal.Entities
 
         public void FollowLocalPlayer(Player player)
         {
-            this.Position = player.Position + new Vector2(player.Skin.Width / 2, player.Skin.Height / 2)
-                                          - new Vector2(graphicsManager.ScreenSize.X / 2, graphicsManager.ScreenSize.Y / 2);
+            this.Position = player.Center - graphicsManager.Center;
         }
     }
 }

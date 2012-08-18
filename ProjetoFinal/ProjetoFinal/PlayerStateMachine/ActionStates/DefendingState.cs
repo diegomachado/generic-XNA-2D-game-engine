@@ -13,7 +13,7 @@ using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    class ActionDefendingState : ActionState
+    class DefendingState : ActionState
     {
         public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
