@@ -26,7 +26,7 @@ namespace ProjetoFinal.Entities
 
             // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
             // Refatorar esse new Vector2 ae
-                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, rotation, new Vector2(skin.Width / 2, skin.Height / 2), 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, rotation, TextureCenter, 1f, SpriteEffects.None, 0f);
         }
     }
 }

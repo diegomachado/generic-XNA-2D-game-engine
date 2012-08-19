@@ -20,7 +20,8 @@ namespace ProjetoFinal.Entities
         public int Height { get { return skin.Height; } }
         public bool isMovingHorizontally { get { return (speed.X == 0); } }
         public bool isMovingVertically { get { return (speed.Y == 0); } }
-        public Vector2 Center { get { return new Vector2(Position.X + (Width / 2), Position.Y + (Height / 2)); } } // TODO: Guardar esse valor pra não calcular sempre
+        public Vector2 Center { get { return Position + TextureCenter; } } // TODO: Guardar esse valor pra não calcular sempre
+        public Vector2 TextureCenter { get { return new Vector2(Width / 2, Height / 2); } } // TODO: Guardar esse valor pra não calcular sempre
 
         public float SpeedX
         {

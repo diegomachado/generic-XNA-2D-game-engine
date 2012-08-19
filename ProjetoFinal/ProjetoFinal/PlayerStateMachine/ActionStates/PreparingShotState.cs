@@ -17,7 +17,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            // TODO: Animação de atirar entra aqui
+            // TODO: Animação de preparando tiro entra aqui
 
             return this;
         }
