@@ -17,10 +17,6 @@ namespace ProjetoFinal.EventHeaders
         public double localTime   { get; set; }
         public UpdatePlayerStateMessageType movementType { get; set; }
 
-        public PlayerStateUpdatedEventArgs()
-        {
-        }
-
         public PlayerStateUpdatedEventArgs(UpdatePlayerStateMessage updatePlayerStateMessage, double localTime)
         {
             this.playerId = updatePlayerStateMessage.playerId;

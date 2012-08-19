@@ -17,12 +17,20 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            // TODO: Sincronizar animação de atirar com criação e disparo da flecha
+            // TODO: Animação de atirar entra aqui
+
             return this;
         }
 
-        public override ActionState ShotReleased(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
+        public override ActionState ShotReleased(short playerId, Player player, float shootingTimer, Point aim, Dictionary<ActionStateType, ActionState> playerStates)
         {
+            Vector2 speed = new Vector2(aim.X - player.Position.X, aim.Y - player.Position.Y);
+            speed.Normalize();
+            speed *= (shootingTimer / 100);
+
+            // TODO: Mudar posição de saída da flecha posteriormente
+            OnArrowShot(playerId, player.Position, speed);
+
             return playerStates[ActionStateType.Shooting];
         }
 

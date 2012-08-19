@@ -9,15 +9,17 @@ namespace ProjetoFinal.Entities
 {
     class Arrow : Entity
     {
-        public Arrow(Texture2D playerSkin, Vector2 position, Rectangle boundingBox, Vector2 speed)
+        public short OwnerId { get; private set; }
+        public Arrow(short ownerId, Texture2D playerSkin, Vector2 position, Rectangle boundingBox, Vector2 speed)
             : base(playerSkin, position, boundingBox)
         {
             this.Speed = speed;
+            this.OwnerId = ownerId;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            float rotation = (float)Math.Acos(Vector2.Dot(Speed, Vector2.UnitX));
+            float rotation = (float)Math.Acos(Vector2.Dot(Speed, Vector2.UnitX) / (Speed.Length()));
 
             // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
             // TODO: testar se alguma vez SpeedX == 0

@@ -123,6 +123,8 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
+    <Compile Include="EventHeaders\ArrowShotEventArgs.cs" />
+    <Compile Include="EventHeaders\PlayerStateChangedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateUpdatedEventArgs.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameStateEngine\GameStates\ConnectingGameState.cs" />

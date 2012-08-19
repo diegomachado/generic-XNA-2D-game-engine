@@ -19,6 +19,7 @@ namespace ProjetoFinal.Managers
     {
         Camera camera = Camera.Instance;
         Player localPlayer;
+        float shootingTimer;
 
         HorizontalMovementState localPlayerHorizontalState;
         VerticalMovementState localPlayerVerticalState;
@@ -72,18 +73,20 @@ namespace ProjetoFinal.Managers
             if (localPlayer == null)
                 return;
 
-            // Movement Input
+            // Vertical Movement Input
 
             if (inputManager.Jump)
             {
                 localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
             }
 
+            // Horizontal Movement Input
+
             if (inputManager.Left)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.MovedLeft(playerId, localPlayer, localPlayerHorizontalStates);
             }
-            else if (inputManager.PreviouslyLeft) // Key Released
+            else if (inputManager.PreviouslyLeft)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingLeft(playerId, localPlayer, localPlayerHorizontalStates);
             }
@@ -92,7 +95,7 @@ namespace ProjetoFinal.Managers
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.MovedRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
-            else if (inputManager.PreviouslyRight) // Key Released
+            else if (inputManager.PreviouslyRight)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
@@ -102,16 +105,22 @@ namespace ProjetoFinal.Managers
             if (inputManager.PreparingShot)
             {
                 localPlayerActionState = localPlayerActionState.PreparingShot(playerId, localPlayer, localPlayerActionStates);
+
+                shootingTimer += gameTime.ElapsedGameTime.Milliseconds;
             }
             else
             {
-                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, localPlayerActionStates);
+                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, shootingTimer, inputManager.MousePosition, localPlayerActionStates);
+
+                shootingTimer = 0f;
             }
 
             // Updates
 
+            // TODO: Updates devem ficar depois ou antes?
             localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
             localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
+            localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
