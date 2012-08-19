@@ -112,32 +112,42 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, float updateTime, UpdatePlayerStateMessageType updatePlayerStateMessageType, short playerState)
+        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateMessageType updatePlayerStateMessageType, short playerState)
         {
-            players[playerId].Position = position + (speed * updateTime);
-            //players[playerId].Speed = speed;
-            players[playerId].LastUpdateTime = updateTime;
+            Player player = GetPlayer(playerId); ;
 
-            switch (updatePlayerStateMessageType)
-            {
-                case UpdatePlayerStateMessageType.Horizontal:
-                    horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
+            // TODO: Dropar mensagens fora de ordem ou não????
+            //if (player.LastUpdateTime < messageTime)
+            //{
+                // TODO: esse codigo tem que subir, não eh pra ter NetTime.Now aqui
+                float timeDelay = (float)(NetTime.Now - messageTime);
+                
+                Console.WriteLine(timeDelay); // TODO: preciso descobrir em qual medida de tempo está a diferenca entre 2 valores de NetTime.Now para poder atualizar o jogador corretamente
 
-                    if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
-                        (HorizontalStateType)playerState == HorizontalStateType.WalkingRight)
-                    {
-                        players[playerId].SpeedX = 0;
-                    }
-                    break;
-                case UpdatePlayerStateMessageType.Vertical:
-                    verticalPlayerState[playerId] = verticalPlayerStates[(VerticalStateType)playerState];
+                players[playerId].Position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
+                players[playerId].LastUpdateTime = messageTime;
 
-                    if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)
-                    {
-                        players[playerId].SpeedY = 0;
-                    }
-                    break;
-            }
+                switch (updatePlayerStateMessageType)
+                {
+                    case UpdatePlayerStateMessageType.Horizontal:
+                        horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
+
+                        if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
+                            (HorizontalStateType)playerState == HorizontalStateType.WalkingRight)
+                        {
+                            players[playerId].SpeedX = 0;
+                        }
+                        break;
+                    case UpdatePlayerStateMessageType.Vertical:
+                        verticalPlayerState[playerId] = verticalPlayerStates[(VerticalStateType)playerState];
+
+                        if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)
+                        {
+                            players[playerId].SpeedY = 0;
+                        }
+                        break;
+                }
+            //}
         }
     }
 }
