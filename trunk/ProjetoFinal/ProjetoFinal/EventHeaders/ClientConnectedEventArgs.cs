@@ -11,12 +11,6 @@ namespace ProjetoFinal.EventHeaders
         public short clientId { get; set; }
         public Dictionary<short, Client> clientsInfo { get; set; }
 
-        public ClientConnectedEventArgs(short clientId, Dictionary<short, Client> clientsInfo)
-        {
-            this.clientId = clientId;
-            this.clientsInfo = clientsInfo;
-        }
-
         public ClientConnectedEventArgs(HailMessage hailMessage)
         {
             this.clientId = hailMessage.clientId;

@@ -16,9 +16,12 @@ namespace ProjetoFinal.Managers
         private NetworkManager networkManager;
 
         // Events
-        public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated;
-        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
-        public event EventHandler<EventArgs> ClientDisconnected;
+        public event EventHandler<PlayerStateChangedEventArgs> PlayerStateChanged; // When a player state has locally changed
+        public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated; // When a message with updated information about a player arrives
+        public event EventHandler<ClientConnectedEventArgs> ClientConnected; // When a message saying a new client connected arrives
+        public event EventHandler<EventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
+        public event EventHandler<ArrowShotEventArgs> ArrowShot; // When an arrow is locally created
+        // TODO: // When a message saying a new arrow was created arrives
 
         public static EventManager Instance
         {
@@ -34,31 +37,36 @@ namespace ProjetoFinal.Managers
             }
         }
 
-        // Eventos Diretos
-
-        public void ThrowPlayerStateChanged(short id, Player player, UpdatePlayerStateMessageType messageType)
+        public void ThrowPlayerStateChanged(object sender, PlayerStateChangedEventArgs playerStateChangedEventArgs)
         {
-            networkManager.SendPlayerStateChangedMessage(id, player, messageType);
+            if (PlayerStateChanged != null)
+                PlayerStateChanged(sender, playerStateChangedEventArgs);
         }
 
-        // Eventos Indiretos
-
-        public void ThrowPlayerStateUpdated(NetworkManager networkManager, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
+        public void ThrowPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
             if (PlayerStateUpdated != null)
-                PlayerStateUpdated(networkManager, playerStateUpdatedEventArgs);
+                PlayerStateUpdated(sender, playerStateUpdatedEventArgs);
         }
 
-        public void ThrowClientConnected(NetworkManager networkManager, ClientConnectedEventArgs clientConnectedEventArgs)
+        public void ThrowClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
         {
             if (ClientConnected != null)
-                ClientConnected(networkManager, clientConnectedEventArgs);
+                ClientConnected(sender, clientConnectedEventArgs);
         }
 
-        public void ThrowClientDisconnected(NetworkManager networkManager, ClientConnectedEventArgs clientConnectedEventArgs)
+        public void ThrowClientDisconnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
         {
             if (ClientDisconnected != null)
-                ClientDisconnected(networkManager, clientConnectedEventArgs);
+                ClientDisconnected(sender, clientConnectedEventArgs);
+        }
+
+        public void ThrowArrowShot(object sender, ArrowShotEventArgs arrowShotEventArgs)
+        {
+            if (ArrowShot != null)
+            {
+                ArrowShot(sender, arrowShotEventArgs);
+            }
         }
     }
 }

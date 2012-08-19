@@ -6,6 +6,7 @@ using ProjetoFinal.Entities;
 using ProjetoFinal.Managers;
 using ProjetoFinal.Managers.LocalPlayerStates;
 using ProjetoFinal.Network.Messages;
+using ProjetoFinal.EventHeaders;
 
 namespace ProjetoFinal.PlayerStateMachine
 {
@@ -23,7 +24,7 @@ namespace ProjetoFinal.PlayerStateMachine
                     break;
             }
 
-            EventManager.Instance.ThrowPlayerStateChanged(playerId, player, messageType);
+            EventManager.Instance.ThrowPlayerStateChanged(this, new PlayerStateChangedEventArgs(playerId, player, messageType));
         }
     }
 }

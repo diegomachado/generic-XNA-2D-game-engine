@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using ProjetoFinal.Entities;
 using OgmoLibrary;
 using ProjetoFinal.PlayerStateMachine;
+using ProjetoFinal.EventHeaders;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
@@ -32,7 +33,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public virtual ActionState ShotReleased(short playerId, Player player, Dictionary<ActionStateType, ActionState> playerStates)
+        public virtual ActionState ShotReleased(short playerId, Player player, float shootingTimer, Point aim, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }
@@ -50,6 +51,11 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         #endregion
 
         #region Protected Methods
+
+        protected void OnArrowShot(short playerId, Vector2 position, Vector2 speed)
+        {
+            EventManager.Instance.ThrowArrowShot(this, new ArrowShotEventArgs(playerId, position, speed));
+        }
 
         #endregion
     }

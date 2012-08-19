@@ -18,21 +18,8 @@ namespace ProjetoFinal.Managers
         public short clientCounter; // TODO: Fazer property
         public Dictionary<short, Entities.Client> clients; // TODO: Fazer property
 
-        public bool IsServer
-        {
-            get
-            {
-                return networkInterface is ServerInterface;
-            }
-        }
-
-        public bool IsConnected
-        {
-            get
-            {
-                return networkInterface != null;
-            }
-        }
+        public bool IsServer { get { return networkInterface is ServerInterface; } }
+        public bool IsConnected { get { return networkInterface != null; } }
 
         public static NetworkManager Instance
         {
@@ -61,6 +48,8 @@ namespace ProjetoFinal.Managers
  
             networkInterface.Connect();
             clientCounter = 1;
+
+            eventManager.PlayerStateChanged += OnPlayerStateChanged;
         }
 
         public void Connect(String ip, int port, string nickname)
@@ -76,11 +65,15 @@ namespace ProjetoFinal.Managers
         
             networkInterface.Connect();
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
+
+            eventManager.PlayerStateChanged += OnPlayerStateChanged;
         }
 
         public void Disconnect()
         {
             networkInterface.Disconnect();
+
+            eventManager.PlayerStateChanged -= OnPlayerStateChanged;
         }
 
         public void ProcessNetworkMessages()
@@ -178,6 +171,8 @@ namespace ProjetoFinal.Managers
 
         // Eventos
 
+        // Outgoing
+
         // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
         private void OnPlayerStateUpdated(UpdatePlayerStateMessage updatePlayerStateMessage, double localTime)
         {
@@ -195,6 +190,13 @@ namespace ProjetoFinal.Managers
             eventManager.ThrowClientDisconnected(this, null);
         }
 
+        // Incoming
+
+        private void OnPlayerStateChanged(object sender, PlayerStateChangedEventArgs playerStateChangedEventArgs)
+        {
+            SendPlayerStateChangedMessage(playerStateChangedEventArgs.playerId, playerStateChangedEventArgs.player, playerStateChangedEventArgs.movementType);
+        }
+
         // Util
 
         private NetOutgoingMessage CreateHailMessage()
@@ -206,12 +208,12 @@ namespace ProjetoFinal.Managers
 
         // Outgoing Messages
 
-        public void SendPlayerStateChangedMessage(short id, Player player, UpdatePlayerStateMessageType messageType)
+        private void SendPlayerStateChangedMessage(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
             networkInterface.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
         }
 
-        public void SendCreateArrowMessage(short id, Player player)
+        private void SendCreateArrowMessage(short id, Player player)
         {
             networkInterface.SendMessage(new CreateArrowMessage(id, player));
         }

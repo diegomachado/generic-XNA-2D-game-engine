@@ -17,7 +17,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
     {
         // Managers
         PlayerManager playerManager;
-        LocalPlayerManager localPlayerManager;        
+        LocalPlayerManager localPlayerManager;
+        ArrowManager arrowManager;
         MapManager mapManager = MapManager.Instance;
         Camera camera = Camera.Instance;
 
@@ -28,6 +29,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
+            arrowManager = new ArrowManager();
 
             localPlayerManager.createLocalPlayer(playerId);
 
@@ -65,6 +67,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
             
             playerManager.Update(gameTime, mapManager.CollisionLayer);
+            arrowManager.Update(gameTime, mapManager.CollisionLayer);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -73,6 +76,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             mapManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.ScreenSize);
             localPlayerManager.Draw(spriteBatch, spriteFont);
             playerManager.Draw(spriteBatch, spriteFont);
+            arrowManager.Draw(spriteBatch, spriteFont);
         }
 
         // TODO: REVER PORQUE FUNCIONOU SEM O TILESIZE_X e TILESIZE_Y em Map.cs depois do refactoring do Guifes

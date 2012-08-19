@@ -20,39 +20,42 @@ namespace ProjetoFinal.Managers
 {
     class ArrowManager
     {
-        Dictionary<short, Arrow> arrows;
+        EventManager eventManager = EventManager.Instance;
+        List<Arrow> arrows;
 
         public ArrowManager()
         {
-            arrows = new Dictionary<short, Arrow>();
+            arrows = new List<Arrow>();
+
+            eventManager.ArrowShot += OnArrowShot;
         }
 
         public void Update(GameTime gameTime, Layer collisionLayer)
         {
-            foreach (KeyValuePair<short, Arrow> a in arrows)
+            foreach (Arrow arrow in arrows)
             {
-                Arrow arrow = a.Value;
-                short playerId = a.Key;
+                arrow.Speed += (arrow.Gravity / 200);
+                arrow.Position += arrow.Speed;
+                //TODO: arrow.LastUpdateTime = updateTime;
+
+                // TODO: Testar Colisão das flechas e destruí-las
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            Arrow arrow;
-
-            foreach (KeyValuePair<short, Arrow> a in arrows)
+            foreach (Arrow arrow in arrows)
             {
-                arrow = a.Value;
                 arrow.Draw(spriteBatch);
                 
-                spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
+                //spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
             }
         }
 
-        public void UpdateArrow(short playerId, Vector2 position, Vector2 speed, float updateTime)
+        private void OnArrowShot(object sender, ArrowShotEventArgs arrowShotEventArgs)
         {
-            arrows[playerId].Position = position + (speed * updateTime);
-            arrows[playerId].LastUpdateTime = updateTime;
+            // TODO: Fazer a boundingBox corretamente
+            arrows.Add(new Arrow(arrowShotEventArgs.playerId, TextureManager.Instance.getTexture(TextureList.Bear), arrowShotEventArgs.position, new Rectangle(5, 1, 24, 30), arrowShotEventArgs.speed));
         }
     }
 }

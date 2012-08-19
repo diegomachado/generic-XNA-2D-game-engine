@@ -17,7 +17,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            // TODO: Atirar flecha
+            // TODO: Animar tiro e no fim da animação voltar pro estado Idle
 
             return playerStates[ActionStateType.Idle];
         }
