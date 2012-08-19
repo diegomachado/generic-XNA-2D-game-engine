@@ -21,16 +21,12 @@ namespace ProjetoFinal.Entities
         {
             float rotation = (float)Math.Acos(Vector2.Dot(Speed, Vector2.UnitX) / (Speed.Length()));
 
+            if (SpeedY < 0)
+                rotation = -rotation;
+
             // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
-            // TODO: testar se alguma vez SpeedX == 0
-            if (SpeedX > 0)
-            {
-                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            }
-            else
-            {
-                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, rotation, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
-            }
+            // Refatorar esse new Vector2 ae
+                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, rotation, new Vector2(skin.Width / 2, skin.Height / 2), 1f, SpriteEffects.None, 0f);
         }
     }
 }
