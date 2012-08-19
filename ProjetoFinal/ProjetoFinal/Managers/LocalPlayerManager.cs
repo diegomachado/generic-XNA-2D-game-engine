@@ -65,7 +65,7 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30));  
+            localPlayer = new Player(new Vector2(240, 40));  
         }
 
         public void Update(GameTime gameTime, InputManager inputManager, Layer collisionLayer)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using ProjetoFinal.Managers;
 
 namespace ProjetoFinal.Entities
 {
@@ -11,17 +12,32 @@ namespace ProjetoFinal.Entities
     {
         protected Camera camera = Camera.Instance;
         protected Texture2D skin;
-        
+
+        public Rectangle BoundingBox { get; protected set; }
+        public Vector2 Gravity { get; protected set; }
+
         public Vector2 Position { get; set; }
-        public Rectangle BoundingBox { get; set; }
-        public Vector2 Gravity { get; set; }
         public double LastUpdateTime { get; set; }
+        
         public int Width { get { return skin.Width; } }
         public int Height { get { return skin.Height; } }
         public bool isMovingHorizontally { get { return (speed.X == 0); } }
         public bool isMovingVertically { get { return (speed.Y == 0); } }
         public Vector2 Center { get { return Position + TextureCenter; } } // TODO: Guardar esse valor pra não calcular sempre
         public Vector2 TextureCenter { get { return new Vector2(Width / 2, Height / 2); } } // TODO: Guardar esse valor pra não calcular sempre
+
+        public Rectangle CollisionBox
+        {
+            get
+            {
+                Rectangle collisionBox = new Rectangle();
+                collisionBox.Width = BoundingBox.Width;
+                collisionBox.Height = BoundingBox.Height;
+                collisionBox.X = (int)Position.X + BoundingBox.X;
+                collisionBox.Y = (int)Position.Y + BoundingBox.Y;
+                return collisionBox;
+            }
+        }
 
         public float SpeedX
         {
@@ -53,24 +69,10 @@ namespace ProjetoFinal.Entities
             set { speed = value; }
         }
 
-        private Rectangle collisionBox;
-        public Rectangle CollisionBox
+        public Entity(Vector2 position)
         {
-            get
-            {
-                collisionBox.X = (int)Position.X + BoundingBox.X;
-                collisionBox.Y = (int)Position.Y + BoundingBox.Y;
-                return collisionBox;
-            }
-        }
-
-        public Entity(Texture2D texture, Vector2 position, Rectangle boundingBox)
-        {
-            Gravity = new Vector2(0, 20f);
-            skin = texture;
-            Position = position;
-            BoundingBox = boundingBox;
-            collisionBox = boundingBox;
+            this.Gravity = new Vector2(0, 20f);
+            this.Position = position;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

@@ -54,7 +54,7 @@ namespace ProjetoFinal.Managers
 
         private void OnArrowShot(object sender, ArrowShotEventArgs arrowShotEventArgs)
         {
-            arrows.Add(new Arrow(arrowShotEventArgs.playerId, TextureManager.Instance.getTexture(TextureList.Arrow), arrowShotEventArgs.position, new Rectangle(17, 1, 8, 5), arrowShotEventArgs.speed));
+            arrows.Add(new Arrow(arrowShotEventArgs.playerId, arrowShotEventArgs.position, arrowShotEventArgs.speed));
         }
     }
 }
