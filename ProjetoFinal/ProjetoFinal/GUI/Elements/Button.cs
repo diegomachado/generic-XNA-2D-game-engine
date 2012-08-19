@@ -33,7 +33,7 @@ namespace ProjetoFinal.GUI.Elements
 
         public override void Update(InputManager inputManager)
         {
-            if (frame.Contains(inputManager.MousePosition))
+            if (frame.Contains(Util.Vector2ToPoint(inputManager.MousePosition)))
             {
                 hover = true;
 

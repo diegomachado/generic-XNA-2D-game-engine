@@ -33,7 +33,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public virtual ActionState ShotReleased(short playerId, Player player, float shootingTimer, Point aim, Dictionary<ActionStateType, ActionState> playerStates)
+        public virtual ActionState ShotReleased(short playerId, Player player, float shootingTimer, Vector2 aim, Dictionary<ActionStateType, ActionState> playerStates)
         {
             return this;
         }

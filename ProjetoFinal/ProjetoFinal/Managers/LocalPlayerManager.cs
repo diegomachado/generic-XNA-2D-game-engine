@@ -110,7 +110,7 @@ namespace ProjetoFinal.Managers
             }
             else
             {
-                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, shootingTimer, inputManager.MousePosition, localPlayerActionStates);
+                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, shootingTimer, camera.CameraToWorldCoordinates(inputManager.MousePosition), localPlayerActionStates);
 
                 shootingTimer = 0f;
             }
@@ -127,7 +127,7 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer != null)
             {
-                localPlayer.Draw(spriteBatch);
+                localPlayer.Draw(spriteBatch, camera);
                 
                 spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
 

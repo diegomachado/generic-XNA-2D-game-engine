@@ -22,13 +22,14 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             return this;
         }
 
-        public override ActionState ShotReleased(short playerId, Player player, float shootingTimer, Point aim, Dictionary<ActionStateType, ActionState> playerStates)
+        public override ActionState ShotReleased(short playerId, Player player, float shootingTimer, Vector2 aim, Dictionary<ActionStateType, ActionState> playerStates)
         {
             Vector2 speed = new Vector2(aim.X - player.Position.X, aim.Y - player.Position.Y);
             speed.Normalize();
             speed *= (shootingTimer / 100);
 
-            // TODO: Mudar posição de saída da flecha posteriormente
+            player.FacingLeft = (speed.X < 0);
+
             OnArrowShot(playerId, player.WeaponPosition, speed);
 
             return playerStates[ActionStateType.Shooting];

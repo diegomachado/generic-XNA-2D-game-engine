@@ -10,7 +10,6 @@ namespace ProjetoFinal.Entities
 {
     class Entity
     {
-        protected Camera camera = Camera.Instance;
         protected Texture2D skin;
 
         public Rectangle BoundingBox { get; protected set; }
@@ -75,7 +74,7 @@ namespace ProjetoFinal.Entities
             this.Position = position;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, Camera camera)
         {
 
         }

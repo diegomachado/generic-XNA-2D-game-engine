@@ -56,13 +56,12 @@ namespace ProjetoFinal.Entities
             this.LastActionState = ActionStateType.Idle;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
             if (FacingLeft)
-                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                spriteBatch.Draw(skin, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
-                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(skin, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }
 }

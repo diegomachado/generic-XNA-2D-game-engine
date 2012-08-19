@@ -61,5 +61,15 @@ namespace ProjetoFinal.Entities
         {
             this.Position = player.Center - graphicsManager.Center;
         }
+
+        public Vector2 WorldToCameraCoordinates(Vector2 position)
+        {
+            return position - this.Position;
+        }
+
+        public Vector2 CameraToWorldCoordinates(Vector2 position)
+        {
+            return position + this.Position;
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace ProjetoFinal.Managers
 {
     class PlayerManager
     {
+        Camera camera = Camera.Instance;
         Dictionary<short, Player> players;
         Dictionary <short, HorizontalMovementState> horizontalPlayerState;
         Dictionary<HorizontalStateType, HorizontalMovementState> horizontalPlayerStates;
@@ -87,7 +88,7 @@ namespace ProjetoFinal.Managers
             foreach (KeyValuePair<short, Player> p in players)
             {
                 player = p.Value;
-                player.Draw(spriteBatch);
+                player.Draw(spriteBatch, camera);
                 
                 //spriteBatch.DrawString(spriteFont, player.LastState.ToString(), new Vector2(player.Position.X + 8, player.Position.Y - 25) - Camera.Instance.Position, Color.White);
 

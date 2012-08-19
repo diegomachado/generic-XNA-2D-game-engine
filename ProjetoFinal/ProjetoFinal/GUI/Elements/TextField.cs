@@ -25,7 +25,7 @@ namespace ProjetoFinal.GUI.Elements
         {
             if (inputManager.MouseLeftButton)
             {
-                if(frame.Contains(inputManager.MousePosition))
+                if(frame.Contains(Util.Vector2ToPoint(inputManager.MousePosition)))
                     focus = true;
                 else
                     focus = false;

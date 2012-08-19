@@ -37,7 +37,7 @@ namespace ProjetoFinal.Managers
         // Keyboard
 
         public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape); } }
-        public bool Jump { get { return keyboardState.IsKeyDown(Keys.Space); } }
+        public bool Jump { get { return keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up); } }
         public bool Left { get { return keyboardState.IsKeyDown(Keys.Left); } }
         public bool PreviouslyLeft { get { return previousKeyboardState.IsKeyDown(Keys.Left); } }
         public bool Right { get { return keyboardState.IsKeyDown(Keys.Right); } }
@@ -91,7 +91,7 @@ namespace ProjetoFinal.Managers
 
         // Mouse
 
-        public Point MousePosition { get { return new Point(mouseState.X, mouseState.Y); } }
+        public Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }
         public bool MouseLeftButton { get { return ((mouseState.LeftButton == ButtonState.Pressed) && (previousMouseState.LeftButton == ButtonState.Released)); } }
         public bool PreparingShot { get { return (mouseState.LeftButton == ButtonState.Pressed); } }
     }
