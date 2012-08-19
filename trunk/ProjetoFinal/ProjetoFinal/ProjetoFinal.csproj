@@ -177,6 +177,7 @@
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
     <Compile Include="Network\Interfaces\ServerInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

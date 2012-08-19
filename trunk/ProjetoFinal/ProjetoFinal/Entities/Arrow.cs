@@ -20,16 +20,14 @@ namespace ProjetoFinal.Entities
             this.skin = TextureManager.Instance.getTexture(TextureList.Arrow);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             float rotation = (float)Math.Acos(Vector2.Dot(Speed, Vector2.UnitX) / (Speed.Length()));
 
             if (SpeedY < 0)
                 rotation = -rotation;
 
-            // TODO: Tirar a conta Camera.Instance.Position - Position daqui e jogar ela dentro de Camera tipo: Camera.Instance.ScreenToCameraCoordinates(Position)
-            // Refatorar esse new Vector2 ae
-                spriteBatch.Draw(skin, Position - camera.Position, null, Color.White, rotation, TextureCenter, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(skin, camera.WorldToCameraCoordinates(Position), null, Color.White, rotation, TextureCenter, 1f, SpriteEffects.None, 0f);
         }
     }
 }
