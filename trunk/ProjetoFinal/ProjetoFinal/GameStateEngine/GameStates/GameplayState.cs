@@ -72,7 +72,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            // Drawing Entities
             mapManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.ScreenSize);
             localPlayerManager.Draw(spriteBatch, spriteFont);
             playerManager.Draw(spriteBatch, spriteFont);
@@ -86,27 +85,17 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         //}
 
         // Eventos de Network
+
         private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
             if (playerStateUpdatedEventArgs.playerId != localPlayerManager.playerId)
             {
-                Player player = playerManager.GetPlayer(playerStateUpdatedEventArgs.playerId);
-
-                // TODO: Tentar implementar algo de Lag Prediction
-                //var timeDelay = (float)(NetTime.Now - im.SenderConnection.GetLocalTime(message.messageTime));
-
-                if (player.LastUpdateTime < playerStateUpdatedEventArgs.messageTime)
-                {
-                    var timeDelay = (float)(NetTime.Now - playerStateUpdatedEventArgs.localTime);
-
-                    playerManager.UpdatePlayer(playerStateUpdatedEventArgs.playerId,
+                playerManager.UpdatePlayer(playerStateUpdatedEventArgs.playerId,
                                                playerStateUpdatedEventArgs.position,
                                                playerStateUpdatedEventArgs.speed,
-                                               timeDelay,
+                                               playerStateUpdatedEventArgs.localTime,
                                                playerStateUpdatedEventArgs.movementType,
                                                playerStateUpdatedEventArgs.playerState);
-                    // TODO: Pensar sobre isso: player.position = message.position += (message.speed * timeDelay);
-                }
             }
             else
             {
