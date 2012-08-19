@@ -55,7 +55,7 @@ namespace ProjetoFinal.Managers
         private void OnArrowShot(object sender, ArrowShotEventArgs arrowShotEventArgs)
         {
             // TODO: Fazer a boundingBox corretamente
-            arrows.Add(new Arrow(arrowShotEventArgs.playerId, TextureManager.Instance.getTexture(TextureList.Bear), arrowShotEventArgs.position, new Rectangle(5, 1, 24, 30), arrowShotEventArgs.speed));
+            arrows.Add(new Arrow(arrowShotEventArgs.playerId, TextureManager.Instance.getTexture(TextureList.Arrow), arrowShotEventArgs.position, new Rectangle(5, 1, 24, 30), arrowShotEventArgs.speed));
         }
     }
 }

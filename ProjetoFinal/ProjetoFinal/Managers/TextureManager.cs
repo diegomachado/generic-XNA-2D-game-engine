@@ -15,7 +15,8 @@ namespace ProjetoFinal.Managers
         Ranger,
         RandomSkin,
         CollisionBoxBorder,
-        ButtonFrame
+        ButtonFrame,
+        Arrow
     }
 
     class TextureManager
@@ -64,6 +65,10 @@ namespace ProjetoFinal.Managers
 
                 case TextureList.ButtonFrame:
                     textureName = "button";
+                    break;
+
+                case TextureList.Arrow:
+                    textureName = "arrow";
                     break;
             }
 
