@@ -24,7 +24,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override ActionState ShotReleased(short playerId, Player player, float shootingTimer, Vector2 aim, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            Vector2 speed = new Vector2(aim.X - player.Position.X, aim.Y - player.Position.Y);
+            Vector2 speed = new Vector2(aim.X - player.Center.X, aim.Y - player.Center.Y);
             speed.Normalize();
             speed *= (shootingTimer / 100);
 
