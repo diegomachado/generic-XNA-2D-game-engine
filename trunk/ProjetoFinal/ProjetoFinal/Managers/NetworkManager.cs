@@ -173,13 +173,11 @@ namespace ProjetoFinal.Managers
 
         // Outgoing
 
-        // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
         private void OnPlayerStateUpdated(UpdatePlayerStateMessage updatePlayerStateMessage, double localTime)
         {
             eventManager.ThrowPlayerStateUpdated(this, new PlayerStateUpdatedEventArgs(updatePlayerStateMessage, localTime));
         }
 
-        // TODO: Desconstruir mensagem aqui dentro e passar as informações dela pelos args
         private void OnClientConnected(HailMessage hailMessage)
         {
             eventManager.ThrowClientConnected(this, new ClientConnectedEventArgs(hailMessage));
