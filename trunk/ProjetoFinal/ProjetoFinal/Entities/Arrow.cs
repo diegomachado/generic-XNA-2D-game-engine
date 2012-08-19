@@ -4,17 +4,20 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using ProjetoFinal.Managers;
 
 namespace ProjetoFinal.Entities
 {
     class Arrow : Entity
     {
         public short OwnerId { get; private set; }
-        public Arrow(short ownerId, Texture2D playerSkin, Vector2 position, Rectangle boundingBox, Vector2 speed)
-            : base(playerSkin, position, boundingBox)
+        public Arrow(short ownerId, Vector2 position, Vector2 speed)
+            : base(position)
         {
-            this.Speed = speed;
             this.OwnerId = ownerId;
+            this.Speed = speed;
+            this.BoundingBox = new Rectangle(17, 1, 8, 5);
+            this.skin = TextureManager.Instance.getTexture(TextureList.Arrow);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -29,7 +29,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             speed *= (shootingTimer / 100);
 
             // TODO: Mudar posição de saída da flecha posteriormente
-            OnArrowShot(playerId, player.Position, speed);
+            OnArrowShot(playerId, player.WeaponPosition, speed);
 
             return playerStates[ActionStateType.Shooting];
         }

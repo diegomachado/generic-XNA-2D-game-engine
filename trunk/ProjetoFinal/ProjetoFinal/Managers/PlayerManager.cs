@@ -49,7 +49,7 @@ namespace ProjetoFinal.Managers
             if (this.players.ContainsKey(id))
                 return this.players[id];
 
-            Player player = new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 240), new Rectangle(5, 1, 24, 30));
+            Player player = new Player(new Vector2(240, 240));
 
             players.Add(id, player);
             horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
@@ -62,7 +62,7 @@ namespace ProjetoFinal.Managers
         {
             if (!this.players.ContainsKey(id))
             {
-                this.players.Add(id, new Player(TextureManager.Instance.getTexture(TextureList.Bear), new Vector2(240, 40), new Rectangle(5, 1, 24, 30)));
+                this.players.Add(id, new Player(new Vector2(240, 40)));
                 horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
                 verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
             }
