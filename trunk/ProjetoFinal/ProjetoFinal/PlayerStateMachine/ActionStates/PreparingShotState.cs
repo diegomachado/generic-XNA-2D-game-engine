@@ -26,7 +26,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             Vector2 speed = new Vector2(aim.X - player.Center.X, aim.Y - player.Center.Y);
             speed.Normalize();
-            speed *= (shootingTimer / 100);
+            speed *= (shootingTimer / 10);
 
             player.FacingLeft = (speed.X < 0);
 

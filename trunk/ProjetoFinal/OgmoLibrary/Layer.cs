@@ -69,6 +69,5 @@ namespace OgmoLibrary
             Point gridPoint = new Point(xy.X / 32, xy.Y / 32);
             return Convert.ToBoolean(Tiles[gridPoint].Id);
         }
-
     }
 }
