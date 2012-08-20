@@ -114,16 +114,16 @@ namespace ProjetoFinal.Managers
 
         public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateMessageType updatePlayerStateMessageType, short playerState)
         {
-            Player player = GetPlayer(playerId); ;
+            Player player = GetPlayer(playerId);
 
             // TODO: Dropar mensagens fora de ordem ou não????
             //if (player.LastUpdateTime < messageTime)
             //{
                 // TODO: esse codigo tem que subir, não eh pra ter NetTime.Now aqui
                 float timeDelay = (float)(NetTime.Now - messageTime);
-                
-                Console.WriteLine(timeDelay); // TODO: preciso descobrir em qual medida de tempo está a diferenca entre 2 valores de NetTime.Now para poder atualizar o jogador corretamente
 
+                // Lag Compensation
+                
                 players[playerId].Position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
                 players[playerId].LastUpdateTime = messageTime;
 

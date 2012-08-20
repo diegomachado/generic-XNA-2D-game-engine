@@ -17,7 +17,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
 
-            player.Speed += player.Gravity;
+            player.Speed += player.Gravity; // TODO: * elapsedTime;
 
             Rectangle collisionBoxVerticalOffset = player.CollisionBox;
             collisionBoxVerticalOffset.Offset(0, 1);

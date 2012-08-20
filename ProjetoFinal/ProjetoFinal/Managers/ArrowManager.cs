@@ -23,10 +23,14 @@ namespace ProjetoFinal.Managers
         Camera camera = Camera.Instance;
         EventManager eventManager = EventManager.Instance;
         List<Arrow> arrows;
+        Player localPlayer;
+        short localPlayerId;
 
-        public ArrowManager()
+        public ArrowManager(short localPlayerId, Player localPlayer)
         {
-            arrows = new List<Arrow>();
+            this.arrows = new List<Arrow>();
+            this.localPlayer = localPlayer;
+            this.localPlayerId = localPlayerId;
 
             eventManager.ArrowShot += OnArrowShot;
         }
@@ -37,15 +41,35 @@ namespace ProjetoFinal.Managers
 
             foreach (Arrow arrow in arrows)
             {
-                arrow.Speed += (arrow.Gravity / 200);
-                arrow.Position += arrow.Speed;
+                float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                Rectangle collisionBox = arrow.CollisionBox;
-                collisionBox.Offset((int)arrow.SpeedX, (int)arrow.SpeedY);
+                arrow.Speed += arrow.Gravity / 200; //TODO: * elapsedTime;
 
                 // TODO: Ta meio muquirana ainda, da pra melhorar mas funciona
-                if (checkCollision(collisionBox, collisionLayer))
+                // TODO: Girar collisionBox das flechas?
+
+                Rectangle collisionBox = arrow.CenteredCollisionBox;
+                collisionBox.Offset((int)(arrow.SpeedX * elapsedTime), (int)(arrow.SpeedY * elapsedTime));
+
+                if (arrow.OwnerId != localPlayerId) // Check collision with localPlayer
+                {
+                    foreach (Player player in new List<Player>())
+                    {
+                        if (collisionBox.Intersects(localPlayer.CollisionBox))
+                        {
+                            toRemove.Add(arrow);
+                            // TODO: Lançar evento de hit ou se comunicar diretamente com o PlayerManager ou através de Player localPlayer, ainda não sei, pensar com bombado
+                        }
+                    }
+                }
+                else if (checkCollision(collisionBox, collisionLayer)) // Check collision with ground
+                {
                     toRemove.Add(arrow);
+                }
+                else
+                {
+                    arrow.Position += arrow.Speed * elapsedTime;
+                }
             }
 
             foreach (Arrow arrow in toRemove)

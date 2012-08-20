@@ -22,16 +22,15 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         MapManager mapManager = MapManager.Instance;
         Camera camera = Camera.Instance;
 
-        public GameplayState(short playerId) : base()
+        public GameplayState(short localPlayerId) : base()
         {
             eventManager.PlayerStateUpdated += OnOtherClientPlayerStateUpdated;
             eventManager.ClientDisconnected += OnClientDisconnected;
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
-            arrowManager = new ArrowManager();
-
-            localPlayerManager.createLocalPlayer(playerId);
+            localPlayerManager.createLocalPlayer(localPlayerId);
+            arrowManager = new ArrowManager(localPlayerId, localPlayerManager.LocalPlayer);
 
             camera.Speed = 4f;
         }
@@ -40,8 +39,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             
         }
-        
-        public GameplayState(short playerId, Dictionary<short, Client> clientsInfo) : this(playerId)
+
+        public GameplayState(short localPlayerId, Dictionary<short, Client> clientsInfo)
+            : this(localPlayerId)
         {
             foreach (short id in clientsInfo.Keys)
                 this.playerManager.AddPlayer(id);

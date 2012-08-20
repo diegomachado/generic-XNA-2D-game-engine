@@ -19,7 +19,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
 
             player.FacingLeft = true;
-            player.Speed -= player.walkForce;
+            player.Speed -= player.walkForce; // TODO: * elapsedTime;
             player.SpeedX *= player.Friction;
 
             if (player.isMovingHorizontally || handleHorizontalCollision(player, collisionLayer, elapsedTime))
