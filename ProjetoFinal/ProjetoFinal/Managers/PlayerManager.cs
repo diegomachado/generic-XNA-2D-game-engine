@@ -122,6 +122,7 @@ namespace ProjetoFinal.Managers
                 // TODO: esse codigo tem que subir, não eh pra ter NetTime.Now aqui
                 float timeDelay = (float)(NetTime.Now - messageTime);
 
+                // TODO: Rever conta pro Lag compensation ficar certinho
                 // Lag Compensation
                 
                 players[playerId].Position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
