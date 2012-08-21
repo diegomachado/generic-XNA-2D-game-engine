@@ -11,6 +11,9 @@ namespace ProjetoFinal.Entities
     class Arrow : Entity
     {
         public short OwnerId { get; private set; }
+        public bool Collided { get; set; }
+        public float Timer { get; set; }
+
         public Arrow(short ownerId, Vector2 position, Vector2 speed)
             : base(position)
         {
@@ -18,6 +21,7 @@ namespace ProjetoFinal.Entities
             this.Speed = speed;
             this.BoundingBox = new Rectangle(17, 1, 8, 5);
             this.skin = TextureManager.Instance.getTexture(TextureList.Arrow);
+            this.Timer = 0;
         }
 
         public override void Draw(SpriteBatch spriteBatch, Camera camera)

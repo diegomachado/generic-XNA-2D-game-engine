@@ -25,6 +25,7 @@ namespace ProjetoFinal.Managers
         List<Arrow> arrows;
         Player localPlayer;
         short localPlayerId;
+        float arrowLifeSpan = 3.0f;
 
         public ArrowManager(short localPlayerId, Player localPlayer)
         {
@@ -37,43 +38,56 @@ namespace ProjetoFinal.Managers
 
         public void Update(GameTime gameTime, Layer collisionLayer)
         {
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             List<Arrow> toRemove = new List<Arrow>();
 
             foreach (Arrow arrow in arrows)
             {
-                float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                arrow.Speed += arrow.Gravity / 200; //TODO: * elapsedTime;
-
-                // TODO: Ta meio muquirana ainda, da pra melhorar mas funciona
-                // TODO: Girar collisionBox das flechas?
-
-                Rectangle collisionBox = arrow.CenteredCollisionBox;
-                collisionBox.Offset((int)(arrow.SpeedX * elapsedTime), (int)(arrow.SpeedY * elapsedTime));
-
-                if (arrow.OwnerId != localPlayerId) // Check collision with localPlayer
+                if (arrow.Collided)
                 {
-                    foreach (Player player in new List<Player>())
-                    {
-                        if (collisionBox.Intersects(localPlayer.CollisionBox))
-                        {
-                            toRemove.Add(arrow);
-                            // TODO: Lançar evento de hit ou se comunicar diretamente com o PlayerManager ou através de Player localPlayer, ainda não sei, pensar com bombado
-                        }
-                    }
-                }
-                else if (checkCollision(collisionBox, collisionLayer)) // Check collision with ground
-                {
-                    toRemove.Add(arrow);
+                    arrow.Timer += elapsedTime;
+
+                    if (arrow.Timer > arrowLifeSpan)
+                        toRemove.Add(arrow);
                 }
                 else
                 {
-                    arrow.Position += arrow.Speed * elapsedTime;
+                    arrow.Speed += arrow.Gravity / 200; //TODO: * elapsedTime;
+
+                    // TODO: Ta meio muquirana ainda, da pra melhorar mas funciona
+                    // TODO: Girar collisionBox das flechas?
+
+                    Rectangle collisionBox = arrow.CenteredCollisionBox;
+                    collisionBox.Offset((int)(arrow.SpeedX * elapsedTime), (int)(arrow.SpeedY * elapsedTime));
+
+                    if (arrow.OwnerId != localPlayerId) // Check collision with localPlayer
+                    {
+                        foreach (Player player in new List<Player>())
+                        {
+                            if (collisionBox.Intersects(localPlayer.CollisionBox))
+                            {
+                                toRemove.Add(arrow);
+
+                                // TODO: Lançar evento de hit ou se comunicar diretamente com o PlayerManager ou através de Player localPlayer, ainda não sei, pensar com bombado
+                            }
+                        }
+                    }
+                    else if (checkCollision(collisionBox, collisionLayer)) // Check collision with ground
+                    {
+                        arrow.Collided = true;
+                    }
+                    else
+                    {
+                        arrow.Position += arrow.Speed * elapsedTime;
+                    }
                 }
             }
 
             foreach (Arrow arrow in toRemove)
+            {
                 arrows.Remove(arrow);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -92,7 +106,7 @@ namespace ProjetoFinal.Managers
             arrows.Add(new Arrow(arrowShotEventArgs.playerId, arrowShotEventArgs.position, arrowShotEventArgs.speed));
         }
 
-        // TODO: Meio acoxambrado, talvez de pra fazer melhor
+        // TODO: Meio acoxambrado, da pra fazer melhor
         private bool checkCollision(Rectangle collisionBox, Layer collisionLayer)
         {
             Point corner1 = new Point(collisionBox.Left, collisionBox.Top);
