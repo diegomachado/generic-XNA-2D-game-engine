@@ -58,7 +58,7 @@ namespace ProjetoFinal.Managers
                     // TODO: Ta meio muquirana ainda, da pra melhorar mas funciona
                     // TODO: Girar collisionBox das flechas?
 
-                    Rectangle collisionBox = arrow.CenteredCollisionBox;
+                    Rectangle collisionBox = arrow.CollisionBox;
                     collisionBox.Offset((int)(arrow.SpeedX * elapsedTime), (int)(arrow.SpeedY * elapsedTime));
 
                     if (arrow.OwnerId != localPlayerId) // Check collision with localPlayer
@@ -95,7 +95,9 @@ namespace ProjetoFinal.Managers
             foreach (Arrow arrow in arrows)
             {
                 arrow.Draw(spriteBatch, camera);
-                
+
+                //Util.DrawRectangle(arrow.CollisionBox, 1, Color.Red, spriteBatch, camera);
+
                 // TODO: Que porra eh essa que tu pos aqui bomber?
                 //spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
             }

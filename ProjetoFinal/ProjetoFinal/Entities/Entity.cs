@@ -12,9 +12,7 @@ namespace ProjetoFinal.Entities
     {
         protected Texture2D skin;
 
-        public Rectangle BoundingBox { get; protected set; }
         public Vector2 Gravity { get; protected set; }
-
         public Vector2 Position { get; set; }
         public double LastUpdateTime { get; set; }
         
@@ -25,31 +23,26 @@ namespace ProjetoFinal.Entities
         public Vector2 Center { get { return Position + TextureCenter; } } // TODO: Guardar esse valor pra não calcular sempre
         public Vector2 TextureCenter { get { return new Vector2(Width / 2, Height / 2); } } // TODO: Guardar esse valor pra não calcular sempre
 
-        // TODO: Refatorar?
         public Rectangle CollisionBox
         {
             get
             {
-                Rectangle collisionBox = new Rectangle();
-                collisionBox.Width = BoundingBox.Width;
-                collisionBox.Height = BoundingBox.Height;
-                collisionBox.X = (int)Position.X + BoundingBox.X;
-                collisionBox.Y = (int)Position.Y + BoundingBox.Y;
+                Rectangle collisionBox = BoundingBox;
+                collisionBox.Offset((int)Position.X, (int)Position.Y);
                 return collisionBox;
             }
         }
 
-        // TODO: Refatorar?
-        public Rectangle CenteredCollisionBox
+        protected Rectangle boundingBox;
+        public virtual Rectangle BoundingBox
         {
             get
             {
-                Rectangle collisionBox = new Rectangle();
-                collisionBox.Width = BoundingBox.Width;
-                collisionBox.Height = BoundingBox.Height;
-                collisionBox.X = (int)(Position.X - TextureCenter.X) + BoundingBox.X;
-                collisionBox.Y = (int)(Position.Y - TextureCenter.Y) + BoundingBox.Y;
-                return collisionBox;
+                return boundingBox;
+            }
+            protected set
+            {
+                boundingBox = value;
             }
         }
 
