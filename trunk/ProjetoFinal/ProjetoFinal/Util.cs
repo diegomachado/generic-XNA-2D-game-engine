@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ProjetoFinal.Entities;
+using ProjetoFinal.Managers;
 
 namespace ProjetoFinal
 {
@@ -11,6 +14,20 @@ namespace ProjetoFinal
         public static Point Vector2ToPoint(Vector2 vector)
         {
             return new Point((int)vector.X, (int)vector.Y);
+        }
+
+        public static Vector2 PointToVector2(Point point)
+        {
+            return new Vector2(point.X, point.Y);
+        }
+
+        public static void DrawRectangle(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch, Camera camera)
+        {
+            // TODO: Transformar conta com Camera em uma funcao de Camera
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Top - (int)camera.Position.Y, borderWidth, r.Height), Color.White); // Left
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right - (int)camera.Position.X, r.Top - (int)camera.Position.Y, borderWidth, r.Height), Color.White); // Right
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Top - (int)camera.Position.Y, r.Width, borderWidth), Color.White); // Top
+            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Bottom - (int)camera.Position.Y, r.Width, borderWidth), Color.White); // 
         }
     }
 }
