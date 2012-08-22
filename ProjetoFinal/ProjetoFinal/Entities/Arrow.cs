@@ -5,18 +5,17 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ProjetoFinal.Managers;
+using ProjetoFinal.Entities.Utils;
 
 namespace ProjetoFinal.Entities
 {
     class Arrow : Entity
     {
         float rotation;
-
         public short OwnerId { get; private set; }
         public bool Collided { get; set; }
         public float Timer { get; set; }
-
-        // Refatorar saporra cara...
+                
         public override Rectangle BoundingBox
         {
             get
@@ -33,13 +32,12 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Arrow(short ownerId, Vector2 position, Vector2 speed)
-            : base(position)
+        public Arrow(short ownerId, Vector2 position, Vector2 speed) : base(position)
         {
             this.OwnerId = ownerId;
             this.Speed = speed;
             this.BoundingBox = new Rectangle(19, 1, 5, 5);
-            this.skin = TextureManager.Instance.getTexture(TextureList.Arrow);
+            this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Arrow), 1, 1);
             this.Timer = 0;
         }
 
@@ -50,7 +48,7 @@ namespace ProjetoFinal.Entities
             if (SpeedY < 0)
                 rotation = -rotation;
 
-            spriteBatch.Draw(skin, camera.WorldToCameraCoordinates(Position), null, Color.White, rotation, TextureCenter, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCameraCoordinates(Position), null, Color.White, rotation, TextureCenter, 1f, SpriteEffects.None, 0f);
         }
     }
 }

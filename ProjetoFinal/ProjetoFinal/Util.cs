@@ -21,13 +21,12 @@ namespace ProjetoFinal
             return new Vector2(point.X, point.Y);
         }
 
-        public static void DrawRectangle(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch, Camera camera)
-        {
-            // TODO: Transformar conta com Camera em uma funcao de Camera
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Top - (int)camera.Position.Y, borderWidth, r.Height), Color.White); // Left
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Right - (int)camera.Position.X, r.Top - (int)camera.Position.Y, borderWidth, r.Height), Color.White); // Right
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Top - (int)camera.Position.Y, r.Width, borderWidth), Color.White); // Top
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(r.Left - (int)camera.Position.X, r.Bottom - (int)camera.Position.Y, r.Width, borderWidth), Color.White); // 
+        public static void DrawRectangle(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch)
+        {            
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White);
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(r.Right - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White);
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White);
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Bottom - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White);
         }
     }
 }

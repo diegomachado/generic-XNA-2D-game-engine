@@ -122,6 +122,7 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\Utils\Animation.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
     <Compile Include="EventHeaders\ArrowShotEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs.cs" />
