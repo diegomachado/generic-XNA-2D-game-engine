@@ -92,7 +92,7 @@ namespace ProjetoFinal.Managers
                 
                 //spriteBatch.DrawString(spriteFont, player.LastState.ToString(), new Vector2(player.Position.X + 8, player.Position.Y - 25) - Camera.Instance.Position, Color.White);
 
-                spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
+                spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
 
                 spriteBatch.DrawString(spriteFont, "X: " + (int)player.Position.X, new Vector2(5f, 455f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)player.Position.Y, new Vector2(5f, 475f), Color.White);

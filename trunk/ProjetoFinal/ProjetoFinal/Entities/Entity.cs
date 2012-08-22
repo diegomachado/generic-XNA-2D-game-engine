@@ -5,19 +5,22 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ProjetoFinal.Managers;
+using ProjetoFinal.Entities.Utils;
 
 namespace ProjetoFinal.Entities
 {
     class Entity
     {
-        protected Texture2D skin;
+        public Animation baseAnimation;
+
+        //public Dictionary<string, Animation> animations;
 
         public Vector2 Gravity { get; protected set; }
         public Vector2 Position { get; set; }
         public double LastUpdateTime { get; set; }
         
-        public int Width { get { return skin.Width; } }
-        public int Height { get { return skin.Height; } }
+        public int Width { get { return baseAnimation.FrameSize.X; } }
+        public int Height { get { return baseAnimation.FrameSize.Y; } }
         public bool isMovingHorizontally { get { return (speed.X == 0); } }
         public bool isMovingVertically { get { return (speed.Y == 0); } }
         public Vector2 Center { get { return Position + TextureCenter; } } // TODO: Guardar esse valor pra não calcular sempre
@@ -82,9 +85,23 @@ namespace ProjetoFinal.Entities
             this.Position = position;
         }
 
+        public virtual void LoadContent()
+        {
+            baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
+        }
+
+        public virtual void Update()
+        {
+            baseAnimation.Update();
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch, Camera camera)
         {
+            baseAnimation.Draw(spriteBatch, new Vector2(0,0));
+        }
 
+        public virtual void UnloadContent()
+        {
         }
     }
 }

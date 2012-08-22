@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjetoFinal.Managers.LocalPlayerStates;
 using ProjetoFinal.Managers;
+using ProjetoFinal.Entities.Utils;
 
 namespace ProjetoFinal.Entities
 {
@@ -45,7 +46,7 @@ namespace ProjetoFinal.Entities
         public Player(Vector2 playerPosition)
             : base(playerPosition)
         {
-            this.skin = TextureManager.Instance.getTexture(TextureList.Bear);
+            this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
             this.walkForce = new Vector2(60, 0);
             this.JumpForce = new Vector2(0, -480f);
             this.WeaponPosition = new Vector2(29, 18);
@@ -59,9 +60,9 @@ namespace ProjetoFinal.Entities
         public override void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             if (FacingLeft)
-                spriteBatch.Draw(skin, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
-                spriteBatch.Draw(skin, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }
 }

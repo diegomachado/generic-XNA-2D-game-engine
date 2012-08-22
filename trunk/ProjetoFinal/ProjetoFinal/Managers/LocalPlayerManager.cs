@@ -129,7 +129,7 @@ namespace ProjetoFinal.Managers
             {
                 localPlayer.Draw(spriteBatch, camera);
                 
-                spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
+                spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
 
                 spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - camera.Position, Color.White);
                 spriteBatch.DrawString(spriteFont, "" + localPlayerVerticalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 40) - camera.Position, Color.White);
@@ -148,7 +148,7 @@ namespace ProjetoFinal.Managers
         public void DrawPoint(SpriteBatch spriteBatch, Point position, int size, Color color)
         {
             // TODO: Transformar conta com Camera em uma funcao de Camera
-            spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(color), new Rectangle(position.X - (int)camera.Position.X, position.Y - (int)camera.Position.Y, size, size), Color.White);
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(position.X - (int)camera.Position.X, position.Y - (int)camera.Position.Y, size, size), Color.White);
         }
     }
 }
