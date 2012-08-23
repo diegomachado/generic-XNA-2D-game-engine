@@ -29,12 +29,11 @@ namespace ProjetoFinal.Managers
         {
             previousKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
-
             previousMouseState = mouseState;
             mouseState = Mouse.GetState();
         }
 
-        // Keyboard
+        #region Keyboard Input
         public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape); } }
 
         public bool Jump { 
@@ -45,7 +44,6 @@ namespace ProjetoFinal.Managers
                        keyboardState.IsKeyDown(Keys.W);                   
             } 
         }
-
         public bool Left { 
             get 
             { 
@@ -53,7 +51,6 @@ namespace ProjetoFinal.Managers
                        keyboardState.IsKeyDown(Keys.A); 
             } 
         }
-
         public bool PreviouslyLeft { 
             get 
             { 
@@ -61,7 +58,6 @@ namespace ProjetoFinal.Managers
                        previousKeyboardState.IsKeyDown(Keys.A);
             } 
         }
-
         public bool Right { 
             get 
             {
@@ -69,7 +65,6 @@ namespace ProjetoFinal.Managers
                        keyboardState.IsKeyDown(Keys.D); 
             } 
         }
-
         public bool PreviouslyRight { 
             get 
             { 
@@ -77,7 +72,6 @@ namespace ProjetoFinal.Managers
                        previousKeyboardState.IsKeyDown(Keys.D);
             } 
         }
-
         public bool Pause { get { return keyboardState.IsKeyDown(Keys.P) && previousKeyboardState.IsKeyUp(Keys.P); } }
         public bool BackSpace { get { return keyboardState.IsKeyDown(Keys.Back) && previousKeyboardState.IsKeyUp(Keys.Back); } }
 
@@ -124,11 +118,15 @@ namespace ProjetoFinal.Managers
                 return buffer;
             }
         }
-
-        // Mouse
+    
+        #endregion
+        
+        #region Mouse Input
 
         public Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }
         public bool MouseLeftButton { get { return ((mouseState.LeftButton == ButtonState.Pressed) && (previousMouseState.LeftButton == ButtonState.Released)); } }
         public bool PreparingShot { get { return (mouseState.LeftButton == ButtonState.Pressed); } }
+
+        #endregion
     }
 }

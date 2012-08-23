@@ -33,32 +33,23 @@ namespace ProjetoFinal.Managers
 
         public LocalPlayerManager()
         {
-            // Horizontal
-            
             localPlayerHorizontalStates[HorizontalStateType.Idle] = new HorizontalIdleState();
             localPlayerHorizontalStates[HorizontalStateType.WalkingLeft] = new WalkingLeftState();
             localPlayerHorizontalStates[HorizontalStateType.WalkingRight] = new WalkingRightState();
             localPlayerHorizontalStates[HorizontalStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState();
             localPlayerHorizontalStates[HorizontalStateType.StoppingWalkingRight] = new StoppingWalkingRightState();
-
             localPlayerHorizontalState = localPlayerHorizontalStates[HorizontalStateType.Idle];
-
-            // Vertical
 
             localPlayerVerticalStates[VerticalStateType.Idle] = new VerticalIdleState();
             localPlayerVerticalStates[VerticalStateType.Jumping] = new JumpingState();
             localPlayerVerticalStates[VerticalStateType.StartedJumping] = new StartedJumpingState();
-
             localPlayerVerticalState = localPlayerVerticalStates[VerticalStateType.Jumping];
-
-            // Action
 
             localPlayerActionStates[ActionStateType.Idle] = new ActionIdleState();
             localPlayerActionStates[ActionStateType.Attacking] = new AttackingState();
             localPlayerActionStates[ActionStateType.Defending] = new DefendingState();
             localPlayerActionStates[ActionStateType.Shooting] = new ShootingState();
             localPlayerActionStates[ActionStateType.PreparingShot] = new PreparingShotState();
-
             localPlayerActionState = localPlayerActionStates[ActionStateType.Idle];
         }
 
@@ -72,16 +63,8 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer == null)
                 return;
-
-            // Vertical Movement Input
-
-            if (inputManager.Jump)
-            {
-                localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
-            }
-
-            // Horizontal Movement Input
-
+                  
+            #region Horizontal Movement
             if (inputManager.Left)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.MovedLeft(playerId, localPlayer, localPlayerHorizontalStates);
@@ -99,9 +82,16 @@ namespace ProjetoFinal.Managers
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
+            #endregion
 
-            // Action Input
+            #region Vertical Movement
+            if (inputManager.Jump)
+            {
+                localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
+            }
+            #endregion
 
+            #region Actions
             if (inputManager.PreparingShot)
             {
                 localPlayerActionState = localPlayerActionState.PreparingShot(playerId, localPlayer, localPlayerActionStates);
@@ -114,10 +104,8 @@ namespace ProjetoFinal.Managers
 
                 shootingTimer = 0f;
             }
+            #endregion
 
-            // Updates
-
-            // TODO: Updates devem ficar depois ou antes?
             localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
             localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
             localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
@@ -128,12 +116,11 @@ namespace ProjetoFinal.Managers
             if (localPlayer != null)
             {
                 localPlayer.Draw(spriteBatch, camera);
-                
-                spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
 
+                // TODO: Extrair isso daqui e criar uma classe de Debug
+                spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
                 spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 20) - camera.Position, Color.White);
                 spriteBatch.DrawString(spriteFont, "" + localPlayerVerticalState, new Vector2(localPlayer.Position.X + 8, localPlayer.Position.Y - 40) - camera.Position, Color.White);
-
                 spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.Position.X, new Vector2(5f, 05f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.Position.Y, new Vector2(5f, 25f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.Speed.X, new Vector2(5f, 45f), Color.White);
@@ -145,10 +132,10 @@ namespace ProjetoFinal.Managers
            }
         }
 
+        // TODO: Extrair isso pra classe de Debug
         public void DrawPoint(SpriteBatch spriteBatch, Point position, int size, Color color)
         {
-            // TODO: Transformar conta com Camera em uma funcao de Camera
-            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(position.X - (int)camera.Position.X, position.Y - (int)camera.Position.Y, size, size), Color.White);
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(position.X - (int)Camera.Instance.Position.X, position.Y - (int)Camera.Instance.Position.Y, size, size), Color.White);
         }
     }
 }
