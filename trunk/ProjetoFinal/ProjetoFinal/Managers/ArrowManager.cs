@@ -36,6 +36,9 @@ namespace ProjetoFinal.Managers
             eventManager.ArrowShot += OnArrowShot;
         }
 
+
+        // TODO: Colocar lógicas de Update que independem do Manager dentro do Update de Arrow
+        // Ou seja, encapsular as coisas :)
         public void Update(GameTime gameTime, Layer collisionLayer)
         {
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -53,7 +56,7 @@ namespace ProjetoFinal.Managers
                 }
                 else
                 {
-                    arrow.Speed += arrow.Gravity / 200; //TODO: * elapsedTime;
+                    arrow.Speed += arrow.Gravity * Arrow.gravityFactor; //TODO: * elapsedTime;
 
                     // TODO: Ta meio muquirana ainda, da pra melhorar mas funciona
                     // TODO: Girar collisionBox das flechas?

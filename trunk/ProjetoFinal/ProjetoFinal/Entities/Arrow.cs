@@ -15,18 +15,19 @@ namespace ProjetoFinal.Entities
         public short OwnerId { get; private set; }
         public bool Collided { get; set; }
         public float Timer { get; set; }
+        public static float speedFactor = 1.0f,
+                            gravityFactor = 0.5f;
                 
         public override Rectangle BoundingBox
         {
             get
             {
                 Rectangle newBoundingBox = base.BoundingBox;
-
                 Vector2 textureCenterToBoundingBoxCenter = new Vector2(newBoundingBox.Center.X, newBoundingBox.Center.Y) - TextureCenter;
 
                 textureCenterToBoundingBoxCenter = Vector2.Transform(textureCenterToBoundingBoxCenter, Matrix.CreateRotationZ(rotation));
-
-                newBoundingBox.Location = Util.Vector2ToPoint(textureCenterToBoundingBoxCenter - new Vector2(newBoundingBox.Center.X - newBoundingBox.Left, newBoundingBox.Center.Y - newBoundingBox.Top));
+                newBoundingBox.Location = Util.Vector2ToPoint(textureCenterToBoundingBoxCenter - 
+                    new Vector2(newBoundingBox.Center.X - newBoundingBox.Left, newBoundingBox.Center.Y - newBoundingBox.Top));
 
                 return newBoundingBox;
             }
