@@ -15,7 +15,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 {
     class GameplayState : NetworkGameState
     {
-        // Managers
         PlayerManager playerManager;
         LocalPlayerManager localPlayerManager;
         ArrowManager arrowManager;
@@ -36,12 +35,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         }
 
         public GameplayState() : this(0)
-        {
-            
+        {            
         }
 
-        public GameplayState(short localPlayerId, Dictionary<short, Client> clientsInfo)
-            : this(localPlayerId)
+        public GameplayState(short localPlayerId, Dictionary<short, Client> clientsInfo) : this(localPlayerId)
         {
             foreach (short id in clientsInfo.Keys)
                 this.playerManager.AddPlayer(id);
