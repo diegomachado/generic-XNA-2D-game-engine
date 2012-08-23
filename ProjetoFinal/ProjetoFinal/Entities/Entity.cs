@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ProjetoFinal.Managers;
 using ProjetoFinal.Entities.Utils;
+using OgmoLibrary;
 
 namespace ProjetoFinal.Entities
 {
@@ -15,17 +16,27 @@ namespace ProjetoFinal.Entities
                    flag;
         enum Type
         {
-            Generic,
-            Player
+            Generic,            
+            Player,
+            Arrow,
+            Sword
         }
 
-        enum Flags
-        {
-            None = 0,
-            Gravity = 0x00000001,
-            Ghost = 0x00000002,
-            MapOnly = 0x00000004
+        [Flags] public enum Modifiers
+        {            
+            None = 0x0,
+            Gravity = 0x1,
+            Ghost = 0x2,
+            MapOnly = 0x4
+
+            /* 
+            * Uso:
+            *      Modifiers flags = Modifiers.Gravity | Modifiers.MapOnly | Modifiers.Ghost
+            *      if ((flags & Modifiers.MapOnly))
+            *          DoStuff();
+            */
         }
+
 
         static List<Entity> Entities;
 
@@ -79,8 +90,6 @@ namespace ProjetoFinal.Entities
         public Vector2 Position { get; set; }
 
         // TODO: Guardar esses valores pra não calcular sempre
-        // Refatorar isso pra flecha, acho que dá pra setar o eixo de rotação no meio do sprite e
-        // eliminar esse código
         public Vector2 TextureCenter { get { return new Vector2(Width / 2, Height / 2); } } 
         public Vector2 Center { get { return Position + TextureCenter; } }        
 
@@ -132,5 +141,49 @@ namespace ProjetoFinal.Entities
         public virtual void UnloadContent()
         {
         }
+
+        public virtual void OnAnimate()
+        {
+        }
+
+        public virtual void OnCollision(Entity entity)
+        {
+        }
+
+        public void OnMove(float x, float y)
+        {
+        }
+
+        public void StopMove()
+        {
+        }
+
+        private bool PositionValid(int x, int y)
+        {
+            return true;
+        }
+
+        private bool PositionValidTile(Tile tile)
+        {
+            return true;
+        }
+
+        private bool PositionValidEntity(Entity entity, int x, int y)
+        {
+            return true;
+        }
+    }
+
+
+    // TODO: Extrair pra classe própria
+    class EntityCollision
+    {
+        public static List<EntityCollision> EntityCollisions;
+
+        public Entity entityA, entityB;
+
+        public EntityCollision()
+        {
+        }        
     }
 }
