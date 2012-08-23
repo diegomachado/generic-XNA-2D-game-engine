@@ -35,13 +35,49 @@ namespace ProjetoFinal.Managers
         }
 
         // Keyboard
-
         public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape); } }
-        public bool Jump { get { return keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up); } }
-        public bool Left { get { return keyboardState.IsKeyDown(Keys.Left); } }
-        public bool PreviouslyLeft { get { return previousKeyboardState.IsKeyDown(Keys.Left); } }
-        public bool Right { get { return keyboardState.IsKeyDown(Keys.Right); } }
-        public bool PreviouslyRight { get { return previousKeyboardState.IsKeyDown(Keys.Right); } }
+
+        public bool Jump { 
+            get 
+            {
+                return keyboardState.IsKeyDown(Keys.Space) ||
+                       keyboardState.IsKeyDown(Keys.Up) ||
+                       keyboardState.IsKeyDown(Keys.W);                   
+            } 
+        }
+
+        public bool Left { 
+            get 
+            { 
+                return keyboardState.IsKeyDown(Keys.Left) ||
+                       keyboardState.IsKeyDown(Keys.A); 
+            } 
+        }
+
+        public bool PreviouslyLeft { 
+            get 
+            { 
+                return previousKeyboardState.IsKeyDown(Keys.Left) ||
+                       previousKeyboardState.IsKeyDown(Keys.A);
+            } 
+        }
+
+        public bool Right { 
+            get 
+            {
+                return keyboardState.IsKeyDown(Keys.Right) ||
+                       keyboardState.IsKeyDown(Keys.D); 
+            } 
+        }
+
+        public bool PreviouslyRight { 
+            get 
+            { 
+                return previousKeyboardState.IsKeyDown(Keys.Right) ||
+                       previousKeyboardState.IsKeyDown(Keys.D);
+            } 
+        }
+
         public bool Pause { get { return keyboardState.IsKeyDown(Keys.P) && previousKeyboardState.IsKeyUp(Keys.P); } }
         public bool BackSpace { get { return keyboardState.IsKeyDown(Keys.Back) && previousKeyboardState.IsKeyUp(Keys.Back); } }
 
