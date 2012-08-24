@@ -14,12 +14,12 @@ namespace ProjetoFinal.Entities
     class Player : Entity
     {
         public Vector2 JumpForce { get; private set; }
-        public Vector2 walkForce { get; private set; }
+        public Vector2 WalkForce { get; private set; }
         public float Friction { get; private set; }
 
-        public VerticalStateType LastVerticalState { get; set; }
-        public HorizontalStateType LastHorizontalState { get; set; }
-        public ActionStateType LastActionState { get; set; }
+        public VerticalStateType VerticalState { get; set; }
+        public HorizontalStateType HorizontalState { get; set; }
+        public ActionStateType ActionState { get; set; }
         public bool FacingLeft { get; set; }
 
         Vector2 weaponPosition;
@@ -46,14 +46,14 @@ namespace ProjetoFinal.Entities
         public Player(Vector2 playerPosition): base(playerPosition)
         {
             this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
-            this.walkForce = new Vector2(60, 0);
+            this.WalkForce = new Vector2(60, 0);
             this.JumpForce = new Vector2(0, -480f);
             this.WeaponPosition = new Vector2(29, 18);
             this.Friction = 0.85f;
             this.BoundingBox = new Rectangle(5, 1, 24, 30);
-            this.LastVerticalState = VerticalStateType.Idle;
-            this.LastHorizontalState = HorizontalStateType.Idle;
-            this.LastActionState = ActionStateType.Idle;
+            this.VerticalState = VerticalStateType.Idle;
+            this.HorizontalState = HorizontalStateType.Idle;
+            this.ActionState = ActionStateType.Idle;
         }
 
         public override void Draw(SpriteBatch spriteBatch, Camera camera)

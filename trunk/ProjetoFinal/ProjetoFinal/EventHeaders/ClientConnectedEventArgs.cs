@@ -8,13 +8,13 @@ namespace ProjetoFinal.EventHeaders
 {
     class ClientConnectedEventArgs : EventArgs
     {
-        public short clientId { get; set; }
-        public Dictionary<short, Client> clientsInfo { get; set; }
+        public short ClientId { get; set; }
+        public Dictionary<short, Client> ClientsInfo { get; set; }
 
         public ClientConnectedEventArgs(HailMessage hailMessage)
         {
-            this.clientId = hailMessage.clientId;
-            this.clientsInfo = hailMessage.clientsInfo;
+            this.ClientId = hailMessage.clientId;
+            this.ClientsInfo = hailMessage.clientsInfo;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace ProjetoFinal.Entities
     {
         enum Type
         {
-            Generic,            
+            Generic,
             Player,
             Arrow,
             Sword
@@ -42,7 +42,8 @@ namespace ProjetoFinal.Entities
         public double LastUpdateTime { get; set; }        
         public int Width { get { return baseAnimation.FrameSize.X; } }
         public int Height { get { return baseAnimation.FrameSize.Y; } }
-
+        public bool IsMovingHorizontally { get { return (speed.X == 0); } }
+        public bool IsMovingVertically { get { return (speed.Y == 0); } }
         private Vector2 speed, minSpeed, maxSpeed;
         public Vector2 Speed
         {
@@ -81,8 +82,6 @@ namespace ProjetoFinal.Entities
                     speed.Y = value;
             }
         }
-        public bool isMovingHorizontally { get { return (speed.X == 0); } }
-        public bool isMovingVertically { get { return (speed.Y == 0); } }
         public Vector2 acceleration;
         public Vector2 Acceleration { get; set; }
         public Vector2 Gravity { get; protected set; }

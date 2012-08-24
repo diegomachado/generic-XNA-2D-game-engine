@@ -85,19 +85,19 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
-            if (playerStateUpdatedEventArgs.playerId != localPlayerManager.playerId)
+            if (playerStateUpdatedEventArgs.PlayerId != localPlayerManager.playerId)
             {
-                playerManager.UpdatePlayer(playerStateUpdatedEventArgs.playerId,
-                                               playerStateUpdatedEventArgs.position,
-                                               playerStateUpdatedEventArgs.speed,
-                                               playerStateUpdatedEventArgs.localTime,
-                                               playerStateUpdatedEventArgs.movementType,
-                                               playerStateUpdatedEventArgs.playerState);
+                playerManager.UpdatePlayer(playerStateUpdatedEventArgs.PlayerId,
+                                               playerStateUpdatedEventArgs.Position,
+                                               playerStateUpdatedEventArgs.Speed,
+                                               playerStateUpdatedEventArgs.LocalTime,
+                                               playerStateUpdatedEventArgs.MovementType,
+                                               playerStateUpdatedEventArgs.PlayerState);
             }
             else
             {
                 // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
-                Console.WriteLine("Olha a merda > " + playerStateUpdatedEventArgs.playerId);
+                Console.WriteLine("Olha a merda > " + playerStateUpdatedEventArgs.PlayerId);
             }
         }
 

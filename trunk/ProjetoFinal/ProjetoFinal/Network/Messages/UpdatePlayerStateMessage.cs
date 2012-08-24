@@ -1,30 +1,31 @@
-﻿using Lidgren.Network;
-using Lidgren.Network.Xna;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
-
-using ProjetoFinal.Managers;
 using ProjetoFinal.Entities;
-using ProjetoFinal.Managers.LocalPlayerStates;
+using Lidgren.Network;
+using Lidgren.Network.Xna;
 
 namespace ProjetoFinal.Network.Messages
 {
     enum UpdatePlayerStateMessageType : short
     {
+        Action,
         Horizontal,
         Vertical
     }
 
     class UpdatePlayerStateMessage : IGameMessage
     {
-        public short playerId     { get; set; }
+        public short playerId { get; set; }
         public double messageTime { get; set; }
-        public Vector2 position   { get; set; }
-        public short playerState  { get; set; }
-        public Vector2 speed      { get; set; }
-        public UpdatePlayerStateMessageType movementType { get; set; }
-
+        public Vector2 position { get; set; }
+        public UpdatePlayerStateMessageType messageType { get; set; }
+        
         public UpdatePlayerStateMessage(NetIncomingMessage im)
         {
+            // TODO: Confirmar se chama o Decode dos filhos antes
             Decode(im);
         }
 
@@ -33,18 +34,6 @@ namespace ProjetoFinal.Network.Messages
             playerId = id;
             messageTime = NetTime.Now;
             position = player.Position;
-
-            switch (mt)
-            {
-                case UpdatePlayerStateMessageType.Horizontal:
-                    playerState = (short)player.LastHorizontalState;
-                    break;
-                case UpdatePlayerStateMessageType.Vertical:
-                    playerState = (short)player.LastVerticalState;
-                    break;
-            }
-
-            movementType = mt;
         }
 
         public GameMessageType MessageType
@@ -52,22 +41,20 @@ namespace ProjetoFinal.Network.Messages
             get { return GameMessageType.UpdatePlayerState; }
         }
 
-        public void Decode(NetIncomingMessage im)
+        public virtual void Decode(NetIncomingMessage im)
         {
             playerId = im.ReadInt16();
             messageTime = im.ReadDouble();
             position = im.ReadVector2();
-            movementType = (UpdatePlayerStateMessageType)im.ReadInt16();
-            playerState = im.ReadInt16();
+            messageType = (UpdatePlayerStateMessageType)im.ReadInt16();
         }
 
-        public void Encode(NetOutgoingMessage om)
+        public virtual void Encode(NetOutgoingMessage om)
         {
             om.Write(playerId);
             om.Write(messageTime);
             om.Write(position);
-            om.Write((short)movementType);
-            om.Write(playerState);
+            om.Write((short)messageType);
         }
     }
 }

@@ -7,6 +7,7 @@ using ProjetoFinal.Managers;
 using ProjetoFinal.Managers.LocalPlayerStates;
 using ProjetoFinal.Network.Messages;
 using ProjetoFinal.EventHeaders;
+using Microsoft.Xna.Framework;
 
 namespace ProjetoFinal.PlayerStateMachine
 {
@@ -16,11 +17,14 @@ namespace ProjetoFinal.PlayerStateMachine
         {
             switch (messageType)
             {
+                case UpdatePlayerStateMessageType.Action:
+                    player.ActionState = (ActionStateType)nextState;
+                    break;
                 case UpdatePlayerStateMessageType.Horizontal:
-                    player.LastHorizontalState = (HorizontalStateType)nextState;
+                    player.HorizontalState = (HorizontalStateType)nextState;
                     break;
                 case UpdatePlayerStateMessageType.Vertical:
-                    player.LastVerticalState = (VerticalStateType)nextState;
+                    player.VerticalState = (VerticalStateType)nextState;
                     break;
             }
 

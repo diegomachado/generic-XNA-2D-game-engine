@@ -9,23 +9,23 @@ namespace ProjetoFinal.EventHeaders
 {
     class PlayerStateUpdatedEventArgs : EventArgs
     {
-        public short playerId     { get; set; }
-        public double messageTime { get; set; }
-        public Vector2 position   { get; set; }
-        public short playerState  { get; set; }
-        public Vector2 speed      { get; set; }
-        public double localTime   { get; set; }
-        public UpdatePlayerStateMessageType movementType { get; set; }
+        public short PlayerId     { get; set; }
+        public double MessageTime { get; set; }
+        public Vector2 Position   { get; set; }
+        public short PlayerState  { get; set; }
+        public Vector2 Speed      { get; set; }
+        public double LocalTime   { get; set; }
+        public UpdatePlayerStateMessageType MovementType { get; set; }
 
-        public PlayerStateUpdatedEventArgs(UpdatePlayerStateMessage updatePlayerStateMessage, double localTime)
+        public PlayerStateUpdatedEventArgs(UpdatePlayerMovementStateMessage updatePlayerStateMessage, double localTime)
         {
-            this.playerId = updatePlayerStateMessage.playerId;
-            this.messageTime = updatePlayerStateMessage.messageTime;
-            this.position = updatePlayerStateMessage.position;
-            this.playerState = updatePlayerStateMessage.playerState;
-            this.speed = updatePlayerStateMessage.speed;
-            this.movementType = updatePlayerStateMessage.movementType;
-            this.localTime = localTime;
+            this.PlayerId = updatePlayerStateMessage.playerId;
+            this.MessageTime = updatePlayerStateMessage.messageTime;
+            this.Position = updatePlayerStateMessage.position;
+            this.PlayerState = updatePlayerStateMessage.playerState;
+            this.Speed = updatePlayerStateMessage.speed;
+            this.MovementType = updatePlayerStateMessage.messageType;
+            this.LocalTime = localTime;
         }
     }
 }
