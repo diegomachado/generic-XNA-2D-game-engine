@@ -46,6 +46,8 @@ namespace ProjetoFinal.Entities
         public Player(Vector2 playerPosition): base(playerPosition)
         {
             this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
+            this.MinSpeed = new Vector2(30, -500);
+            this.MaxSpeed = new Vector2(500, 500);
             this.WalkForce = new Vector2(60, 0);
             this.JumpForce = new Vector2(0, -480f);
             this.WeaponPosition = new Vector2(29, 18);
