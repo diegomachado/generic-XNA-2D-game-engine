@@ -10,6 +10,7 @@ using ProjetoFinal.Entities;
 using OgmoLibrary;
 using ProjetoFinal.PlayerStateMachine;
 using ProjetoFinal.EventHeaders;
+using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
@@ -52,9 +53,11 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         #region Protected Methods
 
-        protected void OnArrowShot(short playerId, Vector2 position, Vector2 speed)
+        protected void OnPlayerStateChangedWithArrow(short playerId, Player player, Vector2 speed, UpdatePlayerStateMessageType messageType, short nextState)
         {
-            EventManager.Instance.ThrowArrowShot(this, new ArrowShotEventArgs(playerId, position, speed));
+            player.ActionState = (ActionStateType)nextState;
+
+            EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player, speed, messageType));
         }
 
         #endregion

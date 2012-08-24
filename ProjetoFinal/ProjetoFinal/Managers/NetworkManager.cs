@@ -7,6 +7,8 @@ using ProjetoFinal.Network.Messages;
 using ProjetoFinal.Network;
 using ProjetoFinal.Entities;
 using ProjetoFinal.EventHeaders;
+using Microsoft.Xna.Framework;
+using ProjetoFinal.Network.Messages.UpdatePlayerStateMessages;
 
 namespace ProjetoFinal.Managers
 {
@@ -50,6 +52,7 @@ namespace ProjetoFinal.Managers
             clientCounter = 1;
 
             eventManager.PlayerStateChanged += OnPlayerStateChanged;
+            eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
         }
 
         public void Connect(String ip, int port, string nickname)
@@ -67,6 +70,7 @@ namespace ProjetoFinal.Managers
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
 
             eventManager.PlayerStateChanged += OnPlayerStateChanged;
+            eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
         }
 
         public void Disconnect()
@@ -74,6 +78,7 @@ namespace ProjetoFinal.Managers
             networkInterface.Disconnect();
 
             eventManager.PlayerStateChanged -= OnPlayerStateChanged;
+            eventManager.PlayerStateChangedWithArrow -= OnPlayerStateChangedWithArrow;
         }
 
         public void ProcessNetworkMessages()
@@ -148,7 +153,7 @@ namespace ProjetoFinal.Managers
                         {
                             case GameMessageType.UpdatePlayerState:
 
-                                UpdatePlayerStateMessage updatePlayerStateMessage = new UpdatePlayerStateMessage(im);
+                                UpdatePlayerMovementStateMessage updatePlayerStateMessage = new UpdatePlayerMovementStateMessage(im);
                                 double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateMessage.messageTime);
 
                                 OnPlayerStateUpdated(updatePlayerStateMessage, localTime);
@@ -173,7 +178,7 @@ namespace ProjetoFinal.Managers
 
         // Outgoing
 
-        private void OnPlayerStateUpdated(UpdatePlayerStateMessage updatePlayerStateMessage, double localTime)
+        private void OnPlayerStateUpdated(UpdatePlayerMovementStateMessage updatePlayerStateMessage, double localTime)
         {
             eventManager.ThrowPlayerStateUpdated(this, new PlayerStateUpdatedEventArgs(updatePlayerStateMessage, localTime));
         }
@@ -192,7 +197,12 @@ namespace ProjetoFinal.Managers
 
         private void OnPlayerStateChanged(object sender, PlayerStateChangedEventArgs playerStateChangedEventArgs)
         {
-            SendPlayerStateChangedMessage(playerStateChangedEventArgs.playerId, playerStateChangedEventArgs.player, playerStateChangedEventArgs.movementType);
+            SendPlayerStateChangedMessage(playerStateChangedEventArgs.PlayerId, playerStateChangedEventArgs.Player, playerStateChangedEventArgs.MovementType);
+        }
+
+        public void OnPlayerStateChangedWithArrow(object sender, PlayerStateChangedWithArrowEventArgs playerStateChangedWithArrowEventArgs)
+        {
+            SendPlayerStateChangedWithArrowMessage(playerStateChangedWithArrowEventArgs.PlayerId, playerStateChangedWithArrowEventArgs.Player, playerStateChangedWithArrowEventArgs.ShotSpeed, playerStateChangedWithArrowEventArgs.MovementType);
         }
 
         // Util
@@ -208,12 +218,26 @@ namespace ProjetoFinal.Managers
 
         private void SendPlayerStateChangedMessage(short id, Player player, UpdatePlayerStateMessageType messageType)
         {
-            networkInterface.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
+            switch (messageType)
+            {
+                case UpdatePlayerStateMessageType.Action:
+
+                    networkInterface.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
+
+                    break;
+
+                case UpdatePlayerStateMessageType.Horizontal:
+                case UpdatePlayerStateMessageType.Vertical:
+
+                    networkInterface.SendMessage(new UpdatePlayerMovementStateMessage(id, player, messageType));
+
+                    break;
+            }
         }
 
-        private void SendCreateArrowMessage(short id, Player player)
+        private void SendPlayerStateChangedWithArrowMessage(short id, Player player, Vector2 shotSpeed, UpdatePlayerStateMessageType messageType)
         {
-            networkInterface.SendMessage(new CreateArrowMessage(id, player));
+            networkInterface.SendMessage(new UpdatePlayerStateWithArrowMessage(id, player, shotSpeed, messageType));
         }
     }
 }

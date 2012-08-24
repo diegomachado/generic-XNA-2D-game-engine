@@ -17,11 +17,10 @@ namespace ProjetoFinal.Managers
 
         // Events
         public event EventHandler<PlayerStateChangedEventArgs> PlayerStateChanged; // When a player state has locally changed
+        public event EventHandler<PlayerStateChangedWithArrowEventArgs> PlayerStateChangedWithArrow; // When a player state has locally changed and an arrow was shot
         public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated; // When a message with updated information about a player arrives
         public event EventHandler<ClientConnectedEventArgs> ClientConnected; // When a message saying a new client connected arrives
         public event EventHandler<EventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
-        public event EventHandler<ArrowShotEventArgs> ArrowShot; // When an arrow is locally created
-        // TODO: // When a message saying a new arrow was created arrives
 
         public static EventManager Instance
         {
@@ -61,12 +60,10 @@ namespace ProjetoFinal.Managers
                 ClientDisconnected(sender, clientConnectedEventArgs);
         }
 
-        public void ThrowArrowShot(object sender, ArrowShotEventArgs arrowShotEventArgs)
+        public void ThrowPlayerStateChangedWithArrow(object sender, PlayerStateChangedWithArrowEventArgs playerStateChangedWithArrowEventArgs)
         {
-            if (ArrowShot != null)
-            {
-                ArrowShot(sender, arrowShotEventArgs);
-            }
+            if (PlayerStateChangedWithArrow != null)
+                PlayerStateChangedWithArrow(sender, playerStateChangedWithArrowEventArgs);
         }
     }
 }

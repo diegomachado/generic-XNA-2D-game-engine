@@ -124,7 +124,7 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\Utils\Animation.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
-    <Compile Include="EventHeaders\ArrowShotEventArgs.cs" />
+    <Compile Include="EventHeaders\PlayerStateChangedWithArrowEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateUpdatedEventArgs.cs" />
     <Compile Include="Game.cs" />
@@ -150,7 +150,8 @@
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
     <Compile Include="Managers\NetworkManager.cs" />
-    <Compile Include="Network\Messages\CreateArrowMessage.cs" />
+    <Compile Include="Network\Messages\UpdatePlayerStateMessages\UpdatePlayerStateWithArrowMessage.cs" />
+    <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionIdleState.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionState.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ShootingState.cs" />
@@ -175,7 +176,7 @@
     <Compile Include="Network\NetworkInterface.cs" />
     <Compile Include="Network\Messages\HailMessage.cs" />
     <Compile Include="Network\IGameMessage.cs" />
-    <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
+    <Compile Include="Network\Messages\UpdatePlayerStateMessages\UpdatePlayerMovementStateMessage.cs" />
     <Compile Include="Network\Interfaces\ServerInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util.cs" />

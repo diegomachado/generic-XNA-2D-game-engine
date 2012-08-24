@@ -33,9 +33,8 @@ namespace ProjetoFinal.Managers
             this.localPlayer = localPlayer;
             this.localPlayerId = localPlayerId;
 
-            eventManager.ArrowShot += OnArrowShot;
+            eventManager.PlayerStateChangedWithArrow += OnArrowShot;
         }
-
 
         // TODO: Colocar lógicas de Update que independem do Manager dentro do Update de Arrow
         // Ou seja, encapsular as coisas :)
@@ -106,9 +105,9 @@ namespace ProjetoFinal.Managers
             }
         }
 
-        private void OnArrowShot(object sender, ArrowShotEventArgs arrowShotEventArgs)
+        private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs playerStateChangedWithArrowEventArgs)
         {
-            arrows.Add(new Arrow(arrowShotEventArgs.playerId, arrowShotEventArgs.position, arrowShotEventArgs.speed));
+            arrows.Add(new Arrow(playerStateChangedWithArrowEventArgs.PlayerId, playerStateChangedWithArrowEventArgs.Player.Position, playerStateChangedWithArrowEventArgs.ShotSpeed));
         }
 
         // TODO: Meio acoxambrado, da pra fazer melhor

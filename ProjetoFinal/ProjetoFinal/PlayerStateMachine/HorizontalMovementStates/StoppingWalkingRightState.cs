@@ -20,7 +20,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             player.SpeedX *= player.Friction;
 
-            if (player.isMovingHorizontally || handleHorizontalCollision(player, collisionLayer, elapsedTime))
+            if (player.IsMovingHorizontally || handleHorizontalCollision(player, collisionLayer, elapsedTime))
                 return playerStates[HorizontalStateType.Idle];
             else
                 return this;
