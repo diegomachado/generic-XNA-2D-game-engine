@@ -12,8 +12,6 @@ namespace ProjetoFinal.Entities
 {
     class Entity
     {
-        public int type,
-                   flag;
         enum Type
         {
             Generic,            
@@ -22,7 +20,7 @@ namespace ProjetoFinal.Entities
             Sword
         }
 
-        [Flags] public enum Modifiers
+        [Flags] enum Flags
         {            
             None = 0x0,
             Gravity = 0x1,
@@ -30,23 +28,22 @@ namespace ProjetoFinal.Entities
             MapOnly = 0x4
 
             /* 
-            * Uso:
+            * Usage:
             *      Modifiers flags = Modifiers.Gravity | Modifiers.MapOnly | Modifiers.Ghost
             *      if ((flags & Modifiers.MapOnly))
             *          DoStuff();
             */
         }
-
-
         static List<Entity> Entities;
 
-        public Animation baseAnimation;        
+        public int type,flags;
         public bool Dead { get; set; }                
+        public Animation baseAnimation;                
         public double LastUpdateTime { get; set; }        
         public int Width { get { return baseAnimation.FrameSize.X; } }
         public int Height { get { return baseAnimation.FrameSize.Y; } }
 
-        private Vector2 speed, maxSpeed, minSpeed;
+        private Vector2 speed, minSpeed, maxSpeed;
         public Vector2 Speed
         {
             get { return speed; }
@@ -86,6 +83,8 @@ namespace ProjetoFinal.Entities
         }
         public bool isMovingHorizontally { get { return (speed.X == 0); } }
         public bool isMovingVertically { get { return (speed.Y == 0); } }
+        public Vector2 acceleration;
+        public Vector2 Acceleration { get; set; }
         public Vector2 Gravity { get; protected set; }
         public Vector2 Position { get; set; }
 
@@ -117,8 +116,15 @@ namespace ProjetoFinal.Entities
 
         public Entity(Vector2 position)
         {
-            minSpeed = new Vector2(30, 0);
-            maxSpeed = new Vector2(500, 500);
+            Type type = Type.Generic;
+            Flags flags = Flags.Gravity;
+            Dead = false;
+
+            speed = Vector2.Zero;
+            minSpeed = new Vector2(30, -500);
+            maxSpeed = new Vector2(5, 500);
+            acceleration = Vector2.Zero;
+
             Gravity = new Vector2(0, 20f);
             Position = position;
         }
@@ -138,42 +144,15 @@ namespace ProjetoFinal.Entities
             baseAnimation.Draw(spriteBatch, new Vector2(0,0));
         }
 
-        public virtual void UnloadContent()
+        public bool Collides(Rectangle collisionBox)
         {
-        }
-
-        public virtual void OnAnimate()
-        {
+            return CollisionBox.Intersects(collisionBox);
         }
 
         public virtual void OnCollision(Entity entity)
         {
-        }
-
-        public void OnMove(float x, float y)
-        {
-        }
-
-        public void StopMove()
-        {
-        }
-
-        private bool PositionValid(int x, int y)
-        {
-            return true;
-        }
-
-        private bool PositionValidTile(Tile tile)
-        {
-            return true;
-        }
-
-        private bool PositionValidEntity(Entity entity, int x, int y)
-        {
-            return true;
-        }
+        }        
     }
-
 
     // TODO: Extrair pra classe própria
     class EntityCollision
