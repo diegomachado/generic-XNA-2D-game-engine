@@ -51,5 +51,13 @@ namespace ProjetoFinal.Entities.Utils
             spriteBatch.Draw(SpriteSheet, destinationRectangle, sourceRectangle, Color.White);
             spriteBatch.End();
         }
+
+        public void Play()
+        {
+        }
+
+        public void Stop()
+        {
+        }
     }
 }

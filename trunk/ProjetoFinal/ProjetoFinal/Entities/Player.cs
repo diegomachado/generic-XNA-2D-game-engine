@@ -43,8 +43,7 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Player(Vector2 playerPosition)
-            : base(playerPosition)
+        public Player(Vector2 playerPosition): base(playerPosition)
         {
             this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
             this.walkForce = new Vector2(60, 0);
