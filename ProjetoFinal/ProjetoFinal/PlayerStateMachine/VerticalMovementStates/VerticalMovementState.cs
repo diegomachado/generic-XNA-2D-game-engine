@@ -6,8 +6,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using ProjetoFinal.Entities;
 using OgmoLibrary;
+using ProjetoFinal.Entities;
 using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates

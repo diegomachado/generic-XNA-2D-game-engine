@@ -118,12 +118,10 @@ namespace ProjetoFinal.Entities
             Type type = Type.Generic;
             Flags flags = Flags.Gravity;
             Dead = false;
-
             speed = Vector2.Zero;
-            minSpeed = new Vector2(30, -500);
-            maxSpeed = new Vector2(5, 500);
+            minSpeed = new Vector2(0, 0);
+            maxSpeed = new Vector2(0, 0);
             acceleration = Vector2.Zero;
-
             Gravity = new Vector2(0, 20f);
             Position = position;
         }
@@ -141,6 +139,21 @@ namespace ProjetoFinal.Entities
         public virtual void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             baseAnimation.Draw(spriteBatch, new Vector2(0,0));
+        }
+
+        public bool PositionValid(Point desiredPosition)
+        {
+            return true;
+        }
+
+        public bool PositionValidTile(Tile tile)
+        {
+            return true;
+        }
+
+        public bool PosisitionValidEntity(Entity entity, Point desiredPosition)
+        {
+            return true;
         }
 
         public bool Collides(Rectangle collisionBox)
