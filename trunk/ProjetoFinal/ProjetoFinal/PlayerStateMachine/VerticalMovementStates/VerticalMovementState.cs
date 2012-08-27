@@ -33,7 +33,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         #endregion
 
         #region Protected Methods
-
         protected bool checkVerticalCollision(Rectangle collisionBox, Vector2 speed, Layer collisionLayer)
         {
             Point corner1, corner2;
@@ -49,7 +48,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 corner2 = new Point(collisionBox.Right, collisionBox.Bottom);
             }
 
-            return (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2));
+            return (collisionLayer.TileIdByPixelPosition(corner1) || collisionLayer.TileIdByPixelPosition(corner2));
         }
 
         protected bool handleVerticalCollision(Player localPlayer, Layer collisionLayer, double elapsedTime)
@@ -73,7 +72,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             return false;
         }
-
         #endregion
     }
 }

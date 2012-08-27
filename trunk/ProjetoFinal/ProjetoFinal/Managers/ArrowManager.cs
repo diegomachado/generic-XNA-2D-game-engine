@@ -51,7 +51,10 @@ namespace ProjetoFinal.Managers
                     arrow.Timer += elapsedTime;
 
                     if (arrow.Timer > arrowLifeSpan)
+                    {
                         toRemove.Add(arrow);
+                        Entity.Entities.Remove(arrow);
+                    }
                 }
                 else
                 {
@@ -96,9 +99,9 @@ namespace ProjetoFinal.Managers
         {
             foreach (Arrow arrow in arrows)
             {
-                arrow.Draw(spriteBatch, camera);
+                arrow.Draw(spriteBatch);
 
-                //Util.DrawRectangle(arrow.CollisionBox, 1, Color.Red, spriteBatch, camera);
+                Util.DrawRectangle(spriteBatch, arrow.CollisionBox, 1, Color.Red);
 
                 // TODO: Que porra eh essa que tu pos aqui bomber?
                 //spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
@@ -118,10 +121,10 @@ namespace ProjetoFinal.Managers
             Point corner3 = new Point(collisionBox.Left, collisionBox.Bottom);
             Point corner4 = new Point(collisionBox.Right, collisionBox.Bottom);
 
-            return (collisionLayer.GetTileValueByPixelPosition(corner1) ||
-                    collisionLayer.GetTileValueByPixelPosition(corner2) ||
-                    collisionLayer.GetTileValueByPixelPosition(corner3) ||
-                    collisionLayer.GetTileValueByPixelPosition(corner4));
+            return (collisionLayer.TileIdByPixelPosition(corner1) ||
+                    collisionLayer.TileIdByPixelPosition(corner2) ||
+                    collisionLayer.TileIdByPixelPosition(corner3) ||
+                    collisionLayer.TileIdByPixelPosition(corner4));
         }
     }
 }

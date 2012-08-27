@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using ProjetoFinal.Managers.LocalPlayerStates;
 using ProjetoFinal.Managers;
 using ProjetoFinal.Entities.Utils;
@@ -43,7 +43,7 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Player(Vector2 playerPosition): base(playerPosition)
+        public Player(Vector2 playerPosition) : base(playerPosition)
         {
             this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
             this.MinSpeed = new Vector2(30, -500);
@@ -56,14 +56,19 @@ namespace ProjetoFinal.Entities
             this.VerticalState = VerticalStateType.Idle;
             this.HorizontalState = HorizontalStateType.Idle;
             this.ActionState = ActionStateType.Idle;
+
+            Entity.Entities.Add(this);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, Camera camera)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (FacingLeft)
-                spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
-                spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+            Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
+            Util.DrawRectangle(spriteBatch, new Rectangle(this.CollisionBox.X, this.CollisionBox.Y, 24, 30), 1, Color.Yellow);
         }
     }
 }
