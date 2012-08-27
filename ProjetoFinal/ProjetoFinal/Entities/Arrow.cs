@@ -40,16 +40,18 @@ namespace ProjetoFinal.Entities
             this.BoundingBox = new Rectangle(19, 1, 5, 5);
             this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Arrow), 1, 1);
             this.Timer = 0;
+
+            Entity.Entities.Add(this);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, Camera camera)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             rotation = (float)Math.Acos(Vector2.Dot(Speed, Vector2.UnitX) / (Speed.Length()));
 
             if (SpeedY < 0)
                 rotation = -rotation;
 
-            spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCameraCoordinates(Position), null, Color.White, rotation, TextureCenter, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCameraCoordinates(Position), null, Color.White, rotation, TextureCenter, 1f, SpriteEffects.None, 0f);
         }
     }
 }

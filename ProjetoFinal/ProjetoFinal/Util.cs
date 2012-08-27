@@ -21,7 +21,7 @@ namespace ProjetoFinal
             return new Vector2(point.X, point.Y);
         }
 
-        public static void DrawRectangle(Rectangle r, int borderWidth, Color color, SpriteBatch spriteBatch)
+        public static void DrawRectangle(SpriteBatch spriteBatch, Rectangle r, int borderWidth, Color color)
         {            
             spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White);
             spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(color), new Rectangle(r.Right - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White);

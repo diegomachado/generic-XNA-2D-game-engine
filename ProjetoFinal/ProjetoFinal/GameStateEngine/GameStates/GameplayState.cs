@@ -65,6 +65,16 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             
             playerManager.Update(gameTime, mapManager.CollisionLayer);
             arrowManager.Update(gameTime, mapManager.CollisionLayer);
+
+            foreach (EntityCollision entityCollision in EntityCollision.EntityCollisions)
+            {
+                Entity entityA = entityCollision.entityA;
+                Entity entityB = entityCollision.entityB;
+
+                if (entityA.OnCollision(entityB))
+                    entityB.OnCollision(entityA);
+            }
+            EntityCollision.EntityCollisions.Clear();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)

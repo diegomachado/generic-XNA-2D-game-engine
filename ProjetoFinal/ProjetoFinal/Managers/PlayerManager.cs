@@ -88,7 +88,7 @@ namespace ProjetoFinal.Managers
             foreach (KeyValuePair<short, Player> p in players)
             {
                 player = p.Value;
-                player.Draw(spriteBatch, camera);
+                player.Draw(spriteBatch);
                 
                 //spriteBatch.DrawString(spriteFont, player.LastState.ToString(), new Vector2(player.Position.X + 8, player.Position.Y - 25) - Camera.Instance.Position, Color.White);
 

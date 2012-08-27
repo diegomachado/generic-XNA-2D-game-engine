@@ -120,8 +120,10 @@
     <Compile Include="Entities\Arrow.cs" />
     <Compile Include="Entities\Camera.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\EntityCollision.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\Ranger.cs" />
     <Compile Include="Entities\Utils\Animation.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedWithArrowEventArgs.cs" />
