@@ -10,8 +10,7 @@ namespace ProjetoFinal.Network.Messages
 {
     class UpdatePlayerMovementStateMessage : UpdatePlayerStateMessage
     {
-        public Vector2 speed { get; set; }
-        public short playerState { get; set; }
+        public Vector2 Speed { get; set; }
 
         public UpdatePlayerMovementStateMessage(NetIncomingMessage im)
             : base(im)
@@ -19,37 +18,26 @@ namespace ProjetoFinal.Network.Messages
 
         }
 
-        public UpdatePlayerMovementStateMessage(short id, Player player, UpdatePlayerStateMessageType mt) : base(id, player, mt)
+        public UpdatePlayerMovementStateMessage(short id, Vector2 position, Vector2 speed, short state, UpdatePlayerStateType mt)
+            : base(id, position, state, mt)
         {
-            speed = player.Speed;
-
-            switch (mt)
-            {
-                case UpdatePlayerStateMessageType.Horizontal:
-                    playerState = (short)player.HorizontalState;
-                    break;
-                case UpdatePlayerStateMessageType.Vertical:
-                    playerState = (short)player.VerticalState;
-                    break;
-            }
-
-            messageType = mt;
+            Speed = speed;
         }
+
+        public override GameMessageType GameMessageType { get { return GameMessageType.UpdatePlayerMovementState; } }
 
         public override void Decode(NetIncomingMessage im)
         {
             base.Decode(im);
 
-            speed = im.ReadVector2();
-            playerState = im.ReadInt16();
+            Speed = im.ReadVector2();
         }
 
         public override void Encode(NetOutgoingMessage om)
         {
             base.Encode(om);
 
-            om.Write(speed);
-            om.Write(playerState);
+            om.Write(Speed);
         }
     }
 }

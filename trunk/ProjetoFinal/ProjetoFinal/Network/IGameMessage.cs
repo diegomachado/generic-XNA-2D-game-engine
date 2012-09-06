@@ -5,12 +5,13 @@ namespace ProjetoFinal.Network.Messages
     public enum GameMessageType
     {
         ClientInfo,
-        UpdatePlayerState
+        UpdatePlayerState,
+        UpdatePlayerMovementState
     }
 
     public interface IGameMessage
     {
-        GameMessageType MessageType { get; }
+        GameMessageType GameMessageType { get; }
 
         void Encode(NetOutgoingMessage om);
 

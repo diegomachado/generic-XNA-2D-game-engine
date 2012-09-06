@@ -30,7 +30,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             player.FacingLeft = (speed.X < 0);
 
-            OnPlayerStateChangedWithArrow(playerId, player, speed, UpdatePlayerStateMessageType.Action, (short)ActionStateType.Shooting);
+            OnPlayerStateChangedWithArrow(playerId, player, speed, UpdatePlayerStateType.Action, (short)ActionStateType.Shooting);
 
             return playerStates[ActionStateType.Shooting];
         }

@@ -112,7 +112,7 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateMessageType updatePlayerStateMessageType, short playerState)
+        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateType updatePlayerStateMessageType, short playerState)
         {
             Player player = GetPlayer(playerId);
 
@@ -130,7 +130,7 @@ namespace ProjetoFinal.Managers
 
                 switch (updatePlayerStateMessageType)
                 {
-                    case UpdatePlayerStateMessageType.Horizontal:
+                    case UpdatePlayerStateType.Horizontal:
                         horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
 
                         if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
@@ -139,7 +139,7 @@ namespace ProjetoFinal.Managers
                             players[playerId].SpeedX = 0;
                         }
                         break;
-                    case UpdatePlayerStateMessageType.Vertical:
+                    case UpdatePlayerStateType.Vertical:
                         verticalPlayerState[playerId] = verticalPlayerStates[(VerticalStateType)playerState];
 
                         if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)

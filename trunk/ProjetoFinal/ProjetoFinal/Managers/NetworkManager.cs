@@ -51,8 +51,8 @@ namespace ProjetoFinal.Managers
             networkInterface.Connect();
             clientCounter = 1;
 
-            eventManager.PlayerStateChanged += OnPlayerStateChanged;
-            eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
+            eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
+            //eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
         }
 
         public void Connect(String ip, int port, string nickname)
@@ -69,16 +69,16 @@ namespace ProjetoFinal.Managers
             networkInterface.Connect();
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
 
-            eventManager.PlayerStateChanged += OnPlayerStateChanged;
-            eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
+            eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
+            //eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
         }
 
         public void Disconnect()
         {
             networkInterface.Disconnect();
 
-            eventManager.PlayerStateChanged -= OnPlayerStateChanged;
-            eventManager.PlayerStateChangedWithArrow -= OnPlayerStateChangedWithArrow;
+            eventManager.PlayerMovementStateChanged -= OnPlayerMovementStateChanged;
+            //eventManager.PlayerStateChangedWithArrow -= OnPlayerStateChangedWithArrow;
         }
 
         public void ProcessNetworkMessages()
@@ -149,20 +149,30 @@ namespace ProjetoFinal.Managers
 
                         var gameMessageType = (GameMessageType)im.ReadByte();
 
+                        Console.WriteLine("FUCK MAH ASS!");
+
                         switch (gameMessageType)
                         {
                             case GameMessageType.UpdatePlayerState:
 
-                                UpdatePlayerMovementStateMessage updatePlayerStateMessage = new UpdatePlayerMovementStateMessage(im);
-                                double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateMessage.messageTime);
+                                // TODO: DO SHIT HERE
 
-                                OnPlayerStateUpdated(updatePlayerStateMessage, localTime);
+                                break;
+
+                            case GameMessageType.UpdatePlayerMovementState:
+
+                                UpdatePlayerMovementStateMessage updatePlayerMovementStateMessage = new UpdatePlayerMovementStateMessage(im);
+                                double localTime = im.SenderConnection.GetLocalTime(updatePlayerMovementStateMessage.MessageTime);
+
+                                Console.WriteLine("MANDANDO: " + updatePlayerMovementStateMessage.PlayerId + " - " + updatePlayerMovementStateMessage.Position + " - " + updatePlayerMovementStateMessage.Speed + " - " + updatePlayerMovementStateMessage.PlayerState + " - " + updatePlayerMovementStateMessage.StateType);
+
+                                OnPlayerMovementStateUpdated(updatePlayerMovementStateMessage, localTime);
                                 
                                 // If server, resend UpdatePlayerState to all clients
                                 // TODO: Refactor this shit so that a client doesn't receive it's own message back
                                 // This fucking shit ta causando um overhead chato na rede e acho que tem como consertar usando SendMessage ao inves de SendToAll no serverNetworkInterface porém como a porra do código é fechado temos que fazer testes manuais pra saber se a gente vai estar ganhando desempenho ou perdendo.
                                 if(IsServer)
-                                    networkInterface.SendMessage(updatePlayerStateMessage);
+                                    networkInterface.SendMessage(updatePlayerMovementStateMessage);
 
                                 break;
                         }
@@ -180,7 +190,12 @@ namespace ProjetoFinal.Managers
 
         private void OnPlayerStateUpdated(UpdatePlayerMovementStateMessage updatePlayerStateMessage, double localTime)
         {
-            eventManager.ThrowPlayerStateUpdated(this, new PlayerStateUpdatedEventArgs(updatePlayerStateMessage, localTime));
+            eventManager.ThrowPlayerStateUpdated(this, new PlayerStateUpdatedEventArgs(updatePlayerStateMessage.PlayerId, updatePlayerStateMessage.Position, updatePlayerStateMessage.PlayerState, updatePlayerStateMessage.StateType, updatePlayerStateMessage.MessageTime, localTime));
+        }
+
+        private void OnPlayerMovementStateUpdated(UpdatePlayerMovementStateMessage updatePlayerMovementStateMessage, double localTime)
+        {
+            eventManager.ThrowPlayerMovementStateUpdated(this, new PlayerMovementStateUpdatedEventArgs(updatePlayerMovementStateMessage.PlayerId, updatePlayerMovementStateMessage.Position, updatePlayerMovementStateMessage.Speed, updatePlayerMovementStateMessage.PlayerState, updatePlayerMovementStateMessage.StateType, updatePlayerMovementStateMessage.MessageTime, localTime));
         }
 
         private void OnClientConnected(HailMessage hailMessage)
@@ -197,12 +212,17 @@ namespace ProjetoFinal.Managers
 
         private void OnPlayerStateChanged(object sender, PlayerStateChangedEventArgs playerStateChangedEventArgs)
         {
-            SendPlayerStateChangedMessage(playerStateChangedEventArgs.PlayerId, playerStateChangedEventArgs.Player, playerStateChangedEventArgs.MovementType);
+            SendPlayerStateChangedMessage(playerStateChangedEventArgs.PlayerId, playerStateChangedEventArgs.Position, playerStateChangedEventArgs.PlayerState, playerStateChangedEventArgs.StateType);
+        }
+
+        private void OnPlayerMovementStateChanged(object sender, PlayerMovementStateChangedEventArgs playerMovementStateChangedEventArgs)
+        {
+            SendPlayerMovementStateChangedMessage(playerMovementStateChangedEventArgs.PlayerId, playerMovementStateChangedEventArgs.Position, playerMovementStateChangedEventArgs.Speed, playerMovementStateChangedEventArgs.PlayerState, playerMovementStateChangedEventArgs.StateType);
         }
 
         public void OnPlayerStateChangedWithArrow(object sender, PlayerStateChangedWithArrowEventArgs playerStateChangedWithArrowEventArgs)
         {
-            SendPlayerStateChangedWithArrowMessage(playerStateChangedWithArrowEventArgs.PlayerId, playerStateChangedWithArrowEventArgs.Player, playerStateChangedWithArrowEventArgs.ShotSpeed, playerStateChangedWithArrowEventArgs.MovementType);
+            SendPlayerStateChangedWithArrowMessage(playerStateChangedWithArrowEventArgs.PlayerId, playerStateChangedWithArrowEventArgs.Position, playerStateChangedWithArrowEventArgs.ShotSpeed, playerStateChangedWithArrowEventArgs.PlayerState, playerStateChangedWithArrowEventArgs.StateType);
         }
 
         // Util
@@ -216,28 +236,21 @@ namespace ProjetoFinal.Managers
 
         // Outgoing Messages
 
-        private void SendPlayerStateChangedMessage(short id, Player player, UpdatePlayerStateMessageType messageType)
+        private void SendPlayerStateChangedMessage(short id, Vector2 position, short playerState, UpdatePlayerStateType messageType)
         {
-            switch (messageType)
-            {
-                case UpdatePlayerStateMessageType.Action:
-
-                    networkInterface.SendMessage(new UpdatePlayerStateMessage(id, player, messageType));
-
-                    break;
-
-                case UpdatePlayerStateMessageType.Horizontal:
-                case UpdatePlayerStateMessageType.Vertical:
-
-                    networkInterface.SendMessage(new UpdatePlayerMovementStateMessage(id, player, messageType));
-
-                    break;
-            }
+            networkInterface.SendMessage(new UpdatePlayerStateMessage(id, position, playerState, messageType));
         }
 
-        private void SendPlayerStateChangedWithArrowMessage(short id, Player player, Vector2 shotSpeed, UpdatePlayerStateMessageType messageType)
+        private void SendPlayerStateChangedWithArrowMessage(short id, Vector2 position, Vector2 shotSpeed, short playerState, UpdatePlayerStateType messageType)
         {
-            networkInterface.SendMessage(new UpdatePlayerStateWithArrowMessage(id, player, shotSpeed, messageType));
+            networkInterface.SendMessage(new UpdatePlayerStateWithArrowMessage(id, position, shotSpeed, playerState, messageType));
+        }
+
+        private void SendPlayerMovementStateChangedMessage(short id, Vector2 position, Vector2 speed, short playerState, UpdatePlayerStateType stateType)
+        {
+            Console.WriteLine("MANDANDO: " + id + " - " + position + " - " + speed + " - " + playerState + " - " + stateType);
+
+            networkInterface.SendMessage(new UpdatePlayerMovementStateMessage(id, position, speed, playerState, stateType));
         }
     }
 }

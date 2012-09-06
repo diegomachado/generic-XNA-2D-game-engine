@@ -110,7 +110,7 @@ namespace ProjetoFinal.Managers
 
         private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs playerStateChangedWithArrowEventArgs)
         {
-            arrows.Add(new Arrow(playerStateChangedWithArrowEventArgs.PlayerId, playerStateChangedWithArrowEventArgs.Player.Position, playerStateChangedWithArrowEventArgs.ShotSpeed));
+            arrows.Add(new Arrow(playerStateChangedWithArrowEventArgs.PlayerId, playerStateChangedWithArrowEventArgs.Position, playerStateChangedWithArrowEventArgs.ShotSpeed));
         }
 
         // TODO: Meio acoxambrado, da pra fazer melhor

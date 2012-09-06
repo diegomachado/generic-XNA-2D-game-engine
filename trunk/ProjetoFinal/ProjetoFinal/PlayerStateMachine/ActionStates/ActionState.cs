@@ -53,11 +53,18 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         #region Protected Methods
 
-        protected void OnPlayerStateChangedWithArrow(short playerId, Player player, Vector2 speed, UpdatePlayerStateMessageType messageType, short nextState)
+        protected override void OnPlayerStateChanged(short playerId, Player player, UpdatePlayerStateType movementType, short nextState)
         {
             player.ActionState = (ActionStateType)nextState;
 
-            EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player, speed, messageType));
+            EventManager.Instance.ThrowPlayerStateChanged(this, new PlayerStateChangedEventArgs(playerId, player.Position, nextState, movementType));
+        }
+
+        protected void OnPlayerStateChangedWithArrow(short playerId, Player player, Vector2 shotSpeed, UpdatePlayerStateType messageType, short nextState)
+        {
+            player.ActionState = (ActionStateType)nextState;
+
+            EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player.Position, shotSpeed, nextState, messageType));
         }
 
         #endregion

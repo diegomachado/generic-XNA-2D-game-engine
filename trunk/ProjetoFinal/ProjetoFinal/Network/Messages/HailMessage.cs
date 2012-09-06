@@ -14,7 +14,7 @@ namespace ProjetoFinal.Network.Messages
         public short clientId { get; set; }
         public Dictionary<short, Client> clientsInfo { get; set; }
 
-        public GameMessageType MessageType
+        public GameMessageType GameMessageType
         {
             get { return GameMessageType.ClientInfo; }
         }

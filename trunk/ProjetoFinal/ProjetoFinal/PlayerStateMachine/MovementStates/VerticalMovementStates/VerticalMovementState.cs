@@ -6,8 +6,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using OgmoLibrary;
 using ProjetoFinal.Entities;
+using OgmoLibrary;
 using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
@@ -19,7 +19,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         StartedJumping
     }
 
-    abstract class VerticalMovementState : PlayerState
+    abstract class VerticalMovementState : MovementPlayerState
     {
         public abstract VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates);
 
@@ -33,6 +33,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         #endregion
 
         #region Protected Methods
+
         protected bool checkVerticalCollision(Rectangle collisionBox, Vector2 speed, Layer collisionLayer)
         {
             Point corner1, corner2;
@@ -48,7 +49,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 corner2 = new Point(collisionBox.Right, collisionBox.Bottom);
             }
 
-            return (collisionLayer.TileIdByPixelPosition(corner1) || collisionLayer.TileIdByPixelPosition(corner2));
+            return (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2));
         }
 
         protected bool handleVerticalCollision(Player localPlayer, Layer collisionLayer, double elapsedTime)
@@ -72,6 +73,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             return false;
         }
+
         #endregion
     }
 }

@@ -27,7 +27,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override VerticalMovementState Jumped(short playerId, Player player, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Vertical, (short)VerticalStateType.StartedJumping);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Vertical, (short)VerticalStateType.StartedJumping);
 
             return playerStates[VerticalStateType.StartedJumping];
         }

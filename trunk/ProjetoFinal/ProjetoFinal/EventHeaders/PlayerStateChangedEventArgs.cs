@@ -9,15 +9,17 @@ namespace ProjetoFinal.EventHeaders
 {
     class PlayerStateChangedEventArgs : EventArgs
     {
-        public short PlayerId     { get; set; }
-        public Player Player      { get; set; }
-        public UpdatePlayerStateMessageType MovementType { get; set; }
+        public short PlayerId { get; set; }
+        public Vector2 Position { get; set; }
+        public short PlayerState { get; set; }
+        public UpdatePlayerStateType StateType { get; set; }
 
-        public PlayerStateChangedEventArgs(short playerId, Player player, UpdatePlayerStateMessageType movementType)
+        public PlayerStateChangedEventArgs(short playerId, Vector2 position, short state, UpdatePlayerStateType stateType)
         {
-            this.PlayerId = playerId;
-            this.Player = player;
-            this.MovementType = movementType;
+            PlayerId = playerId;
+            Position = position;
+            StateType = stateType;
+            PlayerState = state;
         }
     }
 }
