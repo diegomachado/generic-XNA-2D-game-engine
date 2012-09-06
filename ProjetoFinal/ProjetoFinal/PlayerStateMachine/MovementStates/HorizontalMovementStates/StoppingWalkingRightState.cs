@@ -16,12 +16,15 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
-
             player.speed.X *= player.friction;
+
+            //TODO: Melhorar esse clamp de momentum de maneira clara
+            if (Math.Abs(player.speed.X) <= 0.01)
+                player.StopMovingHorizontally();   
+
             player.MoveXBy(player.speed.X);
 
-            if (!player.isMovingLeft || !player.isMovingRight)
+            if (!player.IsMovingHorizontally())
                 return playerStates[HorizontalStateType.Idle];
             else
                 return this;

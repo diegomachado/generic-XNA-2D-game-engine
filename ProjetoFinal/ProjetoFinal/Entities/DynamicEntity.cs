@@ -68,8 +68,8 @@ namespace ProjetoFinal.Entities
             //DebugDraw(spriteBatch, spriteFont);
         }
 
-        public bool IsMovingHorizontally() { return (speed.X == 0); }
-        public bool IsMovingVertically() { return (speed.Y == 0); }
+        public bool IsMovingHorizontally() { return (speed.X != 0); }
+        public bool IsMovingVertically() { return (speed.Y != 0); }
 
         public void Jump() 
         {
@@ -78,6 +78,9 @@ namespace ProjetoFinal.Entities
         }
 
         public bool OnGround() { return MapCollideY(1); }
+
+        public void StopMovingHorizontally() { speed.X = 0; }
+        public void StopMovingVertically()   { speed.Y = 0; }
 
         Texture2D debugBackground;
         public void DebugDraw(SpriteBatch spriteBatch, SpriteFont spriteFont)

@@ -22,9 +22,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
             player.MoveXBy(player.speed.X);
 
-            Console.WriteLine("wtf");
-
-            if (!player.isMovingLeft || !player.isMovingRight)
+            if (!player.IsMovingHorizontally())       
                 return playerStates[HorizontalStateType.Idle];
             else
                 return this;
