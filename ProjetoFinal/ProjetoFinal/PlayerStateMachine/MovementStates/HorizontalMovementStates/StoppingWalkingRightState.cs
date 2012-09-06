@@ -18,9 +18,10 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             double elapsedTime = gameTime.ElapsedGameTime.TotalSeconds;
 
-            player.SpeedX *= player.Friction;
+            player.speed.X *= player.friction;
+            player.MoveXBy(player.speed.X);
 
-            if (player.IsMovingHorizontally || handleHorizontalCollision(player, collisionLayer, elapsedTime))
+            if (!player.isMovingLeft || !player.isMovingRight)
                 return playerStates[HorizontalStateType.Idle];
             else
                 return this;

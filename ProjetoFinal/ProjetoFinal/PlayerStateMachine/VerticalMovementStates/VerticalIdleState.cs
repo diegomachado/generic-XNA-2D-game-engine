@@ -16,16 +16,15 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
-            if (!player.OnGround())
-                return playerStates[VerticalStateType.Jumping];
-            else
+            if (player.OnGround())
                 return this;
+            else
+                return playerStates[VerticalStateType.Jumping];
         }
 
         public override VerticalMovementState Jumped(short playerId, Player player, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Vertical, (short)VerticalStateType.StartedJumping);
-
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Vertical, (short)VerticalStateType.StartedJumping);
             return playerStates[VerticalStateType.StartedJumping];
         }
 

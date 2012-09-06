@@ -58,13 +58,13 @@ namespace ProjetoFinal.Managers
                 }
                 else
                 {
-                    arrow.Speed += arrow.Gravity * Arrow.gravityFactor; //TODO: * elapsedTime;
+                    arrow.speed.Y += arrow.gravity * Arrow.gravityFactor; //TODO: * elapsedTime;
 
                     // TODO: Ta meio muquirana ainda, da pra melhorar mas funciona
                     // TODO: Girar collisionBox das flechas?
 
                     Rectangle collisionBox = arrow.CollisionBox;
-                    collisionBox.Offset((int)(arrow.SpeedX * elapsedTime), (int)(arrow.SpeedY * elapsedTime));
+                    collisionBox.Offset((int)(arrow.speed.X * elapsedTime), (int)(arrow.speed.Y * elapsedTime));
 
                     if (arrow.OwnerId != localPlayerId) // Check collision with localPlayer
                     {
@@ -84,7 +84,7 @@ namespace ProjetoFinal.Managers
                     }
                     else
                     {
-                        arrow.Position += arrow.Speed * elapsedTime;
+                        arrow.position += arrow.speed * elapsedTime;
                     }
                 }
             }

@@ -21,10 +21,13 @@ namespace ProjetoFinal
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth  = graphicsManager.ScreenSize.X;
             graphics.PreferredBackBufferHeight = graphicsManager.ScreenSize.Y;
+            graphics.SynchronizeWithVerticalRetrace = false;
+
             graphics.ApplyChanges();
 
             gameStatesManager = new GameStatesManager(this);
             Components.Add(gameStatesManager);
+
         }
 
         protected override void Initialize()

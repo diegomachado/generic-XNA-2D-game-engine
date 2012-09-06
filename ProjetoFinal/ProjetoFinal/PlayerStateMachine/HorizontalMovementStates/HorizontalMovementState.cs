@@ -20,11 +20,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         StoppingWalkingRight
     }
 
-    abstract class HorizontalMovementState : MovementPlayerState
+    abstract class HorizontalMovementState : PlayerState
     {
         public abstract HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates);
-
-        #region Public Messages
 
         public virtual HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
@@ -42,7 +40,5 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             return this;
         }
-
-        #endregion
     }
 }

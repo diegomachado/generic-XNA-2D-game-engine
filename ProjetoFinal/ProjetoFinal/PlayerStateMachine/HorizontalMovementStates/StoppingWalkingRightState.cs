@@ -12,37 +12,32 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    class WalkingLeftState : HorizontalMovementState
+    class StoppingWalkingRightState : HorizontalMovementState
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            player.FacingLeft = true;
-            player.speed.X -= player.moveSpeed;
             player.speed.X *= player.friction;
-
             player.MoveXBy(player.speed.X);
 
-            if (!player.IsMovingHorizontally())
+            if (player.IsMovingHorizontally() || player.MapCollideX(player.speed.X))
                 return playerStates[HorizontalStateType.Idle];
             else
                 return this;
         }
 
-        public override HorizontalMovementState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
+        public override HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.StoppingWalkingLeft);
-            return playerStates[HorizontalStateType.StoppingWalkingLeft];
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.WalkingLeft);
+            return playerStates[HorizontalStateType.WalkingLeft];
         }
-
         public override HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.WalkingRight);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.WalkingRight);
             return playerStates[HorizontalStateType.WalkingRight];
         }
-        
         public override string ToString()
         {
-            return "WalkingLeft";
+            return "StoppingWalkingRight";
         }
     }
 }

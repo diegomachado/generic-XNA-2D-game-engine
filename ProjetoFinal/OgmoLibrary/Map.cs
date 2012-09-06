@@ -19,81 +19,33 @@ namespace OgmoLibrary
             MapSize = mapSize;
             TileSize = tileSize;
             Layers = layers;
-        }
+        } 
 
-        // TODO: Develop dat xit Map::MapToString()
-        public void MapToString()
+        int x, y, id;
+        Texture2D spriteSheet;
+        Layer currentLayer;
+        Point tileSize, firstTile, lastTile;
+        Rectangle destinationRectangle, sourceRectangle;
+        List<Layer> layersToDraw = new List<Layer>();
+        public void Draw(SpriteBatch spriteBatch, Point cameraPosition, Point screenSize)
         {
+            tileSize = this.TileSize;
 
-        }
+            sourceRectangle.X      = destinationRectangle.X = 0;
+            sourceRectangle.Y      = destinationRectangle.Y = 0;
+            sourceRectangle.Width  = destinationRectangle.Width = tileSize.X;
+            sourceRectangle.Height = destinationRectangle.Height = tileSize.Y;
+                                                
+            firstTile.X = cameraPosition.X / tileSize.X;
+            firstTile.Y = cameraPosition.Y / tileSize.Y;
+            lastTile.X = (cameraPosition.X + screenSize.X) / tileSize.X;
+            lastTile.Y = (cameraPosition.Y + screenSize.Y) / tileSize.Y;
 
-        public void Draw(SpriteBatch spriteBatch, Point cameraPosition)
-        {
-            int x, y, id;
-            Texture2D spriteSheet;
-            Layer currentLayer;
-
-            Point tileSize = this.TileSize;
-
-            Rectangle destinationRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
-            Rectangle sourceRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
-
-            var orderedLayers = from layer in Layers.Keys
-                                orderby Layers[layer].ZIndex descending
-                                select layer;                 
-
-            foreach (string layerName in orderedLayers)
+            foreach (KeyValuePair<string, Layer> layer in Layers)
             {
-                currentLayer = Layers[layerName];
+                currentLayer = layer.Value;
 
-                if (currentLayer.ExportMode == "XML")
-                {
-                    spriteSheet = currentLayer.SpriteSheet;
-
-                    foreach (KeyValuePair<Point, Tile> tile in currentLayer.Tiles)
-                    {
-                        x = tile.Key.X;
-                        y = tile.Key.Y;
-                        id = tile.Value.Id;
-
-                        destinationRectangle.X = x * tileSize.X - cameraPosition.X;
-                        destinationRectangle.Y = y * tileSize.Y - cameraPosition.Y;
-
-                        sourceRectangle.X = (id * tileSize.X) % spriteSheet.Width;
-                        sourceRectangle.Y = ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y;
-
-                        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White);
-                    }
-                }
-            }
-        }
-
-        public void DrawEfficiently(SpriteBatch spriteBatch, Point cameraPosition, Point screenSize)
-        {
-            int x, y, id;
-            Texture2D spriteSheet;
-            Layer currentLayer;
-
-            Point tileSize = this.TileSize;
-
-            Rectangle destinationRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
-            Rectangle sourceRectangle = new Rectangle(0, 0, tileSize.X, tileSize.Y);
-
-            var orderedLayers = from layer in Layers.Keys
-                                orderby Layers[layer].ZIndex descending
-                                select layer;
-
-            Point firstTile = PositionToTileCoord(cameraPosition);
-            Point lastTile = PositionToTileCoord(new Point(cameraPosition.X + screenSize.X, cameraPosition.Y + screenSize.Y));
-
-            //Console.WriteLine(firstTile.ToString());
-            //Console.WriteLine(lastTile.ToString());
-            
-            foreach (string layerName in orderedLayers)
-            {
-                currentLayer = Layers[layerName];
-
-                if (currentLayer.ExportMode == "XML")
+                if (currentLayer.ExportMode == "XML" && currentLayer.Tiles.Count > 0)
                 {
                     spriteSheet = currentLayer.SpriteSheet;
 
@@ -102,13 +54,11 @@ namespace OgmoLibrary
                         x = tile.Key.X;
                         y = tile.Key.Y;
 
-                        // TODO: Rever lógica com o Guifes
                         if (x < firstTile.X || y < firstTile.Y || x > lastTile.X || y > lastTile.Y)
                             continue;
 
-                        // Por que isso buga? Ordem dos Tiles no Dictionary?
-                        // if( x > lastTile.X || y > lastTile.Y )
-                        //      break;
+                        if (x > lastTile.X || y > lastTile.Y)
+                            break;
 
                         id = tile.Value.Id;
 
@@ -118,15 +68,11 @@ namespace OgmoLibrary
                         sourceRectangle.X = (id * tileSize.X) % spriteSheet.Width;
                         sourceRectangle.Y = ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y;
 
-                        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White);
+                        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.Peru);
                     }
                 }
             }
-        }
-
-        public Point PositionToTileCoord(Point position)
-        {
-            return new Point((int)position.X / TileSize.X, (int)position.Y / TileSize.Y);
+            
         }
     }
 }

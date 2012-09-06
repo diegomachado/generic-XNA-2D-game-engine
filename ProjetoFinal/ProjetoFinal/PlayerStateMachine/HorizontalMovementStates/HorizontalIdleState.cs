@@ -12,34 +12,28 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
-    class StoppingWalkingLeftState : HorizontalMovementState
+    class HorizontalIdleState : HorizontalMovementState
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            player.speed.X *= player.friction;
-            player.MoveXBy(player.speed.X);
-
-            if (!player.IsMovingHorizontally())
-                return playerStates[HorizontalStateType.Idle];
-            else
-                return this;
+            return this;
         }
 
         public override HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.WalkingLeft);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.WalkingLeft);
             return playerStates[HorizontalStateType.WalkingLeft];
         }
 
         public override HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.WalkingRight);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.WalkingRight);
             return playerStates[HorizontalStateType.WalkingRight];
         }
 
         public override string ToString()
         {
-            return "StoppingWalkingLeft";
+            return "Horizontal Idle";
         }
     }
 }

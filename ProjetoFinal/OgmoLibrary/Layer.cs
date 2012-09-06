@@ -70,9 +70,9 @@ namespace OgmoLibrary
         }
 
         // TODO: Assume que só serve pra Layers Collision Wannabe
-        public bool TileIdByGridPosition(Point xy)
+        public int TileIdByGridPosition(Point gridPoint)
         {
-            return Convert.ToBoolean(Tiles[xy].Id);
+            return Tiles[gridPoint].Id;
         }
     }
 }

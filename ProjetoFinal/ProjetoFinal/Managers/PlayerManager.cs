@@ -94,10 +94,10 @@ namespace ProjetoFinal.Managers
 
                 spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
 
-                spriteBatch.DrawString(spriteFont, "X: " + (int)player.Position.X, new Vector2(5f, 455f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Y: " + (int)player.Position.Y, new Vector2(5f, 475f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)player.Speed.X, new Vector2(5f, 495f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)player.Speed.Y, new Vector2(5f, 515f), Color.White);
+                spriteBatch.DrawString(spriteFont, "X: " + (int)player.position.X, new Vector2(5f, 455f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Y: " + (int)player.position.Y, new Vector2(5f, 475f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)player.speed.X, new Vector2(5f, 495f), Color.White);
+                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)player.speed.Y, new Vector2(5f, 515f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 535f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 555f), Color.White);
                 //spriteBatch.DrawString(spriteFont, "State: " + player.LastState, new Vector2(5f, 575f), Color.White);
@@ -124,8 +124,8 @@ namespace ProjetoFinal.Managers
 
                 // TODO: Rever conta pro Lag compensation ficar certinho
                 // Lag Compensation
-                
-                players[playerId].Position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
+
+                players[playerId].position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
                 players[playerId].LastUpdateTime = messageTime;
 
                 switch (updatePlayerStateMessageType)
@@ -136,7 +136,7 @@ namespace ProjetoFinal.Managers
                         if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
                             (HorizontalStateType)playerState == HorizontalStateType.WalkingRight)
                         {
-                            players[playerId].SpeedX = 0;
+                            players[playerId].speed.X = 0;
                         }
                         break;
                     case UpdatePlayerStateType.Vertical:
@@ -144,7 +144,7 @@ namespace ProjetoFinal.Managers
 
                         if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)
                         {
-                            players[playerId].SpeedY = 0;
+                            players[playerId].speed.Y = 0;
                         }
                         break;
                 }

@@ -62,6 +62,11 @@ namespace ProjetoFinal.Entities
             this.Position = player.Center - graphicsManager.Center;
         }
 
+        public void FollowLocalPlayer(DynamicEntity ranger)
+        {
+            this.Position = ranger.position - graphicsManager.Center;
+        }
+
         public Vector2 WorldToCameraCoordinates(Vector2 position)
         {
             return position - this.Position;

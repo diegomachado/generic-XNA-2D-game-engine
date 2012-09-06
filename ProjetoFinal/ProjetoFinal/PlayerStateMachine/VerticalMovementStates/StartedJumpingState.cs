@@ -11,10 +11,14 @@ namespace ProjetoFinal.PlayerStateMachine.VerticalMovementStates
 {
     class StartedJumpingState : JumpingState
     {
+        VerticalMovementState state;
+
         public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
             player.Jump();
-            VerticalMovementState state = base.Update(playerId, gameTime, player, collisionLayer, playerStates);
+            player.MoveYBy(player.speed.Y);
+
+            state = base.Update(playerId, gameTime, player, collisionLayer, playerStates);
 
             if (state == this)
                 return playerStates[VerticalStateType.Jumping];

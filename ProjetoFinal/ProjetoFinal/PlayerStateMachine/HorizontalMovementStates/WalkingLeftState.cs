@@ -19,10 +19,9 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             player.FacingLeft = true;
             player.speed.X -= player.moveSpeed;
             player.speed.X *= player.friction;
-
             player.MoveXBy(player.speed.X);
 
-            if (!player.IsMovingHorizontally())
+            if (player.IsMovingHorizontally() || player.MapCollideX(player.speed.X))
                 return playerStates[HorizontalStateType.Idle];
             else
                 return this;
@@ -30,16 +29,14 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public override HorizontalMovementState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.StoppingWalkingLeft);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.StoppingWalkingLeft);
             return playerStates[HorizontalStateType.StoppingWalkingLeft];
         }
-
         public override HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.WalkingRight);
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateMessageType.Horizontal, (short)HorizontalStateType.WalkingRight);
             return playerStates[HorizontalStateType.WalkingRight];
-        }
-        
+        }        
         public override string ToString()
         {
             return "WalkingLeft";
