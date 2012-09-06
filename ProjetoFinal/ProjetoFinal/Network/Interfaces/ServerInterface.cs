@@ -57,7 +57,7 @@ namespace ProjetoFinal.Network
             if (this.netServer.ConnectionsCount > 0)
             {
                 NetOutgoingMessage om = netServer.CreateMessage();
-                om.Write((byte)gameMessage.MessageType);
+                om.Write((byte)gameMessage.GameMessageType);
                 gameMessage.Encode(om);
 
                 netServer.SendToAll(om, NetDeliveryMethod.ReliableUnordered);

@@ -13,22 +13,6 @@ namespace ProjetoFinal.PlayerStateMachine
 {
     abstract class PlayerState
     {
-        protected void OnPlayerStateChanged(short playerId, Player player, UpdatePlayerStateMessageType messageType, short nextState)
-        {
-            switch (messageType)
-            {
-                case UpdatePlayerStateMessageType.Action:
-                    player.ActionState = (ActionStateType)nextState;
-                    break;
-                case UpdatePlayerStateMessageType.Horizontal:
-                    player.HorizontalState = (HorizontalStateType)nextState;
-                    break;
-                case UpdatePlayerStateMessageType.Vertical:
-                    player.VerticalState = (VerticalStateType)nextState;
-                    break;
-            }
-
-            EventManager.Instance.ThrowPlayerStateChanged(this, new PlayerStateChangedEventArgs(playerId, player, messageType));
-        }
+        abstract protected void OnPlayerStateChanged(short playerId, Player player, UpdatePlayerStateType movementType, short nextState);
     }
 }

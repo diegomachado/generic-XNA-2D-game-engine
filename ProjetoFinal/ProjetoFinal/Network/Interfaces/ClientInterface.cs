@@ -77,7 +77,7 @@ namespace ProjetoFinal.Network
             if (this.netClient.ConnectionStatus == NetConnectionStatus.Connected)
             {
                 NetOutgoingMessage om = this.netClient.CreateMessage();
-                om.Write((byte)gameMessage.MessageType);
+                om.Write((byte)gameMessage.GameMessageType);
                 gameMessage.Encode(om);
 
                 this.netClient.SendMessage(om, NetDeliveryMethod.ReliableUnordered);

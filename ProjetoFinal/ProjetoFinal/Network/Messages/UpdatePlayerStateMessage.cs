@@ -9,7 +9,7 @@ using Lidgren.Network.Xna;
 
 namespace ProjetoFinal.Network.Messages
 {
-    enum UpdatePlayerStateMessageType : short
+    enum UpdatePlayerStateType : short
     {
         Action,
         Horizontal,
@@ -18,10 +18,11 @@ namespace ProjetoFinal.Network.Messages
 
     class UpdatePlayerStateMessage : IGameMessage
     {
-        public short playerId { get; set; }
-        public double messageTime { get; set; }
-        public Vector2 position { get; set; }
-        public UpdatePlayerStateMessageType messageType { get; set; }
+        public short PlayerId { get; set; }
+        public double MessageTime { get; set; }
+        public Vector2 Position { get; set; }
+        public short PlayerState { get; set; }
+        public UpdatePlayerStateType StateType { get; set; }
         
         public UpdatePlayerStateMessage(NetIncomingMessage im)
         {
@@ -29,32 +30,33 @@ namespace ProjetoFinal.Network.Messages
             Decode(im);
         }
 
-        public UpdatePlayerStateMessage(short id, Player player, UpdatePlayerStateMessageType mt)
+        public UpdatePlayerStateMessage(short id, Vector2 pos, short state, UpdatePlayerStateType st)
         {
-            playerId = id;
-            messageTime = NetTime.Now;
-            position = player.Position;
+            PlayerId = id;
+            MessageTime = NetTime.Now;
+            Position = pos;
+            StateType = st;
+            PlayerState = state;
         }
 
-        public GameMessageType MessageType
-        {
-            get { return GameMessageType.UpdatePlayerState; }
-        }
+        public virtual GameMessageType GameMessageType { get { return GameMessageType.UpdatePlayerState; } }
 
         public virtual void Decode(NetIncomingMessage im)
         {
-            playerId = im.ReadInt16();
-            messageTime = im.ReadDouble();
-            position = im.ReadVector2();
-            messageType = (UpdatePlayerStateMessageType)im.ReadInt16();
+            PlayerId = im.ReadInt16();
+            MessageTime = im.ReadDouble();
+            Position = im.ReadVector2();
+            StateType = (UpdatePlayerStateType)im.ReadInt16();
+            PlayerState = im.ReadInt16();
         }
 
         public virtual void Encode(NetOutgoingMessage om)
         {
-            om.Write(playerId);
-            om.Write(messageTime);
-            om.Write(position);
-            om.Write((short)messageType);
+            om.Write(PlayerId);
+            om.Write(MessageTime);
+            om.Write(Position);
+            om.Write((short)StateType);
+            om.Write(PlayerState);
         }
     }
 }

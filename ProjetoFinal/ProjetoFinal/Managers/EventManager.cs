@@ -17,8 +17,10 @@ namespace ProjetoFinal.Managers
 
         // Events
         public event EventHandler<PlayerStateChangedEventArgs> PlayerStateChanged; // When a player state has locally changed
+        public event EventHandler<PlayerMovementStateChangedEventArgs> PlayerMovementStateChanged; // Wheh a player movement state locally changed
         public event EventHandler<PlayerStateChangedWithArrowEventArgs> PlayerStateChangedWithArrow; // When a player state has locally changed and an arrow was shot
-        public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated; // When a message with updated information about a player arrives
+        public event EventHandler<PlayerStateUpdatedEventArgs> PlayerStateUpdated; // When a message with updated information about a player's state arrives
+        public event EventHandler<PlayerMovementStateUpdatedEventArgs> PlayerMovementStateUpdated; // When a message with updated information about a player's movement state arrives
         public event EventHandler<ClientConnectedEventArgs> ClientConnected; // When a message saying a new client connected arrives
         public event EventHandler<EventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
 
@@ -42,10 +44,22 @@ namespace ProjetoFinal.Managers
                 PlayerStateChanged(sender, playerStateChangedEventArgs);
         }
 
+        public void ThrowPlayerMovementStateChanged(object sender, PlayerMovementStateChangedEventArgs playerMovementStateChangedEventArgs)
+        {
+            if (PlayerMovementStateChanged != null)
+                PlayerMovementStateChanged(sender, playerMovementStateChangedEventArgs);
+        }
+
         public void ThrowPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
             if (PlayerStateUpdated != null)
                 PlayerStateUpdated(sender, playerStateUpdatedEventArgs);
+        }
+
+        public void ThrowPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs playerMovementStateUpdatedEventArgs)
+        {
+            if (PlayerMovementStateUpdated != null)
+                PlayerMovementStateUpdated(sender, playerMovementStateUpdatedEventArgs);
         }
 
         public void ThrowClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)

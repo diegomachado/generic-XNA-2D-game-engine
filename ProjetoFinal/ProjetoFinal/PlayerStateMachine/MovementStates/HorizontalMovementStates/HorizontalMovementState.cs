@@ -20,11 +20,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         StoppingWalkingRight
     }
 
-    abstract class HorizontalMovementState : PlayerState
+    abstract class HorizontalMovementState : MovementPlayerState
     {
         public abstract HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates);
 
         #region Public Messages
+
         public virtual HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             return this;
@@ -44,6 +45,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             return this;
         }
+
         #endregion
 
         #region Protected Methods
@@ -63,7 +65,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 corner2 = new Point(collisionBox.Right, collisionBox.Bottom);
             }
 
-            return (collisionLayer.TileIdByPixelPosition(corner1) || collisionLayer.TileIdByPixelPosition(corner2));
+            return (collisionLayer.GetTileValueByPixelPosition(corner1) || collisionLayer.GetTileValueByPixelPosition(corner2));
         }
 
         protected bool handleHorizontalCollision(Player localPlayer, Layer collisionLayer, double elapsedTime)

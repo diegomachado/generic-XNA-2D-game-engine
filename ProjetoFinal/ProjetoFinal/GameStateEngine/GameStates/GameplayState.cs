@@ -23,7 +23,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public GameplayState(short localPlayerId) : base()
         {
-            eventManager.PlayerStateUpdated += OnOtherClientPlayerStateUpdated;
+            eventManager.PlayerMovementStateUpdated += OnOtherClientPlayerMovementStateUpdated;
             eventManager.ClientDisconnected += OnClientDisconnected;
 
             playerManager = new PlayerManager();
@@ -93,7 +93,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         // Eventos de Network
 
-        private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs playerStateUpdatedEventArgs)
+        private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
             if (playerStateUpdatedEventArgs.PlayerId != localPlayerManager.playerId)
             {
@@ -101,7 +101,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                                                playerStateUpdatedEventArgs.Position,
                                                playerStateUpdatedEventArgs.Speed,
                                                playerStateUpdatedEventArgs.LocalTime,
-                                               playerStateUpdatedEventArgs.MovementType,
+                                               playerStateUpdatedEventArgs.StateType,
                                                playerStateUpdatedEventArgs.PlayerState);
             }
             else

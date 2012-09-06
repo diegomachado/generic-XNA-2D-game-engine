@@ -11,9 +11,10 @@ namespace ProjetoFinal.EventHeaders
     {
         public Vector2 ShotSpeed { get; set; }
 
-        public PlayerStateChangedWithArrowEventArgs(short playerId, Player player, Vector2 speed, UpdatePlayerStateMessageType movementType) : base(playerId, player, movementType)
+        public PlayerStateChangedWithArrowEventArgs(short playerId, Vector2 position, Vector2 shotSpeed, short state, UpdatePlayerStateType movementType)
+            : base(playerId, position, state, movementType)
         {
-            ShotSpeed = speed;
+            ShotSpeed = shotSpeed;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ProjetoFinal.Network.Messages.UpdatePlayerStateMessages
     {
         public Vector2 ShotSpeed { get; set; }
 
-        public UpdatePlayerStateWithArrowMessage(short id, Player player, Vector2 shotSpeed, UpdatePlayerStateMessageType mt) : base(id, player, mt)
+        public UpdatePlayerStateWithArrowMessage(short id, Vector2 position, Vector2 shotSpeed, short state, UpdatePlayerStateType mt) : base(id, position, state, mt)
         {
             this.ShotSpeed = shotSpeed;
         }
