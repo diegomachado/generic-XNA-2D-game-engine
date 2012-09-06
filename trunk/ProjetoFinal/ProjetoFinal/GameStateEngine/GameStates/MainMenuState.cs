@@ -19,9 +19,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             guiManager.AddElement(new Button("Exit Game", new Rectangle(100, 300, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnExitGameButtonPressed));
         }
 
-        public override void Update(InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
+        public override void Update(GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
         {
-            base.Update(inputManager, gameTime);
+            base.Update(gameTime);
 
             if (inputManager.Exit)
                 GameStatesManager.ExitGame();

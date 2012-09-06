@@ -6,8 +6,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-using ProjetoFinal.Entities;
 using OgmoLibrary;
+using ProjetoFinal.Entities;
 using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
@@ -19,18 +19,13 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         StartedJumping
     }
 
-    abstract class VerticalMovementState : MovementPlayerState
+    abstract class VerticalMovementState : PlayerState
     {
         public abstract VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates);
-
-        #region Public Messages
 
         public virtual VerticalMovementState Jumped(short playerId, Player player, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
             return this;
         }
-
-        #endregion
-
     }
 }

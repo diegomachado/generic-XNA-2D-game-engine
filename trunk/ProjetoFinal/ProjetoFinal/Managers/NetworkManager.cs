@@ -164,7 +164,7 @@ namespace ProjetoFinal.Managers
                                 UpdatePlayerMovementStateMessage updatePlayerMovementStateMessage = new UpdatePlayerMovementStateMessage(im);
                                 double localTime = im.SenderConnection.GetLocalTime(updatePlayerMovementStateMessage.MessageTime);
 
-                                Console.WriteLine("MANDANDO: " + updatePlayerMovementStateMessage.PlayerId + " - " + updatePlayerMovementStateMessage.Position + " - " + updatePlayerMovementStateMessage.Speed + " - " + updatePlayerMovementStateMessage.PlayerState + " - " + updatePlayerMovementStateMessage.StateType);
+                                //Console.WriteLine("MANDANDO: " + updatePlayerMovementStateMessage.PlayerId + " - " + updatePlayerMovementStateMessage.Position + " - " + updatePlayerMovementStateMessage.Speed + " - " + updatePlayerMovementStateMessage.PlayerState + " - " + updatePlayerMovementStateMessage.StateType);
 
                                 OnPlayerMovementStateUpdated(updatePlayerMovementStateMessage, localTime);
                                 
@@ -248,8 +248,7 @@ namespace ProjetoFinal.Managers
 
         private void SendPlayerMovementStateChangedMessage(short id, Vector2 position, Vector2 speed, short playerState, UpdatePlayerStateType stateType)
         {
-            Console.WriteLine("MANDANDO: " + id + " - " + position + " - " + speed + " - " + playerState + " - " + stateType);
-
+            //Console.WriteLine("MANDANDO: " + id + " - " + position + " - " + speed + " - " + playerState + " - " + stateType);
             networkInterface.SendMessage(new UpdatePlayerMovementStateMessage(id, position, speed, playerState, stateType));
         }
     }

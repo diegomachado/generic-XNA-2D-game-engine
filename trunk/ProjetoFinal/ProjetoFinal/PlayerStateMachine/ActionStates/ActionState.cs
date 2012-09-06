@@ -57,14 +57,14 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             player.ActionState = (ActionStateType)nextState;
 
-            EventManager.Instance.ThrowPlayerStateChanged(this, new PlayerStateChangedEventArgs(playerId, player.Position, nextState, movementType));
+            EventManager.Instance.ThrowPlayerStateChanged(this, new PlayerStateChangedEventArgs(playerId, player.position, nextState, movementType));
         }
 
         protected void OnPlayerStateChangedWithArrow(short playerId, Player player, Vector2 shotSpeed, UpdatePlayerStateType messageType, short nextState)
         {
             player.ActionState = (ActionStateType)nextState;
 
-            EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player.Position, shotSpeed, nextState, messageType));
+            EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player.position, shotSpeed, nextState, messageType));
         }
 
         #endregion

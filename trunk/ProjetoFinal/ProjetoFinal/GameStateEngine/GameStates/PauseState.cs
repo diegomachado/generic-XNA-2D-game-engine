@@ -11,7 +11,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 {
     class PauseState : GameState
     {
-        public override void Update(InputManager inputManager, GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (inputManager.Exit)
                 GameStatesManager.ExitGame();

@@ -11,13 +11,14 @@ namespace ProjetoFinal.GUI
     class GUIManager
     {
         List<GUIElement> elements;
+        InputManager inputManager = InputManager.Instance;
 
         public GUIManager()
         {
             elements = new List<GUIElement>();
         }
 
-        public void Update(InputManager inputManager)
+        public void Update()
         {
             foreach (GUIElement element in elements)
                 element.Update(inputManager);

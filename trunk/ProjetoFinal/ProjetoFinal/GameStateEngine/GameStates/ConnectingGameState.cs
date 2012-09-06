@@ -25,9 +25,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             guiManager.AddElement(new Button("Cancel", new Rectangle(300, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnCancelButtonClicked));
         }
 
-        public override void Update(Managers.InputManager inputManager, GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(inputManager, gameTime);
+            base.Update(gameTime);
 
             if (inputManager.Exit)
                 OnCancelButtonClicked();

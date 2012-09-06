@@ -34,9 +34,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             guiManager.AddElement(mainMenuButton);           
         }
 
-        public override void Update(Managers.InputManager inputManager, GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(inputManager, gameTime);
+            base.Update(gameTime);
 
             if (inputManager.Exit)
                 GameStatesManager.ResignState(this);

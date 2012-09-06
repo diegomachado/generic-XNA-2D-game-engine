@@ -55,12 +55,7 @@ namespace ProjetoFinal.Managers
 
         public void Draw(SpriteBatch spriteBatch, Point cameraPosition, Point screenSize)
         {
-            currentMap.DrawEfficiently(spriteBatch, cameraPosition, screenSize);
-        }
-
-        public void DrawPoorly(SpriteBatch spriteBatch, Point cameraPosition)
-        {
-            currentMap.Draw(spriteBatch, cameraPosition);
+            currentMap.Draw(spriteBatch, cameraPosition, screenSize);
         }
     }
 }

@@ -72,7 +72,7 @@ namespace ProjetoFinal.GameStateEngine
                 //states.RemoveAt(states.Count - 1);
 
                 // Update the screen.
-                state.Update(inputManager, gameTime/*, otherScreenHasFocus, coveredByOtherScreen*/);
+                state.Update(gameTime/*, otherScreenHasFocus, coveredByOtherScreen*/);
 
                 /*if (state.ScreenState == ScreenState.TransitionOn || state.ScreenState == ScreenState.Active)
                 {
@@ -99,6 +99,8 @@ namespace ProjetoFinal.GameStateEngine
 
         public override void Draw(GameTime gameTime)
         {
+            //Matrix scaleMatrix = Matrix.CreateScale(0.8f);
+            //spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, scaleMatrix);
             spriteBatch.Begin();
 
             foreach (GameState state in states)

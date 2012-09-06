@@ -11,6 +11,10 @@ namespace OgmoLibrary
     {
         public Point Position { get; set; }
         public int Id { get; set; }
+
+        public Tile()
+        {
+        }
         
         public Tile(Point position, int id)
         {

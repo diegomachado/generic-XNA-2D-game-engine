@@ -11,31 +11,25 @@ using ProjetoFinal.Entities.Utils;
 
 namespace ProjetoFinal.Entities
 {
-    class Player : Entity
+    class Player : DynamicEntity
     {
-        public Vector2 JumpForce { get; private set; }
-        public Vector2 WalkForce { get; private set; }
-        public float Friction { get; private set; }
-
         public VerticalStateType VerticalState { get; set; }
         public HorizontalStateType HorizontalState { get; set; }
         public ActionStateType ActionState { get; set; }
         public bool FacingLeft { get; set; }
+
+        public double LastUpdateTime;
 
         Vector2 weaponPosition;
         public Vector2 WeaponPosition
         {
             get
             {
+                // TODO: Refatorar saporra, pra não ficar criando Vector2 toda hora atoa
                 if (FacingLeft)
-                {
-                    // TODO: Refatorar saporra, pra não ficar criando Vector2 toda hora atoa
-                    return new Vector2(Width - weaponPosition.X, Height - weaponPosition.Y) + Position;
-                }
+                    return new Vector2(Width - weaponPosition.X, Height - weaponPosition.Y) + position;
                 else
-                {
-                    return weaponPosition + Position;
-                }
+                    return weaponPosition + position;
             }
             private set
             {
@@ -43,32 +37,46 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Player(Vector2 playerPosition) : base(playerPosition)
+        public Player(Vector2 _position) : base(_position)
         {
-            this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
-            this.MinSpeed = new Vector2(30, -500);
-            this.MaxSpeed = new Vector2(500, 500);
-            this.WalkForce = new Vector2(60, 0);
-            this.JumpForce = new Vector2(0, -480f);
-            this.WeaponPosition = new Vector2(29, 18);
-            this.Friction = 0.85f;
-            this.BoundingBox = new Rectangle(5, 1, 24, 30);
-            this.VerticalState = VerticalStateType.Idle;
-            this.HorizontalState = HorizontalStateType.Idle;
-            this.ActionState = ActionStateType.Idle;
+            position = _position;
+            isMovingLeft = isMovingRight = false;       
+            WeaponPosition = new Vector2(29, 18);
+            VerticalState = VerticalStateType.Idle;
+            HorizontalState = HorizontalStateType.Idle;
+            ActionState = ActionStateType.Idle;
+        }
 
-            Entity.Entities.Add(this);
+        public override void LoadContent()
+        {
+            base.LoadContent();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (FacingLeft)
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCameraCoordinates(position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
             else
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCameraCoordinates(Position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCameraCoordinates(position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
-            Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
-            Util.DrawRectangle(spriteBatch, new Rectangle(this.CollisionBox.X, this.CollisionBox.Y, 24, 30), 1, Color.Yellow);
+            // TODO: Flippar a boudingBox junto
+            //Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
         }
+
+        // Passar os states pra dentro de player???
+        /*public void DrawDebug(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        {
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
+            spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 20) - camera.Position, Color.White);
+            spriteBatch.DrawString(spriteFont, "" + localPlayerVerticalState, new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 40) - camera.Position, Color.White);
+            spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.position.X, new Vector2(5f, 05f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.position.Y, new Vector2(5f, 25f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.speed.X, new Vector2(5f, 45f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.speed.Y, new Vector2(5f, 65f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)camera.Position.X, new Vector2(5f, 85f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)camera.Position.Y, new Vector2(5f, 105f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Horizontal State: " + localPlayerHorizontalState, new Vector2(5f, 125f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Vertical State: " + localPlayerVerticalState, new Vector2(5f, 145f), Color.White);
+        }*/
     }
 }

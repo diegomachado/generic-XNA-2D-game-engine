@@ -20,11 +20,11 @@ namespace ProjetoFinal.GameStateEngine
             guiManager = new GUIManager();
         }
 
-        public override void Update(InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
+        public override void Update(GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
         {
-            base.Update(inputManager, gameTime);
+            base.Update(gameTime);
 
-            guiManager.Update(inputManager);
+            guiManager.Update();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)

@@ -11,6 +11,7 @@ using OgmoLibrary;
 
 namespace ProjetoFinal.Entities
 {
+    // TODO: Setar todo mundo que não muda como CONST
     class Entity
     {
         public enum Type
@@ -24,12 +25,6 @@ namespace ProjetoFinal.Entities
         [Flags]
         public enum Flags
         {
-            /*
-             *  Usage:
-             *      if ((flags & Flags.MapOnly) == Flags.MapOnly) -> Has 
-             *      if ((flags & ~Flags.MapOnly) == Flags.MapOnly) -> Has Not
-             */
-
             None = 0,
             Gravity = 1,
             Ghost = 2,
@@ -39,112 +34,24 @@ namespace ProjetoFinal.Entities
         static public List<Entity> Entities = new List<Entity>();
 
         public Type type;
-        public Flags flags;
-        public bool Dead { get; set; }                
-        public Animation baseAnimation;                
-        public double LastUpdateTime { get; set; }        
+        public Flags flags;             
+        public Animation baseAnimation;
+
+        public bool visible = true;
+        public bool collidable = true;
+
+        public Vector2 position;
+        public Point origin;
+     
         public int Width { get { return baseAnimation.FrameSize.X; } }
         public int Height { get { return baseAnimation.FrameSize.Y; } }
-
-        private Vector2 position;
-        public Vector2 Position { get; set; }
-        public float PositionX
-        {
-            get { return position.X; }
-            set
-            {
-                position.X = value;
-            }
-        }
-        public float PositionY
-        {
-            get { return position.Y; }
-            set
-            {
-                position.Y = value;
-            }
-        }
-
-        public bool MoveLeft { get; set; }
-        public bool MoveRight { get; set; }
-
-        protected Vector2 speed, minSpeed, maxSpeed;
-        public Vector2 Speed
-        {
-            get { return speed; }
-            set { speed = value; }
-        }
-        public Vector2 MinSpeed
-        {
-            get { return minSpeed; }
-            set { minSpeed = value; }
-        }
-        public Vector2 MaxSpeed
-        {
-            get { return maxSpeed; }
-            set { maxSpeed = value; }
-        }
-        public float SpeedX
-        {
-            get { return speed.X; }
-            set
-            {
-                if (Math.Abs(value) < MinSpeed.X)
-                    speed.X = 0;
-                else
-                    speed.X = value;
-            }
-        }
-        public float SpeedY
-        {
-            get { return speed.Y; }
-            set
-            {
-                if (Math.Abs(value) > MaxSpeed.Y)
-                    speed.Y = MaxSpeed.Y;
-                else
-                    speed.Y = value;
-            }
-        }        
-
-        public bool IsMovingHorizontally { get { return (speed.X == 0); } }
-        public bool IsMovingVertically { get { return (speed.Y == 0); } }
-
-        public Vector2 acceleration;
-        public Vector2 Acceleration { get; set; }
-        public float AccelerationX
-        {
-            get { return acceleration.X; }
-            set
-            {
-                acceleration.X = value;
-            }
-        }
-        public float AccelerationY
-        {
-            get { return acceleration.Y; }
-            set
-            {
-                acceleration.Y = value;
-            }
-        }
-        public Vector2 Gravity { get; protected set; }
-
-        // TODO: Guardar esses valores pra não calcular sempre
-        public Vector2 TextureCenter { get { return new Vector2(Width / 2, Height / 2); } } 
-        public Vector2 Center { get { return Position + TextureCenter; } }        
+        public Vector2 Center { get { return position + baseAnimation.TextureCenter; } }        
 
         protected Rectangle boundingBox;
         public virtual Rectangle BoundingBox
         {
-            get
-            {
-                return boundingBox;
-            }
-            protected set
-            {
-                boundingBox = value;
-            }
+            get { return boundingBox; }
+            protected set { boundingBox = value; }
         }
         protected Rectangle collisionBox;
         public Rectangle CollisionBox
@@ -152,24 +59,18 @@ namespace ProjetoFinal.Entities
             get
             {
                 collisionBox = BoundingBox;
-                collisionBox.Offset((int)Position.X, (int)Position.Y);
+                collisionBox.Offset((int)position.X, (int)position.Y);
                 return collisionBox;
             }
         }
 
-        public Entity(Vector2 position)
+        public Entity(Vector2 position, Rectangle boundingBox = new Rectangle())
         {
             type = Type.Generic;
-            flags = Flags.Gravity;
-            Dead = false;
-            Position = position;
-            MoveLeft = false;
-            MoveRight = false;            
-            speed = Vector2.Zero;
-            minSpeed = new Vector2(0, 0);
-            maxSpeed = new Vector2(0, 0);
-            Acceleration = Vector2.Zero;
-            Gravity = new Vector2(0, 20f);            
+            flags = Flags.None;
+            this.position = position;
+            this.boundingBox = boundingBox;
+            Entities.Add(this);
         }
 
         ~Entity()
@@ -177,146 +78,183 @@ namespace ProjetoFinal.Entities
             Entity.Entities.Remove(this);
         }
 
+        #region Game Logic
+        public virtual void Update(GameTime gameTime)
+        {
+        }
         public virtual void LoadContent()
         {
             baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
         }
-
-        public virtual void Update()
-        {
-            if (!MoveLeft && !MoveRight)
-                StopMove();
-
-            if (MoveLeft)
-                AccelerationX = -0.5f;
-            else if (MoveRight)
-                AccelerationX = 0.5f;
-
-            if ((flags & Flags.Gravity) == Flags.Gravity)
-                AccelerationY = 0.75f;
-
-            baseAnimation.Update();
-        }
-
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            baseAnimation.Draw(spriteBatch, new Vector2(0,0));
+            baseAnimation.Draw(spriteBatch, new Vector2(0,0), true);
         }
+        #endregion
 
-        // TODO: Generalizar pra qualquer Layer?
-        public void OnMove(Vector2 offset)
+        #region Collision
+        private int sign;
+        private Tile tileCheck;
+        private Point tilePosition;
+        private MapManager mapManager;
+        private Rectangle collisionBoxOffset;
+        private Point corner1, corner2;
+        Vector2 moveTemp = Vector2.Zero;
+        float moveTempX = 0;
+        float moveTempY = 0;
+
+        public void MoveBy(Vector2 moveAmount)
         {
-            if (offset == Vector2.Zero) return;
+            if (moveAmount == Vector2.Zero) return;
 
-            /*
-                double NewX = 0;
-                double NewY = 0;
- 
-                MoveX *= CFPS::FPSControl.GetSpeedFactor();
-                MoveY *= CFPS::FPSControl.GetSpeedFactor();
- 
-                if(MoveX != 0) {
-                    if(MoveX >= 0)     NewX =  CFPS::FPSControl.GetSpeedFactor();
-                    else             NewX = -CFPS::FPSControl.GetSpeedFactor();
-                }
- 
-                if(MoveY != 0) {
-                    if(MoveY >= 0)     NewY =  CFPS::FPSControl.GetSpeedFactor();
-                    else             NewY = -CFPS::FPSControl.GetSpeedFactor();
-                }
-            */
+            moveTemp += moveAmount;
+            moveAmount.X = (float)Math.Round(moveAmount.X, MidpointRounding.AwayFromZero);
+            moveAmount.Y = (float)Math.Round(moveAmount.Y, MidpointRounding.AwayFromZero);
+            moveTemp -= moveAmount;
 
-            Vector2 newPosition = Position + offset;            
-            Point newPositionPoint = new Point((int)newPosition.X, (int)newPosition.Y);
-
-            while (true)
+            if ((flags & ~Flags.Ghost) == Flags.Ghost)
             {
-                if ((flags & Flags.Ghost) == Flags.Ghost)
-                {
-                    PositionValidOnMap(newPositionPoint);
-                    Position += newPosition;
-                }
-                else
-                {
-                    if(PositionValidOnMap(new Point(newPositionPoint.X, (int)Position.Y)))
-                        PositionX += newPosition.X;
-                    else
-                        SpeedX = 0;
-
-                    if(PositionValidOnMap(new Point((int)Position.X, newPositionPoint.Y)))
-                        PositionY += newPosition.Y;
-                    else
-                        SpeedY = 0;
-                }
-
-                offset -= newPosition;
-
-                if(newPosition.X > 0 && offset.X <= 0) newPosition.X = 0;
-                if(newPosition.X < 0 && offset.X >= 0) newPosition.X = 0;
-                if(newPosition.Y > 0 && offset.Y <= 0) newPosition.Y = 0;
-                if(newPosition.Y < 0 && offset.Y >= 0) newPosition.Y = 0;
-                if(offset.X == 0) newPosition.X = 0;
-                if(offset.Y == 0) newPosition.Y = 0;
-                if(offset.X == 0 && offset.Y == 0) break;
-                if(newPosition.X == 0 && newPosition.Y == 0) break;
+                position += moveAmount;
             }
+            else
+            {
+                if (moveAmount.X != 0)
+                {
+                    sign = Math.Sign(moveAmount.X);
 
+                    while (moveAmount.X != 0)
+                    {
+                        if (MapCollideX(sign)) break;
+                        else position.X += sign;
+                        moveAmount.X -= sign;
+                    }
+                }
+                if (moveAmount.Y != 0)
+                {
+                    sign = Math.Sign(moveAmount.Y);
+
+                    while (moveAmount.Y != 0)
+                    {
+                        if (MapCollideY(sign)) break;
+                        else position.Y += sign;
+                        moveAmount.Y -= sign;
+                    }
+                }
+            }
         }
-        public void StopMove()
+        public void MoveXBy(float moveAmountX)
         {
-            if (SpeedX > 0)
-                AccelerationX = -1;
+            if (moveAmountX == 0) return;
 
-            if (SpeedX < 0)
-                AccelerationX = 1;
+            moveTempX += moveAmountX;
+            moveAmountX = (float)Math.Round(moveAmountX, MidpointRounding.AwayFromZero);
+            moveTempX -= moveAmountX;
 
-            if (SpeedX < 2.0f && SpeedX > -2.0f)
+            if ((flags & ~Flags.Ghost) == Flags.Ghost)
             {
-                AccelerationX = 0;
-                SpeedX = 0;
+                position.X += moveAmountX;
             }
-        }
-
-        public bool PositionValidOnMap(Point offset)
-        {
-            bool valid = true;
-            Point tileSize = MapManager.Instance.TileSize;
-
-            int startX  = (offset.X + CollisionBox.X) / tileSize.X;
-            int endX    = ((offset.X + CollisionBox.X) + Width - CollisionBox.Width - 1) / tileSize.X;
-            int startY  = (offset.Y + CollisionBox.Y) / tileSize.Y;            
-            int endY    = ((offset.Y + CollisionBox.Y) + Width - CollisionBox.Width - 1) / tileSize.Y;
-
-            for (int y = startY; y <= endY; y++)
+            else
             {
-                for (int x = startX; x <= endX; x++)
+                if (moveAmountX != 0)
                 {
-                    Point tilePosition = new Point(x * tileSize.X, y * tileSize.Y);
+                    sign = Math.Sign(moveAmountX);
 
-                    if (!MapManager.Instance.CollisionLayer.TileIdByPixelPosition(tilePosition))
-                        valid = false;
+                    while (moveAmountX != 0)
+                    {
+                        if (MapCollideX(sign)) break;
+                        else position.X += sign;
+                        moveAmountX -= sign;
+                    }
                 }
             }
+        }
+        public void MoveYBy(float moveAmountY)
+        {
+            if (moveAmountY == 0) return;
 
-            if((flags & ~Flags.MapOnly) == Flags.MapOnly)
+            moveTempY += moveAmountY;
+            moveAmountY = (float)Math.Round(moveAmountY, MidpointRounding.AwayFromZero);
+            moveTempY -= moveAmountY;
+
+            if ((flags & ~Flags.Ghost) == Flags.Ghost)
             {
-                foreach(Entity entity in Entities)
-                    if (!PositionValidOnEntity(entity, offset))
-                        valid = false;                
+                position.Y += moveAmountY;
+            }
+            else
+            {
+                if (moveAmountY != 0)
+                {
+                    sign = Math.Sign(moveAmountY);
+
+                    while (moveAmountY != 0)
+                    {
+                        if (MapCollideY(sign)) break;
+                        else position.Y += sign;
+                        moveAmountY -= sign;
+                    }
+                }
+            }
+        }
+
+        public bool MapCollideX(float moveAmount)
+        {
+            if (moveAmount < 0)
+            {
+                corner1.X = CollisionBox.Left;
+                corner1.Y = CollisionBox.Top + 1;
+                corner2.X = CollisionBox.Left;
+                corner2.Y = CollisionBox.Bottom - 1;
+            }
+            else
+            {
+                corner1.X = CollisionBox.Right;
+                corner1.Y = CollisionBox.Top + 1;
+                corner2.X = CollisionBox.Right;
+                corner2.Y = CollisionBox.Bottom - 1;
             }
 
-            return valid;
+            return (TilePixelCollision(corner1) || TilePixelCollision(corner2));
         }
-        public bool PositionValidTile(Tile tile)
-        {            
-            return true;
+        public bool MapCollideY(float moveAmount)
+        {
+            if (moveAmount < 0)
+            {
+                corner1.X = CollisionBox.Left + 1;
+                corner1.Y = CollisionBox.Top;
+                corner2.X = CollisionBox.Right - 1;
+                corner2.Y = CollisionBox.Top;
+            }
+            else
+            {
+                corner1.X = CollisionBox.Left + 1;
+                corner1.Y = CollisionBox.Bottom;
+                corner2.X = CollisionBox.Right - 1;
+                corner2.Y = CollisionBox.Bottom;
+            }
+
+            return (TilePixelCollision(corner1) || TilePixelCollision(corner2));
+        }        
+        private bool TileCollision(Point tilePosition)
+        {
+            tileCheck = MapManager.Instance.CollisionLayer.Tiles[tilePosition];
+            return (tileCheck.Id == 0) ? false : true;
         }
+        private bool TilePixelCollision(Point pixelPosition)
+        {
+            mapManager = MapManager.Instance;
+            tilePosition.X = pixelPosition.X / mapManager.TileSize.X;
+            tilePosition.Y = pixelPosition.Y / mapManager.TileSize.Y;
+            tileCheck = mapManager.CollisionLayer.Tiles[tilePosition];
+            return (tileCheck.Id == 0) ? false : true;
+        }        
+
         public bool PositionValidOnEntity(Entity entity, Point offset)
         {
-            Rectangle collisionBoxOffset = entity.CollisionBox;
+            collisionBoxOffset = entity.CollisionBox;
             collisionBoxOffset.Offset(offset);
 
-            if (this != entity && !entity.Dead && entity.Collides(collisionBoxOffset))
+            if (this != entity && entity.Collides(collisionBoxOffset))
             {
                 EntityCollision entityCollision = new EntityCollision(this, entity);
                 EntityCollision.EntityCollisions.Add(entityCollision);
@@ -326,7 +264,6 @@ namespace ProjetoFinal.Entities
 
             return true;
         }
-
         public bool Collides(Rectangle collisionBox)
         {
             return CollisionBox.Intersects(collisionBox);
@@ -334,6 +271,7 @@ namespace ProjetoFinal.Entities
         public virtual bool OnCollision(Entity entity)
         {
             return true;
-        }        
+        }
+        #endregion
     }
 }

@@ -25,7 +25,7 @@ namespace ProjetoFinal.PlayerStateMachine
                     break;
             }
 
-            EventManager.Instance.ThrowPlayerMovementStateChanged(this, new PlayerMovementStateChangedEventArgs(playerId, player.Position, player.Speed, nextState, movementType));
+            EventManager.Instance.ThrowPlayerMovementStateChanged(this, new PlayerMovementStateChangedEventArgs(playerId, player.position, player.speed, nextState, movementType));
         }
     }
 }

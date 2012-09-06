@@ -20,6 +20,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         ArrowManager arrowManager;
         MapManager mapManager = MapManager.Instance;
         Camera camera = Camera.Instance;
+        DynamicEntity bear;
 
         public GameplayState(short localPlayerId) : base()
         {
@@ -48,11 +49,14 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             mapManager.Content = content;
             mapManager.LoadMap(MapType.Level1);
+            bear = new DynamicEntity(new Vector2(200, 32));
+            bear.LoadContent();
+            localPlayerManager.LocalPlayer.LoadContent();
         }
 
-        public override void Update(InputManager inputManager, GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(inputManager, gameTime);
+            base.Update(gameTime);
 
             if (inputManager.Exit)
                 GameStatesManager.ExitGame();
@@ -60,12 +64,13 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             if (inputManager.Pause)
                 GameStatesManager.AddState(new PauseState());
 
-            localPlayerManager.Update(gameTime, inputManager, mapManager.CollisionLayer);
-            camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
-            
-            playerManager.Update(gameTime, mapManager.CollisionLayer);
+            localPlayerManager.Update(gameTime);
+            //playerManager.Update(gameTime, mapManager.CollisionLayer);
             arrowManager.Update(gameTime, mapManager.CollisionLayer);
+            //bear.Update(gameTime);
+            camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);                        
 
+            /*
             foreach (EntityCollision entityCollision in EntityCollision.EntityCollisions)
             {
                 Entity entityA = entityCollision.entityA;
@@ -75,23 +80,31 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                     entityB.OnCollision(entityA);
             }
             EntityCollision.EntityCollisions.Clear();
+             */
+
+            WeakReference gcTracker = new WeakReference(new object());
+
+            //if (!gcTracker.IsAlive)
+            //{
+            //    Console.WriteLine("A garbage collection occurred!");
+            //    gcTracker = new WeakReference(new object());
+            //}
+
+            //if(gameTime.IsRunningSlowly)
+            //    Console.WriteLine("Is Running Slowly!");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             mapManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.ScreenSize);
             localPlayerManager.Draw(spriteBatch, spriteFont);
-            playerManager.Draw(spriteBatch, spriteFont);
+            //playerManager.Draw(spriteBatch, spriteFont);
             arrowManager.Draw(spriteBatch, spriteFont);
+            //bear.Draw(spriteBatch, spriteFont);
+            FPSCounter(spriteBatch, spriteFont, gameTime);
         }
 
-        // TODO: REVER PORQUE FUNCIONOU SEM O TILESIZE_X e TILESIZE_Y em Map.cs depois do refactoring do Guifes
-        //private Vector2 ViewportVector(Point tileSize)
-        //{
-        //    return new Vector2(graphicsManager.ScreenSize.X + tileSize.X, graphicsManager.ScreenSize.Y + tileSize.Y);
-        //}
-
-        // Eventos de Network
+        #region Network Events
 
         private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs playerStateUpdatedEventArgs)
         {
@@ -110,10 +123,28 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 Console.WriteLine("Olha a merda > " + playerStateUpdatedEventArgs.PlayerId);
             }
         }
-
         private void OnClientDisconnected(object sender, EventArgs eventArgs)
         {
             GameStatesManager.ResignState(this);
+        }
+
+        #endregion
+
+        float fps;
+        Texture2D debugBackground;
+        Color debugColor;
+        Rectangle debugRectangleBase;
+        Vector2 fpsTextPos;
+        private void FPSCounter(SpriteBatch spriteBatch, SpriteFont spriteFont, GameTime gameTime)
+        {
+            debugBackground = TextureManager.Instance.GetPixelTextureByColor(Color.Black);
+            debugRectangleBase = new Rectangle(graphicsManager.ScreenSize.X - 80, 0, 100, 40);
+            debugColor = new Color(0, 0, 0, 0.5f);
+            fps = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
+            fpsTextPos = new Vector2(graphicsManager.ScreenSize.X - 65, 10);
+
+            spriteBatch.Draw(debugBackground, debugRectangleBase, debugColor);
+            spriteBatch.DrawString(spriteFont, "FPS: " + Math.Round(fps), fpsTextPos, Color.White);            
         }
     }
 }

@@ -15,11 +15,12 @@ namespace ProjetoFinal.GameStateEngine
         TransitionOff,
         Hidden,
     }
-
+    
     abstract class GameState
     {
         GameStateState state = GameStateState.TransitionOn;
-        
+
+        protected InputManager inputManager = InputManager.Instance;
         protected GraphicsManager graphicsManager = GraphicsManager.Instance;
         protected TextureManager textureManager = TextureManager.Instance;
         protected EventManager eventManager = EventManager.Instance;
@@ -33,9 +34,11 @@ namespace ProjetoFinal.GameStateEngine
 
         public bool IsPopup { get; protected set; }
 
+        // TODO: Adicionar Método Initialize
+
         public virtual void LoadContent(ContentManager content) { }
 
-        public virtual void Update(InputManager inputManager, GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/) { }
+        public virtual void Update(GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/) { }
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
