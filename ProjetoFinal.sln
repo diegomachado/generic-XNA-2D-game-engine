@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OgmoLibrary", "ProjetoFinal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugPipeline", "DebugPipeline\DebugPipeline.csproj", "{3A632605-A2DE-4421-82DC-B6D2B0711E03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceUtilityWin", "ProjetoFinal\PerformanceUtility\PerformanceUtility\PerformanceUtility\PerformanceUtilityWin.csproj", "{AD3A8C77-C57B-4849-B382-5E9D7E999787}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -87,6 +89,18 @@ Global
 		{3A632605-A2DE-4421-82DC-B6D2B0711E03}.Release|x64.Build.0 = Release|x64
 		{3A632605-A2DE-4421-82DC-B6D2B0711E03}.Release|x86.ActiveCfg = Release|x86
 		{3A632605-A2DE-4421-82DC-B6D2B0711E03}.Release|x86.Build.0 = Release|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Debug|x64.ActiveCfg = Debug|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Debug|x86.ActiveCfg = Debug|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Debug|x86.Build.0 = Debug|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Release|Any CPU.ActiveCfg = Release|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Release|Mixed Platforms.Build.0 = Release|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Release|x64.ActiveCfg = Release|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Release|x86.ActiveCfg = Release|x86
+		{AD3A8C77-C57B-4849-B382-5E9D7E999787}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
