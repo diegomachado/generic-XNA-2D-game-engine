@@ -68,7 +68,7 @@ namespace OgmoLibrary
                         sourceRectangle.X = (id * tileSize.X) % spriteSheet.Width;
                         sourceRectangle.Y = ((id * tileSize.X) / spriteSheet.Width) * tileSize.Y;
 
-                        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.Peru);
+                        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White);
                     }
                 }
             }

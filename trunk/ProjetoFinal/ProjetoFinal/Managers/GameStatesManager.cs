@@ -17,15 +17,22 @@ namespace ProjetoFinal.GameStateEngine
 
         SpriteBatch spriteBatch;
         SpriteFont spriteFont;
+        Game game;
 
         InputManager inputManager = InputManager.Instance;
 
         public bool TraceEnabled { get; set; }
 
-        public GameStatesManager(Game game) : base(game) { }
+        public GameStatesManager(Game game) : base(game) 
+        {
+            this.game = game;
+        }
 
         public override void Initialize()
         {
+            foreach (GameState state in states)
+                state.Initialize(game, spriteFont);
+
             base.Initialize();
 
             //isInitialized = true;
