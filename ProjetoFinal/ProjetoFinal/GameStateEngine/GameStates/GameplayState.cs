@@ -20,7 +20,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         ArrowManager arrowManager;
         MapManager mapManager = MapManager.Instance;
         Camera camera = Camera.Instance;
-        DynamicEntity bear;
 
         public GameplayState(short localPlayerId) : base()
         {
@@ -45,19 +44,20 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 this.playerManager.AddPlayer(id);
         }
 
+        public override void Initialize(Game game, SpriteFont spriteFont)
+        {
+            base.Initialize(game, spriteFont);
+        }
+
         public override void LoadContent(ContentManager content) 
         {
             mapManager.Content = content;
             mapManager.LoadMap(MapType.Level1);
-            bear = new DynamicEntity(new Vector2(200, 32));
-            bear.LoadContent();
             localPlayerManager.LocalPlayer.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-
             if (inputManager.Exit)
                 GameStatesManager.ExitGame();
 
@@ -65,9 +65,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 GameStatesManager.AddState(new PauseState());
 
             localPlayerManager.Update(gameTime);
+
             //playerManager.Update(gameTime, mapManager.CollisionLayer);
             arrowManager.Update(gameTime, mapManager.CollisionLayer);
-            //bear.Update(gameTime);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);                        
 
             /*
@@ -81,17 +81,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             }
             EntityCollision.EntityCollisions.Clear();
              */
-
-            WeakReference gcTracker = new WeakReference(new object());
-
-            //if (!gcTracker.IsAlive)
-            //{
-            //    Console.WriteLine("A garbage collection occurred!");
-            //    gcTracker = new WeakReference(new object());
-            //}
-
-            //if(gameTime.IsRunningSlowly)
-            //    Console.WriteLine("Is Running Slowly!");
+            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -100,8 +90,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             localPlayerManager.Draw(spriteBatch, spriteFont);
             //playerManager.Draw(spriteBatch, spriteFont);
             arrowManager.Draw(spriteBatch, spriteFont);
-            //bear.Draw(spriteBatch, spriteFont);
-            FPSCounter(spriteBatch, spriteFont, gameTime);
+            //FPSCounter(spriteBatch, spriteFont, gameTime);
         }
 
         #region Network Events
@@ -130,6 +119,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         #endregion
 
+        /*
         float fps;
         Texture2D debugBackground;
         Color debugColor;
@@ -146,5 +136,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             spriteBatch.Draw(debugBackground, debugRectangleBase, debugColor);
             spriteBatch.DrawString(spriteFont, "FPS: " + Math.Round(fps), fpsTextPos, Color.White);            
         }
+         */
     }
 }
