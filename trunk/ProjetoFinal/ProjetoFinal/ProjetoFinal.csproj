@@ -132,6 +132,16 @@
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateUpdatedEventArgs.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameDebugTools\DebugCommandUI.cs" />
+    <Compile Include="GameDebugTools\DebugManager.cs" />
+    <Compile Include="GameDebugTools\DebugSystem.cs" />
+    <Compile Include="GameDebugTools\FpsCounter.cs" />
+    <Compile Include="GameDebugTools\IDebugCommandHost.cs" />
+    <Compile Include="GameDebugTools\KeyboardUtils.cs" />
+    <Compile Include="GameDebugTools\Layout.cs" />
+    <Compile Include="GameDebugTools\RemoteDebugCommand.cs" />
+    <Compile Include="GameDebugTools\StringBuilderExtensions.cs" />
+    <Compile Include="GameDebugTools\TimeRuler.cs" />
     <Compile Include="GameStateEngine\GameStates\ConnectingGameState.cs" />
     <Compile Include="GameStateEngine\NetworkGUIGameState.cs" />
     <Compile Include="GameStateEngine\NetworkGameState.cs" />

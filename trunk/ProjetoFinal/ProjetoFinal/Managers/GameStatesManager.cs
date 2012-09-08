@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ProjetoFinal.Managers;
-using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
+using PerformanceUtility.GameDebugTools;
+
+using ProjetoFinal.Managers;
 
 namespace ProjetoFinal.GameStateEngine
 {

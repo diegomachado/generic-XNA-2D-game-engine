@@ -34,46 +34,54 @@ namespace ProjetoFinal.Managers
         }
 
         #region Keyboard Input
-        public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape); } }
 
-        public bool Jump { 
-            get 
+        public bool Jump
+        {
+            get
             {
                 return keyboardState.IsKeyDown(Keys.Space) ||
                        keyboardState.IsKeyDown(Keys.Up) ||
-                       keyboardState.IsKeyDown(Keys.W);                   
-            } 
+                       keyboardState.IsKeyDown(Keys.W);
+            }
         }
-        public bool Left { 
+        public bool Left 
+        { 
             get 
             { 
                 return keyboardState.IsKeyDown(Keys.Left) ||
                        keyboardState.IsKeyDown(Keys.A); 
             } 
         }
-        public bool PreviouslyLeft { 
+        public bool PreviouslyLeft 
+        { 
             get 
             { 
                 return previousKeyboardState.IsKeyDown(Keys.Left) ||
                        previousKeyboardState.IsKeyDown(Keys.A);
             } 
         }
-        public bool Right { 
+        public bool Right 
+        { 
             get 
             {
                 return keyboardState.IsKeyDown(Keys.Right) ||
                        keyboardState.IsKeyDown(Keys.D); 
             } 
         }
-        public bool PreviouslyRight { 
+        public bool PreviouslyRight 
+        { 
             get 
             { 
                 return previousKeyboardState.IsKeyDown(Keys.Right) ||
                        previousKeyboardState.IsKeyDown(Keys.D);
             } 
         }
+
+        public bool Exit { get { return keyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape); } }
         public bool Pause { get { return keyboardState.IsKeyDown(Keys.P) && previousKeyboardState.IsKeyUp(Keys.P); } }
         public bool BackSpace { get { return keyboardState.IsKeyDown(Keys.Back) && previousKeyboardState.IsKeyUp(Keys.Back); } }
+
+        #endregion
 
         public String TextInput
         {
@@ -118,7 +126,13 @@ namespace ProjetoFinal.Managers
                 return buffer;
             }
         }
-    
+
+        #region Debugger
+
+        public bool ToggleFPS      { get { return keyboardState.IsKeyDown(Keys.D1); }}
+        public bool ToggleRuler    { get { return keyboardState.IsKeyDown(Keys.D2); }}
+        public bool ToggleRulerLog { get { return keyboardState.IsKeyDown(Keys.D3); }}
+
         #endregion
         
         #region Mouse Input

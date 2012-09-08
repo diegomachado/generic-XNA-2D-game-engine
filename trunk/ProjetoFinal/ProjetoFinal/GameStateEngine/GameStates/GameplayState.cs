@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using PerformanceUtility.GameDebugTools;
 
 using ProjetoFinal.Managers;
 using ProjetoFinal.Entities;
@@ -58,6 +59,20 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void Update(GameTime gameTime)
         {
+            DebugSystem.Instance.TimeRuler.StartFrame();
+
+            if (inputManager.ToggleFPS)
+                DebugSystem.Instance.FpsCounter.Visible = !DebugSystem.Instance.FpsCounter.Visible;
+
+            if (inputManager.ToggleRuler)
+                DebugSystem.Instance.TimeRuler.Visible = !DebugSystem.Instance.TimeRuler.Visible;
+
+            if (inputManager.ToggleRulerLog)
+            {
+                DebugSystem.Instance.TimeRuler.Visible = true;
+                DebugSystem.Instance.TimeRuler.ShowLog = !DebugSystem.Instance.TimeRuler.ShowLog;
+            }
+
             if (inputManager.Exit)
                 GameStatesManager.ExitGame();
 
@@ -65,10 +80,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 GameStatesManager.AddState(new PauseState());
 
             localPlayerManager.Update(gameTime);
-
             //playerManager.Update(gameTime, mapManager.CollisionLayer);
             arrowManager.Update(gameTime, mapManager.CollisionLayer);
-            camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);                        
+            camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
 
             /*
             foreach (EntityCollision entityCollision in EntityCollision.EntityCollisions)
@@ -86,10 +100,20 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
+            DebugSystem.Instance.TimeRuler.StartFrame();
+
+            DebugSystem.Instance.TimeRuler.BeginMark("Map Draw", Color.Red);
             mapManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.ScreenSize);
+            DebugSystem.Instance.TimeRuler.EndMark("Map Draw");
+
+            DebugSystem.Instance.TimeRuler.BeginMark("Player Draw", Color.Yellow);
             localPlayerManager.Draw(spriteBatch, spriteFont);
+            DebugSystem.Instance.TimeRuler.EndMark("Player Draw");
+
             //playerManager.Draw(spriteBatch, spriteFont);
+            DebugSystem.Instance.TimeRuler.BeginMark("Arrows Draw", Color.Blue);
             arrowManager.Draw(spriteBatch, spriteFont);
+            DebugSystem.Instance.TimeRuler.EndMark("Arrows Draw");
             //FPSCounter(spriteBatch, spriteFont, gameTime);
         }
 
