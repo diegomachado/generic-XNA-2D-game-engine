@@ -61,6 +61,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugFont.spritefont">
+      <Name>DebugFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="maps\unbearable.oep">
       <Name>unbearable</Name>
     </None>

@@ -42,12 +42,7 @@ namespace ProjetoFinal.GameStateEngine
 
         public virtual void Update(GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/) { }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
-        {
-            float frameRate;
-            frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
-            spriteBatch.DrawString(spriteFont, "FPS: " + Math.Round(frameRate), new Vector2(graphicsManager.ScreenSize.X - 70, 5), Color.White);
-        }
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont) {}
 
         public virtual void UnloadContent() { }
     }
