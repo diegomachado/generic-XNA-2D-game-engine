@@ -51,7 +51,7 @@ namespace ProjetoFinal.Managers
                 return this.players[id];
 
             Player player = new Player(new Vector2(240, 240));
-
+            player.LoadContent();
             players.Add(id, player);
             horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
             verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
@@ -59,11 +59,14 @@ namespace ProjetoFinal.Managers
             return player;
         }
 
+        Player player;
         public void AddPlayer(short id)
         {
             if (!this.players.ContainsKey(id))
             {
-                this.players.Add(id, new Player(new Vector2(240, 40)));
+                player = new Player(new Vector2(240, 40));
+                player.LoadContent();
+                this.players.Add(id, player);
                 horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
                 verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
             }

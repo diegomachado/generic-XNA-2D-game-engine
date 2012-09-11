@@ -80,7 +80,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 GameStatesManager.AddState(new PauseState());
 
             localPlayerManager.Update(gameTime);
-            //playerManager.Update(gameTime, mapManager.CollisionLayer);
+            playerManager.Update(gameTime, mapManager.CollisionLayer);
             arrowManager.Update(gameTime, mapManager.CollisionLayer);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
 
@@ -110,11 +110,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             localPlayerManager.Draw(spriteBatch, spriteFont);
             DebugSystem.Instance.TimeRuler.EndMark("Player Draw");
 
-            //playerManager.Draw(spriteBatch, spriteFont);
+            playerManager.Draw(spriteBatch, spriteFont);
             DebugSystem.Instance.TimeRuler.BeginMark("Arrows Draw", Color.Blue);
             arrowManager.Draw(spriteBatch, spriteFont);
             DebugSystem.Instance.TimeRuler.EndMark("Arrows Draw");
-            //FPSCounter(spriteBatch, spriteFont, gameTime);
         }
 
         #region Network Events
@@ -142,24 +141,5 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         }
 
         #endregion
-
-        /*
-        float fps;
-        Texture2D debugBackground;
-        Color debugColor;
-        Rectangle debugRectangleBase;
-        Vector2 fpsTextPos;
-        private void FPSCounter(SpriteBatch spriteBatch, SpriteFont spriteFont, GameTime gameTime)
-        {
-            debugBackground = TextureManager.Instance.GetPixelTextureByColor(Color.Black);
-            debugRectangleBase = new Rectangle(graphicsManager.ScreenSize.X - 80, 0, 100, 40);
-            debugColor = new Color(0, 0, 0, 0.5f);
-            fps = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
-            fpsTextPos = new Vector2(graphicsManager.ScreenSize.X - 65, 10);
-
-            spriteBatch.Draw(debugBackground, debugRectangleBase, debugColor);
-            spriteBatch.DrawString(spriteFont, "FPS: " + Math.Round(fps), fpsTextPos, Color.White);            
-        }
-         */
     }
 }
