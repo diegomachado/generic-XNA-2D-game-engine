@@ -101,7 +101,7 @@ namespace ProjetoFinal.Managers
             {
                 arrow.Draw(spriteBatch);
 
-                Util.DrawRectangle(spriteBatch, arrow.CollisionBox, 1, Color.Red);
+                //Util.DrawRectangle(spriteBatch, arrow.CollisionBox, 1, Color.Red);
 
                 // TODO: Que porra eh essa que tu pos aqui bomber?
                 //spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));

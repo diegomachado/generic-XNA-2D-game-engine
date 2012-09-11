@@ -34,7 +34,7 @@ namespace ProjetoFinal.Entities
 
         public override void LoadContent()
         {
-            baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
+            this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
         }
 
         public override void Update(GameTime gameTime)
