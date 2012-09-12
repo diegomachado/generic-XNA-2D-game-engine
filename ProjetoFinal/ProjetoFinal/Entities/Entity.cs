@@ -41,10 +41,10 @@ namespace ProjetoFinal.Entities
         public bool collidable = true;
 
         public Vector2 position;
-        public Point origin;
+        public Vector2 origin;
      
-        public int Width { get { return baseAnimation.FrameSize.X; } }
-        public int Height { get { return baseAnimation.FrameSize.Y; } }
+        public int Width      { get { return baseAnimation.FrameSize.X; } }
+        public int Height     { get { return baseAnimation.FrameSize.Y; } }
         public Vector2 Center { get { return position + baseAnimation.TextureCenter; } }        
 
         protected Rectangle boundingBox;
@@ -64,12 +64,13 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Entity(Vector2 position, Rectangle boundingBox = new Rectangle())
+        public Entity(Vector2 _position, Rectangle _boundingBox = new Rectangle())
         {
             type = Type.Generic;
             flags = Flags.None;
-            this.position = position;
-            this.boundingBox = boundingBox;
+            position = _position;
+            origin = Vector2.Zero;
+            boundingBox = _boundingBox;
             Entities.Add(this);
         }
 

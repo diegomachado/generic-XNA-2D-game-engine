@@ -36,11 +36,12 @@ namespace ProjetoFinal.Managers
             eventManager.PlayerStateChangedWithArrow += OnArrowShot;
         }
 
-        // TODO: Colocar lógicas de Update que independem do Manager dentro do Update de Arrow
-        // Ou seja, encapsular as coisas :)
         public void Update(GameTime gameTime, Layer collisionLayer)
         {
-            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            foreach (Arrow arrow in arrows)
+                arrow.Update(gameTime);
+
+            /*float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             List<Arrow> toRemove = new List<Arrow>();
 
@@ -92,39 +93,18 @@ namespace ProjetoFinal.Managers
             foreach (Arrow arrow in toRemove)
             {
                 arrows.Remove(arrow);
-            }
+            }*/
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             foreach (Arrow arrow in arrows)
-            {
                 arrow.Draw(spriteBatch);
-
-                //Util.DrawRectangle(spriteBatch, arrow.CollisionBox, 1, Color.Red);
-
-                // TODO: Que porra eh essa que tu pos aqui bomber?
-                //spriteBatch.Draw(TextureManager.Instance.getPixelTextureByColor(Color.Black), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
-            }
         }
 
-        private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs playerStateChangedWithArrowEventArgs)
+        private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs eventArgs)
         {
-            arrows.Add(new Arrow(playerStateChangedWithArrowEventArgs.PlayerId, playerStateChangedWithArrowEventArgs.Position, playerStateChangedWithArrowEventArgs.ShotSpeed));
-        }
-
-        // TODO: Meio acoxambrado, da pra fazer melhor
-        private bool checkCollision(Rectangle collisionBox, Layer collisionLayer)
-        {
-            Point corner1 = new Point(collisionBox.Left, collisionBox.Top);
-            Point corner2 = new Point(collisionBox.Right, collisionBox.Top);
-            Point corner3 = new Point(collisionBox.Left, collisionBox.Bottom);
-            Point corner4 = new Point(collisionBox.Right, collisionBox.Bottom);
-
-            return (collisionLayer.TileIdByPixelPosition(corner1) ||
-                    collisionLayer.TileIdByPixelPosition(corner2) ||
-                    collisionLayer.TileIdByPixelPosition(corner3) ||
-                    collisionLayer.TileIdByPixelPosition(corner4));
+            arrows.Add(new Arrow(eventArgs.PlayerId, eventArgs.Position, eventArgs.ShotSpeed));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            player.FacingLeft = false;
+            player.FacingRight = true;
             player.speed.X += player.moveSpeed;
             player.speed.X *= player.friction;
 

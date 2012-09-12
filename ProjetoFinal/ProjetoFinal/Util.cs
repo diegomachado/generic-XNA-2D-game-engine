@@ -21,14 +21,14 @@ namespace ProjetoFinal
             return new Vector2(point.X, point.Y);
         }
 
-        static Texture2D textureColor;
+        static Texture2D pixelTexture;
         public static void DrawRectangle(SpriteBatch spriteBatch, Rectangle r, int borderWidth, Color color)
         {
-            textureColor = TextureManager.Instance.GetPixelTextureByColor(color);
-            spriteBatch.Draw(textureColor, new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White);
-            spriteBatch.Draw(textureColor, new Rectangle(r.Right - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), Color.White);
-            spriteBatch.Draw(textureColor, new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White);
-            spriteBatch.Draw(textureColor, new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Bottom - (int)Camera.Instance.Position.Y, r.Width, borderWidth), Color.White);
+            pixelTexture = TextureManager.Instance.GetPixelTexture();
+            spriteBatch.Draw(pixelTexture, new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), color);
+            spriteBatch.Draw(pixelTexture, new Rectangle(r.Right - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, borderWidth, r.Height), color);
+            spriteBatch.Draw(pixelTexture, new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Top - (int)Camera.Instance.Position.Y, r.Width, borderWidth), color);
+            spriteBatch.Draw(pixelTexture, new Rectangle(r.Left - (int)Camera.Instance.Position.X, r.Bottom - (int)Camera.Instance.Position.Y, r.Width, borderWidth), color);
         }
     }
 }
