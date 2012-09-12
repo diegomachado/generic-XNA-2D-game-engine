@@ -102,9 +102,9 @@ namespace ProjetoFinal.Managers
                 arrow.Draw(spriteBatch);
         }
 
-        private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs eventArgs)
+        private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs args)
         {
-            arrows.Add(new Arrow(eventArgs.PlayerId, eventArgs.Position, eventArgs.ShotSpeed));
+            arrows.Add(new Arrow(args.PlayerId, args.Position, args.ShotSpeed));
         }
     }
 }
