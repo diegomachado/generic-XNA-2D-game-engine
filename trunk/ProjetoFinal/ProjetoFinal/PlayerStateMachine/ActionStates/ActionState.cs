@@ -64,7 +64,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         {
             player.ActionState = (ActionStateType)nextState;
 
-            EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player.position, shotSpeed, nextState, messageType));
+            EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player.WeaponPosition, shotSpeed, nextState, messageType));
         }
 
         #endregion
