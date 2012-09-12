@@ -19,16 +19,14 @@ namespace ProjetoFinal.Entities
         
         public DynamicEntity(Vector2 _position) : base(_position)
         {     
-            type = Type.Generic;
             flags = Flags.Gravity;
-            position = _position;
-            boundingBox = new Rectangle(8, 2, 10, 30);
-            minSpeed = new Vector2(-15, -12);
-            maxSpeed = new Vector2(15, 12);
-            moveSpeed = 2f;
+            boundingBox = new Rectangle();
+            minSpeed = new Vector2();
+            maxSpeed = new Vector2();
+            moveSpeed = 0;
+            jumpSpeed = 0;
             gravity = 0.5f;
             friction = 0.8f;
-            jumpSpeed = -10.5f;
             isMovingLeft = isMovingRight = false;
         }
 
@@ -39,6 +37,7 @@ namespace ProjetoFinal.Entities
 
         public override void Update(GameTime gameTime)
         {
+            /*
             isMovingRight = inputManager.Right ? true : false;
             isMovingLeft  = inputManager.Left  ? true : false;
 
@@ -60,6 +59,7 @@ namespace ProjetoFinal.Entities
 
             baseAnimation.Update();
             MoveBy(speed);
+             */
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -85,7 +85,7 @@ namespace ProjetoFinal.Entities
         Texture2D debugBackground;
         public void DebugDraw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            debugBackground = TextureManager.Instance.GetPixelTextureByColor(Color.Black);
+            debugBackground = TextureManager.Instance.GetPixelTexture();
             spriteBatch.Draw(debugBackground, new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
             spriteBatch.DrawString(spriteFont, "Position: " + new Point((int)position.X, (int)position.Y), new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(spriteFont, "Speed: " + new Point((int)speed.X, (int)speed.Y), new Vector2(10, 30), Color.White);

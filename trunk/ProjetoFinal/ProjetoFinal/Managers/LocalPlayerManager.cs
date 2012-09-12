@@ -103,13 +103,12 @@ namespace ProjetoFinal.Managers
             if (inputManager.PreparingShot)
             {
                 localPlayerActionState = localPlayerActionState.PreparingShot(playerId, localPlayer, localPlayerActionStates);
-
                 shootingTimer += gameTime.ElapsedGameTime.Milliseconds;
+                shootingTimer = MathHelper.Clamp(shootingTimer, 0, 1000);
             }
             else
             {
-                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, shootingTimer, camera.CameraToWorldCoordinates(inputManager.MousePosition), localPlayerActionStates);
-
+                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, shootingTimer, camera.CameraToWorld(inputManager.MousePosition), localPlayerActionStates);
                 shootingTimer = 0f;
             }
             #endregion
@@ -123,6 +122,14 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer != null)
                 localPlayer.Draw(spriteBatch);
+
+            // TODO: Colocar dentro de Arrow
+            // TODO: Ajeitar a barrinha de charge pra crescer pra cima :$
+            if (shootingTimer != 0)
+                if(localPlayer.FacingRight)
+                    spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle((int)localPlayer.position.X - 5 - (int)camera.Position.X, (int)localPlayer.position.Y + localPlayer.Height - (int)camera.Position.Y, 5, (int)shootingTimer / 50), Color.Yellow);
+                else
+                    spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle((int)localPlayer.position.X + 30 - (int)camera.Position.X, (int)localPlayer.position.Y + localPlayer.Height - (int)camera.Position.Y, 5, (int)shootingTimer / 50), Color.Yellow);
 
             //spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
             //spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 20) - camera.Position, Color.White);

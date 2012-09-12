@@ -81,12 +81,9 @@ namespace ProjetoFinal.Managers
             return t;
         }
 
-        public Texture2D GetPixelTextureByColor(Color color)
+        public Texture2D GetPixelTexture()
         {
-            var t = new Texture2D(GraphicsDevice, 1, 1);
-            t.SetData(new[] { color });
-
-            return t;
+            return this.Content.Load<Texture2D>("pixel");
         }
     }
 }

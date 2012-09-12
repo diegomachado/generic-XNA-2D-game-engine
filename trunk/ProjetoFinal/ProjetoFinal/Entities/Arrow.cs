@@ -11,19 +11,20 @@ namespace ProjetoFinal.Entities
 {
     class Arrow : DynamicEntity
     {
-        float rotation;
+        bool isFlying = false;
+        Vector2 direction;
+        float scaling = 0.1f;
+
+        float angle;
         public short OwnerId { get; private set; }
         public bool Collided { get; set; }
         public float Timer { get; set; }
-        public static float speedFactor = 1.0f,
-                            gravityFactor = 0.5f;
 
         Vector2 textureCenterToBoundingBoxCenter = new Vector2();
         Rectangle newBoundingBox;
 
         TextureManager textureManager = TextureManager.Instance;
         Camera camera = Camera.Instance;
-
                 
         public override Rectangle BoundingBox
         {
@@ -32,7 +33,7 @@ namespace ProjetoFinal.Entities
                 newBoundingBox = base.BoundingBox;
                 textureCenterToBoundingBoxCenter.X = newBoundingBox.Center.X - baseAnimation.TextureCenter.X;
                 textureCenterToBoundingBoxCenter.Y = newBoundingBox.Center.Y - baseAnimation.TextureCenter.Y;                
-                textureCenterToBoundingBoxCenter = Vector2.Transform(textureCenterToBoundingBoxCenter, Matrix.CreateRotationZ(rotation));
+                textureCenterToBoundingBoxCenter = Vector2.Transform(textureCenterToBoundingBoxCenter, Matrix.CreateRotationZ(angle));
                 newBoundingBox.Location = Util.Vector2ToPoint(textureCenterToBoundingBoxCenter - 
                     new Vector2(newBoundingBox.Center.X - newBoundingBox.Left, newBoundingBox.Center.Y - newBoundingBox.Top));
 
@@ -40,24 +41,40 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Arrow(short ownerId, Vector2 position, Vector2 speed) : base(position)
+        public Arrow(short ownerId, Vector2 position, Vector2 _speed) : base(position)
         {
-            this.OwnerId = ownerId;
-            this.speed = speed;
-            this.BoundingBox = new Rectangle(19, 1, 5, 5);
-            this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Arrow), 1, 1);
-            this.Timer = 0;
+            origin = new Vector2(11, 3);
+            baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Arrow), 1, 1);
+            OwnerId = ownerId;
+            speed = _speed;
+            gravity = 0.2f;
+            friction = 0.95f;
+            BoundingBox = new Rectangle(19, 1, 5, 5);
+            Timer = 0;
             Entity.Entities.Add(this);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (OnGround() || MapCollideY(-1)) speed.Y = 0;
+            speed.Y += gravity;
+            
+            if(OnGround())
+                speed.X *= friction;
+
+            MoveBy(speed);
+            base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            rotation = (float)Math.Acos(Vector2.Dot(speed, Vector2.UnitX) / (speed.Length()));
+            angle = (float)Math.Acos(Vector2.Dot(speed, Vector2.UnitX) / (speed.Length()));
 
             if (speed.Y < 0)
-                rotation = -rotation;
+                angle = -angle;
 
-            spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCameraCoordinates(position), null, Color.White, rotation, baseAnimation.TextureCenter, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCamera(position + origin), null, Color.White, angle, baseAnimation.TextureCenter, 1f, SpriteEffects.None, 0f);
+            Util.DrawRectangle(spriteBatch, CollisionBox, 1, Color.Red);            
         }
     }
 }
