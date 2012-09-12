@@ -29,6 +29,7 @@ namespace ProjetoFinal.Managers
         {
             previousKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
+
             previousMouseState = mouseState;
             mouseState = Mouse.GetState();
         }
@@ -129,9 +130,9 @@ namespace ProjetoFinal.Managers
 
         #region Debugger
 
-        public bool ToggleFPS      { get { return keyboardState.IsKeyDown(Keys.D1); }}
-        public bool ToggleRuler    { get { return keyboardState.IsKeyDown(Keys.D2); }}
-        public bool ToggleRulerLog { get { return keyboardState.IsKeyDown(Keys.D3); }}
+        public bool ToggleFPS { get { return keyboardState.IsKeyDown(Keys.D1) && previousKeyboardState.IsKeyUp(Keys.D1); } }
+        public bool ToggleRuler { get { return keyboardState.IsKeyDown(Keys.D2) && previousKeyboardState.IsKeyUp(Keys.D2); } }
+        public bool ToggleRulerLog { get { return keyboardState.IsKeyDown(Keys.D3) && previousKeyboardState.IsKeyUp(Keys.D3); } }
 
         #endregion
         
