@@ -126,6 +126,7 @@
     <Compile Include="Entities\DynamicEntity.cs" />
     <Compile Include="Entities\Utils\Animation.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
+    <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateUpdatedEventArgs\PlayerStateUpdatedWithArrowEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateUpdatedEventArgs\PlayerMovementStateUpdatedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerMovementStateChangedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateChangedWithArrowEventArgs.cs" />

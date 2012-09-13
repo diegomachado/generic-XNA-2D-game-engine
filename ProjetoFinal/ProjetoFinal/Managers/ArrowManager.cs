@@ -34,6 +34,7 @@ namespace ProjetoFinal.Managers
             this.localPlayerId = localPlayerId;
 
             eventManager.PlayerStateChangedWithArrow += OnArrowShot;
+            eventManager.PlayerStateUpdatedWithArrow += OnOtherClientArrowShot;
         }
 
         public void Update(GameTime gameTime, Layer collisionLayer)
@@ -103,6 +104,11 @@ namespace ProjetoFinal.Managers
         }
 
         private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs args)
+        {
+            arrows.Add(new Arrow(args.PlayerId, args.Position, args.ShotSpeed));
+        }
+
+        private void OnOtherClientArrowShot(object sender, PlayerStateUpdatedWithArrowEventArgs args)
         {
             arrows.Add(new Arrow(args.PlayerId, args.Position, args.ShotSpeed));
         }
