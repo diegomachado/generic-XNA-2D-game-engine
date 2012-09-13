@@ -175,12 +175,10 @@ namespace ProjetoFinal.Managers
 
                             case GameMessageType.UpdatePlayerStateWithArrow:
                             {
-                                Console.WriteLine("HOLY FUUUUUUUUUUUUUUCK");
-
                                 UpdatePlayerStateWithArrowMessage updatePlayerStateWithArrowMessage = new UpdatePlayerStateWithArrowMessage(im);
                                 double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateWithArrowMessage.MessageTime);
 
-                                OnPlayerStateUpdatedWithArrow(updatePlayerMovementStateMessage, localTime);
+                                OnPlayerStateUpdatedWithArrow(updatePlayerStateWithArrowMessage, localTime);
 
                                 break;
                             }
