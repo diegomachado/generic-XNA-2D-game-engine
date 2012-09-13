@@ -158,25 +158,32 @@ namespace ProjetoFinal.Managers
                                 break;
 
                             case GameMessageType.UpdatePlayerMovementState:
-
+                            {
                                 UpdatePlayerMovementStateMessage updatePlayerMovementStateMessage = new UpdatePlayerMovementStateMessage(im);
                                 double localTime = im.SenderConnection.GetLocalTime(updatePlayerMovementStateMessage.MessageTime);
 
                                 OnPlayerMovementStateUpdated(updatePlayerMovementStateMessage, localTime);
-                                
+
                                 // If server, resend UpdatePlayerState to all clients
                                 // TODO: Refactor this shit so that a client doesn't receive it's own message back
                                 // This fucking shit ta causando um overhead chato na rede e acho que tem como consertar usando SendMessage ao inves de SendToAll no serverNetworkInterface porém como a porra do código é fechado temos que fazer testes manuais pra saber se a gente vai estar ganhando desempenho ou perdendo.
-                                if(IsServer)
+                                if (IsServer)
                                     networkInterface.SendMessage(updatePlayerMovementStateMessage);
 
                                 break;
+                            }
 
                             case GameMessageType.UpdatePlayerStateWithArrow:
-
+                            {
                                 Console.WriteLine("HOLY FUUUUUUUUUUUUUUCK");
 
+                                UpdatePlayerStateWithArrowMessage updatePlayerStateWithArrowMessage = new UpdatePlayerStateWithArrowMessage(im);
+                                double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateWithArrowMessage.MessageTime);
+
+                                OnPlayerStateUpdatedWithArrow(updatePlayerMovementStateMessage, localTime);
+
                                 break;
+                            }
                         }
 
                         break;
@@ -209,6 +216,17 @@ namespace ProjetoFinal.Managers
                                                                                                        message.StateType,
                                                                                                        message.MessageTime,
                                                                                                        localTime));
+        }
+
+        private void OnPlayerStateUpdatedWithArrow(UpdatePlayerStateWithArrowMessage message, double localTime)
+        {
+            eventManager.ThrowPlayerStateUpdatedWithArrow(this, new PlayerStateUpdatedWithArrowEventArgs(message.PlayerId,
+                                                                                                         message.Position,
+                                                                                                         message.ShotSpeed,
+                                                                                                         message.PlayerState,
+                                                                                                         message.StateType,
+                                                                                                         message.MessageTime,
+                                                                                                         localTime));
         }
 
         private void OnClientConnected(HailMessage hailMessage)
