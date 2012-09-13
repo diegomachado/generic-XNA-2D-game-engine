@@ -52,7 +52,7 @@ namespace ProjetoFinal.Managers
             clientCounter = 1;
 
             eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
-            //eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
+            eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
         }
 
         public void Connect(String ip, int port, string nickname)
@@ -70,7 +70,7 @@ namespace ProjetoFinal.Managers
             clientCounter = 1;  //TODO: Se eu for cliente aqui, meu clientCounter não é 1 (ver se não é setado depois)
 
             eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
-            //eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
+            eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
         }
 
         public void Disconnect()
@@ -78,7 +78,7 @@ namespace ProjetoFinal.Managers
             networkInterface.Disconnect();
 
             eventManager.PlayerMovementStateChanged -= OnPlayerMovementStateChanged;
-            //eventManager.PlayerStateChangedWithArrow -= OnPlayerStateChangedWithArrow;
+            eventManager.PlayerStateChangedWithArrow -= OnPlayerStateChangedWithArrow;
         }
 
         public void ProcessNetworkMessages()
@@ -169,6 +169,12 @@ namespace ProjetoFinal.Managers
                                 // This fucking shit ta causando um overhead chato na rede e acho que tem como consertar usando SendMessage ao inves de SendToAll no serverNetworkInterface porém como a porra do código é fechado temos que fazer testes manuais pra saber se a gente vai estar ganhando desempenho ou perdendo.
                                 if(IsServer)
                                     networkInterface.SendMessage(updatePlayerMovementStateMessage);
+
+                                break;
+
+                            case GameMessageType.UpdatePlayerStateWithArrow:
+
+                                Console.WriteLine("HOLY FUUUUUUUUUUUUUUCK");
 
                                 break;
                         }

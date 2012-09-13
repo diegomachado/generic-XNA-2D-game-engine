@@ -18,6 +18,8 @@ namespace ProjetoFinal.Network.Messages.UpdatePlayerStateMessages
             this.ShotSpeed = shotSpeed;
         }
 
+        public override GameMessageType GameMessageType { get { return GameMessageType.UpdatePlayerStateWithArrow; } }
+
         public override void Decode(NetIncomingMessage im)
         {
             base.Decode(im);

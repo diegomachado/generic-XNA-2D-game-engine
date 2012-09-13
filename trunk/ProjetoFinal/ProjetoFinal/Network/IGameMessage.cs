@@ -6,7 +6,8 @@ namespace ProjetoFinal.Network.Messages
     {
         ClientInfo,
         UpdatePlayerState,
-        UpdatePlayerMovementState
+        UpdatePlayerMovementState,
+        UpdatePlayerStateWithArrow
     }
 
     public interface IGameMessage
