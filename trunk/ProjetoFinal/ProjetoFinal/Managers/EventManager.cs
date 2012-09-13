@@ -71,8 +71,8 @@ namespace ProjetoFinal.Managers
 
         public void ThrowPlayerStateUpdatedWithArrow(object sender, PlayerStateUpdatedWithArrowEventArgs args)
         {
-            if (PlayerStateUpdated != null)
-                PlayerStateUpdated(sender, args);
+            if (PlayerStateUpdatedWithArrow != null)
+                PlayerStateUpdatedWithArrow(sender, args);
         }
 
         public void ThrowClientConnected(object sender, ClientConnectedEventArgs args)
