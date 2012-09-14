@@ -128,7 +128,7 @@ namespace ProjetoFinal.Managers
                 // TODO: Rever conta pro Lag compensation ficar certinho
                 // Lag Compensation
 
-                //players[playerId].position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
+                players[playerId].position = position;// + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
                 players[playerId].LastUpdateTime = messageTime;
 
                 switch (stateType)
@@ -154,7 +154,7 @@ namespace ProjetoFinal.Managers
             }
             else
             {
-                Console.WriteLine("!!!MENSAGEM FORA DE ORDEM!!!" + player.LastUpdateTime + " > " + messageTime));
+                Console.WriteLine("!!!MENSAGEM FORA DE ORDEM!!!" + player.LastUpdateTime + " > " + messageTime);
             }
         }
     }
