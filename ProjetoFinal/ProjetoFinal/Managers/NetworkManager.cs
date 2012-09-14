@@ -180,6 +180,9 @@ namespace ProjetoFinal.Managers
 
                                 OnPlayerStateUpdatedWithArrow(updatePlayerStateWithArrowMessage, localTime);
 
+                                if (IsServer)
+                                    networkInterface.SendMessage(updatePlayerStateWithArrowMessage);
+
                                 break;
                             }
                         }

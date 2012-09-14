@@ -110,7 +110,10 @@ namespace ProjetoFinal.Managers
 
         private void OnOtherClientArrowShot(object sender, PlayerStateUpdatedWithArrowEventArgs args)
         {
-            arrows.Add(new Arrow(args.PlayerId, args.Position, args.ShotSpeed));
+            if (args.PlayerId != localPlayerId)
+                arrows.Add(new Arrow(args.PlayerId, args.Position, args.ShotSpeed));
+            else
+                Console.WriteLine("Olha a merda 2");
         }
     }
 }
