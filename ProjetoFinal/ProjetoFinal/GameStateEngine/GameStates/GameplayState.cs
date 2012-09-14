@@ -118,21 +118,21 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         #region Network Events
 
-        private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs playerStateUpdatedEventArgs)
+        private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs args)
         {
-            if (playerStateUpdatedEventArgs.PlayerId != localPlayerManager.playerId)
+            if (args.PlayerId != localPlayerManager.playerId)
             {
-                playerManager.UpdatePlayer(playerStateUpdatedEventArgs.PlayerId,
-                                               playerStateUpdatedEventArgs.Position,
-                                               playerStateUpdatedEventArgs.Speed,
-                                               playerStateUpdatedEventArgs.LocalTime,
-                                               playerStateUpdatedEventArgs.StateType,
-                                               playerStateUpdatedEventArgs.PlayerState);
+                playerManager.UpdatePlayer(args.PlayerId,
+                                           args.Position,
+                                           args.Speed,
+                                           args.LocalTime,
+                                           args.StateType,
+                                           args.PlayerState);
             }
             else
             {
                 // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
-                Console.WriteLine("Olha a merda > " + playerStateUpdatedEventArgs.PlayerId);
+                Console.WriteLine("Olha a merda > " + args.PlayerId);
             }
         }
         private void OnClientDisconnected(object sender, EventArgs eventArgs)

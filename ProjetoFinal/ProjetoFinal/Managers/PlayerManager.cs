@@ -30,6 +30,7 @@ namespace ProjetoFinal.Managers
         public PlayerManager()
         {
             players = new Dictionary<short, Player>();
+
             horizontalPlayerState = new Dictionary<short, HorizontalMovementState>();
             horizontalPlayerStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
             verticalPlayerState = new Dictionary<short, VerticalMovementState> ();
@@ -114,23 +115,23 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateType updatePlayerStateMessageType, short playerState)
+        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateType stateType, short playerState)
         {
             Player player = GetPlayer(playerId);
 
             // TODO: Dropar mensagens fora de ordem ou não????
-            //if (player.LastUpdateTime < messageTime)
-            //{
+            if (player.LastUpdateTime < messageTime)
+            {
                 // TODO: esse codigo tem que subir, não eh pra ter NetTime.Now aqui
-                float timeDelay = (float)(NetTime.Now - messageTime);
+                //float timeDelay = (float)(NetTime.Now - messageTime);
 
                 // TODO: Rever conta pro Lag compensation ficar certinho
                 // Lag Compensation
 
-                players[playerId].position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
+                //players[playerId].position = position + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
                 players[playerId].LastUpdateTime = messageTime;
 
-                switch (updatePlayerStateMessageType)
+                switch (stateType)
                 {
                     case UpdatePlayerStateType.Horizontal:
                         horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
@@ -150,7 +151,7 @@ namespace ProjetoFinal.Managers
                         }
                         break;
                 }
-            //}
+            }
         }
     }
 }
