@@ -22,6 +22,8 @@ namespace ProjetoFinal.Managers
     {
         Camera camera = Camera.Instance;
         Dictionary<short, Player> players;
+        Dictionary<short, ActionState> actionPlayerState;
+        Dictionary<ActionStateType, ActionState> actionPlayerStates;
         Dictionary <short, HorizontalMovementState> horizontalPlayerState;
         Dictionary<HorizontalStateType, HorizontalMovementState> horizontalPlayerStates;
         Dictionary<short, VerticalMovementState> verticalPlayerState;
@@ -31,11 +33,18 @@ namespace ProjetoFinal.Managers
         {
             players = new Dictionary<short, Player>();
 
+            actionPlayerState = new Dictionary<short, ActionState>();
+            actionPlayerStates = new Dictionary<ActionStateType, ActionState>();
             horizontalPlayerState = new Dictionary<short, HorizontalMovementState>();
             horizontalPlayerStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
             verticalPlayerState = new Dictionary<short, VerticalMovementState> ();
             verticalPlayerStates = new Dictionary<VerticalStateType, VerticalMovementState>();
 
+            actionPlayerStates[ActionStateType.Attacking] = new AttackingState();
+            actionPlayerStates[ActionStateType.Defending] = new DefendingState();
+            actionPlayerStates[ActionStateType.Idle] = new ActionIdleState();
+            actionPlayerStates[ActionStateType.PreparingShot] = new PreparingShotState();
+            actionPlayerStates[ActionStateType.Shooting] = new ShootingState();
             horizontalPlayerStates[HorizontalStateType.Idle] = new HorizontalIdleState();
             horizontalPlayerStates[HorizontalStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState();
             horizontalPlayerStates[HorizontalStateType.StoppingWalkingRight] = new StoppingWalkingRightState();
@@ -54,6 +63,7 @@ namespace ProjetoFinal.Managers
             Player player = new Player(new Vector2(240, 240));
             player.LoadContent();
             players.Add(id, player);
+            actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
             horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
             verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
 
@@ -68,6 +78,7 @@ namespace ProjetoFinal.Managers
                 player = new Player(new Vector2(240, 40));
                 player.LoadContent();
                 this.players.Add(id, player);
+                actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
                 horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
                 verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
             }
@@ -80,6 +91,7 @@ namespace ProjetoFinal.Managers
                 Player player = p.Value;
                 short playerId = p.Key;
 
+                actionPlayerState[playerId] = actionPlayerState[playerId].Update(playerId, gameTime, player, actionPlayerStates);
                 horizontalPlayerState[playerId] = horizontalPlayerState[playerId].Update(playerId, gameTime, player, collisionLayer, horizontalPlayerStates);
                 verticalPlayerState[playerId] = verticalPlayerState[playerId].Update(playerId, gameTime, player, collisionLayer, verticalPlayerStates);
             }
@@ -115,11 +127,29 @@ namespace ProjetoFinal.Managers
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Bottom, r.Width, borderWidth), Color.White);
         }
 
-        public void UpdatePlayer(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateType stateType, short playerState)
+        public void UpdatePlayerState(short playerId, Vector2 position, double messageTime, UpdatePlayerStateType stateType, short playerState)
         {
             Player player = GetPlayer(playerId);
 
-            // TODO: Dropar mensagens fora de ordem ou não????
+            if (player.LastUpdateTime < messageTime)
+            {
+                players[playerId].LastUpdateTime = messageTime;
+
+                switch (stateType)
+                {
+                    case UpdatePlayerStateType.Action:
+
+                        actionPlayerState[playerId] = actionPlayerStates[(ActionStateType)playerState];
+
+                        break;
+                }
+            }
+        }
+
+        public void UpdatePlayerMovementState(short playerId, Vector2 position, Vector2 speed, double messageTime, UpdatePlayerStateType stateType, short playerState)
+        {
+            Player player = GetPlayer(playerId);
+
             if (player.LastUpdateTime < messageTime)
             {
                 // TODO: esse codigo tem que subir, não eh pra ter NetTime.Now aqui
@@ -134,6 +164,7 @@ namespace ProjetoFinal.Managers
                 switch (stateType)
                 {
                     case UpdatePlayerStateType.Horizontal:
+
                         horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
 
                         if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
@@ -141,14 +172,17 @@ namespace ProjetoFinal.Managers
                         {
                             players[playerId].speed.X = 0;
                         }
+
                         break;
                     case UpdatePlayerStateType.Vertical:
+
                         verticalPlayerState[playerId] = verticalPlayerStates[(VerticalStateType)playerState];
 
                         if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)
                         {
                             players[playerId].speed.Y = 0;
                         }
+
                         break;
                 }
             }

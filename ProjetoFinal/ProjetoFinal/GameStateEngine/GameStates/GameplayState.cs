@@ -25,6 +25,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public GameplayState(short localPlayerId) : base()
         {
             eventManager.PlayerMovementStateUpdated += OnOtherClientPlayerMovementStateUpdated;
+            eventManager.PlayerStateUpdated += OnOtherClientPlayerStateUpdated;
+            eventManager.PlayerStateUpdatedWithArrow += OnOtherClientPlayerStateUpdatedWithArrow;
+            eventManager.PlayerStateChangedWithArrow += OnLocalArrowShot;
             eventManager.ClientDisconnected += OnClientDisconnected;
 
             playerManager = new PlayerManager();
@@ -118,16 +121,15 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         #region Network Events
 
-        private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs args)
+        private void OnOtherClientPlayerStateUpdated(object sender, PlayerStateUpdatedEventArgs args)
         {
             if (args.PlayerId != localPlayerManager.playerId)
             {
-                playerManager.UpdatePlayer(args.PlayerId,
-                                           args.Position,
-                                           args.Speed,
-                                           args.LocalTime,
-                                           args.StateType,
-                                           args.PlayerState);
+                playerManager.UpdatePlayerState(args.PlayerId,
+                                                args.Position,
+                                                args.LocalTime,
+                                                args.StateType,
+                                                args.PlayerState);
             }
             else
             {
@@ -135,6 +137,45 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 Console.WriteLine("Olha a merda > " + args.PlayerId);
             }
         }
+
+        private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs args)
+        {
+            if (args.PlayerId != localPlayerManager.playerId)
+            {
+                playerManager.UpdatePlayerMovementState(args.PlayerId,
+                                                        args.Position,
+                                                        args.Speed,
+                                                        args.LocalTime,
+                                                        args.StateType,
+                                                        args.PlayerState);
+            }
+            else
+            {
+                // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
+                Console.WriteLine("Olha a merda > " + args.PlayerId);
+            }
+        }
+
+        private void OnOtherClientPlayerStateUpdatedWithArrow(object sender, PlayerStateUpdatedWithArrowEventArgs args)
+        {
+            if (args.PlayerId != localPlayerManager.playerId)
+            {
+                OnOtherClientPlayerStateUpdated(sender, new PlayerStateUpdatedEventArgs(args.PlayerId, args.Position, args.PlayerState, args.StateType, args.MessageTime, args.LocalTime));
+
+                arrowManager.CreateArrow(args.PlayerId, args.Position, args.ShotSpeed);
+            }
+            else
+            {
+                // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
+                Console.WriteLine("Olha a merda > " + args.PlayerId);
+            }
+        }
+
+        private void OnLocalArrowShot(object sender, PlayerStateChangedWithArrowEventArgs args)
+        {
+            arrowManager.CreateArrow(args.PlayerId, args.Position, args.ShotSpeed);
+        }
+
         private void OnClientDisconnected(object sender, EventArgs eventArgs)
         {
             GameStatesManager.ResignState(this);

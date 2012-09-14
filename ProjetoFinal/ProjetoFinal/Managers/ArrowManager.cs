@@ -32,9 +32,6 @@ namespace ProjetoFinal.Managers
             this.arrows = new List<Arrow>();
             this.localPlayer = localPlayer;
             this.localPlayerId = localPlayerId;
-
-            eventManager.PlayerStateChangedWithArrow += OnArrowShot;
-            eventManager.PlayerStateUpdatedWithArrow += OnOtherClientArrowShot;
         }
 
         public void Update(GameTime gameTime, Layer collisionLayer)
@@ -103,17 +100,9 @@ namespace ProjetoFinal.Managers
                 arrow.Draw(spriteBatch);
         }
 
-        private void OnArrowShot(object sender, PlayerStateChangedWithArrowEventArgs args)
+        public void CreateArrow(short playerId, Vector2 position, Vector2 speed)
         {
-            arrows.Add(new Arrow(args.PlayerId, args.Position, args.ShotSpeed));
-        }
-
-        private void OnOtherClientArrowShot(object sender, PlayerStateUpdatedWithArrowEventArgs args)
-        {
-            if (args.PlayerId != localPlayerId)
-                arrows.Add(new Arrow(args.PlayerId, args.Position, args.ShotSpeed));
-            else
-                Console.WriteLine("Olha a merda 2");
+            arrows.Add(new Arrow(playerId, position, speed));
         }
     }
 }
