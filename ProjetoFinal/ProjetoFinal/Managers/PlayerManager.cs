@@ -152,6 +152,10 @@ namespace ProjetoFinal.Managers
                         break;
                 }
             }
+            else
+            {
+                Console.WriteLine("!!!MENSAGEM FORA DE ORDEM!!!" + player.LastUpdateTime + " > " + messageTime));
+            }
         }
     }
 }
