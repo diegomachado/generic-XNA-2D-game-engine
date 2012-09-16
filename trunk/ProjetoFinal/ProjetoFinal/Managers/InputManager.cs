@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace ProjetoFinal.Managers
 {
+    // TODO: Input de chars -> http://web.archive.org/web/20090124221325/http://ziggyware.com/readarticle.php?article_id=205
     class InputManager
     {
         private static InputManager instance;

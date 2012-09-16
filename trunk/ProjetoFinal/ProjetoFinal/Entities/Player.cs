@@ -60,9 +60,9 @@ namespace ProjetoFinal.Entities
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (FacingRight)
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position + origin), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             else
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position + origin), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
 
             // TODO: Flippar a boudingBox junto
             //Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);

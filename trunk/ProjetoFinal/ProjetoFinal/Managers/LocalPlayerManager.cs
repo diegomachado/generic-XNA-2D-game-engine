@@ -123,7 +123,7 @@ namespace ProjetoFinal.Managers
             if (localPlayer != null)
                 localPlayer.Draw(spriteBatch);
 
-            // TODO: Colocar dentro de Arrow
+            // TODO: Colocar dentro de Arrow (ou do Player...)
             // TODO: Ajeitar a barrinha de charge pra crescer pra cima :$
             if (shootingTimer != 0)
                 if(localPlayer.FacingRight)
