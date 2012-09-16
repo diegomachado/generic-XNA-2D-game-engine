@@ -56,14 +56,12 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         protected override void OnPlayerStateChanged(short playerId, Player player, UpdatePlayerStateType movementType, short nextState)
         {
             player.ActionState = (ActionStateType)nextState;
-
             EventManager.Instance.ThrowPlayerStateChanged(this, new PlayerStateChangedEventArgs(playerId, player.position, nextState, movementType));
         }
 
         protected void OnPlayerStateChangedWithArrow(short playerId, Player player, Vector2 shotSpeed, UpdatePlayerStateType messageType, short nextState)
         {
             player.ActionState = (ActionStateType)nextState;
-
             EventManager.Instance.ThrowPlayerStateChangedWithArrow(this, new PlayerStateChangedWithArrowEventArgs(playerId, player.WeaponPosition, shotSpeed, nextState, messageType));
         }
 

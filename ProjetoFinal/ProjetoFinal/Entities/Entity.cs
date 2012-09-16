@@ -41,7 +41,6 @@ namespace ProjetoFinal.Entities
         public bool collidable = true;
 
         public Vector2 position;
-        public Vector2 origin;
      
         public int Width      { get { return baseAnimation.FrameSize.X; } }
         public int Height     { get { return baseAnimation.FrameSize.Y; } }
@@ -69,7 +68,6 @@ namespace ProjetoFinal.Entities
             type = Type.Generic;
             flags = Flags.None;
             position = _position;
-            origin = Vector2.Zero;
             boundingBox = _boundingBox;
             Entities.Add(this);
         }
@@ -80,12 +78,12 @@ namespace ProjetoFinal.Entities
         }
 
         #region Game Logic
-        public virtual void Update(GameTime gameTime)
-        {
-        }
         public virtual void LoadContent()
         {
             baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
+        }
+        public virtual void Update(GameTime gameTime)
+        {
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
@@ -104,45 +102,6 @@ namespace ProjetoFinal.Entities
         float moveTempX = 0;
         float moveTempY = 0;
 
-        public void MoveBy(Vector2 moveAmount)
-        {
-            if (moveAmount == Vector2.Zero) return;
-
-            moveTemp += moveAmount;
-            moveAmount.X = (float)Math.Round(moveAmount.X, MidpointRounding.AwayFromZero);
-            moveAmount.Y = (float)Math.Round(moveAmount.Y, MidpointRounding.AwayFromZero);
-            moveTemp -= moveAmount;
-
-            if ((flags & ~Flags.Ghost) == Flags.Ghost)
-            {
-                position += moveAmount;
-            }
-            else
-            {
-                if (moveAmount.X != 0)
-                {
-                    sign = Math.Sign(moveAmount.X);
-
-                    while (moveAmount.X != 0)
-                    {
-                        if (MapCollideX(sign)) break;
-                        else position.X += sign;
-                        moveAmount.X -= sign;
-                    }
-                }
-                if (moveAmount.Y != 0)
-                {
-                    sign = Math.Sign(moveAmount.Y);
-
-                    while (moveAmount.Y != 0)
-                    {
-                        if (MapCollideY(sign)) break;
-                        else position.Y += sign;
-                        moveAmount.Y -= sign;
-                    }
-                }
-            }
-        }
         public void MoveXBy(float moveAmountX)
         {
             if (moveAmountX == 0) return;
@@ -193,6 +152,45 @@ namespace ProjetoFinal.Entities
                         if (MapCollideY(sign)) break;
                         else position.Y += sign;
                         moveAmountY -= sign;
+                    }
+                }
+            }
+        }
+        public void MoveBy(Vector2 moveAmount)
+        {
+            if (moveAmount == Vector2.Zero) return;
+
+            moveTemp += moveAmount;
+            moveAmount.X = (float)Math.Round(moveAmount.X, MidpointRounding.AwayFromZero);
+            moveAmount.Y = (float)Math.Round(moveAmount.Y, MidpointRounding.AwayFromZero);
+            moveTemp -= moveAmount;
+
+            if ((flags & ~Flags.Ghost) == Flags.Ghost)
+            {
+                position += moveAmount;
+            }
+            else
+            {
+                if (moveAmount.X != 0)
+                {
+                    sign = Math.Sign(moveAmount.X);
+
+                    while (moveAmount.X != 0)
+                    {
+                        if (MapCollideX(sign)) break;
+                        else position.X += sign;
+                        moveAmount.X -= sign;
+                    }
+                }
+                if (moveAmount.Y != 0)
+                {
+                    sign = Math.Sign(moveAmount.Y);
+
+                    while (moveAmount.Y != 0)
+                    {
+                        if (MapCollideY(sign)) break;
+                        else position.Y += sign;
+                        moveAmount.Y -= sign;
                     }
                 }
             }

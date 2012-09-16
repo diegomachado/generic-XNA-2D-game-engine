@@ -23,75 +23,52 @@ namespace ProjetoFinal.Managers
         Camera camera = Camera.Instance;
         EventManager eventManager = EventManager.Instance;
         List<Arrow> arrows;
+        List<Arrow> toRemove;
         Player localPlayer;
         short localPlayerId;
-        float arrowLifeSpan = 3.0f;
 
         public ArrowManager(short localPlayerId, Player localPlayer)
         {
             this.arrows = new List<Arrow>();
+            this.toRemove = new List<Arrow>();
             this.localPlayer = localPlayer;
             this.localPlayerId = localPlayerId;
         }
 
+        //TODO: Fazer Pooling de Arrows, dentro da classe Arrow
         public void Update(GameTime gameTime, Layer collisionLayer)
         {
-            foreach (Arrow arrow in arrows)
-                arrow.Update(gameTime);
+            for (int i = 0; i < arrows.Count; i++)
+            { 
+                arrows[i].Update(gameTime);
 
-            /*float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            List<Arrow> toRemove = new List<Arrow>();
-
-            foreach (Arrow arrow in arrows)
-            {
-                if (arrow.Collided)
+                if (arrows[i].Collided)
                 {
-                    arrow.Timer += elapsedTime;
-
-                    if (arrow.Timer > arrowLifeSpan)
-                    {
-                        toRemove.Add(arrow);
-                        Entity.Entities.Remove(arrow);
+                    if (arrows[i].lifeSpan > 4000)
+                    { 
+                        toRemove.Add(arrows[i]);
+                        Entity.Entities.Remove(arrows[i]);
                     }
                 }
                 else
                 {
-                    arrow.speed.Y += arrow.gravity * Arrow.gravityFactor; //TODO: * elapsedTime;
-
-                    // TODO: Ta meio muquirana ainda, da pra melhorar mas funciona
-                    // TODO: Girar collisionBox das flechas?
-
-                    Rectangle collisionBox = arrow.CollisionBox;
-                    collisionBox.Offset((int)(arrow.speed.X * elapsedTime), (int)(arrow.speed.Y * elapsedTime));
-
-                    if (arrow.OwnerId != localPlayerId) // Check collision with localPlayer
+                    if (arrows[i].OwnerId != localPlayerId)
                     {
                         foreach (Player player in new List<Player>())
                         {
-                            if (collisionBox.Intersects(localPlayer.CollisionBox))
+                            if (arrows[i].Collides(localPlayer.CollisionBox))
                             {
-                                toRemove.Add(arrow);
-
+                                toRemove.Add(arrows[i]);
+                                Console.WriteLine("Arrow collided with Player!");
                                 // TODO: Lançar evento de hit ou se comunicar diretamente com o PlayerManager ou através de Player localPlayer, ainda não sei, pensar com bombado
                             }
                         }
                     }
-                    else if (checkCollision(collisionBox, collisionLayer)) // Check collision with ground
-                    {
-                        arrow.Collided = true;
-                    }
-                    else
-                    {
-                        arrow.position += arrow.speed * elapsedTime;
-                    }
                 }
             }
 
-            foreach (Arrow arrow in toRemove)
-            {
-                arrows.Remove(arrow);
-            }*/
+            for (int i = 0; i < toRemove.Count; i++)
+                arrows.Remove(toRemove[i]);
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)

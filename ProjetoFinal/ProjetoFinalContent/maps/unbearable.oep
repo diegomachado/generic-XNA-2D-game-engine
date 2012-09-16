@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <OgmoVersion>2.0.0.41</OgmoVersion>
+  <OgmoVersion>2.1.0.1</OgmoVersion>
   <Name>Unbearable Shotgun</Name>
   <BackgroundColor A="255" R="0" G="0" B="0" />
   <GridColor A="255" R="87" G="87" B="87" />

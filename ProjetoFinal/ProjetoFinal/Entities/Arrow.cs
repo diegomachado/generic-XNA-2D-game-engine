@@ -11,21 +11,22 @@ namespace ProjetoFinal.Entities
 {
     class Arrow : DynamicEntity
     {
-        bool isFlying = false;
-        Vector2 direction;
-        float scaling = 0.1f;
-
-        float angle;
-        public short OwnerId { get; private set; }
-        public bool Collided { get; set; }
-        public float Timer { get; set; }
-
-        Vector2 textureCenterToBoundingBoxCenter = new Vector2();
-        Rectangle newBoundingBox;
-
         TextureManager textureManager = TextureManager.Instance;
         Camera camera = Camera.Instance;
-                
+
+        public float angle;
+        public float lifeSpan;
+        public float scale = 1f;
+        public short OwnerId { get; private set; }
+        public bool Collided { get; set; }
+
+        float fadeDelay = 700;
+        float fadeRate = 0.01f;
+        public float alpha = 1;
+        
+        // TODO: Refatorar isso
+        Vector2 textureCenterToBoundingBoxCenter = new Vector2();
+        Rectangle newBoundingBox;
         public override Rectangle BoundingBox
         {
             get
@@ -43,38 +44,48 @@ namespace ProjetoFinal.Entities
 
         public Arrow(short ownerId, Vector2 position, Vector2 _speed) : base(position)
         {
-            origin = new Vector2(11, 3);
+            angle = 0;
             baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Arrow), 1, 1);
             OwnerId = ownerId;
             speed = _speed;
             gravity = 0.2f;
             friction = 0.95f;
             BoundingBox = new Rectangle(19, 1, 5, 5);
-            Timer = 0;
+            lifeSpan = 0;
             Entity.Entities.Add(this);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (OnGround() || MapCollideY(-1)) speed.Y = 0;
-            speed.Y += gravity;
-            
-            if(OnGround())
-                speed.X *= friction;
+            lifeSpan += gameTime.ElapsedGameTime.Milliseconds;
 
-            MoveBy(speed);
-            base.Update(gameTime);
+            if (!Collided)
+            {
+                if (OnGround() || MapCollideY(-1) || MapCollideX(1) || MapCollideX(-1))
+                {
+                    Collided = true;
+                }
+                else
+                {
+                    angle = (float)Math.Acos(Vector2.Dot(speed, Vector2.UnitX) / (speed.Length()));
+                    speed.Y += gravity;
+                    if (speed.Y < 0) angle = -angle;
+
+                    MoveBy(speed);
+                }
+            }
+            else
+            {
+                fadeDelay -= gameTime.ElapsedGameTime.Milliseconds;
+                if (fadeDelay <= 0)
+                    alpha -= fadeRate;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            angle = (float)Math.Acos(Vector2.Dot(speed, Vector2.UnitX) / (speed.Length()));
-
-            if (speed.Y < 0)
-                angle = -angle;
-
-            spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCamera(position + origin), null, Color.White, angle, baseAnimation.TextureCenter, 1f, SpriteEffects.None, 0f);
-            Util.DrawRectangle(spriteBatch, CollisionBox, 1, Color.Red);            
+            spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCamera(position), null, Color.White * alpha, angle, baseAnimation.TextureCenter, scale, SpriteEffects.None, 0);
+            //Util.DrawRectangle(spriteBatch, CollisionBox, 1, Color.Red);
         }
     }
 }
