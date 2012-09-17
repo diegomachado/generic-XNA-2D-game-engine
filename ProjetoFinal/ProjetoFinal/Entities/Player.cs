@@ -57,31 +57,34 @@ namespace ProjetoFinal.Entities
             base.LoadContent();
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            // TODO: Ajeitar Bug ao flippar próximo das paredes
+            if (FacingRight)
+                boundingBox.X = 8;
+            else
+                boundingBox.X = 14;
+
+            base.Update(gameTime);
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (FacingRight)
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            else
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            else                                                                                                                          
+                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.FlipHorizontally, 0f);
 
-            // TODO: Flippar a boudingBox junto
-            //Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
+            Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
         }
 
-        // Passar os states pra dentro de player???
-        /*public void DrawDebug(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        public override bool OnCollision(Entity entity)
         {
-            spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
-            spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 20) - camera.Position, Color.White);
-            spriteBatch.DrawString(spriteFont, "" + localPlayerVerticalState, new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 40) - camera.Position, Color.White);
-            spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.position.X, new Vector2(5f, 05f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.position.Y, new Vector2(5f, 25f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.speed.X, new Vector2(5f, 45f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.speed.Y, new Vector2(5f, 65f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)camera.Position.X, new Vector2(5f, 85f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)camera.Position.Y, new Vector2(5f, 105f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Horizontal State: " + localPlayerHorizontalState, new Vector2(5f, 125f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Vertical State: " + localPlayerVerticalState, new Vector2(5f, 145f), Color.White);
-        }*/
+            if (entity is Arrow)
+                if (entity.active)
+                    Console.WriteLine("Tomei uma flechada frenética!");
+            
+            return true;
+        }
     }
 }

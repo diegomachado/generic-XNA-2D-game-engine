@@ -39,8 +39,11 @@ namespace ProjetoFinal.Entities
 
         public bool visible = true;
         public bool collidable = true;
+        public bool active = true;
 
+        public float angle;
         public Vector2 position;
+        public float scale; 
      
         public int Width      { get { return baseAnimation.FrameSize.X; } }
         public int Height     { get { return baseAnimation.FrameSize.Y; } }
@@ -67,11 +70,12 @@ namespace ProjetoFinal.Entities
         {
             type = Type.Generic;
             flags = Flags.None;
+            angle = 0;
             position = _position;
+            scale = 1;
             boundingBox = _boundingBox;
             Entities.Add(this);
         }
-
         ~Entity()
         {
             Entity.Entities.Remove(this);
@@ -82,8 +86,16 @@ namespace ProjetoFinal.Entities
         {
             baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
         }
+        EntityCollision entityCollision;
         public virtual void Update(GameTime gameTime)
         {
+            for (int i = 0; i < Entities.Count; i++)
+            { 
+                if (Entities[i] == this)
+                    break;
+                if (this.Collides(Entities[i]))
+                    entityCollision = new EntityCollision(this, Entities[i]);
+            }
         }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
@@ -96,7 +108,6 @@ namespace ProjetoFinal.Entities
         private Tile tileCheck;
         private Point tilePosition;
         private MapManager mapManager;
-        private Rectangle collisionBoxOffset;
         private Point corner1, corner2;
         Vector2 moveTemp = Vector2.Zero;
         float moveTempX = 0;
@@ -247,25 +258,9 @@ namespace ProjetoFinal.Entities
             tileCheck = mapManager.CollisionLayer.Tiles[tilePosition];
             return (tileCheck.Id == 0) ? false : true;
         }        
-
-        public bool PositionValidOnEntity(Entity entity, Point offset)
+        public bool Collides(Entity entity)
         {
-            collisionBoxOffset = entity.CollisionBox;
-            collisionBoxOffset.Offset(offset);
-
-            if (this != entity && entity.Collides(collisionBoxOffset))
-            {
-                EntityCollision entityCollision = new EntityCollision(this, entity);
-                EntityCollision.EntityCollisions.Add(entityCollision);
-
-                return false;
-            }
-
-            return true;
-        }
-        public bool Collides(Rectangle collisionBox)
-        {
-            return CollisionBox.Intersects(collisionBox);
+            return CollisionBox.Intersects(entity.CollisionBox);
         }
         public virtual bool OnCollision(Entity entity)
         {

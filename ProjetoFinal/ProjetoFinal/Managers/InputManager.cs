@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 
 namespace ProjetoFinal.Managers
 {
-    // TODO: Input de chars -> http://web.archive.org/web/20090124221325/http://ziggyware.com/readarticle.php?article_id=205
     class InputManager
     {
         private static InputManager instance;
@@ -142,7 +141,7 @@ namespace ProjetoFinal.Managers
 
         public Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }
         public bool MouseLeftButton { get { return ((mouseState.LeftButton == ButtonState.Pressed) && (previousMouseState.LeftButton == ButtonState.Released)); } }
-        public bool PreparingShot { get { return (mouseState.LeftButton == ButtonState.Pressed); } }
+        public bool PreparingShot { get { return ((mouseState.LeftButton == ButtonState.Pressed) && (previousMouseState.LeftButton == ButtonState.Pressed)); } }
 
         #endregion
     }
