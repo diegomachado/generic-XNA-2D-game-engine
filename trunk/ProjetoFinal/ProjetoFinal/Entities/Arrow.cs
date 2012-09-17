@@ -44,33 +44,32 @@ namespace ProjetoFinal.Entities
 
         public Arrow(short ownerId, Vector2 position, Vector2 _speed) : base(position)
         {
-            angle = 0;
             baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Arrow), 1, 1);
             OwnerId = ownerId;
             speed = _speed;
             gravity = 0.2f;
             friction = 0.95f;
             BoundingBox = new Rectangle(19, 1, 5, 5);
-            lifeSpan = 0;
-            Entity.Entities.Add(this);
+            lifeSpan = 3000;
+            active = true;
         }
 
         public override void Update(GameTime gameTime)
         {
-            lifeSpan += gameTime.ElapsedGameTime.Milliseconds;
+            lifeSpan -= gameTime.ElapsedGameTime.Milliseconds;
 
             if (!Collided)
             {
                 if (OnGround() || MapCollideY(-1) || MapCollideX(1) || MapCollideX(-1))
                 {
                     Collided = true;
+                    active = false;
                 }
                 else
                 {
                     angle = (float)Math.Acos(Vector2.Dot(speed, Vector2.UnitX) / (speed.Length()));
                     speed.Y += gravity;
                     if (speed.Y < 0) angle = -angle;
-
                     MoveBy(speed);
                 }
             }
@@ -80,12 +79,23 @@ namespace ProjetoFinal.Entities
                 if (fadeDelay <= 0)
                     alpha -= fadeRate;
             }
+
+            base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCamera(position), null, Color.White * alpha, angle, baseAnimation.TextureCenter, scale, SpriteEffects.None, 0);
             //Util.DrawRectangle(spriteBatch, CollisionBox, 1, Color.Red);
+        }
+
+        public override bool OnCollision(Entity entity)
+        {
+            if(entity is Player)
+                if(this.active)
+                    Console.WriteLine("Eu devia me auto-destruir!");
+
+            return true;
         }
     }
 }

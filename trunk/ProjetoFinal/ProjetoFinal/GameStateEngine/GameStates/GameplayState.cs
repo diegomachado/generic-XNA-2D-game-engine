@@ -86,8 +86,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             playerManager.Update(gameTime, mapManager.CollisionLayer);
             arrowManager.Update(gameTime, mapManager.CollisionLayer);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
-
-            /*
+            
             foreach (EntityCollision entityCollision in EntityCollision.EntityCollisions)
             {
                 Entity entityA = entityCollision.entityA;
@@ -97,7 +96,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                     entityB.OnCollision(entityA);
             }
             EntityCollision.EntityCollisions.Clear();
-             */
+
             base.Update(gameTime);
         }
 
@@ -117,6 +116,14 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             DebugSystem.Instance.TimeRuler.BeginMark("Arrows Draw", Color.Blue);
             arrowManager.Draw(spriteBatch, spriteFont);
             DebugSystem.Instance.TimeRuler.EndMark("Arrows Draw");
+
+            DrawEntitiesCount(spriteBatch, spriteFont);
+        }
+
+        public void DrawEntitiesCount(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        {
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(GraphicsManager.Instance.ScreenSize.X - 157, 7, 150, 40), Color.Black * 0.5f);
+            spriteBatch.DrawString(spriteFont, Entity.Entities.Count + " Entities", new Vector2(GraphicsManager.Instance.ScreenSize.X - 147, 15), Color.White);            
         }
 
         #region Network Events

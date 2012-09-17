@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using Lidgren.Network;
+
+using OgmoLibrary;
 
 using ProjetoFinal.Entities;
 using ProjetoFinal.EventHeaders;
 using ProjetoFinal.Managers.LocalPlayerStates;
-using Microsoft.Xna.Framework.Input;
-using OgmoLibrary;
 using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
 using ProjetoFinal.Network.Messages;
 
@@ -44,25 +44,10 @@ namespace ProjetoFinal.Managers
 
                 if (arrows[i].Collided)
                 {
-                    if (arrows[i].lifeSpan > 4000)
+                    if (arrows[i].lifeSpan <= 0)
                     { 
                         toRemove.Add(arrows[i]);
                         Entity.Entities.Remove(arrows[i]);
-                    }
-                }
-                else
-                {
-                    if (arrows[i].OwnerId != localPlayerId)
-                    {
-                        foreach (Player player in new List<Player>())
-                        {
-                            if (arrows[i].Collides(localPlayer.CollisionBox))
-                            {
-                                toRemove.Add(arrows[i]);
-                                Console.WriteLine("Arrow collided with Player!");
-                                // TODO: Lançar evento de hit ou se comunicar diretamente com o PlayerManager ou através de Player localPlayer, ainda não sei, pensar com bombado
-                            }
-                        }
                     }
                 }
             }

@@ -70,6 +70,8 @@ namespace ProjetoFinal.Managers
             if (localPlayer == null)
                 return;
 
+            localPlayer.Update(gameTime);
+
             collisionLayer = MapManager.Instance.CollisionLayer;
                   
             #region Horizontal Movement

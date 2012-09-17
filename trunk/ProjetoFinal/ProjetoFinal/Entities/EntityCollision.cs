@@ -15,6 +15,7 @@ namespace ProjetoFinal.Entities
         {
             this.entityA = entityA;
             this.entityB = entityB;
+            EntityCollisions.Add(this);
         }
     }
 }

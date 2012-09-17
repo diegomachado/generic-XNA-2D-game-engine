@@ -16,10 +16,10 @@ namespace ProjetoFinal.GameStateEngine
 
         public override void Update(GameTime gameTime/*, bool otherScreenHasFocus, bool coveredByOtherScreen*/)
         {
-            base.Update(gameTime);
-
             if(networkManager.IsConnected)
                 networkManager.ProcessNetworkMessages();
+
+            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont spriteFont)
