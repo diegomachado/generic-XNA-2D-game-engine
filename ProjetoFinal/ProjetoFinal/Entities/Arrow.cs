@@ -14,9 +14,7 @@ namespace ProjetoFinal.Entities
         TextureManager textureManager = TextureManager.Instance;
         Camera camera = Camera.Instance;
 
-        public float angle;
         public float lifeSpan;
-        public float scale = 1f;
         public short OwnerId { get; private set; }
         public bool Collided { get; set; }
 
@@ -24,7 +22,7 @@ namespace ProjetoFinal.Entities
         float fadeRate = 0.01f;
         public float alpha = 1;
         
-        // TODO: Refatorar isso
+        // TODO: Refatorar Rotação da Flecha
         Vector2 textureCenterToBoundingBoxCenter = new Vector2();
         Rectangle newBoundingBox;
         public override Rectangle BoundingBox
@@ -51,7 +49,6 @@ namespace ProjetoFinal.Entities
             friction = 0.95f;
             BoundingBox = new Rectangle(19, 1, 5, 5);
             lifeSpan = 3000;
-            active = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -91,11 +88,15 @@ namespace ProjetoFinal.Entities
 
         public override bool OnCollision(Entity entity)
         {
-            if(entity is Player)
-                if(this.active)
-                    Console.WriteLine("Eu devia me auto-destruir!");
+            if (entity is Player)
+                if (this.active && entity.active)
+                {
+                    active = false;
+                    Collided = true;
+                    return true;
+                }
 
-            return true;
+            return false;
         }
     }
 }
