@@ -30,8 +30,8 @@ namespace ProjetoFinal.Entities
             get
             {
                 newBoundingBox = base.BoundingBox;
-                textureCenterToBoundingBoxCenter.X = newBoundingBox.Center.X - baseAnimation.TextureCenter.X;
-                textureCenterToBoundingBoxCenter.Y = newBoundingBox.Center.Y - baseAnimation.TextureCenter.Y;                
+                textureCenterToBoundingBoxCenter.X = newBoundingBox.Center.X - spriteMap.width/2;
+                textureCenterToBoundingBoxCenter.Y = newBoundingBox.Center.Y - spriteMap.height/2;                
                 textureCenterToBoundingBoxCenter = Vector2.Transform(textureCenterToBoundingBoxCenter, Matrix.CreateRotationZ(angle));
                 newBoundingBox.Location = Util.Vector2ToPoint(textureCenterToBoundingBoxCenter - 
                     new Vector2(newBoundingBox.Center.X - newBoundingBox.Left, newBoundingBox.Center.Y - newBoundingBox.Top));
@@ -42,13 +42,18 @@ namespace ProjetoFinal.Entities
 
         public Arrow(short ownerId, Vector2 position, Vector2 _speed) : base(position)
         {
-            baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Arrow), 1, 1);
+            spriteMap = new SpriteMap(TextureManager.Instance.getTexture(TextureList.Arrow), 25, 7);
             OwnerId = ownerId;
             speed = _speed;
             gravity = 0.2f;
             friction = 0.95f;
             BoundingBox = new Rectangle(19, 1, 5, 5);
             lifeSpan = 3000;
+        }
+
+        public override void LoadContent()
+        {
+            spriteMap.Add("base", new int[0], 1, true);
         }
 
         public override void Update(GameTime gameTime)
@@ -82,19 +87,21 @@ namespace ProjetoFinal.Entities
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(baseAnimation.SpriteSheet, camera.WorldToCamera(position), null, Color.White * alpha, angle, baseAnimation.TextureCenter, scale, SpriteEffects.None, 0);
+            spriteMap.Draw(spriteBatch, camera.WorldToCamera(position), alpha, angle, scale);
             //Util.DrawRectangle(spriteBatch, CollisionBox, 1, Color.Red);
         }
 
         public override bool OnCollision(Entity entity)
         {
             if (entity is Player)
+            { 
                 if (this.active && entity.active)
                 {
                     active = false;
                     Collided = true;
                     return true;
                 }
+            }
 
             return false;
         }

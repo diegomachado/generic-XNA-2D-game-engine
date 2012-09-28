@@ -125,6 +125,7 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\DynamicEntity.cs" />
     <Compile Include="Entities\Utils\Animation.cs" />
+    <Compile Include="Entities\Utils\SpriteMap.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateUpdatedEventArgs\PlayerStateUpdatedWithArrowEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateUpdatedEventArgs\PlayerMovementStateUpdatedEventArgs.cs" />

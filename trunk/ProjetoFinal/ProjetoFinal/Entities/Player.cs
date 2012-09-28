@@ -56,6 +56,9 @@ namespace ProjetoFinal.Entities
 
         public override void LoadContent()
         {
+            spriteMap = new SpriteMap(TextureManager.Instance.getTexture(TextureList.EvilBear), 34, 30);
+            spriteMap.Add("idle", new int[]{0, 1, 2, 3}, 1).Play();
+
             base.LoadContent();
         }
 
@@ -67,11 +70,7 @@ namespace ProjetoFinal.Entities
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (FacingRight)
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            else                                                                                                                          
-                spriteBatch.Draw(baseAnimation.SpriteSheet, Camera.Instance.WorldToCamera(position), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.FlipHorizontally, 0f);
-
+            spriteMap.Draw(spriteBatch, Camera.Instance.WorldToCamera(position), !FacingRight);
             DrawHealthBar(spriteBatch);
             //Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
         }
@@ -79,7 +78,7 @@ namespace ProjetoFinal.Entities
         private void DrawHealthBar(SpriteBatch spriteBatch)
         {
            spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(),
-                            new Rectangle((int)position.X + Width/2 - (int)Camera.Instance.Position.X - health/8,
+                            new Rectangle((int)position.X + spriteMap.frameWidth/2 - (int)Camera.Instance.Position.X - health/8,
                             (int)position.Y - 7 - (int)Camera.Instance.Position.Y,
                             health/4, 3),
                             Color.Red);

@@ -6,66 +6,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ProjetoFinal.Entities.Utils
 {
-    public class Animation
+    class Animation
     {
-        private int currentFrame;
-        public Texture2D SpriteSheet { get; set; }
+        public SpriteMap parent;
+        public string name;
+        public int[] frames;
+        public float frameRate;
+        public int frameCount;
+        public bool loop;
 
-        public int Rows { get; set; }
-        public int Columns { get; set; }
-
-        Rectangle sourceRectangle, destinationRectangle;
-
-        private int TotalFrames
+        public Animation(string name, int[] frames, float frameRate, bool loop)
         {
-            get { return Rows * Columns; }
+            this.name = name;
+            this.frames = frames;
+            this.frameRate = frameRate;
+            this.frameCount = frames.Length;
+            this.loop = loop;
         }
 
-        public Point FrameSize
+        public void Play(bool reset = false)
         {
-            get { return new Point(SpriteSheet.Width / Columns, SpriteSheet.Height / Rows); }
-        }
-        
-        public Vector2 TextureCenter
-        {
-            get { return new Vector2(FrameSize.X / 2, FrameSize.Y / 2); }
-        }
-
-        public Animation(Texture2D spriteSheet, int rows, int columns)
-        {
-            currentFrame = 0;
-            SpriteSheet = spriteSheet;
-            Rows = rows;
-            Columns = columns;
-        }
-
-        public void Update()
-        {
-            currentFrame++;
-            if (currentFrame == TotalFrames)
-                currentFrame = 0;
-        }
-
-        public void Draw(SpriteBatch spriteBatch, Vector2 location, bool flip)
-        {
-            int row = (int)((float)currentFrame / (float)Columns);
-            int column = currentFrame % Columns;
-            sourceRectangle = new Rectangle(FrameSize.X * column, FrameSize.Y * row, FrameSize.X, FrameSize.Y);
-            destinationRectangle = new Rectangle((int)location.X, (int)location.Y, FrameSize.X, FrameSize.Y);            
-            destinationRectangle.Offset((int) -Camera.Instance.Position.X,(int) -Camera.Instance.Position.Y);    
-
-            if(flip)
-                spriteBatch.Draw(SpriteSheet, destinationRectangle, sourceRectangle, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-            else
-                spriteBatch.Draw(SpriteSheet, destinationRectangle, sourceRectangle, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
-        }
-
-        public void Play()
-        {
-        }
-
-        public void Stop()
-        {
+            parent.Play(name, reset);
         }
     }
 }

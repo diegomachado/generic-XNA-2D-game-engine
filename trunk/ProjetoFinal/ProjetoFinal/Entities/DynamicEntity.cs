@@ -35,18 +35,12 @@ namespace ProjetoFinal.Entities
             Entity.Entities.Remove(this);
         }
 
-        public override void LoadContent()
-        {
-            this.baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
-        }
+        public override void LoadContent(){}
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
         }
-        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
-        {
-            baseAnimation.Draw(spriteBatch, position, false);
-        }
+        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont){}
 
         public bool IsMovingHorizontally() { return (speed.X != 0); }
         public bool IsMovingVertically() { return (speed.Y != 0); }
