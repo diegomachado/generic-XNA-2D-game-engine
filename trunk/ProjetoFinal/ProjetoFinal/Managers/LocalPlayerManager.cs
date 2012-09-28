@@ -81,13 +81,20 @@ namespace ProjetoFinal.Managers
             localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
         }
 
+        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        {
+            if (localPlayer == null) return;
+            
+            localPlayer.Draw(spriteBatch);
+            localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
+        }        
+
         private void HandleVerticalMovement()
         {
             if (inputManager.Jump)
-            {
                 localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
-            }
         }
+
         private void HandleHorizontalMovement()
         {
             if (inputManager.Left)
@@ -108,6 +115,7 @@ namespace ProjetoFinal.Managers
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
         }
+
         private void HandleActions(GameTime gameTime)
         {
             if (inputManager.PreparingShot)
@@ -122,13 +130,5 @@ namespace ProjetoFinal.Managers
                 shootingTimer = 0f;
             }
         }
-
-        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
-        {
-            if (localPlayer == null) return;
-            
-            localPlayer.Draw(spriteBatch);
-            localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
-        }        
     }
 }

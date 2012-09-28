@@ -87,16 +87,17 @@ namespace ProjetoFinal.Entities
             baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
         }
         EntityCollision entityCollision;
+
         public virtual void Update(GameTime gameTime)
         {
             for (int i = 0; i < Entities.Count; i++)
-            { 
-                if (Entities[i] == this)
-                    break;
+            {
+                if (Entities[i] == this) break;
                 if (this.Collides(Entities[i]))
                     entityCollision = new EntityCollision(this, Entities[i]);
             }
         }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             baseAnimation.Draw(spriteBatch, new Vector2(0,0), true);

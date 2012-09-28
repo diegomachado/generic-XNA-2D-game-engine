@@ -34,8 +34,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             localPlayerManager = new LocalPlayerManager();
             localPlayerManager.createLocalPlayer(localPlayerId);
             arrowManager = new ArrowManager(localPlayerId, localPlayerManager.LocalPlayer);
-
-            camera.Speed = 4f;
         }
 
         public GameplayState() : this(0)
@@ -120,7 +118,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             DrawEntitiesCount(spriteBatch, spriteFont);
         }
 
-        public void DrawEntitiesCount(SpriteBatch spriteBatch, SpriteFont spriteFont)
+        private void DrawEntitiesCount(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(GraphicsManager.Instance.ScreenSize.X - 157, 7, 150, 40), Color.Black * 0.5f);
             spriteBatch.DrawString(spriteFont, Entity.Entities.Count + " Entities", new Vector2(GraphicsManager.Instance.ScreenSize.X - 147, 15), Color.White);            
