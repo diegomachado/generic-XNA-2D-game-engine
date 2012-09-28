@@ -39,7 +39,7 @@ namespace ProjetoFinal.Entities
 
         public Player(Vector2 _position) : base(_position)
         {
-            boundingBox = new Rectangle(8, 2, 10, 30);
+            boundingBox = new Rectangle(10, 0, 14, 30);
             moveSpeed = 2f;
             gravity = 0.5f;
             friction = 0.8f;
@@ -59,12 +59,6 @@ namespace ProjetoFinal.Entities
 
         public override void Update(GameTime gameTime)
         {
-            // TODO: Ajeitar Bug ao flippar próximo das paredes
-            if (FacingRight)
-                boundingBox.X = 8;
-            else
-                boundingBox.X = 14;
-
             base.Update(gameTime);
         }
 
