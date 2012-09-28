@@ -14,14 +14,6 @@ namespace ProjetoFinal.Entities
     // TODO: Setar todo mundo que não muda como CONST
     class Entity
     {
-        public enum Type
-        {
-            Generic,
-            Player,
-            Arrow,
-            Sword
-        }
-
         [Flags]
         public enum Flags
         {
@@ -34,8 +26,9 @@ namespace ProjetoFinal.Entities
         static public List<Entity> Entities = new List<Entity>();
 
         public Type type;
-        public Flags flags;             
-        public Animation baseAnimation;
+        public Flags flags;
+
+        public SpriteMap spriteMap;
 
         public bool visible = true;
         public bool collidable = true;
@@ -45,9 +38,9 @@ namespace ProjetoFinal.Entities
         public Vector2 position;
         public float scale; 
      
-        public int Width      { get { return baseAnimation.FrameSize.X; } }
-        public int Height     { get { return baseAnimation.FrameSize.Y; } }
-        public Vector2 Center { get { return position + baseAnimation.TextureCenter; } }        
+        public int Width      { get { return BoundingBox.Width; } }
+        public int Height     { get { return BoundingBox.Height; } }
+        public Vector2 Center { get { return position + new Vector2(Width / 2, Height / 2); } }        
 
         protected Rectangle boundingBox;
         public virtual Rectangle BoundingBox
@@ -68,7 +61,6 @@ namespace ProjetoFinal.Entities
 
         public Entity(Vector2 _position, Rectangle _boundingBox = new Rectangle())
         {
-            type = Type.Generic;
             flags = Flags.None;
             angle = 0;
             position = _position;
@@ -82,12 +74,9 @@ namespace ProjetoFinal.Entities
         }
 
         #region Game Logic
-        public virtual void LoadContent()
-        {
-            baseAnimation = new Animation(TextureManager.Instance.getTexture(TextureList.Bear), 1, 1);
-        }
-        EntityCollision entityCollision;
 
+        public virtual void LoadContent(){}
+        //TODO: Colocar tratamento de Entity Active aqui, ao invés de tratar no OnCollision
         public virtual void Update(GameTime gameTime)
         {
             for (int i = 0; i < Entities.Count; i++)
@@ -97,14 +86,13 @@ namespace ProjetoFinal.Entities
                     entityCollision = new EntityCollision(this, Entities[i]);
             }
         }
+        public virtual void Draw(SpriteBatch spriteBatch){}
 
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            baseAnimation.Draw(spriteBatch, new Vector2(0,0), true);
-        }
         #endregion
 
         #region Collision
+
+        EntityCollision entityCollision;
         private int sign;
         private Tile tileCheck;
         private Point tilePosition;
@@ -246,6 +234,7 @@ namespace ProjetoFinal.Entities
 
             return (TilePixelCollision(corner1) || TilePixelCollision(corner2));
         }        
+
         private bool TileCollision(Point tilePosition)
         {
             tileCheck = MapManager.Instance.CollisionLayer.Tiles[tilePosition];
@@ -259,6 +248,7 @@ namespace ProjetoFinal.Entities
             tileCheck = mapManager.CollisionLayer.Tiles[tilePosition];
             return (tileCheck.Id == 0) ? false : true;
         }        
+
         public bool Collides(Entity entity)
         {
             return CollisionBox.Intersects(entity.CollisionBox);
@@ -267,6 +257,7 @@ namespace ProjetoFinal.Entities
         {
             return true;
         }
+
         #endregion
     }
 }
