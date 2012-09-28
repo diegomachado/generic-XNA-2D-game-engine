@@ -78,6 +78,23 @@ namespace ProjetoFinal.Entities
             Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
         }
 
+        public void DrawArrowPower(SpriteBatch spriteBatch, float shootingTimer, Camera camera)
+        {
+            if (shootingTimer != 0)
+                if (FacingRight)
+                    spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(),
+                                     new Rectangle((int)position.X - 5 - (int)camera.Position.X,
+                                                   (int)position.Y + Height - (int)camera.Position.Y - (int)shootingTimer / 35,
+                                                   5, (int)shootingTimer / 35),
+                                     Color.Yellow);
+                else
+                    spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(),
+                                     new Rectangle((int)position.X + 30 - (int)camera.Position.X,
+                                         (int)position.Y + Height - (int)camera.Position.Y - (int)shootingTimer / 35,
+                                         5, (int)shootingTimer / 35), 
+                                     Color.Yellow);
+        }
+
         public override bool OnCollision(Entity entity)
         {
             if (entity is Arrow)

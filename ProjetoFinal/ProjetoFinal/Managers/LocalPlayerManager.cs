@@ -67,14 +67,29 @@ namespace ProjetoFinal.Managers
         Layer collisionLayer;
         public void Update(GameTime gameTime)
         {
-            if (localPlayer == null)
-                return;
+            if (localPlayer == null) return;
 
             localPlayer.Update(gameTime);
-
             collisionLayer = MapManager.Instance.CollisionLayer;
                   
-            #region Horizontal Movement
+            HandleHorizontalMovement();
+            HandleVerticalMovement();
+            HandleActions(gameTime);
+
+            localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
+            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
+            localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
+        }
+
+        private void HandleVerticalMovement()
+        {
+            if (inputManager.Jump)
+            {
+                localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
+            }
+        }
+        private void HandleHorizontalMovement()
+        {
             if (inputManager.Left)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.MovedLeft(playerId, localPlayer, localPlayerHorizontalStates);
@@ -92,16 +107,9 @@ namespace ProjetoFinal.Managers
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
             }
-            #endregion
-
-            #region Vertical Movement
-            if (inputManager.Jump)
-            {
-                localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
-            }
-            #endregion
-
-            #region Actions
+        }
+        private void HandleActions(GameTime gameTime)
+        {
             if (inputManager.PreparingShot)
             {
                 localPlayerActionState = localPlayerActionState.PreparingShot(playerId, localPlayer, localPlayerActionStates);
@@ -113,38 +121,14 @@ namespace ProjetoFinal.Managers
                 localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, shootingTimer, camera.CameraToWorld(inputManager.MousePosition), localPlayerActionStates);
                 shootingTimer = 0f;
             }
-            #endregion
-
-            localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
-            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
-            localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            if (localPlayer != null)
-                localPlayer.Draw(spriteBatch);
-
-            // TODO: Colocar dentro de Arrow (ou do Player...)
-            // TODO: Ajeitar a barrinha de charge pra crescer pra cima :$
-            if (shootingTimer != 0)
-                if(localPlayer.FacingRight)
-                    spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle((int)localPlayer.position.X - 5 - (int)camera.Position.X, (int)localPlayer.position.Y + localPlayer.Height - (int)camera.Position.Y, 5, (int)shootingTimer / 50), Color.Yellow);
-                else
-                    spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle((int)localPlayer.position.X + 30 - (int)camera.Position.X, (int)localPlayer.position.Y + localPlayer.Height - (int)camera.Position.Y, 5, (int)shootingTimer / 50), Color.Yellow);
-
-            //spriteBatch.Draw(TextureManager.Instance.GetPixelTextureByColor(Color.Black), new Rectangle(0, 0, 230, 170), new Color(0, 0, 0, 0.2f));
-            //spriteBatch.DrawString(spriteFont, "" + localPlayerHorizontalState, new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 20) - camera.Position, Color.White);
-            //spriteBatch.DrawString(spriteFont, "" + localPlayerVerticalState, new Vector2(localPlayer.position.X + 8, localPlayer.position.Y - 40) - camera.Position, Color.White);
-            //spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.position.X, new Vector2(5f, 05f), Color.White);
-            //spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.position.Y, new Vector2(5f, 25f), Color.White);
-            //spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.speed.X, new Vector2(5f, 45f), Color.White);
-            //spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.speed.Y, new Vector2(5f, 65f), Color.White);
-            //spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)camera.Position.X, new Vector2(5f, 85f), Color.White);
-            //spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)camera.Position.Y, new Vector2(5f, 105f), Color.White);
-            //spriteBatch.DrawString(spriteFont, "Horizontal State: " + localPlayerHorizontalState, new Vector2(5f, 125f), Color.White);
-            //spriteBatch.DrawString(spriteFont, "Vertical State: " + localPlayerVerticalState, new Vector2(5f, 145f), Color.White);
-        
-        }
+            if (localPlayer == null) return;
+            
+            localPlayer.Draw(spriteBatch);
+            localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
+        }        
     }
 }
