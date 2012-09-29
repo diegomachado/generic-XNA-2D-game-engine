@@ -57,7 +57,7 @@ namespace ProjetoFinal.Entities
         public override void LoadContent()
         {
             spriteMap = new SpriteMap(TextureManager.Instance.getTexture(TextureList.EvilBear), 34, 30);
-            spriteMap.Add("idle", new int[]{0, 1, 2, 3}, 1).Play();
+            spriteMap.Add("idle", new int[]{0, 1, 2, 3}, 10).Play();
 
             base.LoadContent();
         }
@@ -65,6 +65,7 @@ namespace ProjetoFinal.Entities
         public override void Update(GameTime gameTime)
         {
             if (health <= 0) Console.WriteLine("Morri :(");
+            spriteMap.Update(gameTime);
             base.Update(gameTime);
         }
 

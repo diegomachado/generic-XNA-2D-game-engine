@@ -11,13 +11,13 @@ namespace ProjetoFinal.Entities.Utils
         public bool complete = true;
         public float rate = 1;
 
-        public Rectangle sourceRect;
+        public Rectangle source;
         public Texture2D spriteSheet;
         public int width, height, columns, rows;
         public int frameWidth, frameHeight;
-        public Vector2 Center
+        public Vector2 FrameCenter
         {
-            get { return new Vector2((float) sourceRect.Width/2, (float) sourceRect.Height/2); }
+            get { return new Vector2((float) source.Width/2, (float) source.Height/2); }
         }
         public int frameCount;
         
@@ -25,35 +25,35 @@ namespace ProjetoFinal.Entities.Utils
         public Animation currentAnimation;
         public Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
 
-        public float timer = 0;
+        public double timer = 0;
         protected int frame;
         Random rand = new Random();
 
         public SpriteMap(Texture2D spriteSheet, int frameWidth = 0, int frameHeight = 0)
         {
             this.spriteSheet = spriteSheet;
-            sourceRect = new Rectangle(0, 0, frameWidth, frameHeight);
-            if (frameWidth == 0) sourceRect.Width = spriteSheet.Width;
-            if (frameHeight == 0) sourceRect.Height= spriteSheet.Height;
+            source = new Rectangle(0, 0, frameWidth, frameHeight);
+            if (frameWidth == 0) source.Width = spriteSheet.Width;
+            if (frameHeight == 0) source.Height= spriteSheet.Height;
             this.frameWidth = frameWidth;
             this.frameHeight = frameHeight;
             width = spriteSheet.Width;
             height = spriteSheet.Height;
-            columns = (int)Math.Ceiling((double)width/sourceRect.Width);
-            rows = (int)Math.Ceiling((double)height/sourceRect.Height);
-            frameCount = columns * rows;            
+            columns = (int)Math.Ceiling((double)width/source.Width);
+            rows = (int)Math.Ceiling((double)height/source.Height);
+            frameCount = columns * rows;
         }
 
         public void Update(GameTime gametime)
         {
             if (currentAnimation != null && !complete)
             {
-                timer += currentAnimation.frameRate * rate * gametime.ElapsedGameTime.Seconds;
+                timer += currentAnimation.frameRate * rate * gametime.ElapsedGameTime.TotalSeconds;
                 if (timer >= 1)
                 {
                     while (timer >= 1)
                     {
-                        timer--;
+                        timer = 0;
                         index++;
                         if (index == currentAnimation.frameCount)
                         {
@@ -70,8 +70,8 @@ namespace ProjetoFinal.Entities.Utils
                         }
                     }
 
-                    if (currentAnimation != null) 
-                        frame = currentAnimation.frames[index];
+                    if (currentAnimation != null) frame = currentAnimation.frames[index];
+                    UpdateFrame();
                 }
                 
             }
@@ -80,17 +80,17 @@ namespace ProjetoFinal.Entities.Utils
         Rectangle destinationRectangle;
         public void Draw(SpriteBatch spriteBatch, Vector2 position, bool flip = false)
         {
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, sourceRect.Width, sourceRect.Height);
+            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, source.Width, source.Height);
 
             if (flip)
-                spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(spriteSheet, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
             else
-                spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRect, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.Draw(spriteSheet, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, float alpha, float angle, float scale)
         {
-            spriteBatch.Draw(spriteSheet, position, null, Color.White * alpha, angle, Center, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(spriteSheet, position, null, Color.White * alpha, angle, FrameCenter, scale, SpriteEffects.None, 0);
         }
 
 
@@ -120,7 +120,14 @@ namespace ProjetoFinal.Entities.Utils
             timer = 0;
             this.frame = currentAnimation.frames[frame % currentAnimation.frameCount];
             complete = false;
+            UpdateFrame();
             return currentAnimation;
+        }
+
+        public void UpdateFrame()
+        {
+            source.X = source.Width * (frame % columns);
+            source.Y = source.Height * (frame / columns);
         }
 
         public int GetFrame(int column = 0, int row = 0)
@@ -135,6 +142,7 @@ namespace ProjetoFinal.Entities.Utils
             if (this.frame == frame) return;
             this.frame = frame;
             timer = 0;
+            UpdateFrame();
         }
 
         public void RandFrame()
