@@ -79,7 +79,7 @@ namespace ProjetoFinal.Entities
         {
             for (int i = 0; i < Entities.Count; i++)
             {
-                if (Entities[i] == this) break;
+                if (Entities[i] == this || !Entities[i].active) break;
                 if (this.Collides(Entities[i]))
                     entityCollision = new EntityCollision(this, Entities[i]);
             }
