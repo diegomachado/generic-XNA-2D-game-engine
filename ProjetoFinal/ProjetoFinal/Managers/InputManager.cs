@@ -13,6 +13,15 @@ namespace ProjetoFinal.Managers
 
         private KeyboardState previousKeyboardState, keyboardState;
         private MouseState previousMouseState, mouseState;
+        
+        private Keys[] alphaKeys = { Keys.A, Keys.B, Keys.C, Keys.D, Keys.E, Keys.F, Keys.G, 
+                                     Keys.H, Keys.I, Keys.J, Keys.K, Keys.L, Keys.M, Keys.N, 
+                                     Keys.O, Keys.P, Keys.Q, Keys.R, Keys.S, Keys.T, Keys.U, 
+                                     Keys.V, Keys.W, Keys.X, Keys.Y, Keys.Z };
+
+        private Keys[] numericKeys = { Keys.D0, Keys.D1, Keys.D2, Keys.D3, Keys.D4,
+                                       Keys.D5, Keys.D6, Keys.D7, Keys.D8, Keys.D9,
+                                       Keys.OemPeriod };
 
         public static InputManager Instance
         {
@@ -34,7 +43,7 @@ namespace ProjetoFinal.Managers
             mouseState = Mouse.GetState();
         }
 
-        #region Keyboard Input
+        #region Game Keyboard Input
 
         public bool Jump
         {
@@ -84,41 +93,53 @@ namespace ProjetoFinal.Managers
 
         #endregion
 
-        public String TextInput
+        public String AlphaNumericInput
         {
             get
             {
-                /*
-                String output = "";
+                String buffer = "";                
 
-                foreach (Keys key in keyboardState.GetPressedKeys())
-                    output += key.ToString() + ", ";
-
-                Console.WriteLine(output);
-                */
-
-                String buffer = "";
-                
                 foreach (Keys key in keyboardState.GetPressedKeys())
                 {
-                    if (key == Keys.D0 ||
-                        key == Keys.D1 ||
-                        key == Keys.D2 ||
-                        key == Keys.D3 ||
-                        key == Keys.D4 ||
-                        key == Keys.D5 ||
-                        key == Keys.D6 ||
-                        key == Keys.D7 ||
-                        key == Keys.D8 ||
-                        key == Keys.D9 ||
-                        key == Keys.OemPeriod
-                       )
+                    if (numericKeys.Contains(key))
                     {
                         if (previousKeyboardState.IsKeyUp(key))
                         {
-                            if (key == Keys.OemPeriod)
+                            if (key == Keys.OemPeriod) 
                                 buffer += ".";
+                            else 
+                                buffer += key.ToString().Substring(1, 1);
+                        }
+                    }
+                    if (alphaKeys.Contains(key))
+                    {
+                        if (previousKeyboardState.IsKeyUp(key)) 
+                            if (keyboardState.GetPressedKeys().Contains(Keys.LeftShift) || keyboardState.GetPressedKeys().Contains(Keys.RightShift))
+                                buffer += key.ToString();
                             else
+                                buffer += key.ToString().ToLower();
+                    }
+                }
+
+                return buffer;
+            }
+        }
+
+        public String NumericInput
+        {
+            get
+            {
+                String buffer = "";
+
+                foreach (Keys key in keyboardState.GetPressedKeys())
+                {
+                    if (numericKeys.Contains(key))
+                    {
+                        if (previousKeyboardState.IsKeyUp(key))
+                        {
+                            if (key == Keys.OemPeriod) 
+                                buffer += ".";
+                            else 
                                 buffer += key.ToString().Substring(1, 1);
                         }
                     }
