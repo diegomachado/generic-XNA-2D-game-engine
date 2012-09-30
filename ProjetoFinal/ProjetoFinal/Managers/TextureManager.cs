@@ -12,12 +12,10 @@ namespace ProjetoFinal.Managers
     public enum TextureList
     {
         Bear,
-        EvilBear,
-        Ranger,
+        Arrow,
         RandomSkin,
         CollisionBoxBorder,
         ButtonFrame,
-        Arrow
     }
 
     class TextureManager
@@ -47,7 +45,7 @@ namespace ProjetoFinal.Managers
         public Texture2D getTexture(TextureList texture)
         {
             String textureName = "bear";
-            String[] skinTextures = { "bear", "evil_bear", "ranger" };
+            String[] skinTextures = { "bear" };
             Random randomSkin = new Random();
 
             switch (texture)
@@ -55,15 +53,7 @@ namespace ProjetoFinal.Managers
                 case TextureList.Bear:
                     textureName = skinTextures[0];
                     break;
-
-                case TextureList.EvilBear:
-                    textureName = skinTextures[1];
-                    break;
-
-                case TextureList.Ranger:
-                    textureName = skinTextures[2];
-                    break;
-
+                    
                 case TextureList.RandomSkin:
                     textureName = skinTextures[randomSkin.Next(0, skinTextures.Length)];
                     break;

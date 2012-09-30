@@ -47,11 +47,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="sprites\ranger.png">
-      <Name>ranger</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="fonts\SegoeUI.spritefont">
@@ -68,6 +63,12 @@
     </Compile>
     <None Include="maps\unbearable.oep">
       <Name>unbearable</Name>
+    </None>
+    <None Include="sprites\animations\bear_idle.gal">
+      <Name>bear_idle</Name>
+    </None>
+    <None Include="sprites\animations\bear_walking.gal">
+      <Name>bear_walking</Name>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -108,13 +109,6 @@
   <ItemGroup>
     <Compile Include="pixel.png">
       <Name>pixel</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="sprites\evil_bear.png">
-      <Name>evil_bear</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
