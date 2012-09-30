@@ -41,7 +41,6 @@ namespace ProjetoFinal
             gameStatesManager.Initialize();
             
             DebugSystem.Initialize(this, "DebugFont");
-
             DebugSystem.Instance.FpsCounter.Visible = true;
             DebugSystem.Instance.TimeRuler.Visible = true;
             DebugSystem.Instance.TimeRuler.ShowLog = true;

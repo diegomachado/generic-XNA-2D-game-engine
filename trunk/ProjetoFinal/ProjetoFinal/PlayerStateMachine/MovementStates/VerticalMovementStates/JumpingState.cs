@@ -21,7 +21,6 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
                 player.speed.Y = 0;
             
             player.speed.Y += player.gravity;
-
             player.speed.Y = MathHelper.Clamp(player.speed.Y, player.minSpeed.Y, player.maxSpeed.Y);
             player.MoveYBy(player.speed.Y);
 
