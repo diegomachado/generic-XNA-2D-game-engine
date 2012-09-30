@@ -95,7 +95,7 @@ namespace ProjetoFinal.Entities
         {
             if (entity is Player)
             { 
-                if (this.active && entity.active)
+                if (this.active)
                 {
                     active = false;
                     Collided = true;
