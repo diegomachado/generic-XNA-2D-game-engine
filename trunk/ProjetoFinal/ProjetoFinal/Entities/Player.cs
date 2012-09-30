@@ -54,10 +54,12 @@ namespace ProjetoFinal.Entities
             ActionState = ActionStateType.Idle;
         }
 
+        // TODO: Passar isso na hora que constrói o player, pra dar flexibilidade
         public override void LoadContent()
         {
-            spriteMap = new SpriteMap(TextureManager.Instance.getTexture(TextureList.EvilBear), 34, 30);
-            spriteMap.Add("idle", new int[]{0, 1, 2, 3}, 10).Play();
+            spriteMap = new SpriteMap(TextureManager.Instance.getTexture(TextureList.Bear), 34, 30);
+            spriteMap.Add("idle", new int[] { 0, 1, 2, 3 }, 10).Play();
+            spriteMap.Add("moving", new int[] { 4, 5, 6, 7 }, 10);
 
             base.LoadContent();
         }

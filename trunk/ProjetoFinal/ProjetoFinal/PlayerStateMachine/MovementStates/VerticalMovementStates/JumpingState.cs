@@ -15,6 +15,8 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
+            player.spriteMap.Play("idle");
+
             if (player.MapCollideY(-1))
                 player.speed.Y = 0;
             

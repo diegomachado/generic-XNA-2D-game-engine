@@ -22,11 +22,9 @@ namespace ProjetoFinal.Entities
             Ghost = 2,
             MapOnly = 4
         }
+        public Flags flags;
 
         static public List<Entity> Entities = new List<Entity>();
-
-        public Type type;
-        public Flags flags;
 
         public SpriteMap spriteMap;
 

@@ -11,7 +11,6 @@ namespace ProjetoFinal.Managers
     {
         private static InputManager instance;
 
-        private int counter = 0;
         private KeyboardState previousKeyboardState, keyboardState;
         private MouseState previousMouseState, mouseState;
 

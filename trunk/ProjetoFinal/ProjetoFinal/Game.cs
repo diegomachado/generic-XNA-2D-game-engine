@@ -14,8 +14,8 @@ namespace ProjetoFinal
         GameStatesManager gameStatesManager;
         GraphicsManager graphicsManager = GraphicsManager.Instance;
         
-        DebugSystem debugSystem;
-        Vector2 debugPos = new Vector2(100, 100);
+        //DebugSystem debugSystem;
+        //Vector2 debugPos = new Vector2(100, 100);
 
         public ProjetoFinal()
         {
