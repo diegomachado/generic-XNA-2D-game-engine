@@ -21,7 +21,13 @@ namespace ProjetoFinal.Managers
 
         private Keys[] numericKeys = { Keys.D0, Keys.D1, Keys.D2, Keys.D3, Keys.D4,
                                        Keys.D5, Keys.D6, Keys.D7, Keys.D8, Keys.D9,
+                                       Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4, 
+                                       Keys.NumPad5, Keys.NumPad6, Keys.NumPad7, Keys.NumPad8, Keys.NumPad9, 
                                        Keys.OemPeriod };
+
+        private Keys[] symbolKeys = { Keys.OemBackslash, Keys.OemOpenBrackets, Keys.OemCloseBrackets,
+                                      Keys.OemMinus, Keys.OemPeriod, Keys.OemPipe, Keys.OemPlus, Keys.Space, 
+                                      Keys.OemQuestion, Keys.OemQuotes, Keys.OemSemicolon, Keys.OemTilde };
 
         public static InputManager Instance
         {
@@ -93,60 +99,58 @@ namespace ProjetoFinal.Managers
 
         #endregion
 
-        public String AlphaNumericInput
+        public String GetInput(bool numericOnly = false)
         {
-            get
+            foreach (Keys key in keyboardState.GetPressedKeys())
             {
-                String buffer = "";                
-
-                foreach (Keys key in keyboardState.GetPressedKeys())
-                {
-                    if (numericKeys.Contains(key))
-                    {
-                        if (previousKeyboardState.IsKeyUp(key))
-                        {
-                            if (key == Keys.OemPeriod) 
-                                buffer += ".";
-                            else 
-                                buffer += key.ToString().Substring(1, 1);
-                        }
-                    }
-                    if (alphaKeys.Contains(key))
-                    {
-                        if (previousKeyboardState.IsKeyUp(key)) 
-                            if (keyboardState.GetPressedKeys().Contains(Keys.LeftShift) || keyboardState.GetPressedKeys().Contains(Keys.RightShift))
-                                buffer += key.ToString();
-                            else
-                                buffer += key.ToString().ToLower();
-                    }
-                }
-
-                return buffer;
+                if(alphaKeys.Contains(key) && !numericOnly)
+                    return GetAlphaInput(key);
+                if(symbolKeys.Contains(key) && !numericOnly)
+                    return GetSymbolInput(key);
+                if (numericKeys.Contains(key))
+                    return GetNumericInput(key);
             }
+            return "";
+        }
+        
+        private String GetAlphaInput(Keys key)
+        {
+            if (previousKeyboardState.IsKeyUp(key))
+                if (keyboardState.GetPressedKeys().Contains(Keys.LeftShift) || keyboardState.GetPressedKeys().Contains(Keys.RightShift))
+                    return key.ToString();
+                else
+                    return key.ToString().ToLower();
+            return "";
         }
 
-        public String NumericInput
+        private String GetNumericInput(Keys key)
         {
-            get
+            if (previousKeyboardState.IsKeyUp(key))
+                if (key == Keys.OemPeriod)
+                    return ".";
+                else
+                    return key.ToString().Substring(key.ToString().Length - 1, 1);
+            return "";
+        }
+        
+        private String GetSymbolInput(Keys key)
+        {
+            if(previousKeyboardState.IsKeyUp(key))
             {
-                String buffer = "";
-
-                foreach (Keys key in keyboardState.GetPressedKeys())
-                {
-                    if (numericKeys.Contains(key))
-                    {
-                        if (previousKeyboardState.IsKeyUp(key))
-                        {
-                            if (key == Keys.OemPeriod) 
-                                buffer += ".";
-                            else 
-                                buffer += key.ToString().Substring(1, 1);
-                        }
-                    }
-                }
-
-                return buffer;
+                if (key == Keys.Space) return " ";
+                if (key == Keys.OemBackslash) return "/";
+                if (key == Keys.OemOpenBrackets) return "[";
+                if (key == Keys.OemCloseBrackets) return "]";
+                if (key == Keys.OemMinus) return "-";
+                if (key == Keys.OemPlus) return "+";
+                if (key == Keys.OemPeriod) return ".";
+                if (key == Keys.OemPipe) return "|";
+                if (key == Keys.OemQuestion) return "?";
+                if (key == Keys.OemQuotes) return "\"";
+                if (key == Keys.OemSemicolon) return ";";
+                if (key == Keys.OemTilde) return "~";
             }
+            return "";
         }
 
         #region Debugger

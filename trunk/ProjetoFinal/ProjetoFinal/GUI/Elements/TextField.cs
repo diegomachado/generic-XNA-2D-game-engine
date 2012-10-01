@@ -33,7 +33,7 @@ namespace ProjetoFinal.GUI.Elements
 
             if(focus)
             {
-                Text += inputManager.AlphaNumericInput;
+                Text += inputManager.GetInput();
 
                 if (inputManager.BackSpace && Text.Length > 0)
                     Text = Text.Substring(0, Text.Length - 1);
