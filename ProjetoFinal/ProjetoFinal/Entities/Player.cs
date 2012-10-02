@@ -13,6 +13,10 @@ namespace ProjetoFinal.Entities
 {
     class Player : DynamicEntity
     {
+        // TODO: isso não ta bom
+        NetworkManager networkManager = NetworkManager.Instance;
+
+        public short id;
         public int health;
         public VerticalStateType VerticalState { get; set; }
         public HorizontalStateType HorizontalState { get; set; }
@@ -38,8 +42,9 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Player(Vector2 _position) : base(_position)
+        public Player(short _id, Vector2 _position) : base(_position)
         {
+            id = _id;
             health = 100;
             boundingBox = new Rectangle(10, 0, 14, 30);
             moveSpeed = 2f;
@@ -106,8 +111,10 @@ namespace ProjetoFinal.Entities
 
         public override bool OnCollision(Entity entity)
         {
-            if (entity is Arrow)
-            { 
+            if (entity is Arrow && id == networkManager.LocalPlayerId)
+            {
+                // TODO: Lançar evento de que flecha me atingiu, caso tenha morrido, lançar evento de morte
+
                 health -= 1;
                 Console.WriteLine(health);
                 return true;
