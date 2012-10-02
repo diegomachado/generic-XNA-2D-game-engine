@@ -20,9 +20,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         LocalPlayerManager localPlayerManager;
         ArrowManager arrowManager;
         MapManager mapManager = MapManager.Instance;
+        NetworkManager networkManager = NetworkManager.Instance;
         Camera camera = Camera.Instance;
 
-        public GameplayState(short localPlayerId) : base()
+        public GameplayState()
         {
             eventManager.PlayerMovementStateUpdated += OnOtherClientPlayerMovementStateUpdated;
             eventManager.PlayerStateUpdated += OnOtherClientPlayerStateUpdated;
@@ -32,15 +33,13 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
-            localPlayerManager.createLocalPlayer(localPlayerId);
-            arrowManager = new ArrowManager(localPlayerId, localPlayerManager.LocalPlayer);
+            localPlayerManager.createLocalPlayer(networkManager.LocalPlayerId);
+            arrowManager = new ArrowManager(localPlayerManager.LocalPlayer);
+
+            Console.WriteLine("HOLY FUCK: " + networkManager.LocalPlayerId);
         }
 
-        public GameplayState() : this(0)
-        {            
-        }
-
-        public GameplayState(short localPlayerId, Dictionary<short, Client> clientsInfo) : this(localPlayerId)
+        public GameplayState(Dictionary<short, Client> clientsInfo) : this()
         {
             foreach (short id in clientsInfo.Keys)
                 this.playerManager.AddPlayer(id);
@@ -139,12 +138,14 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             else
             {
                 // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
-                Console.WriteLine("Olha a merda > " + args.PlayerId);
+                //Console.WriteLine("Olha a merda > " + args.PlayerId);
             }
         }
 
         private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs args)
         {
+            Console.WriteLine("MOTHERFUCKER >  " + args.PlayerId + " <> " + localPlayerManager.playerId);
+
             if (args.PlayerId != localPlayerManager.playerId)
             {
                 playerManager.UpdatePlayerMovementState(args.PlayerId,
@@ -157,7 +158,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             else
             {
                 // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
-                Console.WriteLine("Olha a merda > " + args.PlayerId);
+                //Console.WriteLine("Olha a merda > " + args.PlayerId);
             }
         }
 
@@ -172,7 +173,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             else
             {
                 // TODO: VERIFICAR SAPORRA, refactoring previsto em network manager
-                Console.WriteLine("Olha a merda > " + args.PlayerId);
+                //Console.WriteLine("Olha a merda > " + args.PlayerId);
             }
         }
 

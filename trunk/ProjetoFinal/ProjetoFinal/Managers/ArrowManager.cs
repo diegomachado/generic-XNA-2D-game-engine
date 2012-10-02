@@ -22,17 +22,16 @@ namespace ProjetoFinal.Managers
     {
         Camera camera = Camera.Instance;
         EventManager eventManager = EventManager.Instance;
+        NetworkManager networkManager = NetworkManager.Instance;
         List<Arrow> arrows;
         List<Arrow> toRemove;
         Player localPlayer;
-        short localPlayerId;
 
-        public ArrowManager(short localPlayerId, Player localPlayer)
+        public ArrowManager(Player localPlayer)
         {
             this.arrows = new List<Arrow>();
             this.toRemove = new List<Arrow>();
             this.localPlayer = localPlayer;
-            this.localPlayerId = localPlayerId;
         }
 
         //TODO: Fazer Pooling de Arrows, dentro da classe Arrow

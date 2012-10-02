@@ -22,6 +22,7 @@ namespace ProjetoFinal.Managers
 
         public bool IsServer { get { return networkInterface is ServerInterface; } }
         public bool IsConnected { get { return networkInterface != null; } }
+        public short LocalPlayerId { get; private set; }
 
         public static NetworkManager Instance
         {
@@ -50,6 +51,7 @@ namespace ProjetoFinal.Managers
  
             networkInterface.Connect();
             clientCounter = 1;
+            LocalPlayerId = 0;
 
             eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
             eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
@@ -112,8 +114,15 @@ namespace ProjetoFinal.Managers
 
                                 if (!IsServer)
                                 {
-                                    OnClientConnected(new HailMessage(im.SenderConnection.RemoteHailMessage));
+                                    HailMessage message = new HailMessage(im.SenderConnection.RemoteHailMessage);
 
+                                    if (clientCounter == 1)
+                                        LocalPlayerId = message.clientId;
+
+                                    clientCounter++;
+
+                                    OnClientConnected(message);
+                                    
                                     Console.WriteLine("Connected to {0}", im.SenderEndpoint);
                                 }
                                 else

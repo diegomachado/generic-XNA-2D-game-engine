@@ -65,7 +65,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         private void OnClientConnected(object sender, ClientConnectedEventArgs clientConnectedEventArgs)
         {
             GameStatesManager.ResignState(this);
-            GameStatesManager.AddState(new GameplayState(clientConnectedEventArgs.ClientId, clientConnectedEventArgs.ClientsInfo));
+            GameStatesManager.AddState(new GameplayState(clientConnectedEventArgs.ClientsInfo));
         }
 
         private void OnClientDisconnected(object sender, EventArgs eventArgs)

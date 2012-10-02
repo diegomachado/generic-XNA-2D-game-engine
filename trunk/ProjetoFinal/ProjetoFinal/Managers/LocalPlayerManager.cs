@@ -61,7 +61,7 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(new Vector2(240, 40));  
+            localPlayer = new Player(id, new Vector2(240, 40));  
         }
 
         Layer collisionLayer;

@@ -60,7 +60,7 @@ namespace ProjetoFinal.Managers
             if (this.players.ContainsKey(id))
                 return this.players[id];
 
-            Player player = new Player(new Vector2(240, 240));
+            Player player = new Player(id, new Vector2(240, 240));
             player.LoadContent();
             players.Add(id, player);
             actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
@@ -75,7 +75,7 @@ namespace ProjetoFinal.Managers
         {
             if (!this.players.ContainsKey(id))
             {
-                player = new Player(new Vector2(240, 40));
+                player = new Player(id, new Vector2(240, 40));
                 player.LoadContent();
                 this.players.Add(id, player);
                 actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
