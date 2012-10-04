@@ -16,16 +16,19 @@ namespace ProjetoFinal.Entities
         // TODO: isso não ta bom
         NetworkManager networkManager = NetworkManager.Instance;
 
+        private double afterRespawnTime;
         public short id;
         public int health;
+        public double LastUpdateTime;
         public VerticalStateType VerticalState { get; set; }
         public HorizontalStateType HorizontalState { get; set; }
         public ActionStateType ActionState { get; set; }
         public bool FacingRight { get; set; }
+        
+        //private isDead;
+        public bool IsDead { get; private set; }
 
-        public double LastUpdateTime;
-
-        Vector2 weaponPosition;
+        private Vector2 weaponPosition;
         public Vector2 WeaponPosition
         {
             get
@@ -71,13 +74,24 @@ namespace ProjetoFinal.Entities
 
         public override void Update(GameTime gameTime)
         {
-            if (health <= 0) Console.WriteLine("Morri :(");
+            if (afterRespawnTime > 0)
+                afterRespawnTime -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (health <= 0)
+            {
+                IsDead = true;
+                Console.WriteLine("Morri :(");
+            }
+            
             spriteMap.Update(gameTime);
             base.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            // TODO: Fazer alguma viadisse aqui pra mostrar que o cara ta invulneravel logo apos dar respawn
+            // if (afterRespawnTime > 0)
+
             spriteMap.Draw(spriteBatch, Camera.Instance.WorldToCamera(position), !FacingRight);
             DrawHealthBar(spriteBatch);
             //Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
@@ -111,16 +125,28 @@ namespace ProjetoFinal.Entities
 
         public override bool OnCollision(Entity entity)
         {
-            if (entity is Arrow && id == networkManager.LocalPlayerId)
+            if (entity is Arrow &&
+                id == networkManager.LocalPlayerId &&
+                !(afterRespawnTime > 0))
             {
                 // TODO: Lançar evento de que flecha me atingiu, caso tenha morrido, lançar evento de morte
 
-                health -= 1;
+                health -= 20;
                 Console.WriteLine(health);
                 return true;
             }
+            else
+            {
+                return false;  
+            }  
+        }
 
-            return false;            
-        }        
+        public void Respawn(Vector2 respawnPoint)
+        {
+            IsDead = false;
+            health = 100;
+            afterRespawnTime = 5.0f;
+            position = respawnPoint;
+        }
     }
 }
