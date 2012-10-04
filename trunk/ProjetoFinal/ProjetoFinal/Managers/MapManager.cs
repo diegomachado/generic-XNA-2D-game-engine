@@ -48,8 +48,8 @@ namespace ProjetoFinal.Managers
             switch (type)
             {
                 case MapType.Level1:
-                    currentMap = content.Load<Map>(@"maps/big");
-                    break;
+                    currentMap = content.Load<Map>(@"maps/level");
+                    break;                
             }
         }
 

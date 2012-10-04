@@ -1,4 +1,7 @@
 <level width="1280" height="1216" TileWidth="32" TileHeight="32">
+  <Entities>
+    <Bear id="0" x="208" y="136" />
+  </Entities>
   <Decals tileset="unbearable-light" exportMode="XML" />
   <Solids tileset="unbearable-light" exportMode="XML">
     <tile x="0" y="0" id="1" />

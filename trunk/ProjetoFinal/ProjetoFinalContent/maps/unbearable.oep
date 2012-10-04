@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <OgmoVersion>2.1.0.1</OgmoVersion>
+  <OgmoVersion>2.1.0.4</OgmoVersion>
   <Name>Unbearable Shotgun</Name>
   <BackgroundColor A="255" R="0" G="0" B="0" />
   <GridColor A="255" R="87" G="87" B="87" />
@@ -29,8 +29,8 @@
     <ValueDefinition xsi:type="IntValueDefinition" Name="TileHeight" Default="32" Min="0" Max="128" ShowSlider="false" />
   </LevelValueDefinitions>
   <LayerDefinitions>
-    <LayerDefinition xsi:type="TileLayerDefinition">
-      <Name>Decals</Name>
+    <LayerDefinition xsi:type="GridLayerDefinition">
+      <Name>Collision</Name>
       <Grid>
         <Width>32</Width>
         <Height>32</Height>
@@ -39,7 +39,8 @@
         <X>1</X>
         <Y>1</Y>
       </ScrollFactor>
-      <ExportMode>XML</ExportMode>
+      <Color A="255" R="255" G="255" B="255" />
+      <ExportMode>Bitstring</ExportMode>
     </LayerDefinition>
     <LayerDefinition xsi:type="TileLayerDefinition">
       <Name>Solids</Name>
@@ -53,8 +54,8 @@
       </ScrollFactor>
       <ExportMode>XML</ExportMode>
     </LayerDefinition>
-    <LayerDefinition xsi:type="GridLayerDefinition">
-      <Name>Collision</Name>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>Decals</Name>
       <Grid>
         <Width>32</Width>
         <Height>32</Height>
@@ -63,8 +64,18 @@
         <X>1</X>
         <Y>1</Y>
       </ScrollFactor>
-      <Color A="255" R="255" G="255" B="255" />
-      <ExportMode>Bitstring</ExportMode>
+      <ExportMode>XML</ExportMode>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="EntityLayerDefinition">
+      <Name>Entities</Name>
+      <Grid>
+        <Width>8</Width>
+        <Height>8</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
     </LayerDefinition>
   </LayerDefinitions>
   <Tilesets>
@@ -79,16 +90,16 @@
     </Tileset>
   </Tilesets>
   <EntityDefinitions>
-    <EntityDefinition Name="Bear" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+    <EntityDefinition Name="Bear" Limit="1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
         <Width>32</Width>
         <Height>32</Height>
       </Size>
       <Origin>
-        <X>0</X>
-        <Y>0</Y>
+        <X>16</X>
+        <Y>16</Y>
       </Origin>
-      <ImageDefinition DrawMode="Image" ImagePath="..\sprites\bear.png" Tiled="false">
+      <ImageDefinition DrawMode="Rectangle" ImagePath="..\sprites\bear.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />

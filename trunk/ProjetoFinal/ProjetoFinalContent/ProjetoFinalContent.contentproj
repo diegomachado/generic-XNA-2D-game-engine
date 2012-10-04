@@ -61,6 +61,11 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <Compile Include="maps\level.oel">
+      <Name>level</Name>
+      <Importer>MapImporter</Importer>
+      <Processor>MapProcessor</Processor>
+    </Compile>
     <None Include="maps\unbearable.oep">
       <Name>unbearable</Name>
     </None>
