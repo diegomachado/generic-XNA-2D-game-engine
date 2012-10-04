@@ -69,6 +69,12 @@ namespace ProjetoFinal.Managers
         {
             if (localPlayer == null) return;
 
+            if (localPlayer.IsDead)
+            {
+                // TODO: Criar logica de respawn points e timer de respawn
+                localPlayer.Respawn(new Vector2(100, 100));
+            }
+            
             localPlayer.Update(gameTime);
             collisionLayer = MapManager.Instance.CollisionLayer;
                   
