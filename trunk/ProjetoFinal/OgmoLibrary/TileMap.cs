@@ -53,8 +53,8 @@ namespace OgmoEditorLibrary
             
             startTile.X = cameraPos.X / tile.Width;
             startTile.Y = cameraPos.Y / tile.Height;
-            endTile.X = (int)Math.Min((cameraPos.X + screenSize.Width) / tile.Width + 1, tiles.GetLength(1));
-            endTile.Y = (int)Math.Min((cameraPos.Y + screenSize.Height) / tile.Height + 1, tiles.GetLength(0));
+            endTile.X = (int)Math.Min((cameraPos.X + screenSize.Width) / tile.Width + 1, tiles.GetLength(0));
+            endTile.Y = (int)Math.Min((cameraPos.Y + screenSize.Height) / tile.Height + 1, tiles.GetLength(1));
             
             for (int col = startTile.X; col < endTile.X; col++)
             {

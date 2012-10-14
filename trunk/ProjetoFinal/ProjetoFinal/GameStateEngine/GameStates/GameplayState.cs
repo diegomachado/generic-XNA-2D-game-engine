@@ -53,7 +53,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         public override void LoadContent(ContentManager content) 
         {
             levelManager.Content = content;
-            levelManager.LoadLevel("complex");
+            levelManager.LoadLevel("battlefield");
             localPlayerManager.LocalPlayer.LoadContent();
         }
 

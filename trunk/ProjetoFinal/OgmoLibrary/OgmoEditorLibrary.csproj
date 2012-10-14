@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Grid.cs" />
+    <Compile Include="LevelEntity.cs" />
     <Compile Include="LevelReader.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="Level.cs" />

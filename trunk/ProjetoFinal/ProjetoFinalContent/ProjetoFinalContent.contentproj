@@ -71,8 +71,8 @@
       <Importer>LevelImporter</Importer>
       <Processor>LevelProcessor</Processor>
     </Compile>
-    <Compile Include="levels\complex.oel">
-      <Name>complex</Name>
+    <Compile Include="levels\battlefield.oel">
+      <Name>battlefield</Name>
       <Importer>LevelImporter</Importer>
       <Processor>LevelProcessor</Processor>
     </Compile>

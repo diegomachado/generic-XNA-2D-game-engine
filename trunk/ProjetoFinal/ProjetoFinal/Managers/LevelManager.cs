@@ -40,6 +40,7 @@ namespace ProjetoFinal.Managers
 
         public bool IsCurrentLevelLoaded { get { return (currentLevel != null); } }
 
+        // Tirar esse Load Level daqui e colocar em Level.
         public void LoadLevel(string levelName)
         {
             levelFile = content.Load<XmlDocument>(@"levels/" + levelName);
@@ -55,12 +56,13 @@ namespace ProjetoFinal.Managers
 
             levelWidth = Convert.ToInt32(levelFile.SelectSingleNode("/level").Attributes["width"].Value);
             levelHeight = Convert.ToInt32(levelFile.SelectSingleNode("/level").Attributes["height"].Value);
+
             bitstring = levelFile.SelectSingleNode("/level/*[@exportMode='Bitstring']").InnerText;
             grid = new Grid(levelWidth, levelHeight, 32, 32);
             grid.LoadFromString(bitstring);
+
             tileMapNodes = levelFile.SelectNodes("/level/*[@exportMode='XML']");
             tileMaps = new TileMap[tileMapNodes.Count];
-
             for (int i = 0; i < tileMapNodes.Count; i++)
             {
                 tileset = content.Load<Texture2D>(@"levels/" + tileMapNodes[0].Attributes["tileset"].Value);
@@ -74,6 +76,8 @@ namespace ProjetoFinal.Managers
                     tileMaps[i].setTile(x, y, id);
                 }
             }
+
+
 
             currentLevel = new Level("test_level", levelWidth, levelHeight, grid, tileMaps);
         }
