@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 using ProjetoFinal.Entities;
-using OgmoLibrary;
 using ProjetoFinal.PlayerStateMachine;
+
+using OgmoEditorLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
@@ -22,13 +19,13 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
     abstract class HorizontalMovementState : MovementPlayerState
     {
-        public abstract HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates);
+        public abstract HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates);
 
         #region Public Messages
 
         public virtual HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            if(!(player.VerticalState == VerticalStateType.Jumping)) player.spriteMap.Play("moving");
+            if(player.VerticalState != VerticalStateType.Jumping) player.spriteMap.Play("moving");
             return this;
         }
         public virtual HorizontalMovementState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
@@ -38,7 +35,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         }
         public virtual HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            if (!(player.VerticalState == VerticalStateType.Jumping)) player.spriteMap.Play("moving");
+            if (player.VerticalState != VerticalStateType.Jumping) player.spriteMap.Play("moving");
             return this;
         }
         public virtual HorizontalMovementState StoppedMovingRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using ProjetoFinal.Entities;
 using ProjetoFinal.Managers.LocalPlayerStates;
 
-using OgmoLibrary;
+using OgmoEditorLibrary;
 using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
 
 namespace ProjetoFinal.Managers
@@ -61,10 +61,10 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(id, new Vector2(240, 40));  
+            localPlayer = new Player(id, new Vector2(70, 70));  
         }
 
-        Layer collisionLayer;
+        Grid grid;
         public void Update(GameTime gameTime)
         {
             if (localPlayer == null) return;
@@ -76,14 +76,14 @@ namespace ProjetoFinal.Managers
             }
             
             localPlayer.Update(gameTime);
-            collisionLayer = MapManager.Instance.CollisionLayer;
+            grid = LevelManager.Instance.Grid;
                   
             HandleHorizontalMovement();
             HandleVerticalMovement();
             HandleActions(gameTime);
 
-            localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerHorizontalStates);
-            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, collisionLayer, localPlayerVerticalStates);
+            localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, grid, localPlayerHorizontalStates);
+            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, grid, localPlayerVerticalStates);
             localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
         }
 

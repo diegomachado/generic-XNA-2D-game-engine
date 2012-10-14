@@ -28,9 +28,9 @@ namespace ProjetoFinal.GameStateEngine
 
             if (networkManager.IsConnected)
             {
-                spriteBatch.DrawString(spriteFont, "Players:", new Vector2(graphicsManager.ScreenSize.X - 70, 25), Color.White);
+                spriteBatch.DrawString(spriteFont, "Players:", new Vector2(graphicsManager.screen.Width - 70, 25), Color.White);
 
-                Vector2 playersDebugTextPosition = new Vector2(graphicsManager.ScreenSize.X - 200, 25);
+                Vector2 playersDebugTextPosition = new Vector2(graphicsManager.screen.Width - 200, 25);
                 foreach (KeyValuePair<short, Client> client in networkManager.clients)
                 {
                     playersDebugTextPosition.Y += 20;

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
-using OgmoLibrary;
+using OgmoEditorLibrary;
 using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
@@ -21,7 +21,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
     abstract class VerticalMovementState : MovementPlayerState
     {
-        public abstract VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates);
+        public abstract VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<VerticalStateType, VerticalMovementState> playerStates);
 
         #region Public Messages
 

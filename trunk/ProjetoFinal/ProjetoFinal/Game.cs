@@ -23,9 +23,11 @@ namespace ProjetoFinal
 
             Content.RootDirectory = "Content";
 
+            //IsFixedTimeStep = false;
+
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth  = graphicsManager.ScreenSize.X;
-            graphics.PreferredBackBufferHeight = graphicsManager.ScreenSize.Y;
+            graphics.PreferredBackBufferWidth  = graphicsManager.screen.Width;
+            graphics.PreferredBackBufferHeight = graphicsManager.screen.Height;
             graphics.SynchronizeWithVerticalRetrace = false;
 
             graphics.ApplyChanges();

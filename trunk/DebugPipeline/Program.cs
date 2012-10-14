@@ -72,54 +72,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DebugPipeline
 {
-    /// <summary>
-    /// To debug the XNA Framework Content Pipeline:
-    ///     1. Modify the constants below to match your project
-    ///     2. Set this project to be the Startup Project
-    ///     3. Start debugging
-    /// </summary>
     class Program
     {
-        /// <summary>
-        /// TODO: Change this to the full path of the content project whose pipeline you want to debug.
-        ///       Example:
-        ///               private const string ProjectToDebug = @"C:\XNA Samples\SkinnedModelExtensions\SkinningSample\Content\SkinningSampleContent.contentproj";
-        /// </summary>
         private const string ProjectToDebug = @"C:\Users\diego\Documents\Visual Studio 2010\Projects\ProjetoFinal\ProjetoFinal\ProjetoFinalContent\ProjetoFinalContent.contentproj";
 
-        /// <summary>
-        /// TODO: Change this to the content item you want to debug. The content pipeline will only
-        ///       build this one item and no others. Leave SingleItem null or empty to build the entire
-        ///       content project while debugging.
-        ///       Example:
-        ///               private const string SingleItem = @"dude.fbx";
-        /// </summary>
-        private const string SingleItem = @"maps\big.oel";
+        private const string SingleItem = @"levels\complex.oel";
 
-        /// <summary>
-        /// TODO: Set the XnaProfile to HiDef or Reach, depending on your target graphics profile.
-        /// NOTE: Windows Phone projects only support content built for the Reach profile.
-        /// </summary>
-        private const GraphicsProfile XnaProfile = GraphicsProfile.HiDef;
+        private const GraphicsProfile XnaProfile = GraphicsProfile.Reach;
 
-        /// <summary>
-        /// TODO: You generally don't need to change this unless your custom importer or processor uses
-        ///       the TargetPlatform property of its context object.
-        /// </summary>
         private const TargetPlatform XnaPlatform = TargetPlatform.Windows;
 
-        /// <summary>
-        /// TODO: Change this if you want to see more output from MSBuild.
-        /// NOTE: Detailed and Diagnostic output makes builds noticeably slower.
-        /// </summary>
         private const LoggerVerbosity LoggingVerbosity = LoggerVerbosity.Normal;
 
         #region MSBuild hosting and execution
 
-        /// <summary>
-        /// This program hosts the MSBuild engine and builds the content project with parameters based
-        /// on the constant values specified above.
-        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -144,8 +110,7 @@ namespace DebugPipeline
             var project = ProjectCollection.GlobalProjectCollection.LoadProject(ProjectName, globalProperties, MSBuildVersion);
             bool succeeded = project.Build("rebuild", Loggers);
 
-            // To read the build output in the console window, place a breakpoint on the
-            // Debug.WriteLine statement below.
+            
             Debug.WriteLine("Build " + (succeeded ? "Succeeded." : "Failed."));
         }
 

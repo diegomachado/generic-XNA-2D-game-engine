@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <OgmoVersion>2.1.0.4</OgmoVersion>
+  <OgmoVersion>2.1.0.5</OgmoVersion>
   <Name>Unbearable Shotgun</Name>
   <BackgroundColor A="255" R="0" G="0" B="0" />
   <GridColor A="255" R="87" G="87" B="87" />
@@ -16,7 +16,7 @@
     <Width>2560</Width>
     <Height>2560</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\diego\Documents\Visual Studio 2010\Projects\ProjetoFinal\ProjetoFinal\ProjetoFinalContent\maps\unbearable.oep</Filename>
+  <Filename>C:\Users\diego\Documents\Visual Studio 2010\Projects\ProjetoFinal\ProjetoFinal\ProjetoFinalContent\levels\unbearable.oep</Filename>
   <AngleMode>Degrees</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -24,10 +24,7 @@
     <Height>480</Height>
   </CameraSize>
   <ExportCameraPosition>false</ExportCameraPosition>
-  <LevelValueDefinitions>
-    <ValueDefinition xsi:type="IntValueDefinition" Name="TileWidth" Default="32" Min="0" Max="128" ShowSlider="false" />
-    <ValueDefinition xsi:type="IntValueDefinition" Name="TileHeight" Default="32" Min="0" Max="128" ShowSlider="false" />
-  </LevelValueDefinitions>
+  <LevelValueDefinitions />
   <LayerDefinitions>
     <LayerDefinition xsi:type="GridLayerDefinition">
       <Name>Collision</Name>
@@ -80,8 +77,8 @@
   </LayerDefinitions>
   <Tilesets>
     <Tileset>
-      <Name>unbearable-light</Name>
-      <FilePath>unbearable-light.png</FilePath>
+      <Name>unbearable-tileset</Name>
+      <FilePath>unbearable-tileset.png</FilePath>
       <TileSize>
         <Width>32</Width>
         <Height>32</Height>

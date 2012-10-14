@@ -19,7 +19,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         PlayerManager playerManager;
         LocalPlayerManager localPlayerManager;
         ArrowManager arrowManager;
-        MapManager mapManager = MapManager.Instance;
+        LevelManager levelManager = LevelManager.Instance;
         NetworkManager networkManager = NetworkManager.Instance;
         Camera camera = Camera.Instance;
 
@@ -52,8 +52,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         public override void LoadContent(ContentManager content) 
         {
-            mapManager.Content = content;
-            mapManager.LoadMap(MapType.Level1);
+            levelManager.Content = content;
+            levelManager.LoadLevel("complex");
             localPlayerManager.LocalPlayer.LoadContent();
         }
 
@@ -80,8 +80,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 GameStatesManager.AddState(new PauseState());
 
             localPlayerManager.Update(gameTime);
-            playerManager.Update(gameTime, mapManager.CollisionLayer);
-            arrowManager.Update(gameTime, mapManager.CollisionLayer);
+            playerManager.Update(gameTime, levelManager.Grid);
+            arrowManager.Update(gameTime);
             camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
             
             foreach (EntityCollision entityCollision in EntityCollision.EntityCollisions)
@@ -102,7 +102,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             DebugSystem.Instance.TimeRuler.StartFrame();
 
             DebugSystem.Instance.TimeRuler.BeginMark("Map Draw", Color.Red);
-            mapManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.ScreenSize);
+            levelManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.screen);
             DebugSystem.Instance.TimeRuler.EndMark("Map Draw");
 
             DebugSystem.Instance.TimeRuler.BeginMark("Player Draw", Color.Yellow);
@@ -119,8 +119,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         private void DrawEntitiesCount(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(GraphicsManager.Instance.ScreenSize.X - 157, 7, 150, 40), Color.Black * 0.5f);
-            spriteBatch.DrawString(spriteFont, Entity.Entities.Count + " Entities", new Vector2(GraphicsManager.Instance.ScreenSize.X - 147, 15), Color.White);            
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(GraphicsManager.Instance.screen.X - 157, 7, 150, 40), Color.Black * 0.5f);
+            spriteBatch.DrawString(spriteFont, Entity.Entities.Count + " Entities", new Vector2(GraphicsManager.Instance.screen.X - 147, 15), Color.White);            
         }
 
         #region Network Events

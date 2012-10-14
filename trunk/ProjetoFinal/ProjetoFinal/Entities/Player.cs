@@ -130,7 +130,6 @@ namespace ProjetoFinal.Entities
                 !(afterRespawnTime > 0))
             {
                 // TODO: Lançar evento de que flecha me atingiu, caso tenha morrido, lançar evento de morte
-
                 health -= 20;
                 Console.WriteLine(health);
                 return true;

@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
-using OgmoLibrary;
+using OgmoEditorLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class JumpingState : VerticalMovementState
     {
-        public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
+        public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
             player.spriteMap.Play("idle");
 
