@@ -1,0 +1,82 @@
+<level width="256" height="256">
+  <Collision exportMode="Bitstring">11111111
+10000001
+10000001
+10000001
+10000111
+10000001
+10000001
+11111111</Collision>
+  <Solids tileset="unbearable-light" exportMode="XML">
+    <tile x="0" y="0" id="1" />
+    <tile x="0" y="1" id="1" />
+    <tile x="0" y="2" id="1" />
+    <tile x="0" y="3" id="1" />
+    <tile x="0" y="4" id="1" />
+    <tile x="0" y="5" id="1" />
+    <tile x="0" y="6" id="1" />
+    <tile x="0" y="7" id="1" />
+    <tile x="1" y="0" id="1" />
+    <tile x="1" y="1" id="17" />
+    <tile x="1" y="2" id="17" />
+    <tile x="1" y="3" id="17" />
+    <tile x="1" y="4" id="17" />
+    <tile x="1" y="5" id="17" />
+    <tile x="1" y="6" id="17" />
+    <tile x="1" y="7" id="0" />
+    <tile x="2" y="0" id="1" />
+    <tile x="2" y="1" id="17" />
+    <tile x="2" y="2" id="17" />
+    <tile x="2" y="3" id="17" />
+    <tile x="2" y="4" id="17" />
+    <tile x="2" y="5" id="17" />
+    <tile x="2" y="6" id="17" />
+    <tile x="2" y="7" id="47" />
+    <tile x="3" y="0" id="1" />
+    <tile x="3" y="1" id="17" />
+    <tile x="3" y="2" id="17" />
+    <tile x="3" y="3" id="17" />
+    <tile x="3" y="4" id="17" />
+    <tile x="3" y="5" id="17" />
+    <tile x="3" y="6" id="17" />
+    <tile x="3" y="7" id="0" />
+    <tile x="4" y="0" id="1" />
+    <tile x="4" y="1" id="17" />
+    <tile x="4" y="2" id="17" />
+    <tile x="4" y="3" id="17" />
+    <tile x="4" y="4" id="17" />
+    <tile x="4" y="5" id="17" />
+    <tile x="4" y="6" id="17" />
+    <tile x="4" y="7" id="0" />
+    <tile x="5" y="0" id="1" />
+    <tile x="5" y="1" id="17" />
+    <tile x="5" y="2" id="17" />
+    <tile x="5" y="3" id="17" />
+    <tile x="5" y="4" id="0" />
+    <tile x="5" y="5" id="17" />
+    <tile x="5" y="6" id="17" />
+    <tile x="5" y="7" id="0" />
+    <tile x="6" y="0" id="1" />
+    <tile x="6" y="1" id="17" />
+    <tile x="6" y="2" id="17" />
+    <tile x="6" y="3" id="17" />
+    <tile x="6" y="4" id="0" />
+    <tile x="6" y="5" id="17" />
+    <tile x="6" y="6" id="17" />
+    <tile x="6" y="7" id="0" />
+    <tile x="7" y="0" id="1" />
+    <tile x="7" y="1" id="1" />
+    <tile x="7" y="2" id="1" />
+    <tile x="7" y="3" id="1" />
+    <tile x="7" y="4" id="1" />
+    <tile x="7" y="5" id="1" />
+    <tile x="7" y="6" id="1" />
+    <tile x="7" y="7" id="1" />
+  </Solids>
+  <Decals tileset="unbearable-light" exportMode="XML">
+    <tile x="2" y="6" id="46" />
+    <tile x="4" y="6" id="44" />
+    <tile x="5" y="6" id="45" />
+  </Decals>
+  <Entities />
+</level>

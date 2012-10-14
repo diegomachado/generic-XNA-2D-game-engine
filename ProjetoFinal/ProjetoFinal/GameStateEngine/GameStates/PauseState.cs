@@ -24,7 +24,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             spriteBatch.DrawString(spriteFont,
                                    "GAME PAUSED",
-                                   new Vector2(graphicsManager.ScreenSize.X / 2, graphicsManager.ScreenSize.Y / 2),
+                                   new Vector2(graphicsManager.screen.X / 2, graphicsManager.screen.Y / 2),
                                    Color.Red);
         }
     }

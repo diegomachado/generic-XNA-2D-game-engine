@@ -6,22 +6,19 @@ namespace ProjetoFinal.Managers
     class GraphicsManager
     {
         private static GraphicsManager instance;
-        private Point screenSize = new Point(800, 608);
-
-        public Vector2 Center { get { return new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2); } } // TODO: Guardar esse valor pra não calcular sempre
-        public Point ScreenSize { get { return screenSize; } }
+        public Rectangle screen = new Rectangle(0, 0, 800, 608);
 
         public static GraphicsManager Instance
         {
             get
             {
                 if (instance == null)
-                {
                     instance = new GraphicsManager();
-                }
 
                 return instance;
             }
         }
+
+        public Vector2 Center { get { return new Vector2(screen.Center.X, screen.Center.Y); } }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
-using OgmoLibrary;
+using OgmoEditorLibrary;
 using ProjetoFinal.PlayerStateMachine;
 using ProjetoFinal.EventHeaders;
 using ProjetoFinal.Network.Messages;

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 using Lidgren.Network;
 
-using OgmoLibrary;
+using OgmoEditorLibrary;
 
 using ProjetoFinal.Entities;
 using ProjetoFinal.EventHeaders;
@@ -35,7 +35,7 @@ namespace ProjetoFinal.Managers
         }
 
         //TODO: Fazer Pooling de Arrows, dentro da classe Arrow
-        public void Update(GameTime gameTime, Layer collisionLayer)
+        public void Update(GameTime gameTime)
         {
             for (int i = 0; i < arrows.Count; i++)
             { 

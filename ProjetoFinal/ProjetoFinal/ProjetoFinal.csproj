@@ -186,7 +186,7 @@
     <Compile Include="PlayerStateMachine\MovementStates\HorizontalMovementStates\WalkingLeftState.cs" />
     <Compile Include="PlayerStateMachine\MovementStates\HorizontalMovementStates\WalkingRightState.cs" />
     <Compile Include="PlayerStateMachine\MovementStates\HorizontalMovementStates\HorizontalMovementState.cs" />
-    <Compile Include="Managers\MapManager.cs" />
+    <Compile Include="Managers\LevelManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\TextureManager.cs" />
     <Compile Include="Network\Interfaces\ClientInterface.cs" />
@@ -203,9 +203,9 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OgmoLibrary\OgmoLibrary.csproj">
+    <ProjectReference Include="..\OgmoLibrary\OgmoEditorLibrary.csproj">
       <Project>{B9D5C634-54A7-4CC3-AF65-AEAC49D07D26}</Project>
-      <Name>OgmoLibrary</Name>
+      <Name>OgmoEditorLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProjetoFinalContent\ProjetoFinalContent.contentproj">
       <Name>ProjetoFinalContent %28Content%29</Name>

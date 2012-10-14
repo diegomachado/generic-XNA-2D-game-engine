@@ -61,12 +61,22 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
-    <Compile Include="maps\level.oel">
-      <Name>level</Name>
-      <Importer>MapImporter</Importer>
-      <Processor>MapProcessor</Processor>
+    <Compile Include="levels\tiny.oel">
+      <Name>tiny</Name>
+      <Importer>LevelImporter</Importer>
+      <Processor>LevelProcessor</Processor>
     </Compile>
-    <None Include="maps\unbearable.oep">
+    <Compile Include="levels\big.oel">
+      <Name>big</Name>
+      <Importer>LevelImporter</Importer>
+      <Processor>LevelProcessor</Processor>
+    </Compile>
+    <Compile Include="levels\complex.oel">
+      <Name>complex</Name>
+      <Importer>LevelImporter</Importer>
+      <Processor>LevelProcessor</Processor>
+    </Compile>
+    <None Include="levels\unbearable.oep">
       <Name>unbearable</Name>
     </None>
     <None Include="sprites\animations\bear_idle.gal">
@@ -75,27 +85,6 @@
     <None Include="sprites\animations\bear_walking.gal">
       <Name>bear_walking</Name>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="maps\unbearable-light.png">
-      <Name>unbearable-light</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="maps\big.oel">
-      <Name>big</Name>
-      <Processor>MapProcessor</Processor>
-      <Importer>MapImporter</Importer>
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OgmoContentPipelineExtension\OgmoContentPipelineExtension.csproj">
-      <Project>{08D12AC1-3785-4290-B712-762B64545C49}</Project>
-      <Name>OgmoContentPipelineExtension</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="sprites\button.png">
@@ -114,6 +103,19 @@
   <ItemGroup>
     <Compile Include="pixel.png">
       <Name>pixel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OgmoContentPipelineExtension\OgmoEditorContentPipelineExtension.csproj">
+      <Project>{08D12AC1-3785-4290-B712-762B64545C49}</Project>
+      <Name>OgmoEditorContentPipelineExtension</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="levels\unbearable-tileset.png">
+      <Name>unbearable-tileset</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -12,7 +12,7 @@ using ProjetoFinal.Entities;
 using ProjetoFinal.EventHeaders;
 using ProjetoFinal.Managers.LocalPlayerStates;
 using Microsoft.Xna.Framework.Input;
-using OgmoLibrary;
+using OgmoEditorLibrary;
 using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
 using ProjetoFinal.Network.Messages;
 
@@ -84,7 +84,7 @@ namespace ProjetoFinal.Managers
             }
         }
 
-        public void Update(GameTime gameTime, Layer collisionLayer)
+        public void Update(GameTime gameTime, Grid grid)
         {
             foreach (KeyValuePair<short, Player> p in players)
             {
@@ -92,8 +92,8 @@ namespace ProjetoFinal.Managers
                 short playerId = p.Key;
 
                 actionPlayerState[playerId] = actionPlayerState[playerId].Update(playerId, gameTime, player, actionPlayerStates);
-                horizontalPlayerState[playerId] = horizontalPlayerState[playerId].Update(playerId, gameTime, player, collisionLayer, horizontalPlayerStates);
-                verticalPlayerState[playerId] = verticalPlayerState[playerId].Update(playerId, gameTime, player, collisionLayer, verticalPlayerStates);
+                horizontalPlayerState[playerId] = horizontalPlayerState[playerId].Update(playerId, gameTime, player, grid, horizontalPlayerStates);
+                verticalPlayerState[playerId] = verticalPlayerState[playerId].Update(playerId, gameTime, player, grid, verticalPlayerStates);
             }
         }
 

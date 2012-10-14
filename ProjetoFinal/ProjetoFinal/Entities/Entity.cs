@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 using ProjetoFinal.Managers;
 using ProjetoFinal.Entities.Utils;
-using OgmoLibrary;
+using OgmoEditorLibrary;
 
 namespace ProjetoFinal.Entities
 {
@@ -66,6 +66,7 @@ namespace ProjetoFinal.Entities
             boundingBox = _boundingBox;
             Entities.Add(this);
         }
+
         ~Entity()
         {
             Entity.Entities.Remove(this);
@@ -74,7 +75,7 @@ namespace ProjetoFinal.Entities
         #region Game Logic
 
         public virtual void LoadContent(){}
-        //TODO: Colocar tratamento de Entity Active aqui, ao invés de tratar no OnCollision
+
         public virtual void Update(GameTime gameTime)
         {
             for (int i = 0; i < Entities.Count; i++)
@@ -84,6 +85,7 @@ namespace ProjetoFinal.Entities
                     entityCollision = new EntityCollision(this, Entities[i]);
             }
         }
+
         public virtual void Draw(SpriteBatch spriteBatch){}
 
         #endregion
@@ -92,9 +94,6 @@ namespace ProjetoFinal.Entities
 
         EntityCollision entityCollision;
         private int sign;
-        private Tile tileCheck;
-        private Point tilePosition;
-        private MapManager mapManager;
         private Point corner1, corner2;
         Vector2 moveTemp = Vector2.Zero;
         float moveTempX = 0;
@@ -127,6 +126,7 @@ namespace ProjetoFinal.Entities
                 }
             }
         }
+
         public void MoveYBy(float moveAmountY)
         {
             if (moveAmountY == 0) return;
@@ -154,6 +154,7 @@ namespace ProjetoFinal.Entities
                 }
             }
         }
+
         public void MoveBy(Vector2 moveAmount)
         {
             if (moveAmount == Vector2.Zero) return;
@@ -211,8 +212,9 @@ namespace ProjetoFinal.Entities
                 corner2.Y = CollisionBox.Bottom - 1;
             }
 
-            return (TilePixelCollision(corner1) || TilePixelCollision(corner2));
+            return (TilePixelCollision(corner1.X, corner1.Y) || TilePixelCollision(corner2.X, corner2.Y));
         }
+
         public bool MapCollideY(float moveAmount)
         {
             if (moveAmount < 0)
@@ -230,27 +232,26 @@ namespace ProjetoFinal.Entities
                 corner2.Y = CollisionBox.Bottom;
             }
 
-            return (TilePixelCollision(corner1) || TilePixelCollision(corner2));
+            return (TilePixelCollision(corner1.X, corner1.Y) || TilePixelCollision(corner2.X, corner2.Y));
         }        
 
-        private bool TileCollision(Point tilePosition)
+        private bool TileCollision(int x, int y)
         {
-            tileCheck = MapManager.Instance.CollisionLayer.Tiles[tilePosition];
-            return (tileCheck.Id == 0) ? false : true;
+            return (LevelManager.Instance.Grid.TileAt(x, y));
         }
-        private bool TilePixelCollision(Point pixelPosition)
+
+        private bool TilePixelCollision(int x, int y)
         {
-            mapManager = MapManager.Instance;
-            tilePosition.X = pixelPosition.X / mapManager.TileSize.X;
-            tilePosition.Y = pixelPosition.Y / mapManager.TileSize.Y;
-            tileCheck = mapManager.CollisionLayer.Tiles[tilePosition];
-            return (tileCheck.Id == 0) ? false : true;
+            x = x / LevelManager.Instance.Grid.tile.Width;
+            y = y / LevelManager.Instance.Grid.tile.Height;
+            return (LevelManager.Instance.Grid.TileAt(x,y));
         }        
 
         public bool Collides(Entity entity)
         {
             return CollisionBox.Intersects(entity.CollisionBox);
         }
+
         public virtual bool OnCollision(Entity entity)
         {
             return true;

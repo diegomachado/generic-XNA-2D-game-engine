@@ -5,24 +5,22 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OgmoEditorLibrary")]
-[assembly: AssemblyProduct("OgmoEditorLibrary")]
+[assembly: AssemblyTitle("OgmoContentPipelineExtension")]
 [assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("OgmoContentPipelineExtension")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type. Only Windows
-// assemblies support COM.
+// COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-// On Windows, the following GUID is for the ID of the typelib if this
-// project is exposed to COM. On other platforms, it unique identifies the
-// title storage container when deploying this assembly to the device.
-[assembly: Guid("66ace9c1-263c-4aeb-9c36-e9b1baf9dfe1")]
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("6f2fe42c-a8df-4caa-9384-c07857b7674e")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,3 +30,4 @@ using System.Runtime.InteropServices;
 //      Revision
 //
 [assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

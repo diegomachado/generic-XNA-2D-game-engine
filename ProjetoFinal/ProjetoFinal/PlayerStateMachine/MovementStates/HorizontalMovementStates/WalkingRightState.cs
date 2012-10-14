@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
-using OgmoLibrary;
 using ProjetoFinal.Network.Messages;
+
+using OgmoEditorLibrary;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
     class WalkingRightState : HorizontalMovementState
     {
-        public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Layer collisionLayer, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
+        public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             player.FacingRight = true;
             player.speed.X += player.moveSpeed;

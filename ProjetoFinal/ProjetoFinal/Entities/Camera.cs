@@ -11,7 +11,7 @@ namespace ProjetoFinal.Entities
 {
     class Camera
     {
-        private MapManager mapManager = MapManager.Instance;
+        private LevelManager levelManager = LevelManager.Instance;
         private GraphicsManager graphicsManager = GraphicsManager.Instance;
 
         private static Camera instance;
@@ -42,10 +42,10 @@ namespace ProjetoFinal.Entities
             }
             set
             {
-                if (mapManager.IsCurrentMapLoaded)
+                if (levelManager.IsCurrentLevelLoaded)
                 {
-                    position.X = MathHelper.Clamp(value.X, 0, mapManager.MapSize.X - graphicsManager.ScreenSize.X);
-                    position.Y = MathHelper.Clamp(value.Y, 0, mapManager.MapSize.Y - graphicsManager.ScreenSize.Y);
+                    position.X = MathHelper.Clamp(value.X, 0, levelManager.LevelWidth - graphicsManager.screen.Width);
+                    position.Y = MathHelper.Clamp(value.Y, 0, levelManager.LevelHeight - graphicsManager.screen.Height);
                 }
             }
         }
