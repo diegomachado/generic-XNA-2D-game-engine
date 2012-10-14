@@ -87,14 +87,14 @@
     </Tileset>
   </Tilesets>
   <EntityDefinitions>
-    <EntityDefinition Name="Bear" Limit="1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+    <EntityDefinition Name="SpawnPoint" Limit="0" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
-        <Width>32</Width>
-        <Height>32</Height>
+        <Width>16</Width>
+        <Height>16</Height>
       </Size>
       <Origin>
-        <X>16</X>
-        <Y>16</Y>
+        <X>8</X>
+        <Y>8</Y>
       </Origin>
       <ImageDefinition DrawMode="Rectangle" ImagePath="..\sprites\bear.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
