@@ -16,6 +16,8 @@ namespace OgmoEditorLibrary
         public TileMap[] tileMaps;
         public List<LevelEntity> levelEntities;
 
+        Random randomizer = new Random();
+
         // TODO: Ainda to achando esquisito definir o tamanho dos tiles aqui
         // Tirar e defini-los após instanciação do mapa
         public Level(string name, XmlDocument levelFile, ContentManager content)
@@ -39,10 +41,7 @@ namespace OgmoEditorLibrary
                 tileMaps[i].Draw(spriteBatch, cameraPos, screenSize);
         }
 
-        public List<LevelEntity> entitiesByType(string type)
-        {
-            return levelEntities.FindAll(entity => entity.type == type);
-        }
+        #region Level Constructors        
 
         private int ExtractWidth(XmlDocument levelFile)
         {
@@ -53,7 +52,6 @@ namespace OgmoEditorLibrary
         {
             return Convert.ToInt32(levelFile.SelectSingleNode("/level").Attributes["height"].Value);
         }
-
 
         private Grid ExtractGrid(XmlDocument levelFile, int width, int height, int tileWidth, int tileHeight)
         {            
@@ -99,6 +97,19 @@ namespace OgmoEditorLibrary
             }
 
             return levelEntities;
+        }
+        
+        #endregion
+
+        public List<LevelEntity> EntitiesByType(string type)
+        {
+            return levelEntities.FindAll(entity => entity.type == type);
+        }
+
+        public Vector2 GetRandomSpawnPoint()
+        {
+            return new Vector2(levelEntities[randomizer.Next(levelEntities.Count)].position.X, 
+                               levelEntities[randomizer.Next(levelEntities.Count)].position.Y);
         }
 
     }
