@@ -101,9 +101,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             DebugSystem.Instance.TimeRuler.StartFrame();
 
-            DebugSystem.Instance.TimeRuler.BeginMark("Map Draw", Color.Red);
+            DebugSystem.Instance.TimeRuler.BeginMark("Level Draw", Color.Red);
             levelManager.Draw(spriteBatch, camera.PositionToPoint, graphicsManager.screen);
-            DebugSystem.Instance.TimeRuler.EndMark("Map Draw");
+            DebugSystem.Instance.TimeRuler.EndMark("Level Draw");
 
             DebugSystem.Instance.TimeRuler.BeginMark("Player Draw", Color.Yellow);
             localPlayerManager.Draw(spriteBatch, spriteFont);
