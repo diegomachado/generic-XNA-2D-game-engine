@@ -57,6 +57,12 @@ namespace ProjetoFinal
             base.Initialize();
         }
 
+        protected override void LoadContent()
+        {
+            //gameStatesManager.LoadContent();
+            base.LoadContent();
+        }
+
         protected override void Draw(GameTime gameTime)
         { 
             graphics.GraphicsDevice.Clear(Color.Black);

@@ -4,14 +4,14 @@ namespace OgmoEditorLibrary
 {
     public class LevelEntity
     {
+        public string type;
         public int id;
-        public string name;
         public Point position;
 
-        LevelEntity(int id, string name, int x, int y)
+        public LevelEntity(string type, int id, int x, int y)
         {
+            this.type = type;
             this.id = id;
-            this.name = name;
             position = new Point(x, y);
         }
     }
