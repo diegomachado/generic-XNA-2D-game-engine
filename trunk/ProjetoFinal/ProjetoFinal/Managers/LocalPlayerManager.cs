@@ -72,7 +72,7 @@ namespace ProjetoFinal.Managers
             if (localPlayer.IsDead)
             {
                 // TODO: Criar logica de respawn points e timer de respawn
-                localPlayer.Respawn(new Vector2(100, 100));
+                localPlayer.Respawn(LevelManager.Instance.currentLevel.GetRandomSpawnPoint());
             }
             
             localPlayer.Update(gameTime);

@@ -14,7 +14,7 @@ namespace ProjetoFinal.Managers
     {
         XmlDocument levelFile;
         List<Level> levels = new List<Level>();
-        Level currentLevel;
+        public Level currentLevel;
 
         private static LevelManager instance;
         public static LevelManager Instance
