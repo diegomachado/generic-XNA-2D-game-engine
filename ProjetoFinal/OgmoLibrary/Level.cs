@@ -108,8 +108,9 @@ namespace OgmoEditorLibrary
 
         public Vector2 GetRandomSpawnPoint()
         {
-            return new Vector2(levelEntities[randomizer.Next(levelEntities.Count)].position.X, 
-                               levelEntities[randomizer.Next(levelEntities.Count)].position.Y);
+            int id = randomizer.Next(levelEntities.Count);
+            return new Vector2(levelEntities[id].position.X, 
+                               levelEntities[id].position.Y);
         }
 
     }
