@@ -55,6 +55,7 @@ namespace ProjetoFinal.Managers
 
             eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
             eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
+            eventManager.PlayerHit += OnPlayerHit;
         }
 
         public void Connect(String ip, int port, string nickname)
@@ -266,6 +267,11 @@ namespace ProjetoFinal.Managers
             SendPlayerStateChangedWithArrowMessage(args.PlayerId, args.Position, args.ShotSpeed, args.PlayerState, args.StateType);
         }
 
+        private void OnPlayerHit(object sender, PlayerHitEventArgs args)
+        {
+            SendPlayerHitMessage(args.PlayerId, args.AttackerId);
+        }
+
         // Util
 
         private NetOutgoingMessage CreateHailMessage()
@@ -290,6 +296,11 @@ namespace ProjetoFinal.Managers
         private void SendPlayerMovementStateChangedMessage(short id, Vector2 position, Vector2 speed, short playerState, UpdatePlayerStateType stateType)
         {
             networkInterface.SendMessage(new UpdatePlayerMovementStateMessage(id, position, speed, playerState, stateType));
+        }
+
+        private void SendPlayerHitMessage(short id, short attackerId)
+        {
+            networkInterface.SendMessage(new PlayerHitMessage(id, attackerId));
         }
     }
 }

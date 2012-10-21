@@ -16,6 +16,7 @@ namespace ProjetoFinal.Managers
         private NetworkManager networkManager;
 
         // Events
+        public event EventHandler<PlayerHitEventArgs> PlayerHit; // When a player has locally been hit
         public event EventHandler<PlayerStateChangedEventArgs> PlayerStateChanged; // When a player state has locally changed
         public event EventHandler<PlayerMovementStateChangedEventArgs> PlayerMovementStateChanged; // Wheh a player movement state locally changed
         public event EventHandler<PlayerStateChangedWithArrowEventArgs> PlayerStateChangedWithArrow; // When a player state has locally changed and an arrow was shot
@@ -85,6 +86,12 @@ namespace ProjetoFinal.Managers
         {
             if (ClientDisconnected != null)
                 ClientDisconnected(sender, args);
+        }
+
+        public void ThrowPlayerHit(object sender, PlayerHitEventArgs args)
+        {
+            if (PlayerHit != null)
+                PlayerHit(sender, args);
         }
     }
 }
