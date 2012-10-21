@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ProjetoFinal.Managers.LocalPlayerStates;
 using ProjetoFinal.Managers;
 using ProjetoFinal.Entities.Utils;
+using ProjetoFinal.EventHeaders;
 
 namespace ProjetoFinal.Entities
 {
@@ -60,6 +61,8 @@ namespace ProjetoFinal.Entities
             VerticalState = VerticalStateType.Idle;
             HorizontalState = HorizontalStateType.Idle;
             ActionState = ActionStateType.Idle;
+
+            EventManager.Instance.PlayerHitUpdated += OnPlayerHitUpdated;
         }
 
         // TODO: Passar isso na hora que constrói o player, pra dar flexibilidade
@@ -125,16 +128,12 @@ namespace ProjetoFinal.Entities
 
         public override bool OnCollision(Entity entity)
         {
-            if (entity is Arrow &&
-                id == networkManager.LocalPlayerId &&
-                !(afterRespawnTime > 0))
+            if (entity is Arrow && id == networkManager.LocalPlayerId && !(afterRespawnTime > 0))
             {
-                // TODO: Lançar evento de que flecha me atingiu, caso tenha morrido, lançar evento de morte
-
-                EventManager.Instance.ThrowPlayerHit();
+                EventManager.Instance.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).OwnerId));
 
                 takeHit();
-                
+               
                 return true;
             }
             else
@@ -151,10 +150,16 @@ namespace ProjetoFinal.Entities
             position = respawnPoint;
         }
 
-        public void takeHit()
+        private void takeHit()
         {
             health -= 20;
             Console.WriteLine(health);
+        }
+
+        private void OnPlayerHitUpdated(object sender, PlayerHitEventArgs args)
+        {
+            if (id == args.PlayerId)
+                takeHit();
         }
     }
 }

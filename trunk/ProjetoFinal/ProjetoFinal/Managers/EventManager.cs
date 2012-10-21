@@ -25,6 +25,7 @@ namespace ProjetoFinal.Managers
         public event EventHandler<PlayerStateUpdatedWithArrowEventArgs> PlayerStateUpdatedWithArrow; // When a message with updated information about a player's state arrives with an arrow shot
         public event EventHandler<ClientConnectedEventArgs> ClientConnected; // When a message saying a new client connected arrives
         public event EventHandler<EventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
+        public event EventHandler<PlayerHitEventArgs> PlayerHitUpdated; // When a message saying a player was hit arrives
 
         public static EventManager Instance
         {
@@ -68,6 +69,12 @@ namespace ProjetoFinal.Managers
         {
             if (PlayerMovementStateUpdated != null)
                 PlayerMovementStateUpdated(sender, args);
+        }
+
+        public void ThrowPlayerHitUpdated(object sender, PlayerHitEventArgs args)
+        {
+            if (PlayerHitUpdated != null)
+                PlayerHitUpdated(sender, args);
         }
 
         public void ThrowPlayerStateUpdatedWithArrow(object sender, PlayerStateUpdatedWithArrowEventArgs args)
