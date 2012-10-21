@@ -30,13 +30,13 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             eventManager.PlayerStateUpdatedWithArrow += OnOtherClientPlayerStateUpdatedWithArrow;
             eventManager.PlayerStateChangedWithArrow += OnLocalArrowShot;
             eventManager.ClientDisconnected += OnClientDisconnected;
+            eventManager.PlayerHitUpdated += OnPlayerHitUpdated;
+            eventManager.PlayerRespawnedUpdated += OnPlayerRespawnedUpdated;
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
             localPlayerManager.createLocalPlayer(networkManager.LocalPlayerId);
             arrowManager = new ArrowManager(localPlayerManager.LocalPlayer);
-
-            Console.WriteLine("HOLY FUCK: " + networkManager.LocalPlayerId);
         }
 
         public GameplayState(Dictionary<short, Client> clientsInfo) : this()
@@ -185,6 +185,18 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         private void OnClientDisconnected(object sender, EventArgs eventArgs)
         {
             GameStatesManager.ResignState(this);
+        }
+
+        private void OnPlayerHitUpdated(object sender, PlayerHitEventArgs args)
+        {
+            if (args.PlayerId != localPlayerManager.playerId)
+                playerManager.GetPlayer(args.PlayerId).TakeHit();
+        }
+
+        private void OnPlayerRespawnedUpdated(object sender, PlayerRespawnedEventArgs args)
+        {
+            if (args.PlayerId != localPlayerManager.playerId)
+                playerManager.GetPlayer(args.PlayerId).Respawn(args.RespawnPoint);
         }
 
         #endregion

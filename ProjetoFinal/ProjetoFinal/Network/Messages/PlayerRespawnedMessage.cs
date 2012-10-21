@@ -14,7 +14,7 @@ namespace ProjetoFinal.Network.Messages
         public short PlayerId { get; set; }
         public Vector2 RespawnPosition { get; set; }
 
-        public GameMessageType GameMessageType { get { return GameMessageType.PlayerHit; } }
+        public GameMessageType GameMessageType { get { return GameMessageType.PlayerRespawned; } }
 
         public PlayerRespawnedMessage(NetIncomingMessage im)
         {

@@ -62,10 +62,6 @@ namespace ProjetoFinal.Entities
             VerticalState = VerticalStateType.Idle;
             HorizontalState = HorizontalStateType.Idle;
             ActionState = ActionStateType.Idle;
-
-            eventManager.PlayerHitUpdated += OnPlayerHitUpdated;
-            eventManager.PlayerRespawnedUpdated += OnPlayerRespawnedUpdated;
-
         }
 
         // TODO: Passar isso na hora que constrói o player, pra dar flexibilidade
@@ -135,7 +131,7 @@ namespace ProjetoFinal.Entities
             {
                 eventManager.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).OwnerId));
 
-                takeHit();
+                TakeHit();
                
                 return true;
             }
@@ -153,22 +149,10 @@ namespace ProjetoFinal.Entities
             position = respawnPoint;
         }
 
-        private void takeHit()
+        public void TakeHit()
         {
-            health -= 20;
             Console.WriteLine(health);
-        }
-
-        private void OnPlayerHitUpdated(object sender, PlayerHitEventArgs args)
-        {
-            if (id == args.PlayerId)
-                takeHit();
-        }
-
-        private void OnPlayerRespawnedUpdated(object sender, PlayerRespawnedEventArgs args)
-        {
-            if (id == args.PlayerId)
-                Respawn(args.RespawnPoint);
+            health -= 20;
         }
     }
 }
