@@ -167,6 +167,7 @@
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
     <Compile Include="Managers\NetworkManager.cs" />
+    <Compile Include="Network\Messages\PlayerHitMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessages\UpdatePlayerStateWithArrowMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />
     <Compile Include="PlayerStateMachine\ActionStates\ActionIdleState.cs" />

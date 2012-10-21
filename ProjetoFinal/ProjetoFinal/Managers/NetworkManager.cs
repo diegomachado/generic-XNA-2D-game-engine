@@ -195,6 +195,18 @@ namespace ProjetoFinal.Managers
 
                                 break;
                             }
+
+                            case GameMessageType.PlayerHit:
+                            {
+                                PlayerHitMessage playerHitMessage = new PlayerHitMessage(im);
+
+                                OnPlayerHitUpdated(playerHitMessage);
+
+                                if (IsServer)
+                                    networkInterface.SendMessage(playerHitMessage);
+
+                                break;
+                            }
                         }
 
                         break;
@@ -248,6 +260,11 @@ namespace ProjetoFinal.Managers
         private void OnClientDisconnected()
         {
             eventManager.ThrowClientDisconnected(this, null);
+        }
+
+        private void OnPlayerHitUpdated(PlayerHitMessage playerHitMessage)
+        {
+            eventManager.ThrowPlayerHitUpdated(this, new PlayerHitEventArgs(playerHitMessage));
         }
 
         // Incoming

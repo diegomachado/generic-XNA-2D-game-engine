@@ -18,22 +18,14 @@ namespace OgmoEditorLibrary
 
         Random randomizer = new Random();
 
-        // TODO: Ainda to achando esquisito definir o tamanho dos tiles aqui
-        // Tirar e defini-los após instanciação do mapa
-        public Level(string name, XmlDocument levelFile, ContentManager content)
+        public Level(string name, int width, int height)
         {
             this.name = name;
-            width = ExtractWidth(levelFile);
-            height = ExtractHeight(levelFile);
-            grid = ExtractGrid(levelFile, width, height, 32, 32);
-            tileMaps = ExtractTileMaps(levelFile, width, height, 32, 32, content);
-            levelEntities = ExtractLevelEntities(levelFile);
+            this.width = width;
+            this.height = height;
         }
         
-        public void LoadContent(XmlDocument levelFile)
-        {
-
-        }
+        public void LoadContent(XmlDocument levelFile){ }
 
         public void Draw(SpriteBatch spriteBatch, Point cameraPos, Rectangle screenSize)
         {
@@ -43,29 +35,27 @@ namespace OgmoEditorLibrary
 
         #region Level Constructors        
 
-        private int ExtractWidth(XmlDocument levelFile)
+        public static int GetWidth(XmlDocument levelFile)
         {
             return Convert.ToInt32(levelFile.SelectSingleNode("/level").Attributes["width"].Value);
         }
-
-        private int ExtractHeight(XmlDocument levelFile)
+        
+        public static int GetHeight(XmlDocument levelFile)
         {
             return Convert.ToInt32(levelFile.SelectSingleNode("/level").Attributes["height"].Value);
         }
-
-        private Grid ExtractGrid(XmlDocument levelFile, int width, int height, int tileWidth, int tileHeight)
-        {            
-            grid = new Grid(width, height, tileWidth, tileHeight);
-            grid.LoadFromString(levelFile.SelectSingleNode("/level/*[@exportMode='Bitstring']").InnerText);
-            return grid;
+        
+        public static string GetGridData(XmlDocument levelFile)
+        {
+            return levelFile.SelectSingleNode("/level/*[@exportMode='Bitstring']").InnerText;            
         }
-
-        private TileMap[] ExtractTileMaps(XmlDocument levelFile, int levelWidth, int levelHeight, int tileWidth, int tileHeight, ContentManager content)
+        
+        public static TileMap[] ExtractTileMaps(XmlDocument levelFile, int levelWidth, int levelHeight, int tileWidth, int tileHeight, ContentManager content)
         {
             Texture2D tileset;
             XmlNodeList tileMapNodes = levelFile.SelectNodes("/level/*[@exportMode='XML']");
 
-            tileMaps = new TileMap[tileMapNodes.Count];
+            TileMap[] tileMaps = new TileMap[tileMapNodes.Count];
 
             for (int i = 0; i < tileMapNodes.Count; i++)
             {
@@ -82,8 +72,8 @@ namespace OgmoEditorLibrary
 
             return tileMaps;
         }
-
-        private List<LevelEntity> ExtractLevelEntities(XmlDocument levelFile)
+        
+        public static List<LevelEntity> GetLevelEntities(XmlDocument levelFile)
         {
             List<LevelEntity> levelEntities = new List<LevelEntity>();
             XmlNodeList entitiesNodes = levelFile.SelectNodes("/level/Entities/*");

@@ -17,5 +17,11 @@ namespace ProjetoFinal.EventHeaders
             PlayerId = playerId;
             AttackerId = attackerId;
         }
+
+        public PlayerHitEventArgs(PlayerHitMessage playerHitMessage)
+        {
+            PlayerId = playerHitMessage.PlayerId;
+            AttackerId = playerHitMessage.AttackerId;
+        }
     }
 }
