@@ -130,8 +130,11 @@ namespace ProjetoFinal.Entities
                 !(afterRespawnTime > 0))
             {
                 // TODO: Lançar evento de que flecha me atingiu, caso tenha morrido, lançar evento de morte
-                health -= 20;
-                Console.WriteLine(health);
+
+                EventManager.Instance.ThrowPlayerHit();
+
+                takeHit();
+                
                 return true;
             }
             else
@@ -146,6 +149,12 @@ namespace ProjetoFinal.Entities
             health = 100;
             afterRespawnTime = 5.0f;
             position = respawnPoint;
+        }
+
+        public void takeHit()
+        {
+            health -= 20;
+            Console.WriteLine(health);
         }
     }
 }
