@@ -16,6 +16,7 @@ namespace ProjetoFinal.Managers
         private NetworkManager networkManager;
 
         // Events
+        public event EventHandler<PlayerRespawnedEventArgs> PlayerRespawned; // When a player has locally respawned
         public event EventHandler<PlayerHitEventArgs> PlayerHit; // When a player has locally been hit
         public event EventHandler<PlayerStateChangedEventArgs> PlayerStateChanged; // When a player state has locally changed
         public event EventHandler<PlayerMovementStateChangedEventArgs> PlayerMovementStateChanged; // Wheh a player movement state locally changed
@@ -26,6 +27,7 @@ namespace ProjetoFinal.Managers
         public event EventHandler<ClientConnectedEventArgs> ClientConnected; // When a message saying a new client connected arrives
         public event EventHandler<EventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
         public event EventHandler<PlayerHitEventArgs> PlayerHitUpdated; // When a message saying a player was hit arrives
+        public event EventHandler<PlayerRespawnedEventArgs> PlayerRespawnedUpdated; // When a message saying a player respawned arrives
 
         public static EventManager Instance
         {
@@ -77,6 +79,12 @@ namespace ProjetoFinal.Managers
                 PlayerHitUpdated(sender, args);
         }
 
+        public void ThrowPlayerRespawnedUpdated(object sender, PlayerRespawnedEventArgs args)
+        {
+            if (PlayerRespawnedUpdated != null)
+                PlayerRespawnedUpdated(sender, args);
+        }
+
         public void ThrowPlayerStateUpdatedWithArrow(object sender, PlayerStateUpdatedWithArrowEventArgs args)
         {
             if (PlayerStateUpdatedWithArrow != null)
@@ -99,6 +107,12 @@ namespace ProjetoFinal.Managers
         {
             if (PlayerHit != null)
                 PlayerHit(sender, args);
+        }
+
+        public void ThrowPlayerRespawned(object sender, PlayerRespawnedEventArgs args)
+        {
+            if (PlayerRespawned != null)
+                PlayerRespawned(sender, args);
         }
     }
 }

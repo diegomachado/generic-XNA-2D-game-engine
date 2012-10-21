@@ -144,8 +144,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
         private void OnOtherClientPlayerMovementStateUpdated(object sender, PlayerMovementStateUpdatedEventArgs args)
         {
-            Console.WriteLine("MOTHERFUCKER >  " + args.PlayerId + " <> " + localPlayerManager.playerId);
-
             if (args.PlayerId != localPlayerManager.playerId)
             {
                 playerManager.UpdatePlayerMovementState(args.PlayerId,
@@ -167,6 +165,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             if (args.PlayerId != localPlayerManager.playerId)
             {
                 OnOtherClientPlayerStateUpdated(sender, new PlayerStateUpdatedEventArgs(args.PlayerId, args.Position, args.PlayerState, args.StateType, args.MessageTime, args.LocalTime));
+
+                playerManager.GetPlayer(args.PlayerId).FacingRight = (args.ShotSpeed.X > 0);
 
                 arrowManager.CreateArrow(args.PlayerId, args.Position, args.ShotSpeed);
             }

@@ -12,11 +12,13 @@ using ProjetoFinal.Managers.LocalPlayerStates;
 
 using OgmoEditorLibrary;
 using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
+using ProjetoFinal.EventHeaders;
 
 namespace ProjetoFinal.Managers
 {
     class LocalPlayerManager
     {
+        EventManager eventManager = EventManager.Instance;
         Player localPlayer;
         float shootingTimer;
 
@@ -71,8 +73,9 @@ namespace ProjetoFinal.Managers
 
             if (localPlayer.IsDead)
             {
-                // TODO: Criar logica de respawn points e timer de respawn
-                localPlayer.Respawn(LevelManager.Instance.currentLevel.GetRandomSpawnPoint());
+                Vector2 respawnPosition = LevelManager.Instance.currentLevel.GetRandomSpawnPoint();
+                eventManager.ThrowPlayerRespawned(this, new PlayerRespawnedEventArgs(localPlayer.id, respawnPosition));
+                localPlayer.Respawn(respawnPosition);
             }
             
             localPlayer.Update(gameTime);
@@ -93,6 +96,12 @@ namespace ProjetoFinal.Managers
             
             localPlayer.Draw(spriteBatch);
             localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
+
+            spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(175, 430, 170, 170), new Color(0, 0, 0, 0.2f));
+            spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.position.X, new Vector2(180f, 455f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.position.Y, new Vector2(180f, 475f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.speed.X, new Vector2(180f, 495f), Color.White);
+            spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.speed.Y, new Vector2(180f, 515f), Color.White);
         }        
 
         private void HandleVerticalMovement()

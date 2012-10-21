@@ -127,6 +127,7 @@
     <Compile Include="Entities\Utils\Animation.cs" />
     <Compile Include="Entities\Utils\SpriteMap.cs" />
     <Compile Include="EventHeaders\ClientConnectedEventArgs.cs" />
+    <Compile Include="EventHeaders\PlayerRespawnedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerHitEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateUpdatedEventArgs\PlayerStateUpdatedWithArrowEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerStateChangedEventArgs\PlayerStateUpdatedEventArgs\PlayerMovementStateUpdatedEventArgs.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\LocalPlayerManager.cs" />
     <Compile Include="Managers\NetworkManager.cs" />
+    <Compile Include="Network\Messages\PlayerRespawnedMessage.cs" />
     <Compile Include="Network\Messages\PlayerHitMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessages\UpdatePlayerStateWithArrowMessage.cs" />
     <Compile Include="Network\Messages\UpdatePlayerStateMessage.cs" />

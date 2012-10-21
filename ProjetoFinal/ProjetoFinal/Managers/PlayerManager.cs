@@ -113,8 +113,6 @@ namespace ProjetoFinal.Managers
                 spriteBatch.DrawString(spriteFont, "Y: " + (int)player.position.Y, new Vector2(5f, 475f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)player.speed.X, new Vector2(5f, 495f), Color.White);
                 spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)player.speed.Y, new Vector2(5f, 515f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Camera.X: " + (int)Camera.Instance.Position.X, new Vector2(5f, 535f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Camera.Y: " + (int)Camera.Instance.Position.Y, new Vector2(5f, 555f), Color.White);
                 //spriteBatch.DrawString(spriteFont, "State: " + player.LastState, new Vector2(5f, 575f), Color.White);
             }
         }
@@ -160,6 +158,7 @@ namespace ProjetoFinal.Managers
 
                 players[playerId].position = position;// + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
                 players[playerId].LastUpdateTime = messageTime;
+                players[playerId].speed = speed;
 
                 switch (stateType)
                 {
@@ -167,21 +166,22 @@ namespace ProjetoFinal.Managers
 
                         horizontalPlayerState[playerId] = horizontalPlayerStates[(HorizontalStateType)playerState];
 
-                        if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
+                        /*if ((HorizontalStateType)playerState == HorizontalStateType.WalkingLeft ||
                             (HorizontalStateType)playerState == HorizontalStateType.WalkingRight)
                         {
                             players[playerId].speed.X = 0;
-                        }
+                        }*/
 
                         break;
+
                     case UpdatePlayerStateType.Vertical:
 
                         verticalPlayerState[playerId] = verticalPlayerStates[(VerticalStateType)playerState];
 
-                        if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)
+                        /*if ((VerticalStateType)playerState == VerticalStateType.StartedJumping)
                         {
                             players[playerId].speed.Y = 0;
-                        }
+                        }*/
 
                         break;
                 }
