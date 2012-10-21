@@ -39,6 +39,7 @@ namespace ProjetoFinal.Managers
             }
         }
         
+        // TODO: Fazer Inicialização comum aos dois metodos
         public void Host(int port, string nickname)
         {
             ServerInterface serverNetworkManager = new ServerInterface();
@@ -56,6 +57,7 @@ namespace ProjetoFinal.Managers
             eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
             eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
             eventManager.PlayerHit += OnPlayerHit;
+            eventManager.PlayerRespawned += OnPlayerRespawned;
         }
 
         public void Connect(String ip, int port, string nickname)
@@ -74,6 +76,8 @@ namespace ProjetoFinal.Managers
 
             eventManager.PlayerMovementStateChanged += OnPlayerMovementStateChanged;
             eventManager.PlayerStateChangedWithArrow += OnPlayerStateChangedWithArrow;
+            eventManager.PlayerHit += OnPlayerHit;
+            eventManager.PlayerRespawned += OnPlayerRespawned;
         }
 
         public void Disconnect()
@@ -82,6 +86,8 @@ namespace ProjetoFinal.Managers
 
             eventManager.PlayerMovementStateChanged -= OnPlayerMovementStateChanged;
             eventManager.PlayerStateChangedWithArrow -= OnPlayerStateChangedWithArrow;
+            eventManager.PlayerHit -= OnPlayerHit;
+            eventManager.PlayerRespawned -= OnPlayerRespawned;
         }
 
         public void ProcessNetworkMessages()
@@ -200,10 +206,24 @@ namespace ProjetoFinal.Managers
                             {
                                 PlayerHitMessage playerHitMessage = new PlayerHitMessage(im);
 
+                                Console.WriteLine(">>> Recebi mensagem de hit no player: " + playerHitMessage.PlayerId);
+
                                 OnPlayerHitUpdated(playerHitMessage);
 
                                 if (IsServer)
                                     networkInterface.SendMessage(playerHitMessage);
+
+                                break;
+                            }
+
+                            case GameMessageType.PlayerRespawned:
+                            {
+                                PlayerRespawnedMessage playerRespawnedMessage = new PlayerRespawnedMessage(im);
+
+                                OnPlayerRespawnedUpdated(playerRespawnedMessage);
+
+                                if (IsServer)
+                                    networkInterface.SendMessage(playerRespawnedMessage);
 
                                 break;
                             }
@@ -267,6 +287,11 @@ namespace ProjetoFinal.Managers
             eventManager.ThrowPlayerHitUpdated(this, new PlayerHitEventArgs(playerHitMessage));
         }
 
+        private void OnPlayerRespawnedUpdated(PlayerRespawnedMessage playerRespawnedMessage)
+        {
+            eventManager.ThrowPlayerRespawnedUpdated(this, new PlayerRespawnedEventArgs(playerRespawnedMessage.PlayerId, playerRespawnedMessage.RespawnPosition));
+        }
+
         // Incoming
 
         private void OnPlayerStateChanged(object sender, PlayerStateChangedEventArgs args)
@@ -287,6 +312,11 @@ namespace ProjetoFinal.Managers
         private void OnPlayerHit(object sender, PlayerHitEventArgs args)
         {
             SendPlayerHitMessage(args.PlayerId, args.AttackerId);
+        }
+
+        private void OnPlayerRespawned(object sender, PlayerRespawnedEventArgs args)
+        {
+            SendPlayerRespawnedMessage(args.PlayerId, args.RespawnPoint);
         }
 
         // Util
@@ -318,6 +348,11 @@ namespace ProjetoFinal.Managers
         private void SendPlayerHitMessage(short id, short attackerId)
         {
             networkInterface.SendMessage(new PlayerHitMessage(id, attackerId));
+        }
+
+        private void SendPlayerRespawnedMessage(short id, Vector2 respawnPosition)
+        {
+            networkInterface.SendMessage(new PlayerRespawnedMessage(id, respawnPosition));
         }
     }
 }

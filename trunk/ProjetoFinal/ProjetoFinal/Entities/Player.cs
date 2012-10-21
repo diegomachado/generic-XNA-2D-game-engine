@@ -15,6 +15,7 @@ namespace ProjetoFinal.Entities
     class Player : DynamicEntity
     {
         // TODO: isso não ta bom
+        EventManager eventManager = EventManager.Instance;
         NetworkManager networkManager = NetworkManager.Instance;
 
         private double afterRespawnTime;
@@ -62,7 +63,9 @@ namespace ProjetoFinal.Entities
             HorizontalState = HorizontalStateType.Idle;
             ActionState = ActionStateType.Idle;
 
-            EventManager.Instance.PlayerHitUpdated += OnPlayerHitUpdated;
+            eventManager.PlayerHitUpdated += OnPlayerHitUpdated;
+            eventManager.PlayerRespawnedUpdated += OnPlayerRespawnedUpdated;
+
         }
 
         // TODO: Passar isso na hora que constrói o player, pra dar flexibilidade
@@ -130,7 +133,7 @@ namespace ProjetoFinal.Entities
         {
             if (entity is Arrow && id == networkManager.LocalPlayerId && !(afterRespawnTime > 0))
             {
-                EventManager.Instance.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).OwnerId));
+                eventManager.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).OwnerId));
 
                 takeHit();
                
@@ -160,6 +163,12 @@ namespace ProjetoFinal.Entities
         {
             if (id == args.PlayerId)
                 takeHit();
+        }
+
+        private void OnPlayerRespawnedUpdated(object sender, PlayerRespawnedEventArgs args)
+        {
+            if (id == args.PlayerId)
+                Respawn(args.RespawnPoint);
         }
     }
 }
