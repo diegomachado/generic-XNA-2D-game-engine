@@ -206,8 +206,6 @@ namespace ProjetoFinal.Managers
                             {
                                 PlayerHitMessage playerHitMessage = new PlayerHitMessage(im);
 
-                                Console.WriteLine(">>> Recebi mensagem de hit no player: " + playerHitMessage.PlayerId);
-
                                 OnPlayerHitUpdated(playerHitMessage);
 
                                 if (IsServer)
@@ -218,6 +216,8 @@ namespace ProjetoFinal.Managers
 
                             case GameMessageType.PlayerRespawned:
                             {
+                                Console.WriteLine("&&&&&&&&&&&&&&&&&&&& HOLY SHIIIITTTTTTTTTT");
+
                                 PlayerRespawnedMessage playerRespawnedMessage = new PlayerRespawnedMessage(im);
 
                                 OnPlayerRespawnedUpdated(playerRespawnedMessage);

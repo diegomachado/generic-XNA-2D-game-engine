@@ -74,7 +74,9 @@ namespace ProjetoFinal.Managers
             if (localPlayer.IsDead)
             {
                 Vector2 respawnPosition = LevelManager.Instance.currentLevel.GetRandomSpawnPoint();
+
                 eventManager.ThrowPlayerRespawned(this, new PlayerRespawnedEventArgs(localPlayer.id, respawnPosition));
+
                 localPlayer.Respawn(respawnPosition);
             }
             
