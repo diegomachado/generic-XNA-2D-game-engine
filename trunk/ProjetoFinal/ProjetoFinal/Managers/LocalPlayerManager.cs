@@ -97,13 +97,7 @@ namespace ProjetoFinal.Managers
             if (localPlayer == null) return;
             
             localPlayer.Draw(spriteBatch);
-            localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
-
-            spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(175, 430, 170, 170), new Color(0, 0, 0, 0.2f));
-            spriteBatch.DrawString(spriteFont, "X: " + (int)localPlayer.position.X, new Vector2(180f, 455f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Y: " + (int)localPlayer.position.Y, new Vector2(180f, 475f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)localPlayer.speed.X, new Vector2(180f, 495f), Color.White);
-            spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)localPlayer.speed.Y, new Vector2(180f, 515f), Color.White);
+            localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera); 
         }        
 
         private void HandleVerticalMovement()

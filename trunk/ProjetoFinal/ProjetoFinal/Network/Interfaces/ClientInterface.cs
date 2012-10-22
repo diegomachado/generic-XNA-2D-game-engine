@@ -41,7 +41,7 @@ namespace ProjetoFinal.Network
         {
             var config = new NetPeerConfiguration("ProjetoFinal")
             {
-                SimulatedMinimumLatency = 0.2f, 
+                //SimulatedMinimumLatency = 0.2f, 
                 //SimulatedLoss = 0.1f
             };
 
