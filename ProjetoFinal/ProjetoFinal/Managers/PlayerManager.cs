@@ -105,15 +105,6 @@ namespace ProjetoFinal.Managers
             {
                 player = p.Value;
                 player.Draw(spriteBatch);
-                
-                //spriteBatch.DrawString(spriteFont, player.LastState.ToString(), new Vector2(player.Position.X + 8, player.Position.Y - 25) - Camera.Instance.Position, Color.White);
-
-                spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(), new Rectangle(0, 430, 170, 170), new Color(0, 0, 0, 0.2f));
-                spriteBatch.DrawString(spriteFont, "X: " + (int)player.position.X, new Vector2(5f, 455f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Y: " + (int)player.position.Y, new Vector2(5f, 475f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.X: " + (int)player.speed.X, new Vector2(5f, 495f), Color.White);
-                spriteBatch.DrawString(spriteFont, "Speed.Y: " + (int)player.speed.Y, new Vector2(5f, 515f), Color.White);
-                //spriteBatch.DrawString(spriteFont, "State: " + player.LastState, new Vector2(5f, 575f), Color.White);
             }
         }
 
