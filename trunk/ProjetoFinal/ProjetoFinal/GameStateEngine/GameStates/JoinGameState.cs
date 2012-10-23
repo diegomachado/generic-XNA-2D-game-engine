@@ -42,8 +42,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 GameStatesManager.ResignState(this);
         }
 
-        // Callbacks
-
         public void OnJoinServerButtonPressed()
         {
             networkManager.Connect(ipTextField.Text, int.Parse(portTextField.Text), nicknameTextField.Text);

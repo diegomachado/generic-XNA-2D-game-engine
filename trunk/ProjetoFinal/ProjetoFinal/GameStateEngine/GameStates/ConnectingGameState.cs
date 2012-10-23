@@ -45,16 +45,11 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             }
 
             String text = "Connecting";
-
-            for (int i = 0; i < dots; i++)
-            {
+            for (int i = 0; i < dots; i++) 
                 text += ".";
-            }
 
             spriteBatch.DrawString(spriteFont, text, new Vector2(300, 170), Color.White);
         }
-
-        // Callbacks
 
         public void OnCancelButtonClicked()
         {

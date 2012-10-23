@@ -20,11 +20,8 @@ namespace ProjetoFinal
         public ProjetoFinal()
         {
             IsMouseVisible = true;
-
             Content.RootDirectory = "Content";
-
-            //IsFixedTimeStep = false;
-
+            
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth  = graphicsManager.screen.Width;
             graphics.PreferredBackBufferHeight = graphicsManager.screen.Height;
@@ -59,7 +56,6 @@ namespace ProjetoFinal
 
         protected override void LoadContent()
         {
-            //gameStatesManager.LoadContent();
             base.LoadContent();
         }
 
