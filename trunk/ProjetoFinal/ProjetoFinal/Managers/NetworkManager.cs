@@ -216,8 +216,6 @@ namespace ProjetoFinal.Managers
 
                             case GameMessageType.PlayerRespawned:
                             {
-                                Console.WriteLine("&&&&&&&&&&&&&&&&&&&& HOLY SHIIIITTTTTTTTTT");
-
                                 PlayerRespawnedMessage playerRespawnedMessage = new PlayerRespawnedMessage(im);
 
                                 OnPlayerRespawnedUpdated(playerRespawnedMessage);
