@@ -20,8 +20,10 @@ namespace ProjetoFinal.Managers
 {
     class PlayerManager
     {
-        Camera camera = Camera.Instance;
+        Player player;
         Dictionary<short, Player> players;
+        Camera camera = Camera.Instance;
+        
         Dictionary<short, ActionState> actionPlayerState;
         Dictionary<ActionStateType, ActionState> actionPlayerStates;
         Dictionary <short, HorizontalMovementState> horizontalPlayerState;
@@ -33,12 +35,12 @@ namespace ProjetoFinal.Managers
         {
             players = new Dictionary<short, Player>();
 
-            actionPlayerState = new Dictionary<short, ActionState>();
-            actionPlayerStates = new Dictionary<ActionStateType, ActionState>();
-            horizontalPlayerState = new Dictionary<short, HorizontalMovementState>();
+            actionPlayerState      = new Dictionary<short, ActionState>();
+            actionPlayerStates     = new Dictionary<ActionStateType, ActionState>();
+            horizontalPlayerState  = new Dictionary<short, HorizontalMovementState>();
             horizontalPlayerStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
-            verticalPlayerState = new Dictionary<short, VerticalMovementState> ();
-            verticalPlayerStates = new Dictionary<VerticalStateType, VerticalMovementState>();
+            verticalPlayerState    = new Dictionary<short, VerticalMovementState> ();
+            verticalPlayerStates   = new Dictionary<VerticalStateType, VerticalMovementState>();
 
             actionPlayerStates[ActionStateType.Attacking] = new AttackingState();
             actionPlayerStates[ActionStateType.Defending] = new DefendingState();
@@ -55,34 +57,7 @@ namespace ProjetoFinal.Managers
             verticalPlayerStates[VerticalStateType.StartedJumping] = new StartedJumpingState();
         }
 
-        public Player GetPlayer(short id)
-        {
-            if (this.players.ContainsKey(id))
-                return this.players[id];
-
-            Player player = new Player(id, new Vector2(240, 240));
-            player.LoadContent();
-            players.Add(id, player);
-            actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
-            horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
-            verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
-
-            return player;
-        }
-
-        Player player;
-        public void AddPlayer(short id)
-        {
-            if (!this.players.ContainsKey(id))
-            {
-                player = new Player(id, new Vector2(240, 40));
-                player.LoadContent();
-                this.players.Add(id, player);
-                actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
-                horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
-                verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
-            }
-        }
+        public void LoadContent(){}
 
         public void Update(GameTime gameTime, Grid grid)
         {
@@ -107,6 +82,49 @@ namespace ProjetoFinal.Managers
                 player.Draw(spriteBatch);
             }
         }
+
+        public Player GetPlayer(short id)
+        {
+            if (this.players.ContainsKey(id))
+                return this.players[id];
+
+            Player player = new Player(id, new Vector2(240, 240));
+            player.LoadContent();
+            players.Add(id, player);
+
+            actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
+            horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
+            verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
+
+            return player;
+        }
+
+        public void AddPlayer(short id, Vector2 position)
+        {
+            if (!this.players.ContainsKey(id))
+            {
+                player = new Player(id, position);
+                player.LoadContent();
+                this.players.Add(id, player);
+                actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
+                horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
+                verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
+            }
+        }
+
+        public void AddPlayer(short id, int x, int y)
+        {
+            if (!this.players.ContainsKey(id))
+            {
+                player = new Player(id, new Vector2(x, y));
+                player.LoadContent();
+                this.players.Add(id, player);
+                actionPlayerState.Add(id, actionPlayerStates[ActionStateType.Idle]);
+                horizontalPlayerState.Add(id, horizontalPlayerStates[HorizontalStateType.Idle]);
+                verticalPlayerState.Add(id, verticalPlayerStates[VerticalStateType.Jumping]);
+            }
+        }
+
 
         public void DrawBoundingBox(Rectangle r, int borderWidth, SpriteBatch spriteBatch, Texture2D borderTexture)
         {

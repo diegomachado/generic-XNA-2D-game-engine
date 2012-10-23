@@ -18,9 +18,14 @@ namespace ProjetoFinal.Managers
 {
     class LocalPlayerManager
     {
-        EventManager eventManager = EventManager.Instance;
-        Player localPlayer;
+        public short playerId;
+        public Player localPlayer;
         float shootingTimer;
+
+        LevelManager levelManager = LevelManager.Instance;
+        EventManager eventManager = EventManager.Instance;
+        InputManager inputManager = InputManager.Instance;
+        Camera camera = Camera.Instance;
 
         HorizontalMovementState localPlayerHorizontalState;
         VerticalMovementState localPlayerVerticalState;
@@ -28,12 +33,6 @@ namespace ProjetoFinal.Managers
         Dictionary<HorizontalStateType, HorizontalMovementState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
         Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
         Dictionary<ActionStateType, ActionState> localPlayerActionStates = new Dictionary<ActionStateType, ActionState>();
-
-        public short playerId { get; set; }
-        public Player LocalPlayer { get { return localPlayer; } }
-
-        InputManager inputManager;
-        Camera camera;
 
         public LocalPlayerManager()
         {
@@ -63,17 +62,16 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(id, new Vector2(70, 70));  
+            localPlayer = new Player(id, levelManager.currentLevel.GetRandomSpawnPoint());  
         }
 
-        Grid grid;
         public void Update(GameTime gameTime)
         {
             if (localPlayer == null) return;
 
             if (localPlayer.IsDead)
             {
-                Vector2 respawnPosition = LevelManager.Instance.currentLevel.GetRandomSpawnPoint();
+                Vector2 respawnPosition = levelManager.currentLevel.GetRandomSpawnPoint();
 
                 eventManager.ThrowPlayerRespawned(this, new PlayerRespawnedEventArgs(localPlayer.id, respawnPosition));
 
@@ -81,14 +79,13 @@ namespace ProjetoFinal.Managers
             }
             
             localPlayer.Update(gameTime);
-            grid = LevelManager.Instance.Grid;
                   
             HandleHorizontalMovement();
             HandleVerticalMovement();
             HandleActions(gameTime);
 
-            localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, grid, localPlayerHorizontalStates);
-            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, grid, localPlayerVerticalStates);
+            localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, levelManager.currentLevel.grid, localPlayerHorizontalStates);
+            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, levelManager.currentLevel.grid, localPlayerVerticalStates);
             localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
         }
 

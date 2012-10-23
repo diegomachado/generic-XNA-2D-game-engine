@@ -35,14 +35,14 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
-            localPlayerManager.createLocalPlayer(networkManager.LocalPlayerId);
-            arrowManager = new ArrowManager(localPlayerManager.LocalPlayer);
+            arrowManager = new ArrowManager(localPlayerManager.localPlayer);
         }
 
         public GameplayState(Dictionary<short, Client> clientsInfo) : this()
         {
+            // TODO: Criar o Player aqui, com as infos enviadas ao ele ter se conectado
             foreach (short id in clientsInfo.Keys)
-                this.playerManager.AddPlayer(id);
+                this.playerManager.AddPlayer(id, new Vector2(240, 240));
         }
 
         public override void Initialize(Game game, SpriteFont spriteFont)
@@ -54,7 +54,8 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             levelManager.Content = content;
             levelManager.LoadLevel("battlefield");
-            localPlayerManager.LocalPlayer.LoadContent();
+            localPlayerManager.createLocalPlayer(networkManager.LocalPlayerId);
+            localPlayerManager.localPlayer.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -82,7 +83,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             localPlayerManager.Update(gameTime);
             playerManager.Update(gameTime, levelManager.Grid);
             arrowManager.Update(gameTime);
-            camera.FollowLocalPlayer(localPlayerManager.LocalPlayer);
+            camera.FollowLocalPlayer(localPlayerManager.localPlayer);
             
             foreach (EntityCollision entityCollision in EntityCollision.EntityCollisions)
             {

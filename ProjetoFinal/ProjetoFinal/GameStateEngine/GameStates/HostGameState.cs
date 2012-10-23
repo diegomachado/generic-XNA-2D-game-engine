@@ -11,10 +11,10 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 {
     class HostGameState : NetworkGUIGameState
     {
-        Button startServerButton,
+        Button startServerButton, 
                mainMenuButton;
         
-        TextField portTextField,
+        TextField portTextField, 
                   nicknameTextField;
 
         public HostGameState() : base()
@@ -23,7 +23,6 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             mainMenuButton = new Button("Main Menu", new Rectangle(100, 400, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnMainMenuButtonPressed);
 
             portTextField = new TextField("666", new Rectangle(100, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame));
-            // TODO: Criar TextField que aceite letras em inputManager
             nicknameTextField = new TextField("AdminNick", new Rectangle(100, 300, 305, 51), textureManager.getTexture(TextureList.ButtonFrame));
 
             guiManager.AddElement(startServerButton);            
