@@ -15,7 +15,7 @@ namespace ProjetoFinal.Entities
         Camera camera = Camera.Instance;
 
         public float lifeSpan;
-        public short OwnerId { get; private set; }
+        public short ownerId;
         public bool Collided { get; set; }
 
         float fadeDelay = 700;
@@ -40,10 +40,10 @@ namespace ProjetoFinal.Entities
             }
         }
 
-        public Arrow(short ownerId, Vector2 position, Vector2 _speed) : base(position)
+        public Arrow(short _ownerId, Vector2 position, Vector2 _speed) : base(position)
         {
             spriteMap = new SpriteMap(TextureManager.Instance.getTexture(TextureList.Arrow), 25, 7);
-            OwnerId = ownerId;
+            ownerId = _ownerId;
             speed = _speed;
             gravity = 0.2f;
             friction = 0.95f;
@@ -95,14 +95,13 @@ namespace ProjetoFinal.Entities
         {
             if (entity is Player)
             { 
-                if (this.active)
+                if (((Player)entity).id != ownerId)
                 {
                     active = false;
                     Collided = true;
                     return true;
                 }
             }
-
             return false;
         }
     }

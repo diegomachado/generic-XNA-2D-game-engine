@@ -12,7 +12,7 @@ namespace ProjetoFinal.Entities
         public Entity entityA, entityB;
 
         public EntityCollision(Entity entityA, Entity entityB)
-        {
+        {                
             this.entityA = entityA;
             this.entityB = entityB;
             EntityCollisions.Add(this);

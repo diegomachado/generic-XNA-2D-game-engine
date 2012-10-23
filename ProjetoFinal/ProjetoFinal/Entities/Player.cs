@@ -125,22 +125,6 @@ namespace ProjetoFinal.Entities
                                      Color.Yellow);
         }
 
-        public override bool OnCollision(Entity entity)
-        {
-            if (entity is Arrow && id == networkManager.LocalPlayerId && !(afterRespawnTime > 0))
-            {
-                eventManager.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).OwnerId));
-
-                TakeHit();
-               
-                return true;
-            }
-            else
-            {
-                return false;  
-            }  
-        }
-
         public void Respawn(Vector2 respawnPoint)
         {
             IsDead = false;
@@ -153,6 +137,20 @@ namespace ProjetoFinal.Entities
         {
             Console.WriteLine(health);
             health -= 20;
+        }
+
+        public override bool OnCollision(Entity entity)
+        {
+            if (entity is Arrow && id == networkManager.LocalPlayerId && !(afterRespawnTime > 0))
+            {
+                if (((Arrow)entity).ownerId != id)
+                {
+                    eventManager.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).ownerId));
+                    TakeHit();
+                    return true;
+                }               
+            }             
+            return false;  
         }
     }
 }
