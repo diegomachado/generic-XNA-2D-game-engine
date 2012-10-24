@@ -138,9 +138,9 @@ namespace ProjetoFinal.Managers
         {
             Player player = GetPlayer(playerId);
 
-            if (player.LastUpdateTime < messageTime)
+            if (player.lastUpdateTime < messageTime)
             {
-                players[playerId].LastUpdateTime = messageTime;
+                players[playerId].lastUpdateTime = messageTime;
 
                 switch (stateType)
                 {
@@ -157,7 +157,7 @@ namespace ProjetoFinal.Managers
         {
             Player player = GetPlayer(playerId);
 
-            if (player.LastUpdateTime < messageTime)
+            if (player.lastUpdateTime < messageTime)
             {
                 // TODO: esse codigo tem que subir, não eh pra ter NetTime.Now aqui
                 //float timeDelay = (float)(NetTime.Now - messageTime);
@@ -166,7 +166,7 @@ namespace ProjetoFinal.Managers
                 // Lag Compensation
 
                 players[playerId].position = position;// + (speed * timeDelay); // TODO: Usar velocidade local ou da rede?
-                players[playerId].LastUpdateTime = messageTime;
+                players[playerId].lastUpdateTime = messageTime;
                 players[playerId].speed = speed;
 
                 switch (stateType)
