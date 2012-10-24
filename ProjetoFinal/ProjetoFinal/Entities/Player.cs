@@ -86,7 +86,6 @@ namespace ProjetoFinal.Entities
                 respawnCooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
                 alpha += 0.2f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Console.WriteLine(alpha);
             }
             else
             {
@@ -160,12 +159,12 @@ namespace ProjetoFinal.Entities
         {
             if (entity is Arrow && id == networkManager.LocalPlayerId && !(respawnCooldown > 0))
             {
-                //if (((Arrow)entity).ownerId != id)
-                //{
+                if (((Arrow)entity).ownerId != id)
+                {
                     eventManager.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).ownerId));
                     TakeHit();
                     return true;
-                //}               
+                }               
             }             
             return false;  
         }
