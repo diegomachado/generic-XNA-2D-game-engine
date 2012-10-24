@@ -8,20 +8,22 @@ namespace ProjetoFinal.Entities.Utils
 {
     class SpriteMap
     {
-        public bool complete = true;
-        public float rate = 1;
-
         public Rectangle source;
         public Texture2D spriteSheet;
         public int width, height, columns, rows;
         public int frameWidth, frameHeight;
+
         public Vector2 FrameCenter
         {
             get { return new Vector2((float) source.Width/2, (float) source.Height/2); }
         }
+
         public int frameCount;
         
         public int index;
+     
+        public float rate = 1;
+        public bool complete = true;
         public Animation currentAnimation;
         public Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
 
@@ -78,21 +80,20 @@ namespace ProjetoFinal.Entities.Utils
         }
 
         Rectangle destinationRectangle;
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, bool flip = false)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, bool flip = false, float alpha = 1)
         {
             destinationRectangle = new Rectangle((int)position.X, (int)position.Y, source.Width, source.Height);
 
             if (flip)
-                spriteBatch.Draw(spriteSheet, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(spriteSheet, destinationRectangle, source, Color.White * alpha, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
             else
-                spriteBatch.Draw(spriteSheet, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                spriteBatch.Draw(spriteSheet, destinationRectangle, source, Color.White * alpha, 0, Vector2.Zero, SpriteEffects.None, 0);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, float alpha, float angle, float scale)
         {
             spriteBatch.Draw(spriteSheet, position, null, Color.White * alpha, angle, FrameCenter, scale, SpriteEffects.None, 0);
         }
-
 
         public Animation Add(string name, int[] frames, float frameRate = 0, bool loop = true)
         {

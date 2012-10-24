@@ -95,12 +95,12 @@ namespace ProjetoFinal.Entities
         {
             if (entity is Player)
             { 
-                if (((Player)entity).id != ownerId)
-                {
+                //if (((Player)entity).id != ownerId)
+                //{
                     active = false;
                     Collided = true;
                     return true;
-                }
+                //}
             }
             return false;
         }

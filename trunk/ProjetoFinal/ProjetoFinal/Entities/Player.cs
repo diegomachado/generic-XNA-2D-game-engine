@@ -18,14 +18,18 @@ namespace ProjetoFinal.Entities
         EventManager eventManager = EventManager.Instance;
         NetworkManager networkManager = NetworkManager.Instance;
 
-        private double afterRespawnTime;
         public short id;
         public int health;
-        public double LastUpdateTime;
+        public double lastUpdateTime;
+        public bool FacingRight { get; set; }
         public VerticalStateType VerticalState { get; set; }
         public HorizontalStateType HorizontalState { get; set; }
         public ActionStateType ActionState { get; set; }
-        public bool FacingRight { get; set; }
+
+        public bool isInvencible;
+        private const double respawnDuration = 5.0f;
+        private double respawnCooldown = 0;
+        private float alpha;
         
         //private isDead;
         public bool IsDead { get; private set; }
@@ -62,6 +66,7 @@ namespace ProjetoFinal.Entities
             VerticalState = VerticalStateType.Idle;
             HorizontalState = HorizontalStateType.Idle;
             ActionState = ActionStateType.Idle;
+            alpha = 1;
         }
 
         // TODO: Passar isso na hora que constrói o player, pra dar flexibilidade
@@ -76,14 +81,21 @@ namespace ProjetoFinal.Entities
 
         public override void Update(GameTime gameTime)
         {
-            if (afterRespawnTime > 0)
-                afterRespawnTime -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (respawnCooldown > 0)
+            {
+                respawnCooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                alpha += 0.2f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Console.WriteLine(alpha);
+            }
+            else
+            {
+                isInvencible = false;
+                alpha = 1;
+            }
 
             if (health <= 0)
-            {
                 IsDead = true;
-                Console.WriteLine("Morri :(");
-            }
             
             spriteMap.Update(gameTime);
             base.Update(gameTime);
@@ -91,11 +103,10 @@ namespace ProjetoFinal.Entities
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // TODO: Fazer alguma viadisse aqui pra mostrar que o cara ta invulneravel logo apos dar respawn
-            // if (afterRespawnTime > 0)
+            spriteMap.Draw(spriteBatch, Camera.Instance.WorldToCamera(position), !FacingRight, alpha);
+            if(!isInvencible)
+                DrawHealthBar(spriteBatch);
 
-            spriteMap.Draw(spriteBatch, Camera.Instance.WorldToCamera(position), !FacingRight);
-            DrawHealthBar(spriteBatch);
             //Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
         }
 
@@ -112,24 +123,30 @@ namespace ProjetoFinal.Entities
         {
             if (shootingTimer != 0)
                 if (FacingRight)
+                {
                     spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(),
                                      new Rectangle((int)position.X - 5 - (int)camera.Position.X,
                                                    (int)position.Y + Height - (int)camera.Position.Y - (int)shootingTimer / 35,
                                                    5, (int)shootingTimer / 35),
                                      Color.Yellow);
+                }
                 else
+                {
                     spriteBatch.Draw(TextureManager.Instance.GetPixelTexture(),
                                      new Rectangle((int)position.X + 30 - (int)camera.Position.X,
                                          (int)position.Y + Height - (int)camera.Position.Y - (int)shootingTimer / 35,
                                          5, (int)shootingTimer / 35), 
                                      Color.Yellow);
+                }
         }
 
         public void Respawn(Vector2 respawnPoint)
         {
             IsDead = false;
             health = 100;
-            afterRespawnTime = 5.0f;
+            respawnCooldown = respawnDuration;
+            isInvencible = true;
+            alpha = 0;
             position = respawnPoint;
         }
 
@@ -141,14 +158,14 @@ namespace ProjetoFinal.Entities
 
         public override bool OnCollision(Entity entity)
         {
-            if (entity is Arrow && id == networkManager.LocalPlayerId && !(afterRespawnTime > 0))
+            if (entity is Arrow && id == networkManager.LocalPlayerId && !(respawnCooldown > 0))
             {
-                if (((Arrow)entity).ownerId != id)
-                {
+                //if (((Arrow)entity).ownerId != id)
+                //{
                     eventManager.ThrowPlayerHit(this, new PlayerHitEventArgs(id, ((Arrow)entity).ownerId));
                     TakeHit();
                     return true;
-                }               
+                //}               
             }             
             return false;  
         }
