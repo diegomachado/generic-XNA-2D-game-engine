@@ -17,10 +17,11 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
             player.speed.X *= player.friction;
+            player.spriteMap.Play("idle");
 
-            //TODO: Melhorar esse clamp de momentum de maneira clara
+            //TODO: Melhorar esse clamp de momentum de maneira clara, extrair o mínimo pra player, talvez
             if (Math.Abs(player.speed.X) <= 0.01)
-                player.StopMovingHorizontally();   
+                player.StopMovingHorizontally();
 
             player.MoveXBy(player.speed.X);
 

@@ -36,6 +36,9 @@ namespace ProjetoFinal.Managers
 
         public LocalPlayerManager()
         {
+            inputManager = InputManager.Instance;
+            camera = Camera.Instance;
+
             localPlayerHorizontalStates[HorizontalStateType.Idle] = new HorizontalIdleState();
             localPlayerHorizontalStates[HorizontalStateType.WalkingLeft] = new WalkingLeftState();
             localPlayerHorizontalStates[HorizontalStateType.WalkingRight] = new WalkingRightState();
@@ -46,7 +49,7 @@ namespace ProjetoFinal.Managers
             localPlayerVerticalStates[VerticalStateType.Idle] = new VerticalIdleState();
             localPlayerVerticalStates[VerticalStateType.Jumping] = new JumpingState();
             localPlayerVerticalStates[VerticalStateType.StartedJumping] = new StartedJumpingState();
-            localPlayerVerticalState = localPlayerVerticalStates[VerticalStateType.Jumping];
+            localPlayerVerticalState = localPlayerVerticalStates[VerticalStateType.Idle];
 
             localPlayerActionStates[ActionStateType.Idle] = new ActionIdleState();
             localPlayerActionStates[ActionStateType.Attacking] = new AttackingState();
@@ -54,9 +57,6 @@ namespace ProjetoFinal.Managers
             localPlayerActionStates[ActionStateType.Shooting] = new ShootingState();
             localPlayerActionStates[ActionStateType.PreparingShot] = new PreparingShotState();
             localPlayerActionState = localPlayerActionStates[ActionStateType.Idle];
-
-            inputManager = InputManager.Instance;
-            camera = Camera.Instance;
         }
 
         public void createLocalPlayer(short id)
@@ -91,10 +91,15 @@ namespace ProjetoFinal.Managers
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            if (localPlayer == null) return;
+            if (localPlayer == null) 
+                return;
             
             localPlayer.Draw(spriteBatch);
-            localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera); 
+            localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
+
+            spriteBatch.DrawString(spriteFont, localPlayer.VerticalState.ToString(), localPlayer.position - new Vector2(0, 20) - camera.Position, Color.White);
+            spriteBatch.DrawString(spriteFont, localPlayer.HorizontalState.ToString(), localPlayer.position - new Vector2(0, 40) - camera.Position, Color.White);
+            spriteBatch.DrawString(spriteFont, localPlayer.IsMovingHorizontally().ToString(), localPlayer.position - new Vector2(0, 60) - camera.Position, Color.White);
         }        
 
         private void HandleVerticalMovement()
@@ -113,8 +118,7 @@ namespace ProjetoFinal.Managers
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingLeft(playerId, localPlayer, localPlayerHorizontalStates);
             }
-
-            if (inputManager.Right)
+            else if (inputManager.Right)
             {
                 localPlayerHorizontalState = localPlayerHorizontalState.MovedRight(playerId, localPlayer, localPlayerHorizontalStates);
             }

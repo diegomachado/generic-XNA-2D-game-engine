@@ -25,22 +25,18 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
 
         public virtual HorizontalMovementState MovedLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            if(player.VerticalState != VerticalStateType.Jumping) player.spriteMap.Play("moving");
             return this;
         }
         public virtual HorizontalMovementState StoppedMovingLeft(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            player.spriteMap.Play("idle");
             return this;
         }
         public virtual HorizontalMovementState MovedRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            if (player.VerticalState != VerticalStateType.Jumping) player.spriteMap.Play("moving");
             return this;
         }
         public virtual HorizontalMovementState StoppedMovingRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            player.spriteMap.Play("idle");
             return this;
         }
 
