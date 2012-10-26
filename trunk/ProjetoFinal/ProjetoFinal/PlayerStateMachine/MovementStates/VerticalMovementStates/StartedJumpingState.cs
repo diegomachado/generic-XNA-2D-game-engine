@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using ProjetoFinal.Entities;
 
 using OgmoEditorLibrary;
+using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.PlayerStateMachine.VerticalMovementStates
 {
@@ -12,17 +13,23 @@ namespace ProjetoFinal.PlayerStateMachine.VerticalMovementStates
         public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
             player.Jump();
+            player.spriteMap.Play("idle");
             VerticalMovementState state = base.Update(playerId, gameTime, player, grid, playerStates);
 
             if (state == this)
+            {
+                OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Vertical, (short)VerticalStateType.Jumping);
                 return playerStates[VerticalStateType.Jumping];
+            }
             else
+            {
                 return state;
+            }
         }
 
         public override string ToString()
         {
-            return "Started Jumping";
+            return "Jumping";
         }
     }
 }

@@ -12,16 +12,16 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
+            if(player.VerticalState == VerticalStateType.Idle) 
+                player.spriteMap.Play("moving");
+
             player.FacingRight = true;
             player.speed.X += player.moveSpeed;
             player.speed.X *= player.friction;
 
             player.MoveXBy(player.speed.X);
 
-            if (!player.IsMovingHorizontally())       
-                return playerStates[HorizontalStateType.Idle];
-            else
-                return this;
+            return this;
         }
 
         public override HorizontalMovementState StoppedMovingRight(short playerId, Player player, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
