@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
 using OgmoEditorLibrary;
+using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers.LocalPlayerStates
 {
@@ -15,6 +16,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
     {
         public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
+            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Vertical, (short)VerticalStateType.Jumping);
             player.spriteMap.Play("idle");
 
             if (player.MapCollideY(-1))

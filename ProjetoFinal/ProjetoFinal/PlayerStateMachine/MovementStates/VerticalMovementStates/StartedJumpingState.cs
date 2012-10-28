@@ -17,14 +17,9 @@ namespace ProjetoFinal.PlayerStateMachine.VerticalMovementStates
             VerticalMovementState state = base.Update(playerId, gameTime, player, grid, playerStates);
 
             if (state == this)
-            {
-                OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Vertical, (short)VerticalStateType.Jumping);
                 return playerStates[VerticalStateType.Jumping];
-            }
             else
-            {
                 return state;
-            }
         }
 
         public override string ToString()

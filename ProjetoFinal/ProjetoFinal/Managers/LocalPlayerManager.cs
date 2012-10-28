@@ -96,10 +96,6 @@ namespace ProjetoFinal.Managers
             
             localPlayer.Draw(spriteBatch);
             localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
-
-            spriteBatch.DrawString(spriteFont, localPlayer.VerticalState.ToString(), localPlayer.position - new Vector2(0, 20) - camera.Position, Color.White);
-            spriteBatch.DrawString(spriteFont, localPlayer.HorizontalState.ToString(), localPlayer.position - new Vector2(0, 40) - camera.Position, Color.White);
-            spriteBatch.DrawString(spriteFont, localPlayer.IsMovingHorizontally().ToString(), localPlayer.position - new Vector2(0, 60) - camera.Position, Color.White);
         }        
 
         private void HandleVerticalMovement()
