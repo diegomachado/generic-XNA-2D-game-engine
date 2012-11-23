@@ -6,7 +6,7 @@ using ProjetoFinal.PlayerStateMachine;
 
 using OgmoEditorLibrary;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.MovementStates.HorizontalMovementStates
 {
     enum HorizontalStateType : short
     {

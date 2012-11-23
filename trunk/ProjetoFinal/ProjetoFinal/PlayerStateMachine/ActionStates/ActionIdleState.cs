@@ -11,7 +11,7 @@ using OgmoEditorLibrary;
 using ProjetoFinal.Network.Messages;
 using ProjetoFinal.PlayerStateMachine;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.ActionStates
 {
     class ActionIdleState : ActionState
     {

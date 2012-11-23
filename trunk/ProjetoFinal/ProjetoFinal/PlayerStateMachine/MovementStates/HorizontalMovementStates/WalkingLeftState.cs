@@ -10,15 +10,12 @@ using ProjetoFinal.Entities;
 using OgmoEditorLibrary;
 using ProjetoFinal.Network.Messages;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.MovementStates.HorizontalMovementStates
 {
     class WalkingLeftState : HorizontalMovementState
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {            
-            if(player.VerticalState == VerticalStateType.Idle) 
-                player.spriteMap.Play("moving");
-
             player.FacingRight = false;
             player.speed.X -= player.moveSpeed;
             player.speed.X *= player.friction;

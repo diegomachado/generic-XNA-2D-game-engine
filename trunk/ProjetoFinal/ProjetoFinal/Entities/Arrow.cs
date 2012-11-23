@@ -59,7 +59,7 @@ namespace ProjetoFinal.Entities
         public override void Update(GameTime gameTime)
         {
             lifeSpan -= gameTime.ElapsedGameTime.Milliseconds;
-
+            
             if (!Collided)
             {
                 if (OnGround() || MapCollideY(-1) || MapCollideX(1) || MapCollideX(-1))

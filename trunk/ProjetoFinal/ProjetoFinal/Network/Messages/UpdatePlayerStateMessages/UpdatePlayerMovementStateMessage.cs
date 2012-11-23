@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 
 using ProjetoFinal.Managers;
 using ProjetoFinal.Entities;
-using ProjetoFinal.Managers.LocalPlayerStates;
 
 namespace ProjetoFinal.Network.Messages
 {

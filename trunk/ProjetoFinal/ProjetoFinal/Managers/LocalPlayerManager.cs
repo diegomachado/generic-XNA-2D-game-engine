@@ -8,11 +8,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using ProjetoFinal.Entities;
-using ProjetoFinal.Managers.LocalPlayerStates;
 
 using OgmoEditorLibrary;
-using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
 using ProjetoFinal.EventHeaders;
+using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Managers
 {
@@ -27,36 +26,10 @@ namespace ProjetoFinal.Managers
         InputManager inputManager = InputManager.Instance;
         Camera camera = Camera.Instance;
 
-        HorizontalMovementState localPlayerHorizontalState;
-        VerticalMovementState localPlayerVerticalState;
-        ActionState localPlayerActionState;
-        Dictionary<HorizontalStateType, HorizontalMovementState> localPlayerHorizontalStates = new Dictionary<HorizontalStateType, HorizontalMovementState>();
-        Dictionary<VerticalStateType, VerticalMovementState> localPlayerVerticalStates = new Dictionary<VerticalStateType, VerticalMovementState>();
-        Dictionary<ActionStateType, ActionState> localPlayerActionStates = new Dictionary<ActionStateType, ActionState>();
-
         public LocalPlayerManager()
         {
             inputManager = InputManager.Instance;
             camera = Camera.Instance;
-
-            localPlayerHorizontalStates[HorizontalStateType.Idle] = new HorizontalIdleState();
-            localPlayerHorizontalStates[HorizontalStateType.WalkingLeft] = new WalkingLeftState();
-            localPlayerHorizontalStates[HorizontalStateType.WalkingRight] = new WalkingRightState();
-            localPlayerHorizontalStates[HorizontalStateType.StoppingWalkingLeft] = new StoppingWalkingLeftState();
-            localPlayerHorizontalStates[HorizontalStateType.StoppingWalkingRight] = new StoppingWalkingRightState();
-            localPlayerHorizontalState = localPlayerHorizontalStates[HorizontalStateType.Idle];
-
-            localPlayerVerticalStates[VerticalStateType.Idle] = new VerticalIdleState();
-            localPlayerVerticalStates[VerticalStateType.Jumping] = new JumpingState();
-            localPlayerVerticalStates[VerticalStateType.StartedJumping] = new StartedJumpingState();
-            localPlayerVerticalState = localPlayerVerticalStates[VerticalStateType.Idle];
-
-            localPlayerActionStates[ActionStateType.Idle] = new ActionIdleState();
-            localPlayerActionStates[ActionStateType.Attacking] = new AttackingState();
-            localPlayerActionStates[ActionStateType.Defending] = new DefendingState();
-            localPlayerActionStates[ActionStateType.Shooting] = new ShootingState();
-            localPlayerActionStates[ActionStateType.PreparingShot] = new PreparingShotState();
-            localPlayerActionState = localPlayerActionStates[ActionStateType.Idle];
         }
 
         public void createLocalPlayer(short id)
@@ -84,9 +57,9 @@ namespace ProjetoFinal.Managers
             HandleVerticalMovement();
             HandleActions(gameTime);
 
-            localPlayerHorizontalState = localPlayerHorizontalState.Update(playerId, gameTime, localPlayer, levelManager.currentLevel.grid, localPlayerHorizontalStates);
-            localPlayerVerticalState = localPlayerVerticalState.Update(playerId, gameTime, localPlayer, levelManager.currentLevel.grid, localPlayerVerticalStates);
-            localPlayerActionState = localPlayerActionState.Update(playerId, gameTime, localPlayer, localPlayerActionStates);
+            localPlayer.HorizontalState = localPlayer.HorizontalState.Update(playerId, gameTime, localPlayer, levelManager.currentLevel.grid, PlayerStates.horizontalStates);
+            localPlayer.VerticalState = localPlayer.VerticalState.Update(playerId, gameTime, localPlayer, levelManager.currentLevel.grid, PlayerStates.verticalStates);
+            localPlayer.ActionState = localPlayer.ActionState.Update(playerId, gameTime, localPlayer, PlayerStates.actionStates);
         }
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
@@ -96,45 +69,49 @@ namespace ProjetoFinal.Managers
             
             localPlayer.Draw(spriteBatch);
             localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
-        }        
 
-        private void HandleVerticalMovement()
-        {
-            if (inputManager.Jump)
-                localPlayerVerticalState = localPlayerVerticalState.Jumped(playerId, localPlayer, localPlayerVerticalStates);
-        }
+            spriteBatch.DrawString(spriteFont, localPlayer.VerticalStateType.ToString(), localPlayer.position - new Vector2(0, 20) - camera.Position, Color.White);
+            spriteBatch.DrawString(spriteFont, localPlayer.HorizontalStateType.ToString(), localPlayer.position - new Vector2(0, 40) - camera.Position, Color.White);
+            spriteBatch.DrawString(spriteFont, localPlayer.ActionStateType.ToString(), localPlayer.position - new Vector2(0, 60) - camera.Position, Color.White);
+        }  
 
         private void HandleHorizontalMovement()
         {
             if (inputManager.Left)
             {
-                localPlayerHorizontalState = localPlayerHorizontalState.MovedLeft(playerId, localPlayer, localPlayerHorizontalStates);
+                localPlayer.HorizontalState = localPlayer.HorizontalState.MovedLeft(playerId, localPlayer, PlayerStates.horizontalStates);
             }
             else if (inputManager.PreviouslyLeft)
             {
-                localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingLeft(playerId, localPlayer, localPlayerHorizontalStates);
+                localPlayer.HorizontalState = localPlayer.HorizontalState.StoppedMovingLeft(playerId, localPlayer, PlayerStates.horizontalStates);
             }
             else if (inputManager.Right)
             {
-                localPlayerHorizontalState = localPlayerHorizontalState.MovedRight(playerId, localPlayer, localPlayerHorizontalStates);
+                localPlayer.HorizontalState = localPlayer.HorizontalState.MovedRight(playerId, localPlayer, PlayerStates.horizontalStates);
             }
             else if (inputManager.PreviouslyRight)
             {
-                localPlayerHorizontalState = localPlayerHorizontalState.StoppedMovingRight(playerId, localPlayer, localPlayerHorizontalStates);
+                localPlayer.HorizontalState = localPlayer.HorizontalState.StoppedMovingRight(playerId, localPlayer, PlayerStates.horizontalStates);
             }
         }
 
-        private void HandleActions(GameTime gameTime)
+        private void HandleVerticalMovement()
         {
+            if (inputManager.Jump)
+                localPlayer.VerticalState = localPlayer.VerticalState.Jumped(playerId, localPlayer, PlayerStates.verticalStates);
+        }
+
+        private void HandleActions(GameTime gameTime)
+        {            
             if (inputManager.PreparingShot)
             {
-                localPlayerActionState = localPlayerActionState.PreparingShot(playerId, localPlayer, localPlayerActionStates);
+                localPlayer.ActionState = localPlayer.ActionState.PreparingShot(playerId, localPlayer, PlayerStates.actionStates);
                 shootingTimer += gameTime.ElapsedGameTime.Milliseconds;
                 shootingTimer = MathHelper.Clamp(shootingTimer, 0, 1000);
             }
             else
             {
-                localPlayerActionState = localPlayerActionState.ShotReleased(playerId, localPlayer, shootingTimer, camera.CameraToWorld(inputManager.MousePosition), localPlayerActionStates);
+                localPlayer.ActionState = localPlayer.ActionState.ShotReleased(playerId, localPlayer, shootingTimer, camera.CameraToWorld(inputManager.MousePosition), PlayerStates.actionStates);
                 shootingTimer = 0f;
             }
         }

@@ -10,7 +10,7 @@ using ProjetoFinal.Entities;
 using OgmoEditorLibrary;
 using ProjetoFinal.Network.Messages;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.MovementStates.VerticalMovementStates
 {
     class VerticalIdleState : VerticalMovementState
     {

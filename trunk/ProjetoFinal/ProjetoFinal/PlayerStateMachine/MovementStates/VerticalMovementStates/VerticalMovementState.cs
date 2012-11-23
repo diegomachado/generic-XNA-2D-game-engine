@@ -10,7 +10,7 @@ using ProjetoFinal.Entities;
 using OgmoEditorLibrary;
 using ProjetoFinal.PlayerStateMachine;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.MovementStates.VerticalMovementStates
 {
     enum VerticalStateType : short
     {

@@ -10,13 +10,12 @@ using ProjetoFinal.Entities;
 using ProjetoFinal.Network.Messages;
 using ProjetoFinal.PlayerStateMachine;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.ActionStates
 {
     class PreparingShotState : ActionState
     {
         public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            // TODO: Animação de preparando tiro entra aqui
             return this;
         }
 
