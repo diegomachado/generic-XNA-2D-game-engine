@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-using ProjetoFinal.Managers.LocalPlayerStates;
 using ProjetoFinal.Managers;
+using ProjetoFinal.PlayerStateMachine.MovementStates.VerticalMovementStates;
+using ProjetoFinal.PlayerStateMachine.MovementStates.HorizontalMovementStates;
+using ProjetoFinal.PlayerStateMachine.ActionStates;
 using ProjetoFinal.Entities.Utils;
 using ProjetoFinal.EventHeaders;
+using ProjetoFinal.PlayerStateMachine;
 
 namespace ProjetoFinal.Entities
 {
@@ -20,19 +21,22 @@ namespace ProjetoFinal.Entities
 
         public short id;
         public int health;
+
         public double lastUpdateTime;
         public bool FacingRight { get; set; }
-        public VerticalStateType VerticalState { get; set; }
-        public HorizontalStateType HorizontalState { get; set; }
-        public ActionStateType ActionState { get; set; }
+        public VerticalMovementState VerticalState { get; set; }
+        public HorizontalMovementState HorizontalState { get; set; }
+        public ActionState ActionState { get; set; }
 
         public bool isInvencible;
         private const double respawnDuration = 5.0f;
         private double respawnCooldown = 0;
         private float alpha;
-        
-        //private isDead;
         public bool IsDead { get; private set; }
+
+        public HorizontalStateType HorizontalStateType { get; set; }
+        public VerticalStateType VerticalStateType { get; set; }
+        public ActionStateType ActionStateType { get; set; }
 
         private Vector2 weaponPosition;
         public Vector2 WeaponPosition
@@ -49,7 +53,7 @@ namespace ProjetoFinal.Entities
             {
                 weaponPosition = value;
             }
-        }
+        }    
 
         public Player(short _id, Vector2 _position) : base(_position)
         {
@@ -63,18 +67,18 @@ namespace ProjetoFinal.Entities
             minSpeed = new Vector2(-15, -12);
             maxSpeed = new Vector2(15, 12);     
             WeaponPosition = new Vector2(29, 18);
-            VerticalState = VerticalStateType.Idle;
-            HorizontalState = HorizontalStateType.Idle;
-            ActionState = ActionStateType.Idle;
             alpha = 1;
+            HorizontalState = PlayerStates.horizontalStates[HorizontalStateType.Idle];
+            VerticalState = PlayerStates.verticalStates[VerticalStateType.Idle];
+            ActionState = PlayerStates.actionStates[ActionStateType.Idle];
         }
 
         // TODO: Passar isso na hora que constrói o player, pra dar flexibilidade
         public override void LoadContent()
         {
             spriteMap = new SpriteMap(TextureManager.Instance.getTexture(TextureList.Bear), 34, 30);
-            spriteMap.Add("idle", new int[] { 0, 1, 2, 3 }, 10).Play();
-            spriteMap.Add("moving", new int[] { 4, 5, 6, 7 }, 10);
+            spriteMap.Add("idle", new int[] { 0, 1, 2, 3 }, 10);
+            spriteMap.Add("moving", new int[] { 4, 5, 6, 7 }, 10).Play();
 
             base.LoadContent();
         }
@@ -95,16 +99,39 @@ namespace ProjetoFinal.Entities
 
             if (health <= 0)
                 IsDead = true;
+
+            ChooseAnimation();
             
             spriteMap.Update(gameTime);
             base.Update(gameTime);
         }
 
+        private void ChooseAnimation()
+        {
+            if (HorizontalStateType == HorizontalStateType.Idle)
+            {
+                spriteMap.Play("idle");
+            }
+            else if (HorizontalStateType == HorizontalStateType.WalkingLeft || HorizontalStateType == HorizontalStateType.WalkingRight)
+            {
+                if (VerticalStateType == VerticalStateType.Jumping)
+                {
+                    spriteMap.Play("idle");
+                }
+                else
+                {
+                    spriteMap.Play("moving");
+                }
+            }
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteMap.Draw(spriteBatch, Camera.Instance.WorldToCamera(position), !FacingRight, alpha);
-            if(!isInvencible)
-                DrawHealthBar(spriteBatch);
+            spriteMap.Draw(spriteBatch, Camera.Instance.WorldToCamera(position), !FacingRight, 1);
+            //spriteMap.Draw(spriteBatch, Camera.Instance.WorldToCamera(position), !FacingRight, alpha);
+
+            //if(!isInvencible)
+            DrawHealthBar(spriteBatch);
 
             //Util.DrawRectangle(spriteBatch, this.CollisionBox, 1, Color.Red);
         }
@@ -151,7 +178,6 @@ namespace ProjetoFinal.Entities
 
         public void TakeHit()
         {
-            Console.WriteLine(health);
             health -= 20;
         }
 
@@ -168,5 +194,6 @@ namespace ProjetoFinal.Entities
             }             
             return false;  
         }
+
     }
 }

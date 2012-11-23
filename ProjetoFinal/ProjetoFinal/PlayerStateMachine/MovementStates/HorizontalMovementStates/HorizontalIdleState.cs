@@ -10,13 +10,12 @@ using ProjetoFinal.Entities;
 using OgmoEditorLibrary;
 using ProjetoFinal.Network.Messages;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.MovementStates.HorizontalMovementStates
 {
     class HorizontalIdleState : HorizontalMovementState
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            player.spriteMap.Play("idle");
             OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.Idle);
             return this;
         }

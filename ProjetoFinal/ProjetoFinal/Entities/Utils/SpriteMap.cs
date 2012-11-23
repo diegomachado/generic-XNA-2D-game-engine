@@ -21,9 +21,9 @@ namespace ProjetoFinal.Entities.Utils
         public int frameCount;
         
         public int index;
-     
         public float rate = 1;
         public bool complete = true;
+
         public Animation currentAnimation;
         public Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
 

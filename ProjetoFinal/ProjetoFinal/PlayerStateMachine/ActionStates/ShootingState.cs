@@ -11,13 +11,13 @@ using OgmoEditorLibrary;
 using ProjetoFinal.Network.Messages;
 using ProjetoFinal.PlayerStateMachine;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.ActionStates
 {
     class ShootingState : ActionState
     {
         public override ActionState Update(short playerId, GameTime gameTime, Player player, Dictionary<ActionStateType, ActionState> playerStates)
         {
-            // TODO: Animar atirando e no fim da animação voltar pro estado Idle
+            player.ActionStateType = ActionStateType.Idle;
             return playerStates[ActionStateType.Idle];
         }
 

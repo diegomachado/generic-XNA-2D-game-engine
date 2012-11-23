@@ -10,15 +10,12 @@ using ProjetoFinal.Entities;
 using OgmoEditorLibrary;
 using ProjetoFinal.Network.Messages;
 
-namespace ProjetoFinal.Managers.LocalPlayerStates
+namespace ProjetoFinal.PlayerStateMachine.MovementStates.VerticalMovementStates
 {
     class JumpingState : VerticalMovementState
     {
         public override VerticalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<VerticalStateType, VerticalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Vertical, (short)VerticalStateType.Jumping);
-            player.spriteMap.Play("idle");
-
             if (player.MapCollideY(-1))
                 player.speed.Y = 0;
             
@@ -29,6 +26,7 @@ namespace ProjetoFinal.Managers.LocalPlayerStates
             if (player.OnGround())
             {
                 player.speed.Y = 0;
+                player.VerticalStateType = VerticalStateType.Idle;
                 return playerStates[VerticalStateType.Idle];
             }
             

@@ -5,7 +5,6 @@ using System.Text;
 
 using ProjetoFinal.EventHeaders;
 using ProjetoFinal.Entities;
-using ProjetoFinal.Managers.LocalPlayerStates;
 using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers

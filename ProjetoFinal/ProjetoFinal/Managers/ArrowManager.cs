@@ -12,8 +12,6 @@ using OgmoEditorLibrary;
 
 using ProjetoFinal.Entities;
 using ProjetoFinal.EventHeaders;
-using ProjetoFinal.Managers.LocalPlayerStates;
-using ProjetoFinal.PlayerStateMachine.VerticalMovementStates;
 using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.Managers
