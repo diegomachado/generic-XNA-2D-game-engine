@@ -22,6 +22,7 @@ namespace ProjetoFinal.Managers
 {
     class PlayerManager
     {
+        LevelManager levelManager = LevelManager.Instance;
         Dictionary<short, Player> players;
         Camera camera = Camera.Instance;
 
@@ -38,6 +39,12 @@ namespace ProjetoFinal.Managers
             {
                 Player player = p.Value;
                 short playerId = p.Key;
+
+                player.Update(gameTime);
+
+                player.HorizontalState = player.HorizontalState.Update(playerId, gameTime, player, levelManager.currentLevel.grid, PlayerStates.horizontalStates);
+                player.VerticalState = player.VerticalState.Update(playerId, gameTime, player, levelManager.currentLevel.grid, PlayerStates.verticalStates);
+                player.ActionState = player.ActionState.Update(playerId, gameTime, player, PlayerStates.actionStates);
             }
         }
 
