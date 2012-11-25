@@ -35,7 +35,12 @@ namespace ProjetoFinal.Managers
         public void createLocalPlayer(short id)
         {
             playerId = id;
-            localPlayer = new Player(id, levelManager.currentLevel.GetRandomSpawnPoint());  
+
+            Vector2 respawnPosition = levelManager.currentLevel.GetRandomSpawnPoint();
+
+            eventManager.ThrowPlayerRespawned(this, new PlayerRespawnedEventArgs(id, respawnPosition));
+
+            localPlayer = new Player(id, respawnPosition);
         }
 
         public void Update(GameTime gameTime)

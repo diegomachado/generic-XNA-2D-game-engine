@@ -16,7 +16,6 @@ namespace ProjetoFinal.PlayerStateMachine.MovementStates.HorizontalMovementState
     {
         public override HorizontalMovementState Update(short playerId, GameTime gameTime, Player player, Grid grid, Dictionary<HorizontalStateType, HorizontalMovementState> playerStates)
         {
-            OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Horizontal, (short)HorizontalStateType.Idle);
             return this;
         }
 
