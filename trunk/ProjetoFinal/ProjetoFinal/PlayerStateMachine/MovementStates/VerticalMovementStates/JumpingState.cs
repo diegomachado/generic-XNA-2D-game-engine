@@ -26,6 +26,7 @@ namespace ProjetoFinal.PlayerStateMachine.MovementStates.VerticalMovementStates
             if (player.OnGround())
             {
                 player.speed.Y = 0;
+
                 player.VerticalStateType = VerticalStateType.Idle;
                 return playerStates[VerticalStateType.Idle];
             }

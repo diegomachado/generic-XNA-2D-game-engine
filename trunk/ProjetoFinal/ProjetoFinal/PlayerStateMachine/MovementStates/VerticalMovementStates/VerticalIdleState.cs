@@ -18,11 +18,11 @@ namespace ProjetoFinal.PlayerStateMachine.MovementStates.VerticalMovementStates
         {
             if (!player.OnGround())
             {
+                player.VerticalStateType = VerticalStateType.Jumping;
                 return playerStates[VerticalStateType.Jumping];
             }
             else
             {
-                OnPlayerStateChanged(playerId, player, UpdatePlayerStateType.Vertical, (short)VerticalStateType.Idle);
                 return this;
             }
         }
