@@ -57,8 +57,7 @@ namespace ProjetoFinal.Managers
             {
                 player = p.Value;
                 player.Draw(spriteBatch);
-                spriteBatch.DrawString(spriteFont, p.Key.ToString(), player.position - new Vector2(-13, 28) - camera.Position, Color.White);
-        
+                spriteBatch.DrawString(spriteFont, p.Key.ToString(), player.position - new Vector2(-13, 28) - camera.Position, Color.White);        
             }
         }
 

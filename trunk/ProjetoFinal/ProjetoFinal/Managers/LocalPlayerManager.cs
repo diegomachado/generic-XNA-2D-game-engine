@@ -75,6 +75,8 @@ namespace ProjetoFinal.Managers
             localPlayer.Draw(spriteBatch);
             localPlayer.DrawArrowPower(spriteBatch, shootingTimer, camera);
 
+            spriteBatch.DrawString(spriteFont, localPlayer.id.ToString(), localPlayer.position - new Vector2(-13, 28) - camera.Position, Color.White);
+
         //    spriteBatch.DrawString(spriteFont, localPlayer.VerticalStateType.ToString(), localPlayer.position - new Vector2(0, 20) - camera.Position, Color.White);
         //    spriteBatch.DrawString(spriteFont, localPlayer.HorizontalStateType.ToString(), localPlayer.position - new Vector2(0, 40) - camera.Position, Color.White);
         //    spriteBatch.DrawString(spriteFont, localPlayer.ActionStateType.ToString(), localPlayer.position - new Vector2(0, 60) - camera.Position, Color.White);
