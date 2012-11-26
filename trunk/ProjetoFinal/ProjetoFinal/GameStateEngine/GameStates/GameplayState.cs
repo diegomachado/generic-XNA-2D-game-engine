@@ -210,8 +210,11 @@ namespace ProjetoFinal.GameStateEngine.GameStates
 
                 Dictionary<short, Vector2> playerPositions = new Dictionary<short, Vector2>();
 
-                foreach(KeyValuePair<short, Player> player in playerManager.players)
-                    playerPositions.Add(player.Key, player.Value.position);
+                playerPositions.Add(localPlayerManager.playerId, localPlayerManager.localPlayer.position);
+
+                foreach (KeyValuePair<short, Player> player in playerManager.players)
+                    if(player.Key != args.PlayerId)
+                        playerPositions.Add(player.Key, player.Value.position);
 
                 eventManager.ThrowNewClientPlayerCreated(this, new NewClientPlayerCreatedEventArgs(args.PlayerId, playerPositions));
             }
@@ -221,7 +224,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             foreach (KeyValuePair<short, Vector2> playerPositions in args.PlayerPositions)
             {
-                Console.WriteLine(">>> " + playerPositions.Key);
+                Console.WriteLine(localPlayerManager.playerId + " >>> " + playerPositions.Key);
                 playerManager.GetPlayer(playerPositions.Key).Respawn(playerPositions.Value);
             }
         }
