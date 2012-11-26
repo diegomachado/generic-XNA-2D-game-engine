@@ -22,5 +22,7 @@ namespace ProjetoFinal.Network
         NetOutgoingMessage CreateMessage();
 
         void RegisterClient(short clientCounter, NetConnection senderConnection);
+
+        short GetPlayerIdFromConnection(NetConnection netConnection);
     }
 }

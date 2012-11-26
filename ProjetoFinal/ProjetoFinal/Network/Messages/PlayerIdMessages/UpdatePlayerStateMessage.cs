@@ -16,43 +16,42 @@ namespace ProjetoFinal.Network.Messages
         Vertical
     }
 
-    class UpdatePlayerStateMessage : IGameMessage
+    class UpdatePlayerStateMessage : PlayerIdMessage
     {
-        public short PlayerId { get; set; }
         public double MessageTime { get; set; }
         public Vector2 Position { get; set; }
         public short PlayerState { get; set; }
         public UpdatePlayerStateType StateType { get; set; }
         
-        public UpdatePlayerStateMessage(NetIncomingMessage im)
+        public UpdatePlayerStateMessage(NetIncomingMessage im) : base(im)
         {
-            // TODO: Confirmar se chama o Decode dos filhos antes
-            Decode(im);
+
         }
 
-        public UpdatePlayerStateMessage(short id, Vector2 pos, short state, UpdatePlayerStateType st)
+        public UpdatePlayerStateMessage(short id, Vector2 pos, short state, UpdatePlayerStateType st) : base(id)
         {
-            PlayerId = id;
             MessageTime = NetTime.Now;
             Position = pos;
             StateType = st;
             PlayerState = state;
         }
 
-        public virtual GameMessageType GameMessageType { get { return GameMessageType.UpdatePlayerState; } }
+        public override GameMessageType GameMessageType { get { return GameMessageType.UpdatePlayerState; } }
 
-        public virtual void Decode(NetIncomingMessage im)
+        public override void Decode(NetIncomingMessage im)
         {
-            PlayerId = im.ReadInt16();
+            base.Decode(im);
+
             MessageTime = im.ReadDouble();
             Position = im.ReadVector2();
             StateType = (UpdatePlayerStateType)im.ReadInt16();
             PlayerState = im.ReadInt16();
         }
 
-        public virtual void Encode(NetOutgoingMessage om)
+        public override void Encode(NetOutgoingMessage om)
         {
-            om.Write(PlayerId);
+            base.Encode(om);
+
             om.Write(MessageTime);
             om.Write(Position);
             om.Write((short)StateType);

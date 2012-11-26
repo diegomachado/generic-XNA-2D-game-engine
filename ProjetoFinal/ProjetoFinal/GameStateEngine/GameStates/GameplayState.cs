@@ -29,6 +29,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             eventManager.PlayerStateUpdated += OnOtherClientPlayerStateUpdated;
             eventManager.PlayerStateUpdatedWithArrow += OnOtherClientPlayerStateUpdatedWithArrow;
             eventManager.PlayerStateChangedWithArrow += OnLocalArrowShot;
+            eventManager.Disconnected += OnDisconnected;
             eventManager.ClientDisconnected += OnClientDisconnected;
             eventManager.PlayerHitUpdated += OnPlayerHitUpdated;
             eventManager.PlayerSpawnedUpdated += OnPlayerSpawnedUpdated;
@@ -185,9 +186,14 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             arrowManager.CreateArrow(args.PlayerId, args.Position, args.ShotSpeed);
         }
 
-        private void OnClientDisconnected(object sender, EventArgs eventArgs)
+        private void OnDisconnected(object sender, EventArgs eventArgs)
         {
             GameStatesManager.ResignState(this);
+        }
+
+        private void OnClientDisconnected(object sender, PlayerIdEventArgs args)
+        {
+            playerManager.RemovePlayer(args.PlayerId);
         }
 
         private void OnPlayerHitUpdated(object sender, PlayerHitEventArgs args)

@@ -128,7 +128,7 @@ namespace ProjetoFinal.Managers
                                     HailMessage message = new HailMessage(im.SenderConnection.RemoteHailMessage);
 
                                     if (clientCounter == 1)
-                                        LocalPlayerId = message.ClientId;
+                                        LocalPlayerId = message.PlayerId;
 
                                     clientCounter++;
 
@@ -138,8 +138,6 @@ namespace ProjetoFinal.Managers
                                 }
                                 else
                                 {
-                                    // TODO: Server poderia nesse momento, disparar uma mensagem a todos dizendo que um novo jogador se conectou para que cada client crie o boneco no seu jogo
-                                    // TODO: O proprio server tambem tem que criar o boneco no seu jogo
                                     Console.WriteLine("{0} Connected", im.SenderEndpoint);
                                 }
 
@@ -149,14 +147,18 @@ namespace ProjetoFinal.Managers
 
                                 if (!IsServer)
                                 {
-                                    OnClientDisconnected();
+                                    OnDisconnected();
 
                                     Console.WriteLine("Disconnected from {0}", im.SenderEndpoint);
                                 }
                                 else
                                 {
-                                    // TODO: Server poderia nesse momento, disparar uma mensagem a todos dizendo que um jogador se desconectou para que cada client destrua o boneco no seu jogo
-                                    // TODO: O proprio server tambem tem que destruir o boneco no seu jogo
+                                    short id = networkInterface.GetPlayerIdFromConnection(im.SenderConnection);
+
+                                    OnClientDisconnected(id);
+
+                                    SendClientDisconnectedMessage(id);
+
                                     Console.WriteLine("{0} Disconnected", im.SenderEndpoint);
                                 }
 
@@ -172,84 +174,93 @@ namespace ProjetoFinal.Managers
                         switch (gameMessageType)
                         {
                             case GameMessageType.UpdatePlayerState:
-
+                            {
                                 // TODO: DO SHIT HERE
 
                                 break;
-
+                            }
                             case GameMessageType.UpdatePlayerMovementState:
-                                {
-                                    UpdatePlayerMovementStateMessage updatePlayerMovementStateMessage = new UpdatePlayerMovementStateMessage(im);
-                                    double localTime = im.SenderConnection.GetLocalTime(updatePlayerMovementStateMessage.MessageTime);
+                            {
+                                UpdatePlayerMovementStateMessage updatePlayerMovementStateMessage = new UpdatePlayerMovementStateMessage(im);
+                                double localTime = im.SenderConnection.GetLocalTime(updatePlayerMovementStateMessage.MessageTime);
 
-                                    OnPlayerMovementStateUpdated(updatePlayerMovementStateMessage, localTime);
+                                OnPlayerMovementStateUpdated(updatePlayerMovementStateMessage, localTime);
 
-                                    // If server, resend UpdatePlayerState to all clients
-                                    // TODO: Refactor this shit so that a client doesn't receive it's own message back
-                                    // This fucking shit ta causando um overhead chato na rede e acho que tem como consertar usando SendMessage ao inves de SendToAll no serverNetworkInterface porém como a porra do código é fechado temos que fazer testes manuais pra saber se a gente vai estar ganhando desempenho ou perdendo.
-                                    if (IsServer)
-                                        networkInterface.SendMessage(updatePlayerMovementStateMessage);
+                                // If server, resend UpdatePlayerState to all clients
+                                // TODO: Refactor this shit so that a client doesn't receive it's own message back
+                                // This fucking shit ta causando um overhead chato na rede e acho que tem como consertar usando SendMessage ao inves de SendToAll no serverNetworkInterface porém como a porra do código é fechado temos que fazer testes manuais pra saber se a gente vai estar ganhando desempenho ou perdendo.
+                                if (IsServer)
+                                    networkInterface.SendMessage(updatePlayerMovementStateMessage);
 
-                                    break;
-                                }
+                                break;
+                            }
 
                             case GameMessageType.UpdatePlayerStateWithArrow:
-                                {
-                                    UpdatePlayerStateWithArrowMessage updatePlayerStateWithArrowMessage = new UpdatePlayerStateWithArrowMessage(im);
-                                    double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateWithArrowMessage.MessageTime);
+                            {
+                                UpdatePlayerStateWithArrowMessage updatePlayerStateWithArrowMessage = new UpdatePlayerStateWithArrowMessage(im);
+                                double localTime = im.SenderConnection.GetLocalTime(updatePlayerStateWithArrowMessage.MessageTime);
 
-                                    OnPlayerStateUpdatedWithArrow(updatePlayerStateWithArrowMessage, localTime);
+                                OnPlayerStateUpdatedWithArrow(updatePlayerStateWithArrowMessage, localTime);
 
-                                    if (IsServer)
-                                        networkInterface.SendMessage(updatePlayerStateWithArrowMessage);
+                                if (IsServer)
+                                    networkInterface.SendMessage(updatePlayerStateWithArrowMessage);
 
-                                    break;
-                                }
+                                break;
+                            }
 
                             case GameMessageType.PlayerHit:
-                                {
-                                    PlayerHitMessage playerHitMessage = new PlayerHitMessage(im);
+                            {
+                                PlayerHitMessage playerHitMessage = new PlayerHitMessage(im);
 
-                                    OnPlayerHitUpdated(playerHitMessage);
+                                OnPlayerHitUpdated(playerHitMessage);
 
-                                    if (IsServer)
-                                        networkInterface.SendMessage(playerHitMessage);
+                                if (IsServer)
+                                    networkInterface.SendMessage(playerHitMessage);
 
-                                    break;
-                                }
+                                break;
+                            }
 
                             case GameMessageType.PlayerCreated:
-                                {
-                                    PlayerCreatedMessage playerCreatedMessage = new PlayerCreatedMessage(im);
+                            {
+                                PlayerCreatedMessage playerCreatedMessage = new PlayerCreatedMessage(im);
 
-                                    OnPlayerCreatedUpdated(playerCreatedMessage);
+                                OnPlayerCreatedUpdated(playerCreatedMessage);
 
-                                    if (IsServer)
-                                        networkInterface.SendMessage(playerCreatedMessage);
+                                if (IsServer)
+                                    networkInterface.SendMessage(playerCreatedMessage);
 
-                                    break;
-                                }
+                                break;
+                            }
 
                             case GameMessageType.PlayerSpawned:
-                                {
-                                    PlayerSpawnedMessage playerSpawnedMessage = new PlayerSpawnedMessage(im);
+                            {
+                                PlayerSpawnedMessage playerSpawnedMessage = new PlayerSpawnedMessage(im);
 
-                                    OnPlayerSpawnedUpdated(playerSpawnedMessage);
+                                OnPlayerSpawnedUpdated(playerSpawnedMessage);
 
-                                    if (IsServer)
-                                        networkInterface.SendMessage(playerSpawnedMessage);
+                                if (IsServer)
+                                    networkInterface.SendMessage(playerSpawnedMessage);
 
-                                    break;
-                                }
+                                break;
+                            }
 
                             case GameMessageType.NewClientPlayerCreated:
-                                {
-                                    NewClientPlayerCreatedMessage newClientPlayerCreatedMessage = new NewClientPlayerCreatedMessage(im);
+                            {
+                                NewClientPlayerCreatedMessage newClientPlayerCreatedMessage = new NewClientPlayerCreatedMessage(im);
 
-                                    OnNewClientPlayerCreatedUpdated(newClientPlayerCreatedMessage);
+                                OnNewClientPlayerCreatedUpdated(newClientPlayerCreatedMessage);
 
-                                    break;
-                                }
+                                break;
+                            }
+
+                            case GameMessageType.ClientDisconnected:
+                            {
+                                ClientDisconnectedMessage clientDisconnectedMessage = new ClientDisconnectedMessage(im);
+
+                                OnClientDisconnected(clientDisconnectedMessage.PlayerId);
+
+                                break;
+                            }
                         }
 
                         break;
@@ -300,9 +311,14 @@ namespace ProjetoFinal.Managers
             eventManager.ThrowClientConnected(this, new ClientConnectedEventArgs(msg));
         }
 
-        private void OnClientDisconnected()
+        private void OnDisconnected()
         {
-            eventManager.ThrowClientDisconnected(this, null);
+            eventManager.ThrowDisconnected(this, null);
+        }
+
+        private void OnClientDisconnected(short id)
+        {
+            eventManager.ThrowClientDisconnected(this, new PlayerIdEventArgs(id));
         }
 
         private void OnPlayerHitUpdated(PlayerHitMessage msg)
@@ -413,6 +429,11 @@ namespace ProjetoFinal.Managers
         private void SendNewClientPlayerCreatedMessage(short playerId, Dictionary<short, Vector2> playerPositions)
         {
             networkInterface.SendMessageToClient(playerId, new NewClientPlayerCreatedMessage(playerPositions));
+        }
+
+        private void SendClientDisconnectedMessage(short playerId)
+        {
+            networkInterface.SendMessage(new ClientDisconnectedMessage(playerId));
         }
     }
 }

@@ -9,30 +9,26 @@ using ProjetoFinal.Entities;
 
 namespace ProjetoFinal.Network.Messages
 {
-    class HailMessage : IGameMessage
+    class HailMessage : PlayerIdMessage
     {
-        public short ClientId { get; set; }
         public Dictionary<short, Client> ClientsInfo { get; set; }
 
-        public GameMessageType GameMessageType
+        public override GameMessageType GameMessageType { get { return GameMessageType.ClientInfo; } }
+
+        public HailMessage(NetIncomingMessage im) : base(im)
         {
-            get { return GameMessageType.ClientInfo; }
+
         }
 
-        public HailMessage(NetIncomingMessage im)
+        public HailMessage(short id, Dictionary<short, Client> clients) : base(id)
         {
-            Decode(im);
-        }
-
-        public HailMessage(short id, Dictionary<short, Client> clients)
-        {
-            ClientId = id;
             ClientsInfo = clients;
         }
 
-        public void Decode(NetIncomingMessage im)
+        public override void Decode(NetIncomingMessage im)
         {
-            ClientId = im.ReadInt16();
+            base.Decode(im);
+
             short numClients = im.ReadInt16();
 
             if (ClientsInfo == null)
@@ -42,9 +38,10 @@ namespace ProjetoFinal.Network.Messages
                 ClientsInfo.Add(im.ReadInt16(), new Client(im.ReadString()));
         }
 
-        public void Encode(NetOutgoingMessage om)
+        public override void Encode(NetOutgoingMessage om)
         {
-            om.Write(ClientId);
+            base.Encode(om);
+
             om.Write((short)ClientsInfo.Count);
             
             foreach (KeyValuePair<short, Client> clientInfo in ClientsInfo)

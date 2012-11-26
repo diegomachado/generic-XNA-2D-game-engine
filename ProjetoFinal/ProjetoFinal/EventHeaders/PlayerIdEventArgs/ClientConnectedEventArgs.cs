@@ -6,14 +6,13 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.EventHeaders
 {
-    class ClientConnectedEventArgs : EventArgs
+    class ClientConnectedEventArgs : PlayerIdEventArgs
     {
-        public short ClientId { get; set; }
         public Dictionary<short, Client> ClientsInfo { get; set; }
 
         public ClientConnectedEventArgs(HailMessage hailMessage)
         {
-            this.ClientId = hailMessage.ClientId;
+            this.PlayerId = hailMessage.PlayerId;
             this.ClientsInfo = hailMessage.ClientsInfo;
         }
     }

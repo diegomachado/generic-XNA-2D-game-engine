@@ -26,7 +26,8 @@ namespace ProjetoFinal.Managers
         public event EventHandler<PlayerMovementStateUpdatedEventArgs> PlayerMovementStateUpdated; // When a message with updated information about a player's movement state arrives
         public event EventHandler<PlayerStateUpdatedWithArrowEventArgs> PlayerStateUpdatedWithArrow; // When a message with updated information about a player's state arrives with an arrow shot
         public event EventHandler<ClientConnectedEventArgs> ClientConnected; // When a message saying a new client connected arrives
-        public event EventHandler<EventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
+        public event EventHandler<EventArgs> Disconnected; // When a message saying you have been disconnected arrives
+        public event EventHandler<PlayerIdEventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
         public event EventHandler<PlayerHitEventArgs> PlayerHitUpdated; // When a message saying a player was hit arrives
         public event EventHandler<PlayerSpawnedEventArgs> PlayerSpawnedUpdated; // When a message saying a player spawned arrives
         public event EventHandler<PlayerSpawnedEventArgs> PlayerCreatedUpdated; // When a message saying a player was created arrives
@@ -112,7 +113,13 @@ namespace ProjetoFinal.Managers
                 ClientConnected(sender, args);
         }
 
-        public void ThrowClientDisconnected(object sender, ClientConnectedEventArgs args)
+        public void ThrowDisconnected(object sender, EventArgs args)
+        {
+            if (Disconnected != null)
+                Disconnected(sender, args);
+        }
+
+        public void ThrowClientDisconnected(object sender, PlayerIdEventArgs args)
         {
             if (ClientDisconnected != null)
                 ClientDisconnected(sender, args);
