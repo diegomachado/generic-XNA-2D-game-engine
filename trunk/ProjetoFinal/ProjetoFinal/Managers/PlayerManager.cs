@@ -92,6 +92,11 @@ namespace ProjetoFinal.Managers
             }
         }
 
+        public void RemovePlayer(short id)
+        {
+            this.players.Remove(id);
+        }
+
         public void DrawBoundingBox(Rectangle r, int borderWidth, SpriteBatch spriteBatch, Texture2D borderTexture)
         {
             spriteBatch.Draw(borderTexture, new Rectangle(r.Left, r.Top, borderWidth, r.Height), Color.White);  

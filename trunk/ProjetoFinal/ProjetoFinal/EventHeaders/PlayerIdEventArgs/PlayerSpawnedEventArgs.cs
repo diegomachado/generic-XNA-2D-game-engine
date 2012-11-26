@@ -7,14 +7,12 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.EventHeaders
 {
-    class PlayerSpawnedEventArgs : EventArgs
+    class PlayerSpawnedEventArgs : PlayerIdEventArgs
     {
-        public short PlayerId { get; set; }
         public Vector2 SpawnPoint { get; set; }
 
-        public PlayerSpawnedEventArgs(short playerId, Vector2 spawnPoint)
+        public PlayerSpawnedEventArgs(short playerId, Vector2 spawnPoint) : base(playerId)
         {
-            PlayerId = playerId;
             SpawnPoint = spawnPoint;
         }
     }

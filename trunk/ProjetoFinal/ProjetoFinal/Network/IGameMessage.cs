@@ -4,6 +4,8 @@ namespace ProjetoFinal.Network.Messages
 {
     public enum GameMessageType
     {
+        PlayerId,
+        ClientDisconnected,
         ClientInfo,
         UpdatePlayerState,
         UpdatePlayerMovementState,

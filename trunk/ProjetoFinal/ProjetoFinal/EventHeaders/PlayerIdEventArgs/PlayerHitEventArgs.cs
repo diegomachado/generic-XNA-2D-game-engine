@@ -7,14 +7,12 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.EventHeaders
 {
-    class PlayerHitEventArgs : EventArgs
+    class PlayerHitEventArgs : PlayerIdEventArgs
     {
-        public short PlayerId { get; set; }
         public short AttackerId { get; set; }
 
-        public PlayerHitEventArgs(short playerId, short attackerId)
+        public PlayerHitEventArgs(short playerId, short attackerId) : base(playerId)
         {
-            PlayerId = playerId;
             AttackerId = attackerId;
         }
 

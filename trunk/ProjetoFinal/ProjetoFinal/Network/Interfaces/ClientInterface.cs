@@ -89,6 +89,11 @@ namespace ProjetoFinal.Network
 
         }
 
+        public short GetPlayerIdFromConnection(NetConnection netConnection)
+        {
+            return 0;
+        }
+
         public void RegisterClient(short clientCounter, NetConnection senderConnection)
         {
 

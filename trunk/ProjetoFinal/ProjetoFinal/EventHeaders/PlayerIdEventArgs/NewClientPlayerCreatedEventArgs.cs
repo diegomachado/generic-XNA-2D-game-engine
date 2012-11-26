@@ -7,14 +7,12 @@ using ProjetoFinal.Network.Messages;
 
 namespace ProjetoFinal.EventHeaders
 {
-    class NewClientPlayerCreatedEventArgs : EventArgs
+    class NewClientPlayerCreatedEventArgs : PlayerIdEventArgs
     {
-        public short PlayerId { get; set; }
         public Dictionary<short, Vector2> PlayerPositions { get; set; }
 
-        public NewClientPlayerCreatedEventArgs(short playerId, Dictionary<short, Vector2> playerPositions)
+        public NewClientPlayerCreatedEventArgs(short playerId, Dictionary<short, Vector2> playerPositions) : base(playerId)
         {
-            PlayerId = playerId;
             PlayerPositions = playerPositions;
         }
     }

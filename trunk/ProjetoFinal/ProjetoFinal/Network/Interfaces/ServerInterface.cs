@@ -81,6 +81,11 @@ namespace ProjetoFinal.Network
             clientId_uid.Add(id, connection.RemoteUniqueIdentifier);
         }
 
+        public short GetPlayerIdFromConnection(NetConnection netConnection)
+        {
+            return clientId_uid.First(x => x.Value == netConnection.RemoteUniqueIdentifier).Key;
+        }
+
         public NetOutgoingMessage CreateMessage()
         {
             return this.netServer.CreateMessage();

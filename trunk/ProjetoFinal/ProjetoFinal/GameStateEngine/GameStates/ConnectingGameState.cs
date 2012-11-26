@@ -20,7 +20,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             IsPopup = true;
 
             eventManager.ClientConnected += OnClientConnected;
-            eventManager.ClientDisconnected += OnClientDisconnected;
+            eventManager.Disconnected += OnClientDisconnected;
 
             guiManager.AddElement(new Button("Cancel", new Rectangle(300, 200, 305, 51), textureManager.getTexture(TextureList.ButtonFrame), OnCancelButtonClicked));
         }
