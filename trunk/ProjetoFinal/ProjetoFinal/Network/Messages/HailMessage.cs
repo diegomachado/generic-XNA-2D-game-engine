@@ -11,8 +11,8 @@ namespace ProjetoFinal.Network.Messages
 {
     class HailMessage : IGameMessage
     {
-        public short clientId { get; set; }
-        public Dictionary<short, Client> clientsInfo { get; set; }
+        public short ClientId { get; set; }
+        public Dictionary<short, Client> ClientsInfo { get; set; }
 
         public GameMessageType GameMessageType
         {
@@ -26,28 +26,28 @@ namespace ProjetoFinal.Network.Messages
 
         public HailMessage(short id, Dictionary<short, Client> clients)
         {
-            clientId = id;
-            clientsInfo = clients;
+            ClientId = id;
+            ClientsInfo = clients;
         }
 
         public void Decode(NetIncomingMessage im)
         {
-            clientId = im.ReadInt16();
+            ClientId = im.ReadInt16();
             short numClients = im.ReadInt16();
 
-            if (clientsInfo == null)
-                clientsInfo = new Dictionary<short, Client>();
+            if (ClientsInfo == null)
+                ClientsInfo = new Dictionary<short, Client>();
 
             for (int i = 0; i < numClients; i++)
-                clientsInfo.Add(im.ReadInt16(), new Client(im.ReadString()));
+                ClientsInfo.Add(im.ReadInt16(), new Client(im.ReadString()));
         }
 
         public void Encode(NetOutgoingMessage om)
         {
-            om.Write(clientId);
-            om.Write((short)clientsInfo.Count);
+            om.Write(ClientId);
+            om.Write((short)ClientsInfo.Count);
             
-            foreach (KeyValuePair<short, Client> clientInfo in clientsInfo)
+            foreach (KeyValuePair<short, Client> clientInfo in ClientsInfo)
             {
                 om.Write(clientInfo.Key);
                 om.Write(clientInfo.Value.nickname);

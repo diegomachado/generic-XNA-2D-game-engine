@@ -9,34 +9,34 @@ using ProjetoFinal.Entities;
 
 namespace ProjetoFinal.Network.Messages
 {
-    class PlayerRespawnedMessage : IGameMessage
+    class PlayerCreatedMessage : IGameMessage
     {
         public short PlayerId { get; set; }
-        public Vector2 RespawnPosition { get; set; }
+        public Vector2 SpawnPosition { get; set; }
 
-        public GameMessageType GameMessageType { get { return GameMessageType.PlayerRespawned; } }
+        public virtual GameMessageType GameMessageType { get { return GameMessageType.PlayerCreated; } }
 
-        public PlayerRespawnedMessage(NetIncomingMessage im)
+        public PlayerCreatedMessage(NetIncomingMessage im)
         {
             Decode(im);
         }
 
-        public PlayerRespawnedMessage(short playerId, Vector2 respawnPosition)
+        public PlayerCreatedMessage(short playerId, Vector2 spawnPosition)
         {
             this.PlayerId = playerId;
-            this.RespawnPosition = respawnPosition;
+            this.SpawnPosition = spawnPosition;
         }
 
         public void Decode(NetIncomingMessage im)
         {
             PlayerId = im.ReadInt16();
-            RespawnPosition = im.ReadVector2();
+            SpawnPosition = im.ReadVector2();
         }
 
         public void Encode(NetOutgoingMessage om)
         {
             om.Write(PlayerId);
-            om.Write(RespawnPosition);
+            om.Write(SpawnPosition);
         }
     }
 }

@@ -15,7 +15,9 @@ namespace ProjetoFinal.Managers
         private NetworkManager networkManager;
 
         // Events
-        public event EventHandler<PlayerRespawnedEventArgs> PlayerRespawned; // When a player has locally respawned
+        public event EventHandler<NewClientPlayerCreatedEventArgs> NewClientPlayerCreated; // When a new client player has been locally created
+        public event EventHandler<PlayerSpawnedEventArgs> PlayerCreated; // Wehn a player has been locally created
+        public event EventHandler<PlayerSpawnedEventArgs> PlayerSpawned; // When a player has locally spawned
         public event EventHandler<PlayerHitEventArgs> PlayerHit; // When a player has locally been hit
         public event EventHandler<PlayerStateChangedEventArgs> PlayerStateChanged; // When a player state has locally changed
         public event EventHandler<PlayerMovementStateChangedEventArgs> PlayerMovementStateChanged; // Wheh a player movement state locally changed
@@ -26,7 +28,9 @@ namespace ProjetoFinal.Managers
         public event EventHandler<ClientConnectedEventArgs> ClientConnected; // When a message saying a new client connected arrives
         public event EventHandler<EventArgs> ClientDisconnected; // When a message saying a client disconnected arrives
         public event EventHandler<PlayerHitEventArgs> PlayerHitUpdated; // When a message saying a player was hit arrives
-        public event EventHandler<PlayerRespawnedEventArgs> PlayerRespawnedUpdated; // When a message saying a player respawned arrives
+        public event EventHandler<PlayerSpawnedEventArgs> PlayerSpawnedUpdated; // When a message saying a player spawned arrives
+        public event EventHandler<PlayerSpawnedEventArgs> PlayerCreatedUpdated; // When a message saying a player was created arrives
+        public event EventHandler<NewClientPlayerCreatedEventArgs> NewClientPlayerCreatedUpdated; // When a message saying a new client player has been remotely created in the server
 
         public static EventManager Instance
         {
@@ -78,16 +82,28 @@ namespace ProjetoFinal.Managers
                 PlayerHitUpdated(sender, args);
         }
 
-        public void ThrowPlayerRespawnedUpdated(object sender, PlayerRespawnedEventArgs args)
+        public void ThrowPlayerSpawnedUpdated(object sender, PlayerSpawnedEventArgs args)
         {
-            if (PlayerRespawnedUpdated != null)
-                PlayerRespawnedUpdated(sender, args);
+            if (PlayerSpawnedUpdated != null)
+                PlayerSpawnedUpdated(sender, args);
+        }
+
+        public void ThrowPlayerCreatedUpdated(object sender, PlayerSpawnedEventArgs args)
+        {
+            if (PlayerCreatedUpdated != null)
+                PlayerCreatedUpdated(sender, args);
         }
 
         public void ThrowPlayerStateUpdatedWithArrow(object sender, PlayerStateUpdatedWithArrowEventArgs args)
         {
             if (PlayerStateUpdatedWithArrow != null)
                 PlayerStateUpdatedWithArrow(sender, args);
+        }
+
+        public void ThrowNewClientPlayerCreatedUpdated(object sender, NewClientPlayerCreatedEventArgs args)
+        {
+            if (NewClientPlayerCreatedUpdated != null)
+                NewClientPlayerCreatedUpdated(sender, args);
         }
 
         public void ThrowClientConnected(object sender, ClientConnectedEventArgs args)
@@ -108,10 +124,22 @@ namespace ProjetoFinal.Managers
                 PlayerHit(sender, args);
         }
 
-        public void ThrowPlayerRespawned(object sender, PlayerRespawnedEventArgs args)
+        public void ThrowPlayerSpawned(object sender, PlayerSpawnedEventArgs args)
         {
-            if (PlayerRespawned != null)
-                PlayerRespawned(sender, args);
+            if (PlayerSpawned != null)
+                PlayerSpawned(sender, args);
+        }
+
+        public void ThrowPlayerCreated(object sender, PlayerSpawnedEventArgs args)
+        {
+            if (PlayerCreated != null)
+                PlayerCreated(sender, args);
+        }
+
+        public void ThrowNewClientPlayerCreated(object sender, NewClientPlayerCreatedEventArgs args)
+        {
+            if (NewClientPlayerCreated != null)
+                NewClientPlayerCreated(sender, args);
         }
     }
 }

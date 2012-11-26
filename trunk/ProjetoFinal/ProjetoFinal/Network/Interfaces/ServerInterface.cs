@@ -14,7 +14,7 @@ namespace ProjetoFinal.Network
         public int port {get; set;}
 
         private NetServer netServer;
-
+        private Dictionary<short, long> clientId_uid = new Dictionary<short,long>();
         private bool isDisposed;
 
         public void Connect()
@@ -62,6 +62,23 @@ namespace ProjetoFinal.Network
 
                 netServer.SendToAll(om, NetDeliveryMethod.ReliableUnordered);
             }
+        }
+
+        public void SendMessageToClient(short id, IGameMessage gameMessage)
+        {
+            if (this.netServer.ConnectionsCount > 0)
+            {
+                NetOutgoingMessage om = netServer.CreateMessage();
+                om.Write((byte)gameMessage.GameMessageType);
+                gameMessage.Encode(om);
+
+                netServer.SendMessage(om, netServer.Connections.Find(item => item.RemoteUniqueIdentifier == clientId_uid[id]), NetDeliveryMethod.ReliableUnordered);
+            }
+        }
+
+        public void RegisterClient(short id, NetConnection connection)
+        {
+            clientId_uid.Add(id, connection.RemoteUniqueIdentifier);
         }
 
         public NetOutgoingMessage CreateMessage()

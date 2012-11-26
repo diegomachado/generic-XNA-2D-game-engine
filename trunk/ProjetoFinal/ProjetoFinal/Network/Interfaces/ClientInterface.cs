@@ -84,6 +84,16 @@ namespace ProjetoFinal.Network
             }
         }
 
+        public void SendMessageToClient(short id, IGameMessage gameMessage)
+        {
+
+        }
+
+        public void RegisterClient(short clientCounter, NetConnection senderConnection)
+        {
+
+        }
+
         public NetOutgoingMessage CreateMessage()
         {
             return this.netClient.CreateMessage();
