@@ -360,6 +360,9 @@ namespace ProjetoFinal.Managers
 
         private void OnNewClientPlayerCreated(object sender, NewClientPlayerCreatedEventArgs args)
         {
+            foreach (KeyValuePair<short, Vector2> kv in args.PlayerPositions)
+                Console.WriteLine("### " + kv.Key);
+
             SendNewClientPlayerCreatedMessage(args.PlayerId, args.PlayerPositions);
         }
 
