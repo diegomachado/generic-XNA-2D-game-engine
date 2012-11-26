@@ -36,11 +36,11 @@ namespace ProjetoFinal.Managers
         {
             playerId = id;
 
-            Vector2 respawnPosition = levelManager.currentLevel.GetRandomSpawnPoint();
+            Vector2 spawnPosition = levelManager.currentLevel.GetRandomSpawnPoint();
 
-            eventManager.ThrowPlayerRespawned(this, new PlayerRespawnedEventArgs(id, respawnPosition));
+            eventManager.ThrowPlayerCreated(this, new PlayerSpawnedEventArgs(id, spawnPosition));
 
-            localPlayer = new Player(id, respawnPosition);
+            localPlayer = new Player(id, spawnPosition);
         }
 
         public void Update(GameTime gameTime)
@@ -51,7 +51,7 @@ namespace ProjetoFinal.Managers
             {
                 Vector2 respawnPosition = levelManager.currentLevel.GetRandomSpawnPoint();
 
-                eventManager.ThrowPlayerRespawned(this, new PlayerRespawnedEventArgs(localPlayer.id, respawnPosition));
+                eventManager.ThrowPlayerSpawned(this, new PlayerSpawnedEventArgs(localPlayer.id, respawnPosition));
 
                 localPlayer.Respawn(respawnPosition);
             }

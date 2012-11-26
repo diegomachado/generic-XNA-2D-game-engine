@@ -13,8 +13,8 @@ namespace ProjetoFinal.EventHeaders
 
         public ClientConnectedEventArgs(HailMessage hailMessage)
         {
-            this.ClientId = hailMessage.clientId;
-            this.ClientsInfo = hailMessage.clientsInfo;
+            this.ClientId = hailMessage.ClientId;
+            this.ClientsInfo = hailMessage.ClientsInfo;
         }
     }
 }

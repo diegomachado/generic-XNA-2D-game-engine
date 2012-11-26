@@ -9,7 +9,9 @@ namespace ProjetoFinal.Network.Messages
         UpdatePlayerMovementState,
         UpdatePlayerStateWithArrow,
         PlayerHit,
-        PlayerRespawned
+        PlayerCreated,
+        PlayerSpawned,
+        NewClientPlayerCreated
     }
 
     public interface IGameMessage

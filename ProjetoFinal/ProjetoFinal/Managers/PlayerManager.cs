@@ -22,8 +22,9 @@ namespace ProjetoFinal.Managers
 {
     class PlayerManager
     {
+        public Dictionary<short, Player> players { get; private set; }
+
         LevelManager levelManager = LevelManager.Instance;
-        Dictionary<short, Player> players;
         Camera camera = Camera.Instance;
 
         public PlayerManager()

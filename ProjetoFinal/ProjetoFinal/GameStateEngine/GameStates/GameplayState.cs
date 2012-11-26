@@ -31,7 +31,9 @@ namespace ProjetoFinal.GameStateEngine.GameStates
             eventManager.PlayerStateChangedWithArrow += OnLocalArrowShot;
             eventManager.ClientDisconnected += OnClientDisconnected;
             eventManager.PlayerHitUpdated += OnPlayerHitUpdated;
-            eventManager.PlayerRespawnedUpdated += OnPlayerRespawnedUpdated;
+            eventManager.PlayerSpawnedUpdated += OnPlayerSpawnedUpdated;
+            eventManager.PlayerCreatedUpdated += OnPlayerCreatedUpdated;
+            eventManager.NewClientPlayerCreatedUpdated += OnNewClientPlayerCreatedUpdated;
 
             playerManager = new PlayerManager();
             localPlayerManager = new LocalPlayerManager();
@@ -194,10 +196,34 @@ namespace ProjetoFinal.GameStateEngine.GameStates
                 playerManager.GetPlayer(args.PlayerId).TakeHit();
         }
 
-        private void OnPlayerRespawnedUpdated(object sender, PlayerRespawnedEventArgs args)
+        private void OnPlayerSpawnedUpdated(object sender, PlayerSpawnedEventArgs args)
         {
             if (args.PlayerId != localPlayerManager.playerId)
-                playerManager.GetPlayer(args.PlayerId).Respawn(args.RespawnPoint);
+                playerManager.GetPlayer(args.PlayerId).Respawn(args.SpawnPoint);
+        }
+
+        private void OnPlayerCreatedUpdated(object sender, PlayerSpawnedEventArgs args)
+        {
+            if (args.PlayerId != localPlayerManager.playerId)
+            {
+                playerManager.GetPlayer(args.PlayerId).Respawn(args.SpawnPoint);
+
+                Dictionary<short, Vector2> playerPositions = new Dictionary<short, Vector2>();
+
+                foreach(KeyValuePair<short, Player> player in playerManager.players)
+                    playerPositions.Add(player.Key, player.Value.position);
+
+                eventManager.ThrowNewClientPlayerCreated(this, new NewClientPlayerCreatedEventArgs(args.PlayerId, playerPositions));
+            }
+        }
+
+        private void OnNewClientPlayerCreatedUpdated(object sender, NewClientPlayerCreatedEventArgs args)
+        {
+            foreach (KeyValuePair<short, Vector2> playerPositions in args.PlayerPositions)
+            {
+                Console.WriteLine(">>> " + playerPositions.Key);
+                playerManager.GetPlayer(playerPositions.Key).Respawn(playerPositions.Value);
+            }
         }
 
         #endregion
