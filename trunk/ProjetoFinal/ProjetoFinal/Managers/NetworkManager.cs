@@ -171,6 +171,8 @@ namespace ProjetoFinal.Managers
 
                         var gameMessageType = (GameMessageType)im.ReadByte();
 
+                        Console.WriteLine(">>> " + gameMessageType);
+
                         switch (gameMessageType)
                         {
                             case GameMessageType.UpdatePlayerState:
