@@ -171,7 +171,7 @@ namespace ProjetoFinal.Managers
 
                         var gameMessageType = (GameMessageType)im.ReadByte();
 
-                        Console.WriteLine(">>> " + gameMessageType);
+                        //Console.WriteLine(">>> " + gameMessageType);
 
                         switch (gameMessageType)
                         {
