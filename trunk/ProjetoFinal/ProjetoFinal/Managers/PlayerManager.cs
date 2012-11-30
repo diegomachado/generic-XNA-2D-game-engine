@@ -155,6 +155,10 @@ namespace ProjetoFinal.Managers
                         break;
                 }
             }
+            else
+            {
+                Console.WriteLine("This can't happen many times in a row!!! FUCK FUCKLY FUCK FUCK FUCK");
+            }
         }
     }
 }
