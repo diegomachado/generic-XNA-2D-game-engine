@@ -68,6 +68,7 @@ namespace ProjetoFinal.Entities
             maxSpeed = new Vector2(15, 12);     
             WeaponPosition = new Vector2(29, 18);
             alpha = 1;
+            lastUpdateTime = -99999;
             HorizontalState = PlayerStates.horizontalStates[HorizontalStateType.Idle];
             VerticalState = PlayerStates.verticalStates[VerticalStateType.Idle];
             ActionState = PlayerStates.actionStates[ActionStateType.Idle];
