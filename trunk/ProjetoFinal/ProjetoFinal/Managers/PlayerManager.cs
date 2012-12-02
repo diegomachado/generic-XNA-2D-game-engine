@@ -157,7 +157,7 @@ namespace ProjetoFinal.Managers
             }
             else
             {
-                Console.WriteLine("This can't happen many times in a row!!! FUCK FUCKLY FUCK FUCK FUCK");
+                Console.WriteLine("( " + player.lastUpdateTime + " < " + messageTime + " ) This can't happen many times in a row!!! FUCK FUCKLY FUCK FUCK FUCK");
             }
         }
     }
