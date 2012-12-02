@@ -230,7 +230,7 @@ namespace ProjetoFinal.GameStateEngine.GameStates
         {
             foreach (KeyValuePair<short, Vector2> playerPositions in args.PlayerPositions)
             {
-                Console.WriteLine(localPlayerManager.playerId + " >>> " + playerPositions.Key);
+                //Console.WriteLine(localPlayerManager.playerId + " >>> " + playerPositions.Key);
                 playerManager.GetPlayer(playerPositions.Key).Respawn(playerPositions.Value);
             }
         }
