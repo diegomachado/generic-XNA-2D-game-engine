@@ -34,9 +34,7 @@ namespace ProjetoFinal.GameStateEngine
 
         public bool IsPopup { get; protected set; }
 
-        public virtual void Initialize(Game game, SpriteFont spriteFont)
-        {            
-        }
+        public virtual void Initialize(Game game, SpriteFont spriteFont) { }
 
         public virtual void LoadContent(ContentManager content) { }
 

@@ -117,15 +117,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Arrow.cs" />
-    <Compile Include="Entities\Camera.cs" />
-    <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\EntityCollision.cs" />
-    <Compile Include="Entities\Player.cs" />
-    <Compile Include="Entities\Client.cs" />
-    <Compile Include="Entities\DynamicEntity.cs" />
-    <Compile Include="Entities\Utils\Animation.cs" />
-    <Compile Include="Entities\Utils\SpriteMap.cs" />
+    <Compile Include="Game Objects\Entities\Dynamic Entities\Arrow.cs" />
+    <Compile Include="Game Objects\Camera.cs" />
+    <Compile Include="Game Objects\Entity.cs" />
+    <Compile Include="Game Objects\EntityCollision.cs" />
+    <Compile Include="Game Objects\Entities\Dynamic Entities\Player.cs" />
+    <Compile Include="Game Objects\Client.cs" />
+    <Compile Include="Game Objects\Entities\DynamicEntity.cs" />
+    <Compile Include="Game Objects\Utils\Animation.cs" />
+    <Compile Include="Game Objects\Utils\SpriteMap.cs" />
     <Compile Include="EventHeaders\PlayerIdEventArgs\ClientConnectedEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerIdEventArgs.cs" />
     <Compile Include="EventHeaders\PlayerIdEventArgs\NewClientPlayerCreatedEventArgs.cs" />
