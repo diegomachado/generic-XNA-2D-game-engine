@@ -1276,7 +1276,25 @@
     <tile x="49" y="23" id="1" />
     <tile x="49" y="24" id="1" />
   </Solids>
-  <Decals tileset="unbearable-tileset" exportMode="XML" />
+  <Decals tileset="unbearable-tileset" exportMode="XML">
+    <tile x="20" y="13" id="11" />
+    <tile x="22" y="15" id="22" />
+    <tile x="23" y="17" id="3" />
+    <tile x="25" y="17" id="25" />
+    <tile x="26" y="17" id="26" />
+    <tile x="27" y="13" id="4" />
+    <tile x="27" y="17" id="27" />
+    <tile x="27" y="18" id="28" />
+    <tile x="29" y="14" id="10" />
+    <tile x="29" y="15" id="9" />
+    <tile x="30" y="14" id="13" />
+    <tile x="30" y="15" id="8" />
+    <tile x="30" y="16" id="7" />
+    <tile x="30" y="17" id="6" />
+    <tile x="31" y="14" id="11" />
+    <tile x="31" y="15" id="12" />
+    <tile x="31" y="17" id="5" />
+  </Decals>
   <Entities>
     <SpawnPoint id="0" x="136" y="624" />
     <SpawnPoint id="1" x="832" y="400" />
