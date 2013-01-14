@@ -64,8 +64,8 @@ namespace ProjetoFinal.Entities
             gravity = 0.5f;
             friction = 0.8f;
             jumpSpeed = -10.5f;
-            minSpeed = new Vector2(-15, -12);
-            maxSpeed = new Vector2(15, 12);     
+            minSpeed = new Vector2(-8, -12);
+            maxSpeed = new Vector2(8, 12);     
             WeaponPosition = new Vector2(29, 18);
             alpha = 1;
             lastUpdateTime = -99999;

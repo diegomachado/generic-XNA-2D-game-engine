@@ -14,7 +14,7 @@ namespace ProjetoFinal.PlayerStateMachine.MovementStates.HorizontalMovementState
         {
             player.FacingRight = true;
             player.speed.X += player.moveSpeed;
-            player.speed.X *= player.friction;
+            player.speed.X = MathHelper.Clamp(player.speed.X, player.minSpeed.X, player.maxSpeed.X);
 
             player.MoveXBy(player.speed.X);
 
